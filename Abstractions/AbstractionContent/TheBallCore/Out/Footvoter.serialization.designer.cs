@@ -263,14 +263,29 @@ namespace INT {
 	{
 
 		// TODO: Implement in partial 
-		//public static async Task ExecuteOperation(string operationName, object parameters) 
+	    public static async Task ExecuteOperation(string operationName, object parameters)
+	    {
+	        throw new NotImplementedException();
+        }
 
-		// TODO: Implement in partial 
+        private static async Task<T> GetInformationObject<T>(string id)
+	    {
+	        throw new NotImplementedException();
+	    }
 
-		// TODO: Implement in partial 
+	    private static async Task<T> GetInterfaceObject<T>(string id)
+	    {
+	        throw new NotImplementedException();
+	    }
 
 
-		public static async Task UpdateUserProfile(INT.UserProfile param) 
+
+        // TODO: Implement in partial 
+
+        // TODO: Implement in partial 
+
+
+        public static async Task UpdateUserProfile(INT.UserProfile param) 
 		{
 			await ExecuteOperation("Footvoter.Services.UpdateUserProfile", param);
 		}
@@ -294,7 +309,8 @@ namespace INT {
 			var result = await GetInformationObject<Company>(id);
 			return result;
 		}
-		public static async Task<Vote> GetVote(string id = null)
+
+	    public static async Task<Vote> GetVote(string id = null)
 		{
 			var result = await GetInformationObject<Vote>(id);
 			return result;
@@ -304,7 +320,8 @@ namespace INT {
 			var result = await GetInterfaceObject<INT.UserProfile>(id);
 			return result;
 		}
-		public static async Task<INT.CompanyFollowData> GetCompanyFollowData(string id = null)
+
+	    public static async Task<INT.CompanyFollowData> GetCompanyFollowData(string id = null)
 		{
 			var result = await GetInterfaceObject<INT.CompanyFollowData>(id);
 			return result;

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace SQLiteSupport
 {
@@ -17,9 +19,9 @@ namespace SQLiteSupport
         Task PerformUpdateAsync(string storageRootPath, InformationObjectMetaData updateData);
         Task PerformInsertAsync(string storageRootPath, InformationObjectMetaData insertData);
         Task PerformDeleteAsync(string storageRootPath, InformationObjectMetaData deleteData);
-        DbConnection Connection { get; }
-        void SubmitChanges();
-        Task SubmitChangesAsync();
+        DatabaseFacade Database { get; }
+        int SaveChanges();
+        Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken);
     }
 
     public static class SQLiteSync
@@ -35,7 +37,8 @@ namespace SQLiteSupport
                 async insertItem => await dataContext.PerformInsertAsync(storageRootPath, insertItem),
                 async updateItem => await dataContext.PerformUpdateAsync(storageRootPath, updateItem),
                 async deleteItem => await dataContext.PerformDeleteAsync(storageRootPath, deleteItem));
-            await dataContext.SubmitChangesAsync();
+            CancellationToken cancellationToken = new CancellationToken();
+            await dataContext.SaveChangesAsync(true, cancellationToken);
             return anyChanges;
         }
 
@@ -50,7 +53,7 @@ namespace SQLiteSupport
                 insertItem => dataContext.PerformInsert(storageRootPath, insertItem),
                 updateItem => dataContext.PerformUpdate(storageRootPath, updateItem),
                 deleteItem => dataContext.PerformDelete(storageRootPath, deleteItem));
-            dataContext.SubmitChanges();
+            dataContext.SaveChanges();
             return anyChanges;
         }
     }

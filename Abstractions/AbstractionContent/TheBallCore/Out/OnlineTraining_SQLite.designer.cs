@@ -5,9 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -17,11 +14,13 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
-using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
-using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
+//using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+//using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SQLite.ProBroz.OnlineTraining { 
@@ -31,15 +30,14 @@ namespace SQLite.ProBroz.OnlineTraining {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
+		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
             // Track whether Dispose has been called. 
             private bool disposed = false;
-		    protected override void Dispose(bool disposing)
+		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
 		            return;
-                base.Dispose(disposing);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
@@ -47,16 +45,24 @@ namespace SQLite.ProBroz.OnlineTraining {
 
             public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
+		    public TheBallDataContext() : base(new DbContextOptions<TheBallDataContext>())
 		    {
 		        
 		    }
 
+		    public readonly string SQLiteDBPath;
+		    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		    {
+		        optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
+		    }
+
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
-		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                var dataContext = new TheBallDataContext(connection);
-		        using (var transaction = connection.BeginTransaction())
+		        var sqliteConnectionString = $"{pathToDBFile}";
+                var dataContext = new TheBallDataContext(sqliteConnectionString);
+		        var db = dataContext.Database;
+                db.OpenConnection();
+		        using (var transaction = db.BeginTransaction())
 		        {
                     dataContext.CreateDomainDatabaseTablesIfNotExists();
                     transaction.Commit();
@@ -64,12 +70,19 @@ namespace SQLite.ProBroz.OnlineTraining {
                 return dataContext;
 		    }
 
-            public TheBallDataContext(SQLiteConnection connection) : base(connection)
+            public TheBallDataContext(string sqLiteDBPath) : base()
+            {
+                SQLiteDBPath = sqLiteDBPath;
+            }
+
+		    public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		    {
-                if(connection.State != ConnectionState.Open)
-                    connection.Open();
+                //if(connection.State != ConnectionState.Open)
+                //    connection.Open();
+		        return base.SaveChanges(acceptAllChangesOnSuccess);
 		    }
 
+			/*
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
@@ -86,6 +99,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		    {
 		        await Task.Run(() => SubmitChanges());
 		    }
+			*/
 
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
@@ -106,7 +120,9 @@ namespace SQLite.ProBroz.OnlineTraining {
 				tableCreationCommands.Add(PaymentOptionCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(SubscriptionCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(TenantGymCollection.GetCreateTableSQL());
-			    var connection = this.Connection;
+			    //var connection = this.Connection;
+			    var db = this.Database;
+			    var connection = db.GetDbConnection();
 				foreach (string commandText in tableCreationCommands)
 			    {
 			        var command = connection.CreateCommand();
@@ -116,9 +132,9 @@ namespace SQLite.ProBroz.OnlineTraining {
 			    }
 			}
 
-			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
+			public DbSet<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
-					return this.GetTable<InformationObjectMetaData>();
+					return this.Set<InformationObjectMetaData>();
 				}
 			}
 
@@ -163,7 +179,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                     MemberID = existingObject.ID,
                                     SubscriptionID = item
                                 };
-                                MemberSubscriptionsTable.InsertOnSubmit(relationObject);
+                                MemberSubscriptionsTable.Add(relationObject);
                                 existingObject.Subscriptions.Add(relationObject);
 
                             });
@@ -192,7 +208,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                     MembershipPlanID = existingObject.ID,
                                     PaymentOptionID = item
                                 };
-                                MembershipPlanPaymentOptionsTable.InsertOnSubmit(relationObject);
+                                MembershipPlanPaymentOptionsTable.Add(relationObject);
                                 existingObject.PaymentOptions.Add(relationObject);
 
                             });
@@ -205,7 +221,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 MembershipPlanID = existingObject.ID,
                                 TenantGymID = serializedObject.Gym
                             };
-                            MembershipPlanGymTable.InsertOnSubmit(relationObject);
+                            MembershipPlanGymTable.Add(relationObject);
 							existingObject.Gym = relationObject;
                     }
 
@@ -239,7 +255,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 SubscriptionID = existingObject.ID,
                                 MembershipPlanID = serializedObject.Plan
                             };
-                            SubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            SubscriptionPlanTable.Add(relationObject);
 							existingObject.Plan = relationObject;
                     }
 
@@ -250,7 +266,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 SubscriptionID = existingObject.ID,
                                 PaymentOptionID = serializedObject.PaymentOption
                             };
-                            SubscriptionPaymentOptionTable.InsertOnSubmit(relationObject);
+                            SubscriptionPaymentOptionTable.Add(relationObject);
 							existingObject.PaymentOption = relationObject;
                     }
 
@@ -321,7 +337,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                     MemberID = existingObject.ID,
                                     SubscriptionID = item
                                 };
-                                MemberSubscriptionsTable.InsertOnSubmit(relationObject);
+                                MemberSubscriptionsTable.Add(relationObject);
                                 existingObject.Subscriptions.Add(relationObject);
 
                             });
@@ -350,7 +366,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                     MembershipPlanID = existingObject.ID,
                                     PaymentOptionID = item
                                 };
-                                MembershipPlanPaymentOptionsTable.InsertOnSubmit(relationObject);
+                                MembershipPlanPaymentOptionsTable.Add(relationObject);
                                 existingObject.PaymentOptions.Add(relationObject);
 
                             });
@@ -363,7 +379,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 MembershipPlanID = existingObject.ID,
                                 TenantGymID = serializedObject.Gym
                             };
-                            MembershipPlanGymTable.InsertOnSubmit(relationObject);
+                            MembershipPlanGymTable.Add(relationObject);
 							existingObject.Gym = relationObject;
                     }
 
@@ -397,7 +413,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 SubscriptionID = existingObject.ID,
                                 MembershipPlanID = serializedObject.Plan
                             };
-                            SubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            SubscriptionPlanTable.Add(relationObject);
 							existingObject.Plan = relationObject;
                     }
 
@@ -408,7 +424,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 SubscriptionID = existingObject.ID,
                                 PaymentOptionID = serializedObject.PaymentOption
                             };
-                            SubscriptionPaymentOptionTable.InsertOnSubmit(relationObject);
+                            SubscriptionPaymentOptionTable.Add(relationObject);
 							existingObject.PaymentOption = relationObject;
                     }
 
@@ -442,7 +458,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		    {
                 if (insertData.SemanticDomain != "ProBroz.OnlineTraining")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -477,13 +493,13 @@ namespace SQLite.ProBroz.OnlineTraining {
                                     MemberID = objectToAdd.ID,
                                     SubscriptionID = item
                                 };
-                                MemberSubscriptionsTable.InsertOnSubmit(relationObject);
+                                MemberSubscriptionsTable.Add(relationObject);
                                 objectToAdd.Subscriptions.Add(relationObject);
 
                             });
                     }
 
-					MemberTable.InsertOnSubmit(objectToAdd);
+					MemberTable.Add(objectToAdd);
                     break;
                 }
                 case "MembershipPlan":
@@ -505,7 +521,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                     MembershipPlanID = objectToAdd.ID,
                                     PaymentOptionID = item
                                 };
-                                MembershipPlanPaymentOptionsTable.InsertOnSubmit(relationObject);
+                                MembershipPlanPaymentOptionsTable.Add(relationObject);
                                 objectToAdd.PaymentOptions.Add(relationObject);
 
                             });
@@ -518,11 +534,11 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 MembershipPlanID = objectToAdd.ID,
                                 TenantGymID = serializedObject.Gym
                             };
-                            MembershipPlanGymTable.InsertOnSubmit(relationObject);
+                            MembershipPlanGymTable.Add(relationObject);
                             objectToAdd.Gym = relationObject;
                     }
 
-					MembershipPlanTable.InsertOnSubmit(objectToAdd);
+					MembershipPlanTable.Add(objectToAdd);
                     break;
                 }
                 case "PaymentOption":
@@ -535,7 +551,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		            objectToAdd.OptionName = serializedObject.OptionName;
 		            objectToAdd.PeriodInMonths = serializedObject.PeriodInMonths;
 		            objectToAdd.Price = serializedObject.Price;
-					PaymentOptionTable.InsertOnSubmit(objectToAdd);
+					PaymentOptionTable.Add(objectToAdd);
                     break;
                 }
                 case "Subscription":
@@ -552,7 +568,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 SubscriptionID = objectToAdd.ID,
                                 MembershipPlanID = serializedObject.Plan
                             };
-                            SubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            SubscriptionPlanTable.Add(relationObject);
                             objectToAdd.Plan = relationObject;
                     }
 
@@ -563,14 +579,14 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 SubscriptionID = objectToAdd.ID,
                                 PaymentOptionID = serializedObject.PaymentOption
                             };
-                            SubscriptionPaymentOptionTable.InsertOnSubmit(relationObject);
+                            SubscriptionPaymentOptionTable.Add(relationObject);
                             objectToAdd.PaymentOption = relationObject;
                     }
 
 		            objectToAdd.Created = serializedObject.Created;
 		            objectToAdd.ValidFrom = serializedObject.ValidFrom;
 		            objectToAdd.ValidTo = serializedObject.ValidTo;
-					SubscriptionTable.InsertOnSubmit(objectToAdd);
+					SubscriptionTable.Add(objectToAdd);
                     break;
                 }
                 case "TenantGym":
@@ -588,7 +604,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		            objectToAdd.ZipCode = serializedObject.ZipCode;
 		            objectToAdd.PostOffice = serializedObject.PostOffice;
 		            objectToAdd.Country = serializedObject.Country;
-					TenantGymTable.InsertOnSubmit(objectToAdd);
+					TenantGymTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -599,7 +615,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		    {
                 if (insertData.SemanticDomain != "ProBroz.OnlineTraining")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -634,13 +650,13 @@ namespace SQLite.ProBroz.OnlineTraining {
                                     MemberID = objectToAdd.ID,
                                     SubscriptionID = item
                                 };
-                                MemberSubscriptionsTable.InsertOnSubmit(relationObject);
+                                MemberSubscriptionsTable.Add(relationObject);
                                 objectToAdd.Subscriptions.Add(relationObject);
 
                             });
                     }
 
-					MemberTable.InsertOnSubmit(objectToAdd);
+					MemberTable.Add(objectToAdd);
                     break;
                 }
                 case "MembershipPlan":
@@ -662,7 +678,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                     MembershipPlanID = objectToAdd.ID,
                                     PaymentOptionID = item
                                 };
-                                MembershipPlanPaymentOptionsTable.InsertOnSubmit(relationObject);
+                                MembershipPlanPaymentOptionsTable.Add(relationObject);
                                 objectToAdd.PaymentOptions.Add(relationObject);
 
                             });
@@ -675,11 +691,11 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 MembershipPlanID = objectToAdd.ID,
                                 TenantGymID = serializedObject.Gym
                             };
-                            MembershipPlanGymTable.InsertOnSubmit(relationObject);
+                            MembershipPlanGymTable.Add(relationObject);
                             objectToAdd.Gym = relationObject;
                     }
 
-					MembershipPlanTable.InsertOnSubmit(objectToAdd);
+					MembershipPlanTable.Add(objectToAdd);
                     break;
                 }
                 case "PaymentOption":
@@ -692,7 +708,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		            objectToAdd.OptionName = serializedObject.OptionName;
 		            objectToAdd.PeriodInMonths = serializedObject.PeriodInMonths;
 		            objectToAdd.Price = serializedObject.Price;
-					PaymentOptionTable.InsertOnSubmit(objectToAdd);
+					PaymentOptionTable.Add(objectToAdd);
                     break;
                 }
                 case "Subscription":
@@ -709,7 +725,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 SubscriptionID = objectToAdd.ID,
                                 MembershipPlanID = serializedObject.Plan
                             };
-                            SubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            SubscriptionPlanTable.Add(relationObject);
                             objectToAdd.Plan = relationObject;
                     }
 
@@ -720,14 +736,14 @@ namespace SQLite.ProBroz.OnlineTraining {
                                 SubscriptionID = objectToAdd.ID,
                                 PaymentOptionID = serializedObject.PaymentOption
                             };
-                            SubscriptionPaymentOptionTable.InsertOnSubmit(relationObject);
+                            SubscriptionPaymentOptionTable.Add(relationObject);
                             objectToAdd.PaymentOption = relationObject;
                     }
 
 		            objectToAdd.Created = serializedObject.Created;
 		            objectToAdd.ValidFrom = serializedObject.ValidFrom;
 		            objectToAdd.ValidTo = serializedObject.ValidTo;
-					SubscriptionTable.InsertOnSubmit(objectToAdd);
+					SubscriptionTable.Add(objectToAdd);
                     break;
                 }
                 case "TenantGym":
@@ -745,7 +761,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		            objectToAdd.ZipCode = serializedObject.ZipCode;
 		            objectToAdd.PostOffice = serializedObject.PostOffice;
 		            objectToAdd.Country = serializedObject.Country;
-					TenantGymTable.InsertOnSubmit(objectToAdd);
+					TenantGymTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -756,7 +772,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		    {
                 if (deleteData.SemanticDomain != "ProBroz.OnlineTraining")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -766,7 +782,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//MemberTable.Attach(objectToDelete);
 						var objectToDelete = MemberTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MemberTable.DeleteOnSubmit(objectToDelete);
+							MemberTable.Remove(objectToDelete);
 						break;
 					}
 					case "MembershipPlan":
@@ -775,7 +791,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//MembershipPlanTable.Attach(objectToDelete);
 						var objectToDelete = MembershipPlanTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MembershipPlanTable.DeleteOnSubmit(objectToDelete);
+							MembershipPlanTable.Remove(objectToDelete);
 						break;
 					}
 					case "PaymentOption":
@@ -784,7 +800,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//PaymentOptionTable.Attach(objectToDelete);
 						var objectToDelete = PaymentOptionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PaymentOptionTable.DeleteOnSubmit(objectToDelete);
+							PaymentOptionTable.Remove(objectToDelete);
 						break;
 					}
 					case "Subscription":
@@ -793,7 +809,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//SubscriptionTable.Attach(objectToDelete);
 						var objectToDelete = SubscriptionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SubscriptionTable.DeleteOnSubmit(objectToDelete);
+							SubscriptionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TenantGym":
@@ -802,7 +818,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//TenantGymTable.Attach(objectToDelete);
 						var objectToDelete = TenantGymTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TenantGymTable.DeleteOnSubmit(objectToDelete);
+							TenantGymTable.Remove(objectToDelete);
 						break;
 					}
 					case "MemberCollection":
@@ -811,7 +827,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//MemberCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MemberCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MemberCollectionTable.DeleteOnSubmit(objectToDelete);
+							MemberCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "MembershipPlanCollection":
@@ -820,7 +836,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//MembershipPlanCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MembershipPlanCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MembershipPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+							MembershipPlanCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "PaymentOptionCollection":
@@ -829,7 +845,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//PaymentOptionCollectionTable.Attach(objectToDelete);
 						var objectToDelete = PaymentOptionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PaymentOptionCollectionTable.DeleteOnSubmit(objectToDelete);
+							PaymentOptionCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "SubscriptionCollection":
@@ -838,7 +854,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//SubscriptionCollectionTable.Attach(objectToDelete);
 						var objectToDelete = SubscriptionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SubscriptionCollectionTable.DeleteOnSubmit(objectToDelete);
+							SubscriptionCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TenantGymCollection":
@@ -847,7 +863,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//TenantGymCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TenantGymCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TenantGymCollectionTable.DeleteOnSubmit(objectToDelete);
+							TenantGymCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -859,7 +875,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		    {
                 if (deleteData.SemanticDomain != "ProBroz.OnlineTraining")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -869,7 +885,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//MemberTable.Attach(objectToDelete);
 						var objectToDelete = MemberTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MemberTable.DeleteOnSubmit(objectToDelete);
+							MemberTable.Remove(objectToDelete);
 						break;
 					}
 					case "MembershipPlan":
@@ -878,7 +894,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//MembershipPlanTable.Attach(objectToDelete);
 						var objectToDelete = MembershipPlanTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MembershipPlanTable.DeleteOnSubmit(objectToDelete);
+							MembershipPlanTable.Remove(objectToDelete);
 						break;
 					}
 					case "PaymentOption":
@@ -887,7 +903,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//PaymentOptionTable.Attach(objectToDelete);
 						var objectToDelete = PaymentOptionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PaymentOptionTable.DeleteOnSubmit(objectToDelete);
+							PaymentOptionTable.Remove(objectToDelete);
 						break;
 					}
 					case "Subscription":
@@ -896,7 +912,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//SubscriptionTable.Attach(objectToDelete);
 						var objectToDelete = SubscriptionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SubscriptionTable.DeleteOnSubmit(objectToDelete);
+							SubscriptionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TenantGym":
@@ -905,7 +921,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//TenantGymTable.Attach(objectToDelete);
 						var objectToDelete = TenantGymTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TenantGymTable.DeleteOnSubmit(objectToDelete);
+							TenantGymTable.Remove(objectToDelete);
 						break;
 					}
 					case "MemberCollection":
@@ -914,7 +930,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//MemberCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MemberCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MemberCollectionTable.DeleteOnSubmit(objectToDelete);
+							MemberCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "MembershipPlanCollection":
@@ -923,7 +939,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//MembershipPlanCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MembershipPlanCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MembershipPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+							MembershipPlanCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "PaymentOptionCollection":
@@ -932,7 +948,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//PaymentOptionCollectionTable.Attach(objectToDelete);
 						var objectToDelete = PaymentOptionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PaymentOptionCollectionTable.DeleteOnSubmit(objectToDelete);
+							PaymentOptionCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "SubscriptionCollection":
@@ -941,7 +957,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//SubscriptionCollectionTable.Attach(objectToDelete);
 						var objectToDelete = SubscriptionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SubscriptionCollectionTable.DeleteOnSubmit(objectToDelete);
+							SubscriptionCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TenantGymCollection":
@@ -950,7 +966,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 						//TenantGymCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TenantGymCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TenantGymCollectionTable.DeleteOnSubmit(objectToDelete);
+							TenantGymCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -958,22 +974,14 @@ namespace SQLite.ProBroz.OnlineTraining {
 
 
 
-			public Table<Member> MemberTable {
-				get {
-					return this.GetTable<Member>();
-				}
-			}
+			public DbSet<Member> MemberTable { get; set; }
 			public Table<MemberSubscriptions> MemberSubscriptionsTable {
 				get {
 					return this.GetTable<MemberSubscriptions>();
 				}
 			}
 
-			public Table<MembershipPlan> MembershipPlanTable {
-				get {
-					return this.GetTable<MembershipPlan>();
-				}
-			}
+			public DbSet<MembershipPlan> MembershipPlanTable { get; set; }
 			public Table<MembershipPlanPaymentOptions> MembershipPlanPaymentOptionsTable {
 				get {
 					return this.GetTable<MembershipPlanPaymentOptions>();
@@ -986,16 +994,8 @@ namespace SQLite.ProBroz.OnlineTraining {
 				}
 			}
 
-			public Table<PaymentOption> PaymentOptionTable {
-				get {
-					return this.GetTable<PaymentOption>();
-				}
-			}
-			public Table<Subscription> SubscriptionTable {
-				get {
-					return this.GetTable<Subscription>();
-				}
-			}
+			public DbSet<PaymentOption> PaymentOptionTable { get; set; }
+			public DbSet<Subscription> SubscriptionTable { get; set; }
 			public Table<SubscriptionPlan> SubscriptionPlanTable {
 				get {
 					return this.GetTable<SubscriptionPlan>();
@@ -1008,52 +1008,29 @@ namespace SQLite.ProBroz.OnlineTraining {
 				}
 			}
 
-			public Table<TenantGym> TenantGymTable {
-				get {
-					return this.GetTable<TenantGym>();
-				}
-			}
-			public Table<MemberCollection> MemberCollectionTable {
-				get {
-					return this.GetTable<MemberCollection>();
-				}
-			}
-			public Table<MembershipPlanCollection> MembershipPlanCollectionTable {
-				get {
-					return this.GetTable<MembershipPlanCollection>();
-				}
-			}
-			public Table<PaymentOptionCollection> PaymentOptionCollectionTable {
-				get {
-					return this.GetTable<PaymentOptionCollection>();
-				}
-			}
-			public Table<SubscriptionCollection> SubscriptionCollectionTable {
-				get {
-					return this.GetTable<SubscriptionCollection>();
-				}
-			}
-			public Table<TenantGymCollection> TenantGymCollectionTable {
-				get {
-					return this.GetTable<TenantGymCollection>();
-				}
-			}
+			public DbSet<TenantGym> TenantGymTable { get; set; }
+			public DbSet<MemberCollection> MemberCollectionTable { get; set; }
+			public DbSet<MembershipPlanCollection> MembershipPlanCollectionTable { get; set; }
+			public DbSet<PaymentOptionCollection> PaymentOptionCollectionTable { get; set; }
+			public DbSet<SubscriptionCollection> SubscriptionCollectionTable { get; set; }
+			public DbSet<TenantGymCollection> TenantGymCollectionTable { get; set; }
         }
 
-    [Table(Name = "Member")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Member")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Member: {ID}")]
 	public class Member : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1089,73 +1066,73 @@ CREATE TABLE IF NOT EXISTS [Member](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string FirstName { get; set; }
 		// private string _unmodified_FirstName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LastName { get; set; }
 		// private string _unmodified_LastName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string MiddleName { get; set; }
 		// private string _unmodified_MiddleName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime BirthDay { get; set; }
 		// private DateTime _unmodified_BirthDay;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Email { get; set; }
 		// private string _unmodified_Email;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PhoneNumber { get; set; }
 		// private string _unmodified_PhoneNumber;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Address { get; set; }
 		// private string _unmodified_Address;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Address2 { get; set; }
 		// private string _unmodified_Address2;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ZipCode { get; set; }
 		// private string _unmodified_ZipCode;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PostOffice { get; set; }
 		// private string _unmodified_PostOffice;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Country { get; set; }
 		// private string _unmodified_Country;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string FederationLicense { get; set; }
 		// private string _unmodified_FederationLicense;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool PhotoPermission { get; set; }
 		// private bool _unmodified_PhotoPermission;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool VideoPermission { get; set; }
 		// private bool _unmodified_VideoPermission;
 		private EntitySet<MemberSubscriptions> _Subscriptions = new EntitySet<MemberSubscriptions>();
@@ -1192,20 +1169,21 @@ CREATE TABLE IF NOT EXISTS [Member](
 				FederationLicense = string.Empty;
 		}
 	}
-    [Table(Name = "MembershipPlan")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MembershipPlan")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MembershipPlan: {ID}")]
 	public class MembershipPlan : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1229,13 +1207,13 @@ CREATE TABLE IF NOT EXISTS [MembershipPlan](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PlanName { get; set; }
 		// private string _unmodified_PlanName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 		private EntitySet<MembershipPlanPaymentOptions> _PaymentOptions = new EntitySet<MembershipPlanPaymentOptions>();
@@ -1262,20 +1240,21 @@ CREATE TABLE IF NOT EXISTS [MembershipPlan](
 				Description = string.Empty;
 		}
 	}
-    [Table(Name = "PaymentOption")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "PaymentOption")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PaymentOption: {ID}")]
 	public class PaymentOption : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1300,18 +1279,18 @@ CREATE TABLE IF NOT EXISTS [PaymentOption](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OptionName { get; set; }
 		// private string _unmodified_OptionName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public long PeriodInMonths { get; set; }
 		// private long _unmodified_PeriodInMonths;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double Price { get; set; }
 		// private double _unmodified_Price;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1321,20 +1300,21 @@ CREATE TABLE IF NOT EXISTS [PaymentOption](
 				OptionName = string.Empty;
 		}
 	}
-    [Table(Name = "Subscription")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Subscription")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Subscription: {ID}")]
 	public class Subscription : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1375,18 +1355,18 @@ CREATE TABLE IF NOT EXISTS [Subscription](
 		}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Created { get; set; }
 		// private DateTime _unmodified_Created;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime ValidFrom { get; set; }
 		// private DateTime _unmodified_ValidFrom;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime ValidTo { get; set; }
 		// private DateTime _unmodified_ValidTo;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1394,20 +1374,21 @@ CREATE TABLE IF NOT EXISTS [Subscription](
 		
 		}
 	}
-    [Table(Name = "TenantGym")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TenantGym")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TenantGym: {ID}")]
 	public class TenantGym : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1437,43 +1418,43 @@ CREATE TABLE IF NOT EXISTS [TenantGym](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GymName { get; set; }
 		// private string _unmodified_GymName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Email { get; set; }
 		// private string _unmodified_Email;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PhoneNumber { get; set; }
 		// private string _unmodified_PhoneNumber;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Address { get; set; }
 		// private string _unmodified_Address;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Address2 { get; set; }
 		// private string _unmodified_Address2;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ZipCode { get; set; }
 		// private string _unmodified_ZipCode;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PostOffice { get; set; }
 		// private string _unmodified_PostOffice;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Country { get; set; }
 		// private string _unmodified_Country;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1497,20 +1478,21 @@ CREATE TABLE IF NOT EXISTS [TenantGym](
 				Country = string.Empty;
 		}
 	}
-    [Table(Name = "MemberCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MemberCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MemberCollection: {ID}")]
 	public class MemberCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1535,24 +1517,25 @@ CREATE TABLE IF NOT EXISTS [MemberCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "MembershipPlanCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MembershipPlanCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MembershipPlanCollection: {ID}")]
 	public class MembershipPlanCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1577,24 +1560,25 @@ CREATE TABLE IF NOT EXISTS [MembershipPlanCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "PaymentOptionCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "PaymentOptionCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PaymentOptionCollection: {ID}")]
 	public class PaymentOptionCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1619,24 +1603,25 @@ CREATE TABLE IF NOT EXISTS [PaymentOptionCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "SubscriptionCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "SubscriptionCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionCollection: {ID}")]
 	public class SubscriptionCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1661,24 +1646,25 @@ CREATE TABLE IF NOT EXISTS [SubscriptionCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "TenantGymCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TenantGymCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TenantGymCollection: {ID}")]
 	public class TenantGymCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1703,12 +1689,12 @@ CREATE TABLE IF NOT EXISTS [TenantGymCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "MemberSubscriptions")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MemberSubscriptions")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MemberSubscriptions: {MemberID} - {SubscriptionID}")]
 	public class MemberSubscriptions // : ITheBallDataContextStorable
 	{
@@ -1724,9 +1710,9 @@ PRIMARY KEY (MemberID, SubscriptionID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string MemberID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string SubscriptionID { get; set; }
 
 
@@ -1750,8 +1736,8 @@ PRIMARY KEY (MemberID, SubscriptionID)
 
     }
 
-    [Table(Name = "MembershipPlanPaymentOptions")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MembershipPlanPaymentOptions")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MembershipPlanPaymentOptions: {MembershipPlanID} - {PaymentOptionID}")]
 	public class MembershipPlanPaymentOptions // : ITheBallDataContextStorable
 	{
@@ -1767,9 +1753,9 @@ PRIMARY KEY (MembershipPlanID, PaymentOptionID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string MembershipPlanID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string PaymentOptionID { get; set; }
 
 
@@ -1793,8 +1779,8 @@ PRIMARY KEY (MembershipPlanID, PaymentOptionID)
 
     }
 
-    [Table(Name = "MembershipPlanGym")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MembershipPlanGym")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MembershipPlanGym: {MembershipPlanID} - {TenantGymID}")]
 	public class MembershipPlanGym // : ITheBallDataContextStorable
 	{
@@ -1810,9 +1796,9 @@ PRIMARY KEY (MembershipPlanID, TenantGymID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string MembershipPlanID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string TenantGymID { get; set; }
 
 
@@ -1836,8 +1822,8 @@ PRIMARY KEY (MembershipPlanID, TenantGymID)
 
     }
 
-    [Table(Name = "SubscriptionPlan")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "SubscriptionPlan")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionPlan: {SubscriptionID} - {MembershipPlanID}")]
 	public class SubscriptionPlan // : ITheBallDataContextStorable
 	{
@@ -1853,9 +1839,9 @@ PRIMARY KEY (SubscriptionID, MembershipPlanID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string SubscriptionID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string MembershipPlanID { get; set; }
 
 
@@ -1879,8 +1865,8 @@ PRIMARY KEY (SubscriptionID, MembershipPlanID)
 
     }
 
-    [Table(Name = "SubscriptionPaymentOption")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "SubscriptionPaymentOption")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionPaymentOption: {SubscriptionID} - {PaymentOptionID}")]
 	public class SubscriptionPaymentOption // : ITheBallDataContextStorable
 	{
@@ -1896,9 +1882,9 @@ PRIMARY KEY (SubscriptionID, PaymentOptionID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string SubscriptionID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string PaymentOptionID { get; set; }
 
 

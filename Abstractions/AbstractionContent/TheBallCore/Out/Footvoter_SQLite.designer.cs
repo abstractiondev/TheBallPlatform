@@ -5,9 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -17,11 +14,13 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
-using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
-using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
+//using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+//using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SQLite.Footvoter.Services { 
@@ -31,15 +30,14 @@ namespace SQLite.Footvoter.Services {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
+		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
             // Track whether Dispose has been called. 
             private bool disposed = false;
-		    protected override void Dispose(bool disposing)
+		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
 		            return;
-                base.Dispose(disposing);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
@@ -47,16 +45,24 @@ namespace SQLite.Footvoter.Services {
 
             public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
+		    public TheBallDataContext() : base(new DbContextOptions<TheBallDataContext>())
 		    {
 		        
 		    }
 
+		    public readonly string SQLiteDBPath;
+		    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		    {
+		        optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
+		    }
+
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
-		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                var dataContext = new TheBallDataContext(connection);
-		        using (var transaction = connection.BeginTransaction())
+		        var sqliteConnectionString = $"{pathToDBFile}";
+                var dataContext = new TheBallDataContext(sqliteConnectionString);
+		        var db = dataContext.Database;
+                db.OpenConnection();
+		        using (var transaction = db.BeginTransaction())
 		        {
                     dataContext.CreateDomainDatabaseTablesIfNotExists();
                     transaction.Commit();
@@ -64,12 +70,19 @@ namespace SQLite.Footvoter.Services {
                 return dataContext;
 		    }
 
-            public TheBallDataContext(SQLiteConnection connection) : base(connection)
+            public TheBallDataContext(string sqLiteDBPath) : base()
+            {
+                SQLiteDBPath = sqLiteDBPath;
+            }
+
+		    public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		    {
-                if(connection.State != ConnectionState.Open)
-                    connection.Open();
+                //if(connection.State != ConnectionState.Open)
+                //    connection.Open();
+		        return base.SaveChanges(acceptAllChangesOnSuccess);
 		    }
 
+			/*
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
@@ -86,6 +99,7 @@ namespace SQLite.Footvoter.Services {
 		    {
 		        await Task.Run(() => SubmitChanges());
 		    }
+			*/
 
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
@@ -93,7 +107,9 @@ namespace SQLite.Footvoter.Services {
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(Company.GetCreateTableSQL());
 				tableCreationCommands.Add(Vote.GetCreateTableSQL());
-			    var connection = this.Connection;
+			    //var connection = this.Connection;
+			    var db = this.Database;
+			    var connection = db.GetDbConnection();
 				foreach (string commandText in tableCreationCommands)
 			    {
 			        var command = connection.CreateCommand();
@@ -103,9 +119,9 @@ namespace SQLite.Footvoter.Services {
 			    }
 			}
 
-			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
+			public DbSet<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
-					return this.GetTable<InformationObjectMetaData>();
+					return this.Set<InformationObjectMetaData>();
 				}
 			}
 
@@ -195,7 +211,7 @@ namespace SQLite.Footvoter.Services {
 		    {
                 if (insertData.SemanticDomain != "Footvoter.Services")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -211,7 +227,7 @@ namespace SQLite.Footvoter.Services {
 		            objectToAdd.Footprint = serializedObject.Footprint;
 					if(serializedObject.Footpath != null)
 						serializedObject.Footpath.ForEach(item => objectToAdd.Footpath.Add(item));
-					CompanyTable.InsertOnSubmit(objectToAdd);
+					CompanyTable.Add(objectToAdd);
                     break;
                 }
                 case "Vote":
@@ -224,7 +240,7 @@ namespace SQLite.Footvoter.Services {
 		            objectToAdd.CompanyID = serializedObject.CompanyID;
 		            objectToAdd.VoteValue = serializedObject.VoteValue;
 		            objectToAdd.VoteTime = serializedObject.VoteTime;
-					VoteTable.InsertOnSubmit(objectToAdd);
+					VoteTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -235,7 +251,7 @@ namespace SQLite.Footvoter.Services {
 		    {
                 if (insertData.SemanticDomain != "Footvoter.Services")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -251,7 +267,7 @@ namespace SQLite.Footvoter.Services {
 		            objectToAdd.Footprint = serializedObject.Footprint;
 					if(serializedObject.Footpath != null)
 						serializedObject.Footpath.ForEach(item => objectToAdd.Footpath.Add(item));
-					CompanyTable.InsertOnSubmit(objectToAdd);
+					CompanyTable.Add(objectToAdd);
                     break;
                 }
                 case "Vote":
@@ -264,7 +280,7 @@ namespace SQLite.Footvoter.Services {
 		            objectToAdd.CompanyID = serializedObject.CompanyID;
 		            objectToAdd.VoteValue = serializedObject.VoteValue;
 		            objectToAdd.VoteTime = serializedObject.VoteTime;
-					VoteTable.InsertOnSubmit(objectToAdd);
+					VoteTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -275,7 +291,7 @@ namespace SQLite.Footvoter.Services {
 		    {
                 if (deleteData.SemanticDomain != "Footvoter.Services")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -285,7 +301,7 @@ namespace SQLite.Footvoter.Services {
 						//CompanyTable.Attach(objectToDelete);
 						var objectToDelete = CompanyTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CompanyTable.DeleteOnSubmit(objectToDelete);
+							CompanyTable.Remove(objectToDelete);
 						break;
 					}
 					case "Vote":
@@ -294,7 +310,7 @@ namespace SQLite.Footvoter.Services {
 						//VoteTable.Attach(objectToDelete);
 						var objectToDelete = VoteTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							VoteTable.DeleteOnSubmit(objectToDelete);
+							VoteTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -306,7 +322,7 @@ namespace SQLite.Footvoter.Services {
 		    {
                 if (deleteData.SemanticDomain != "Footvoter.Services")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -316,7 +332,7 @@ namespace SQLite.Footvoter.Services {
 						//CompanyTable.Attach(objectToDelete);
 						var objectToDelete = CompanyTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CompanyTable.DeleteOnSubmit(objectToDelete);
+							CompanyTable.Remove(objectToDelete);
 						break;
 					}
 					case "Vote":
@@ -325,7 +341,7 @@ namespace SQLite.Footvoter.Services {
 						//VoteTable.Attach(objectToDelete);
 						var objectToDelete = VoteTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							VoteTable.DeleteOnSubmit(objectToDelete);
+							VoteTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -333,32 +349,25 @@ namespace SQLite.Footvoter.Services {
 
 
 
-			public Table<Company> CompanyTable {
-				get {
-					return this.GetTable<Company>();
-				}
-			}
-			public Table<Vote> VoteTable {
-				get {
-					return this.GetTable<Vote>();
-				}
-			}
+			public DbSet<Company> CompanyTable { get; set; }
+			public DbSet<Vote> VoteTable { get; set; }
         }
 
-    [Table(Name = "Company")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Company")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Company: {ID}")]
 	public class Company : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -384,22 +393,22 @@ CREATE TABLE IF NOT EXISTS [Company](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CompanyName { get; set; }
 		// private string _unmodified_CompanyName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Details { get; set; }
 		// private string _unmodified_Details;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double Footprint { get; set; }
 		// private double _unmodified_Footprint;
-        [Column(Name = "Footpath")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "Footpath")] 
+        //[ScaffoldColumn(true)]
 		public string FootpathData { get; set; }
 
         private bool _IsFootpathRetrieved = false;
@@ -458,20 +467,21 @@ CREATE TABLE IF NOT EXISTS [Company](
 
 		}
 	}
-    [Table(Name = "Vote")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Vote")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Vote: {ID}")]
 	public class Vote : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -496,18 +506,18 @@ CREATE TABLE IF NOT EXISTS [Vote](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CompanyID { get; set; }
 		// private string _unmodified_CompanyID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool VoteValue { get; set; }
 		// private bool _unmodified_VoteValue;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime VoteTime { get; set; }
 		// private DateTime _unmodified_VoteTime;
         public void PrepareForStoring(bool isInitialInsert)

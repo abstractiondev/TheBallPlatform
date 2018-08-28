@@ -5,9 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -17,11 +14,13 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
-using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
-using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
+//using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+//using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SQLite.AaltoGlobalImpact.OIP { 
@@ -31,15 +30,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
+		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
             // Track whether Dispose has been called. 
             private bool disposed = false;
-		    protected override void Dispose(bool disposing)
+		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
 		            return;
-                base.Dispose(disposing);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
@@ -47,16 +45,24 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 
             public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
+		    public TheBallDataContext() : base(new DbContextOptions<TheBallDataContext>())
 		    {
 		        
 		    }
 
+		    public readonly string SQLiteDBPath;
+		    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		    {
+		        optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
+		    }
+
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
-		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                var dataContext = new TheBallDataContext(connection);
-		        using (var transaction = connection.BeginTransaction())
+		        var sqliteConnectionString = $"{pathToDBFile}";
+                var dataContext = new TheBallDataContext(sqliteConnectionString);
+		        var db = dataContext.Database;
+                db.OpenConnection();
+		        using (var transaction = db.BeginTransaction())
 		        {
                     dataContext.CreateDomainDatabaseTablesIfNotExists();
                     transaction.Commit();
@@ -64,12 +70,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 return dataContext;
 		    }
 
-            public TheBallDataContext(SQLiteConnection connection) : base(connection)
+            public TheBallDataContext(string sqLiteDBPath) : base()
+            {
+                SQLiteDBPath = sqLiteDBPath;
+            }
+
+		    public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		    {
-                if(connection.State != ConnectionState.Open)
-                    connection.Open();
+                //if(connection.State != ConnectionState.Open)
+                //    connection.Open();
+		        return base.SaveChanges(acceptAllChangesOnSuccess);
 		    }
 
+			/*
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
@@ -86,6 +99,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		    {
 		        await Task.Run(() => SubmitChanges());
 		    }
+			*/
 
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
@@ -198,7 +212,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 				tableCreationCommands.Add(LocationCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(CategoryCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(UpdateWebContentHandlerCollection.GetCreateTableSQL());
-			    var connection = this.Connection;
+			    //var connection = this.Connection;
+			    var db = this.Database;
+			    var connection = db.GetDbConnection();
 				foreach (string commandText in tableCreationCommands)
 			    {
 			        var command = connection.CreateCommand();
@@ -208,9 +224,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 			    }
 			}
 
-			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
+			public DbSet<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
-					return this.GetTable<InformationObjectMetaData>();
+					return this.Set<InformationObjectMetaData>();
 				}
 			}
 
@@ -2854,7 +2870,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		    {
                 if (insertData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -2867,7 +2883,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBSystem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InstanceName = serializedObject.InstanceName;
 		            objectToAdd.AdminGroupID = serializedObject.AdminGroupID;
-					TBSystemTable.InsertOnSubmit(objectToAdd);
+					TBSystemTable.Add(objectToAdd);
                     break;
                 }
                 case "WebPublishInfo":
@@ -2887,7 +2903,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.PublicationsID = serializedObject.Publications.ID;
 					else
 						objectToAdd.PublicationsID = null;
-					WebPublishInfoTable.InsertOnSubmit(objectToAdd);
+					WebPublishInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "PublicationPackage":
@@ -2899,7 +2915,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new PublicationPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PackageName = serializedObject.PackageName;
 		            objectToAdd.PublicationTime = serializedObject.PublicationTime;
-					PublicationPackageTable.InsertOnSubmit(objectToAdd);
+					PublicationPackageTable.Add(objectToAdd);
                     break;
                 }
                 case "TBRLoginRoot":
@@ -2914,7 +2930,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountID = serializedObject.Account.ID;
 					else
 						objectToAdd.AccountID = null;
-					TBRLoginRootTable.InsertOnSubmit(objectToAdd);
+					TBRLoginRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBRAccountRoot":
@@ -2928,7 +2944,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountID = serializedObject.Account.ID;
 					else
 						objectToAdd.AccountID = null;
-					TBRAccountRootTable.InsertOnSubmit(objectToAdd);
+					TBRAccountRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBRGroupRoot":
@@ -2942,7 +2958,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupID = serializedObject.Group.ID;
 					else
 						objectToAdd.GroupID = null;
-					TBRGroupRootTable.InsertOnSubmit(objectToAdd);
+					TBRGroupRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBRLoginGroupRoot":
@@ -2954,7 +2970,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBRLoginGroupRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.GroupID = serializedObject.GroupID;
-					TBRLoginGroupRootTable.InsertOnSubmit(objectToAdd);
+					TBRLoginGroupRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBREmailRoot":
@@ -2968,7 +2984,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountID = serializedObject.Account.ID;
 					else
 						objectToAdd.AccountID = null;
-					TBREmailRootTable.InsertOnSubmit(objectToAdd);
+					TBREmailRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBAccount":
@@ -2990,7 +3006,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupRoleCollectionID = serializedObject.GroupRoleCollection.ID;
 					else
 						objectToAdd.GroupRoleCollectionID = null;
-					TBAccountTable.InsertOnSubmit(objectToAdd);
+					TBAccountTable.Add(objectToAdd);
                     break;
                 }
                 case "TBAccountCollaborationGroup":
@@ -3003,7 +3019,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.GroupRole = serializedObject.GroupRole;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
-					TBAccountCollaborationGroupTable.InsertOnSubmit(objectToAdd);
+					TBAccountCollaborationGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "TBLoginInfo":
@@ -3014,7 +3030,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OpenIDUrl = serializedObject.OpenIDUrl;
-					TBLoginInfoTable.InsertOnSubmit(objectToAdd);
+					TBLoginInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "TBEmail":
@@ -3026,7 +3042,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.ValidatedAt = serializedObject.ValidatedAt;
-					TBEmailTable.InsertOnSubmit(objectToAdd);
+					TBEmailTable.Add(objectToAdd);
                     break;
                 }
                 case "TBCollaboratorRole":
@@ -3042,7 +3058,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.EmailID = null;
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
-					TBCollaboratorRoleTable.InsertOnSubmit(objectToAdd);
+					TBCollaboratorRoleTable.Add(objectToAdd);
                     break;
                 }
                 case "TBCollaboratingGroup":
@@ -3057,7 +3073,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.RolesID = serializedObject.Roles.ID;
 					else
 						objectToAdd.RolesID = null;
-					TBCollaboratingGroupTable.InsertOnSubmit(objectToAdd);
+					TBCollaboratingGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "TBEmailValidation":
@@ -3091,7 +3107,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.MergeAccountsConfirmationID = null;
 		            objectToAdd.RedirectUrlAfterValidation = serializedObject.RedirectUrlAfterValidation;
-					TBEmailValidationTable.InsertOnSubmit(objectToAdd);
+					TBEmailValidationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBMergeAccountConfirmation":
@@ -3103,7 +3119,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBMergeAccountConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            objectToAdd.AccountToMergeToID = serializedObject.AccountToMergeToID;
-					TBMergeAccountConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBMergeAccountConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBGroupJoinConfirmation":
@@ -3115,7 +3131,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBGroupJoinConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.InvitationMode = serializedObject.InvitationMode;
-					TBGroupJoinConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBGroupJoinConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBDeviceJoinConfirmation":
@@ -3128,7 +3144,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.DeviceMembershipID = serializedObject.DeviceMembershipID;
-					TBDeviceJoinConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBDeviceJoinConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBInformationInputConfirmation":
@@ -3141,7 +3157,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationInputID = serializedObject.InformationInputID;
-					TBInformationInputConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBInformationInputConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBInformationOutputConfirmation":
@@ -3154,7 +3170,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationOutputID = serializedObject.InformationOutputID;
-					TBInformationOutputConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBInformationOutputConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "LoginProvider":
@@ -3169,7 +3185,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ProviderType = serializedObject.ProviderType;
 		            objectToAdd.ProviderUrl = serializedObject.ProviderUrl;
 		            objectToAdd.ReturnUrl = serializedObject.ReturnUrl;
-					LoginProviderTable.InsertOnSubmit(objectToAdd);
+					LoginProviderTable.Add(objectToAdd);
                     break;
                 }
                 case "TBPRegisterEmail":
@@ -3180,7 +3196,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
-					TBPRegisterEmailTable.InsertOnSubmit(objectToAdd);
+					TBPRegisterEmailTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountSummary":
@@ -3194,7 +3210,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupSummaryID = serializedObject.GroupSummary.ID;
 					else
 						objectToAdd.GroupSummaryID = null;
-					AccountSummaryTable.InsertOnSubmit(objectToAdd);
+					AccountSummaryTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountContainer":
@@ -3212,7 +3228,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountSummaryID = serializedObject.AccountSummary.ID;
 					else
 						objectToAdd.AccountSummaryID = null;
-					AccountContainerTable.InsertOnSubmit(objectToAdd);
+					AccountContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountModule":
@@ -3238,7 +3254,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						objectToAdd.LocationCollectionID = null;
-					AccountModuleTable.InsertOnSubmit(objectToAdd);
+					AccountModuleTable.Add(objectToAdd);
                     break;
                 }
                 case "LocationContainer":
@@ -3252,7 +3268,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationsID = serializedObject.Locations.ID;
 					else
 						objectToAdd.LocationsID = null;
-					LocationContainerTable.InsertOnSubmit(objectToAdd);
+					LocationContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "AddressAndLocation":
@@ -3274,7 +3290,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationID = serializedObject.Location.ID;
 					else
 						objectToAdd.LocationID = null;
-					AddressAndLocationTable.InsertOnSubmit(objectToAdd);
+					AddressAndLocationTable.Add(objectToAdd);
                     break;
                 }
                 case "StreetAddress":
@@ -3288,7 +3304,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ZipCode = serializedObject.ZipCode;
 		            objectToAdd.Town = serializedObject.Town;
 		            objectToAdd.Country = serializedObject.Country;
-					StreetAddressTable.InsertOnSubmit(objectToAdd);
+					StreetAddressTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountProfile":
@@ -3311,7 +3327,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.IsSimplifiedAccount = serializedObject.IsSimplifiedAccount;
 		            objectToAdd.SimplifiedAccountEmail = serializedObject.SimplifiedAccountEmail;
 		            objectToAdd.SimplifiedAccountGroupID = serializedObject.SimplifiedAccountGroupID;
-					AccountProfileTable.InsertOnSubmit(objectToAdd);
+					AccountProfileTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountSecurity":
@@ -3329,7 +3345,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.EmailCollectionID = serializedObject.EmailCollection.ID;
 					else
 						objectToAdd.EmailCollectionID = null;
-					AccountSecurityTable.InsertOnSubmit(objectToAdd);
+					AccountSecurityTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountRoles":
@@ -3348,7 +3364,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.MemberInGroupsID = null;
 		            objectToAdd.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
-					AccountRolesTable.InsertOnSubmit(objectToAdd);
+					AccountRolesTable.Add(objectToAdd);
                     break;
                 }
                 case "PersonalInfoVisibility":
@@ -3359,7 +3375,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.NoOne_Network_All = serializedObject.NoOne_Network_All;
-					PersonalInfoVisibilityTable.InsertOnSubmit(objectToAdd);
+					PersonalInfoVisibilityTable.Add(objectToAdd);
                     break;
                 }
                 case "ReferenceToInformation":
@@ -3371,7 +3387,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new ReferenceToInformation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.URL = serializedObject.URL;
-					ReferenceToInformationTable.InsertOnSubmit(objectToAdd);
+					ReferenceToInformationTable.Add(objectToAdd);
                     break;
                 }
                 case "NodeSummaryContainer":
@@ -3409,7 +3425,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.NodeSourceCategoriesID = serializedObject.NodeSourceCategories.ID;
 					else
 						objectToAdd.NodeSourceCategoriesID = null;
-					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
+					NodeSummaryContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "RenderedNode":
@@ -3451,7 +3467,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationsID = serializedObject.Locations.ID;
 					else
 						objectToAdd.LocationsID = null;
-					RenderedNodeTable.InsertOnSubmit(objectToAdd);
+					RenderedNodeTable.Add(objectToAdd);
                     break;
                 }
                 case "ShortTextObject":
@@ -3462,7 +3478,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ShortTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
-					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
+					ShortTextObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "LongTextObject":
@@ -3473,7 +3489,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LongTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
-					LongTextObjectTable.InsertOnSubmit(objectToAdd);
+					LongTextObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "MapMarker":
@@ -3493,7 +3509,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationID = serializedObject.Location.ID;
 					else
 						objectToAdd.LocationID = null;
-					MapMarkerTable.InsertOnSubmit(objectToAdd);
+					MapMarkerTable.Add(objectToAdd);
                     break;
                 }
                 case "Moderator":
@@ -3505,7 +3521,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Moderator {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ModeratorName = serializedObject.ModeratorName;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
-					ModeratorTable.InsertOnSubmit(objectToAdd);
+					ModeratorTable.Add(objectToAdd);
                     break;
                 }
                 case "Collaborator":
@@ -3520,7 +3536,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.CollaboratorName = serializedObject.CollaboratorName;
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
-					CollaboratorTable.InsertOnSubmit(objectToAdd);
+					CollaboratorTable.Add(objectToAdd);
                     break;
                 }
                 case "GroupSummaryContainer":
@@ -3543,7 +3559,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupCollectionID = serializedObject.GroupCollection.ID;
 					else
 						objectToAdd.GroupCollectionID = null;
-					GroupSummaryContainerTable.InsertOnSubmit(objectToAdd);
+					GroupSummaryContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "GroupContainer":
@@ -3573,7 +3589,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						objectToAdd.LocationCollectionID = null;
-					GroupContainerTable.InsertOnSubmit(objectToAdd);
+					GroupContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "GroupIndex":
@@ -3590,7 +3606,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
-					GroupIndexTable.InsertOnSubmit(objectToAdd);
+					GroupIndexTable.Add(objectToAdd);
                     break;
                 }
                 case "AddAddressAndLocationInfo":
@@ -3601,7 +3617,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.LocationName = serializedObject.LocationName;
-					AddAddressAndLocationInfoTable.InsertOnSubmit(objectToAdd);
+					AddAddressAndLocationInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddImageInfo":
@@ -3612,7 +3628,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddImageInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageTitle = serializedObject.ImageTitle;
-					AddImageInfoTable.InsertOnSubmit(objectToAdd);
+					AddImageInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddImageGroupInfo":
@@ -3623,7 +3639,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageGroupTitle = serializedObject.ImageGroupTitle;
-					AddImageGroupInfoTable.InsertOnSubmit(objectToAdd);
+					AddImageGroupInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddEmailAddressInfo":
@@ -3634,7 +3650,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
-					AddEmailAddressInfoTable.InsertOnSubmit(objectToAdd);
+					AddEmailAddressInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "CreateGroupInfo":
@@ -3645,7 +3661,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
-					CreateGroupInfoTable.InsertOnSubmit(objectToAdd);
+					CreateGroupInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddActivityInfo":
@@ -3656,7 +3672,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ActivityName = serializedObject.ActivityName;
-					AddActivityInfoTable.InsertOnSubmit(objectToAdd);
+					AddActivityInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddBlogPostInfo":
@@ -3667,7 +3683,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
-					AddBlogPostInfoTable.InsertOnSubmit(objectToAdd);
+					AddBlogPostInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddCategoryInfo":
@@ -3678,7 +3694,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
-					AddCategoryInfoTable.InsertOnSubmit(objectToAdd);
+					AddCategoryInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "Group":
@@ -3716,7 +3732,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoryCollectionID = serializedObject.CategoryCollection.ID;
 					else
 						objectToAdd.CategoryCollectionID = null;
-					GroupTable.InsertOnSubmit(objectToAdd);
+					GroupTable.Add(objectToAdd);
                     break;
                 }
                 case "Introduction":
@@ -3728,7 +3744,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Introduction {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Body = serializedObject.Body;
-					IntroductionTable.InsertOnSubmit(objectToAdd);
+					IntroductionTable.Add(objectToAdd);
                     break;
                 }
                 case "ContentCategoryRank":
@@ -3743,7 +3759,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.CategoryID = serializedObject.CategoryID;
 		            objectToAdd.RankName = serializedObject.RankName;
 		            objectToAdd.RankValue = serializedObject.RankValue;
-					ContentCategoryRankTable.InsertOnSubmit(objectToAdd);
+					ContentCategoryRankTable.Add(objectToAdd);
                     break;
                 }
                 case "LinkToContent":
@@ -3770,7 +3786,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					LinkToContentTable.InsertOnSubmit(objectToAdd);
+					LinkToContentTable.Add(objectToAdd);
                     break;
                 }
                 case "EmbeddedContent":
@@ -3793,7 +3809,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					EmbeddedContentTable.InsertOnSubmit(objectToAdd);
+					EmbeddedContentTable.Add(objectToAdd);
                     break;
                 }
                 case "DynamicContentGroup":
@@ -3808,7 +3824,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.SortValue = serializedObject.SortValue;
 		            objectToAdd.PageLocation = serializedObject.PageLocation;
 		            objectToAdd.ContentItemNames = serializedObject.ContentItemNames;
-					DynamicContentGroupTable.InsertOnSubmit(objectToAdd);
+					DynamicContentGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "DynamicContent":
@@ -3833,7 +3849,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ApplyActively = serializedObject.ApplyActively;
 		            objectToAdd.EditType = serializedObject.EditType;
 		            objectToAdd.PageLocation = serializedObject.PageLocation;
-					DynamicContentTable.InsertOnSubmit(objectToAdd);
+					DynamicContentTable.Add(objectToAdd);
                     break;
                 }
                 case "AttachedToObject":
@@ -3849,7 +3865,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
 		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
-					AttachedToObjectTable.InsertOnSubmit(objectToAdd);
+					AttachedToObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "Comment":
@@ -3871,7 +3887,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.LastAuthorName = serializedObject.LastAuthorName;
 		            objectToAdd.LastAuthorEmail = serializedObject.LastAuthorEmail;
 		            objectToAdd.LastAuthorAccountID = serializedObject.LastAuthorAccountID;
-					CommentTable.InsertOnSubmit(objectToAdd);
+					CommentTable.Add(objectToAdd);
                     break;
                 }
                 case "Selection":
@@ -3888,7 +3904,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.TextValue = serializedObject.TextValue;
 		            objectToAdd.BooleanValue = serializedObject.BooleanValue;
 		            objectToAdd.DoubleValue = serializedObject.DoubleValue;
-					SelectionTable.InsertOnSubmit(objectToAdd);
+					SelectionTable.Add(objectToAdd);
                     break;
                 }
                 case "TextContent":
@@ -3924,7 +3940,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.SortOrderNumber = serializedObject.SortOrderNumber;
 		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
 		            objectToAdd.RawHtmlContent = serializedObject.RawHtmlContent;
-					TextContentTable.InsertOnSubmit(objectToAdd);
+					TextContentTable.Add(objectToAdd);
                     break;
                 }
                 case "Map":
@@ -3935,7 +3951,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Map {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
-					MapTable.InsertOnSubmit(objectToAdd);
+					MapTable.Add(objectToAdd);
                     break;
                 }
                 case "MapResult":
@@ -3949,7 +3965,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationID = serializedObject.Location.ID;
 					else
 						objectToAdd.LocationID = null;
-					MapResultTable.InsertOnSubmit(objectToAdd);
+					MapResultTable.Add(objectToAdd);
                     break;
                 }
                 case "MapResultsCollection":
@@ -3971,7 +3987,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ResultByProximityID = serializedObject.ResultByProximity.ID;
 					else
 						objectToAdd.ResultByProximityID = null;
-					MapResultsCollectionTable.InsertOnSubmit(objectToAdd);
+					MapResultsCollectionTable.Add(objectToAdd);
                     break;
                 }
                 case "Video":
@@ -3987,7 +4003,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.VideoDataID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
-					VideoTable.InsertOnSubmit(objectToAdd);
+					VideoTable.Add(objectToAdd);
                     break;
                 }
                 case "Image":
@@ -4016,7 +4032,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					ImageTable.InsertOnSubmit(objectToAdd);
+					ImageTable.Add(objectToAdd);
                     break;
                 }
                 case "BinaryFile":
@@ -4037,7 +4053,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					BinaryFileTable.InsertOnSubmit(objectToAdd);
+					BinaryFileTable.Add(objectToAdd);
                     break;
                 }
                 case "Longitude":
@@ -4048,7 +4064,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Longitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
-					LongitudeTable.InsertOnSubmit(objectToAdd);
+					LongitudeTable.Add(objectToAdd);
                     break;
                 }
                 case "Latitude":
@@ -4059,7 +4075,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Latitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
-					LatitudeTable.InsertOnSubmit(objectToAdd);
+					LatitudeTable.Add(objectToAdd);
                     break;
                 }
                 case "Location":
@@ -4078,7 +4094,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LatitudeID = serializedObject.Latitude.ID;
 					else
 						objectToAdd.LatitudeID = null;
-					LocationTable.InsertOnSubmit(objectToAdd);
+					LocationTable.Add(objectToAdd);
                     break;
                 }
                 case "Date":
@@ -4092,7 +4108,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Week = serializedObject.Week;
 		            objectToAdd.Month = serializedObject.Month;
 		            objectToAdd.Year = serializedObject.Year;
-					DateTable.InsertOnSubmit(objectToAdd);
+					DateTable.Add(objectToAdd);
                     break;
                 }
                 case "CategoryContainer":
@@ -4106,7 +4122,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					CategoryContainerTable.InsertOnSubmit(objectToAdd);
+					CategoryContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "Category":
@@ -4131,7 +4147,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ParentCategoryID = serializedObject.ParentCategory.ID;
 					else
 						objectToAdd.ParentCategoryID = null;
-					CategoryTable.InsertOnSubmit(objectToAdd);
+					CategoryTable.Add(objectToAdd);
                     break;
                 }
                 case "UpdateWebContentOperation":
@@ -4150,7 +4166,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.HandlersID = serializedObject.Handlers.ID;
 					else
 						objectToAdd.HandlersID = null;
-					UpdateWebContentOperationTable.InsertOnSubmit(objectToAdd);
+					UpdateWebContentOperationTable.Add(objectToAdd);
                     break;
                 }
                 case "UpdateWebContentHandlerItem":
@@ -4162,7 +4178,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new UpdateWebContentHandlerItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InformationTypeName = serializedObject.InformationTypeName;
 		            objectToAdd.OptionName = serializedObject.OptionName;
-					UpdateWebContentHandlerItemTable.InsertOnSubmit(objectToAdd);
+					UpdateWebContentHandlerItemTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -4173,7 +4189,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		    {
                 if (insertData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -4186,7 +4202,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBSystem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InstanceName = serializedObject.InstanceName;
 		            objectToAdd.AdminGroupID = serializedObject.AdminGroupID;
-					TBSystemTable.InsertOnSubmit(objectToAdd);
+					TBSystemTable.Add(objectToAdd);
                     break;
                 }
                 case "WebPublishInfo":
@@ -4206,7 +4222,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.PublicationsID = serializedObject.Publications.ID;
 					else
 						objectToAdd.PublicationsID = null;
-					WebPublishInfoTable.InsertOnSubmit(objectToAdd);
+					WebPublishInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "PublicationPackage":
@@ -4218,7 +4234,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new PublicationPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PackageName = serializedObject.PackageName;
 		            objectToAdd.PublicationTime = serializedObject.PublicationTime;
-					PublicationPackageTable.InsertOnSubmit(objectToAdd);
+					PublicationPackageTable.Add(objectToAdd);
                     break;
                 }
                 case "TBRLoginRoot":
@@ -4233,7 +4249,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountID = serializedObject.Account.ID;
 					else
 						objectToAdd.AccountID = null;
-					TBRLoginRootTable.InsertOnSubmit(objectToAdd);
+					TBRLoginRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBRAccountRoot":
@@ -4247,7 +4263,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountID = serializedObject.Account.ID;
 					else
 						objectToAdd.AccountID = null;
-					TBRAccountRootTable.InsertOnSubmit(objectToAdd);
+					TBRAccountRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBRGroupRoot":
@@ -4261,7 +4277,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupID = serializedObject.Group.ID;
 					else
 						objectToAdd.GroupID = null;
-					TBRGroupRootTable.InsertOnSubmit(objectToAdd);
+					TBRGroupRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBRLoginGroupRoot":
@@ -4273,7 +4289,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBRLoginGroupRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.GroupID = serializedObject.GroupID;
-					TBRLoginGroupRootTable.InsertOnSubmit(objectToAdd);
+					TBRLoginGroupRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBREmailRoot":
@@ -4287,7 +4303,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountID = serializedObject.Account.ID;
 					else
 						objectToAdd.AccountID = null;
-					TBREmailRootTable.InsertOnSubmit(objectToAdd);
+					TBREmailRootTable.Add(objectToAdd);
                     break;
                 }
                 case "TBAccount":
@@ -4309,7 +4325,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupRoleCollectionID = serializedObject.GroupRoleCollection.ID;
 					else
 						objectToAdd.GroupRoleCollectionID = null;
-					TBAccountTable.InsertOnSubmit(objectToAdd);
+					TBAccountTable.Add(objectToAdd);
                     break;
                 }
                 case "TBAccountCollaborationGroup":
@@ -4322,7 +4338,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.GroupRole = serializedObject.GroupRole;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
-					TBAccountCollaborationGroupTable.InsertOnSubmit(objectToAdd);
+					TBAccountCollaborationGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "TBLoginInfo":
@@ -4333,7 +4349,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OpenIDUrl = serializedObject.OpenIDUrl;
-					TBLoginInfoTable.InsertOnSubmit(objectToAdd);
+					TBLoginInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "TBEmail":
@@ -4345,7 +4361,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.ValidatedAt = serializedObject.ValidatedAt;
-					TBEmailTable.InsertOnSubmit(objectToAdd);
+					TBEmailTable.Add(objectToAdd);
                     break;
                 }
                 case "TBCollaboratorRole":
@@ -4361,7 +4377,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.EmailID = null;
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
-					TBCollaboratorRoleTable.InsertOnSubmit(objectToAdd);
+					TBCollaboratorRoleTable.Add(objectToAdd);
                     break;
                 }
                 case "TBCollaboratingGroup":
@@ -4376,7 +4392,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.RolesID = serializedObject.Roles.ID;
 					else
 						objectToAdd.RolesID = null;
-					TBCollaboratingGroupTable.InsertOnSubmit(objectToAdd);
+					TBCollaboratingGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "TBEmailValidation":
@@ -4410,7 +4426,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.MergeAccountsConfirmationID = null;
 		            objectToAdd.RedirectUrlAfterValidation = serializedObject.RedirectUrlAfterValidation;
-					TBEmailValidationTable.InsertOnSubmit(objectToAdd);
+					TBEmailValidationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBMergeAccountConfirmation":
@@ -4422,7 +4438,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBMergeAccountConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            objectToAdd.AccountToMergeToID = serializedObject.AccountToMergeToID;
-					TBMergeAccountConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBMergeAccountConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBGroupJoinConfirmation":
@@ -4434,7 +4450,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBGroupJoinConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.InvitationMode = serializedObject.InvitationMode;
-					TBGroupJoinConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBGroupJoinConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBDeviceJoinConfirmation":
@@ -4447,7 +4463,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.DeviceMembershipID = serializedObject.DeviceMembershipID;
-					TBDeviceJoinConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBDeviceJoinConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBInformationInputConfirmation":
@@ -4460,7 +4476,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationInputID = serializedObject.InformationInputID;
-					TBInformationInputConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBInformationInputConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "TBInformationOutputConfirmation":
@@ -4473,7 +4489,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationOutputID = serializedObject.InformationOutputID;
-					TBInformationOutputConfirmationTable.InsertOnSubmit(objectToAdd);
+					TBInformationOutputConfirmationTable.Add(objectToAdd);
                     break;
                 }
                 case "LoginProvider":
@@ -4488,7 +4504,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ProviderType = serializedObject.ProviderType;
 		            objectToAdd.ProviderUrl = serializedObject.ProviderUrl;
 		            objectToAdd.ReturnUrl = serializedObject.ReturnUrl;
-					LoginProviderTable.InsertOnSubmit(objectToAdd);
+					LoginProviderTable.Add(objectToAdd);
                     break;
                 }
                 case "TBPRegisterEmail":
@@ -4499,7 +4515,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
-					TBPRegisterEmailTable.InsertOnSubmit(objectToAdd);
+					TBPRegisterEmailTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountSummary":
@@ -4513,7 +4529,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupSummaryID = serializedObject.GroupSummary.ID;
 					else
 						objectToAdd.GroupSummaryID = null;
-					AccountSummaryTable.InsertOnSubmit(objectToAdd);
+					AccountSummaryTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountContainer":
@@ -4531,7 +4547,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountSummaryID = serializedObject.AccountSummary.ID;
 					else
 						objectToAdd.AccountSummaryID = null;
-					AccountContainerTable.InsertOnSubmit(objectToAdd);
+					AccountContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountModule":
@@ -4557,7 +4573,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						objectToAdd.LocationCollectionID = null;
-					AccountModuleTable.InsertOnSubmit(objectToAdd);
+					AccountModuleTable.Add(objectToAdd);
                     break;
                 }
                 case "LocationContainer":
@@ -4571,7 +4587,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationsID = serializedObject.Locations.ID;
 					else
 						objectToAdd.LocationsID = null;
-					LocationContainerTable.InsertOnSubmit(objectToAdd);
+					LocationContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "AddressAndLocation":
@@ -4593,7 +4609,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationID = serializedObject.Location.ID;
 					else
 						objectToAdd.LocationID = null;
-					AddressAndLocationTable.InsertOnSubmit(objectToAdd);
+					AddressAndLocationTable.Add(objectToAdd);
                     break;
                 }
                 case "StreetAddress":
@@ -4607,7 +4623,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ZipCode = serializedObject.ZipCode;
 		            objectToAdd.Town = serializedObject.Town;
 		            objectToAdd.Country = serializedObject.Country;
-					StreetAddressTable.InsertOnSubmit(objectToAdd);
+					StreetAddressTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountProfile":
@@ -4630,7 +4646,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.IsSimplifiedAccount = serializedObject.IsSimplifiedAccount;
 		            objectToAdd.SimplifiedAccountEmail = serializedObject.SimplifiedAccountEmail;
 		            objectToAdd.SimplifiedAccountGroupID = serializedObject.SimplifiedAccountGroupID;
-					AccountProfileTable.InsertOnSubmit(objectToAdd);
+					AccountProfileTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountSecurity":
@@ -4648,7 +4664,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.EmailCollectionID = serializedObject.EmailCollection.ID;
 					else
 						objectToAdd.EmailCollectionID = null;
-					AccountSecurityTable.InsertOnSubmit(objectToAdd);
+					AccountSecurityTable.Add(objectToAdd);
                     break;
                 }
                 case "AccountRoles":
@@ -4667,7 +4683,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.MemberInGroupsID = null;
 		            objectToAdd.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
-					AccountRolesTable.InsertOnSubmit(objectToAdd);
+					AccountRolesTable.Add(objectToAdd);
                     break;
                 }
                 case "PersonalInfoVisibility":
@@ -4678,7 +4694,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.NoOne_Network_All = serializedObject.NoOne_Network_All;
-					PersonalInfoVisibilityTable.InsertOnSubmit(objectToAdd);
+					PersonalInfoVisibilityTable.Add(objectToAdd);
                     break;
                 }
                 case "ReferenceToInformation":
@@ -4690,7 +4706,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new ReferenceToInformation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.URL = serializedObject.URL;
-					ReferenceToInformationTable.InsertOnSubmit(objectToAdd);
+					ReferenceToInformationTable.Add(objectToAdd);
                     break;
                 }
                 case "NodeSummaryContainer":
@@ -4728,7 +4744,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.NodeSourceCategoriesID = serializedObject.NodeSourceCategories.ID;
 					else
 						objectToAdd.NodeSourceCategoriesID = null;
-					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
+					NodeSummaryContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "RenderedNode":
@@ -4770,7 +4786,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationsID = serializedObject.Locations.ID;
 					else
 						objectToAdd.LocationsID = null;
-					RenderedNodeTable.InsertOnSubmit(objectToAdd);
+					RenderedNodeTable.Add(objectToAdd);
                     break;
                 }
                 case "ShortTextObject":
@@ -4781,7 +4797,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new ShortTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
-					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
+					ShortTextObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "LongTextObject":
@@ -4792,7 +4808,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new LongTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
-					LongTextObjectTable.InsertOnSubmit(objectToAdd);
+					LongTextObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "MapMarker":
@@ -4812,7 +4828,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationID = serializedObject.Location.ID;
 					else
 						objectToAdd.LocationID = null;
-					MapMarkerTable.InsertOnSubmit(objectToAdd);
+					MapMarkerTable.Add(objectToAdd);
                     break;
                 }
                 case "Moderator":
@@ -4824,7 +4840,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Moderator {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ModeratorName = serializedObject.ModeratorName;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
-					ModeratorTable.InsertOnSubmit(objectToAdd);
+					ModeratorTable.Add(objectToAdd);
                     break;
                 }
                 case "Collaborator":
@@ -4839,7 +4855,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.CollaboratorName = serializedObject.CollaboratorName;
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
-					CollaboratorTable.InsertOnSubmit(objectToAdd);
+					CollaboratorTable.Add(objectToAdd);
                     break;
                 }
                 case "GroupSummaryContainer":
@@ -4862,7 +4878,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupCollectionID = serializedObject.GroupCollection.ID;
 					else
 						objectToAdd.GroupCollectionID = null;
-					GroupSummaryContainerTable.InsertOnSubmit(objectToAdd);
+					GroupSummaryContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "GroupContainer":
@@ -4892,7 +4908,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						objectToAdd.LocationCollectionID = null;
-					GroupContainerTable.InsertOnSubmit(objectToAdd);
+					GroupContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "GroupIndex":
@@ -4909,7 +4925,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
-					GroupIndexTable.InsertOnSubmit(objectToAdd);
+					GroupIndexTable.Add(objectToAdd);
                     break;
                 }
                 case "AddAddressAndLocationInfo":
@@ -4920,7 +4936,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.LocationName = serializedObject.LocationName;
-					AddAddressAndLocationInfoTable.InsertOnSubmit(objectToAdd);
+					AddAddressAndLocationInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddImageInfo":
@@ -4931,7 +4947,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new AddImageInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageTitle = serializedObject.ImageTitle;
-					AddImageInfoTable.InsertOnSubmit(objectToAdd);
+					AddImageInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddImageGroupInfo":
@@ -4942,7 +4958,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageGroupTitle = serializedObject.ImageGroupTitle;
-					AddImageGroupInfoTable.InsertOnSubmit(objectToAdd);
+					AddImageGroupInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddEmailAddressInfo":
@@ -4953,7 +4969,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
-					AddEmailAddressInfoTable.InsertOnSubmit(objectToAdd);
+					AddEmailAddressInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "CreateGroupInfo":
@@ -4964,7 +4980,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
-					CreateGroupInfoTable.InsertOnSubmit(objectToAdd);
+					CreateGroupInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddActivityInfo":
@@ -4975,7 +4991,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ActivityName = serializedObject.ActivityName;
-					AddActivityInfoTable.InsertOnSubmit(objectToAdd);
+					AddActivityInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddBlogPostInfo":
@@ -4986,7 +5002,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
-					AddBlogPostInfoTable.InsertOnSubmit(objectToAdd);
+					AddBlogPostInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "AddCategoryInfo":
@@ -4997,7 +5013,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
-					AddCategoryInfoTable.InsertOnSubmit(objectToAdd);
+					AddCategoryInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "Group":
@@ -5035,7 +5051,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoryCollectionID = serializedObject.CategoryCollection.ID;
 					else
 						objectToAdd.CategoryCollectionID = null;
-					GroupTable.InsertOnSubmit(objectToAdd);
+					GroupTable.Add(objectToAdd);
                     break;
                 }
                 case "Introduction":
@@ -5047,7 +5063,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Introduction {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Body = serializedObject.Body;
-					IntroductionTable.InsertOnSubmit(objectToAdd);
+					IntroductionTable.Add(objectToAdd);
                     break;
                 }
                 case "ContentCategoryRank":
@@ -5062,7 +5078,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.CategoryID = serializedObject.CategoryID;
 		            objectToAdd.RankName = serializedObject.RankName;
 		            objectToAdd.RankValue = serializedObject.RankValue;
-					ContentCategoryRankTable.InsertOnSubmit(objectToAdd);
+					ContentCategoryRankTable.Add(objectToAdd);
                     break;
                 }
                 case "LinkToContent":
@@ -5089,7 +5105,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					LinkToContentTable.InsertOnSubmit(objectToAdd);
+					LinkToContentTable.Add(objectToAdd);
                     break;
                 }
                 case "EmbeddedContent":
@@ -5112,7 +5128,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					EmbeddedContentTable.InsertOnSubmit(objectToAdd);
+					EmbeddedContentTable.Add(objectToAdd);
                     break;
                 }
                 case "DynamicContentGroup":
@@ -5127,7 +5143,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.SortValue = serializedObject.SortValue;
 		            objectToAdd.PageLocation = serializedObject.PageLocation;
 		            objectToAdd.ContentItemNames = serializedObject.ContentItemNames;
-					DynamicContentGroupTable.InsertOnSubmit(objectToAdd);
+					DynamicContentGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "DynamicContent":
@@ -5152,7 +5168,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ApplyActively = serializedObject.ApplyActively;
 		            objectToAdd.EditType = serializedObject.EditType;
 		            objectToAdd.PageLocation = serializedObject.PageLocation;
-					DynamicContentTable.InsertOnSubmit(objectToAdd);
+					DynamicContentTable.Add(objectToAdd);
                     break;
                 }
                 case "AttachedToObject":
@@ -5168,7 +5184,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
 		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
-					AttachedToObjectTable.InsertOnSubmit(objectToAdd);
+					AttachedToObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "Comment":
@@ -5190,7 +5206,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.LastAuthorName = serializedObject.LastAuthorName;
 		            objectToAdd.LastAuthorEmail = serializedObject.LastAuthorEmail;
 		            objectToAdd.LastAuthorAccountID = serializedObject.LastAuthorAccountID;
-					CommentTable.InsertOnSubmit(objectToAdd);
+					CommentTable.Add(objectToAdd);
                     break;
                 }
                 case "Selection":
@@ -5207,7 +5223,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.TextValue = serializedObject.TextValue;
 		            objectToAdd.BooleanValue = serializedObject.BooleanValue;
 		            objectToAdd.DoubleValue = serializedObject.DoubleValue;
-					SelectionTable.InsertOnSubmit(objectToAdd);
+					SelectionTable.Add(objectToAdd);
                     break;
                 }
                 case "TextContent":
@@ -5243,7 +5259,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.SortOrderNumber = serializedObject.SortOrderNumber;
 		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
 		            objectToAdd.RawHtmlContent = serializedObject.RawHtmlContent;
-					TextContentTable.InsertOnSubmit(objectToAdd);
+					TextContentTable.Add(objectToAdd);
                     break;
                 }
                 case "Map":
@@ -5254,7 +5270,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new Map {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
-					MapTable.InsertOnSubmit(objectToAdd);
+					MapTable.Add(objectToAdd);
                     break;
                 }
                 case "MapResult":
@@ -5268,7 +5284,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LocationID = serializedObject.Location.ID;
 					else
 						objectToAdd.LocationID = null;
-					MapResultTable.InsertOnSubmit(objectToAdd);
+					MapResultTable.Add(objectToAdd);
                     break;
                 }
                 case "MapResultsCollection":
@@ -5290,7 +5306,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ResultByProximityID = serializedObject.ResultByProximity.ID;
 					else
 						objectToAdd.ResultByProximityID = null;
-					MapResultsCollectionTable.InsertOnSubmit(objectToAdd);
+					MapResultsCollectionTable.Add(objectToAdd);
                     break;
                 }
                 case "Video":
@@ -5306,7 +5322,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.VideoDataID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
-					VideoTable.InsertOnSubmit(objectToAdd);
+					VideoTable.Add(objectToAdd);
                     break;
                 }
                 case "Image":
@@ -5335,7 +5351,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					ImageTable.InsertOnSubmit(objectToAdd);
+					ImageTable.Add(objectToAdd);
                     break;
                 }
                 case "BinaryFile":
@@ -5356,7 +5372,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					BinaryFileTable.InsertOnSubmit(objectToAdd);
+					BinaryFileTable.Add(objectToAdd);
                     break;
                 }
                 case "Longitude":
@@ -5367,7 +5383,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new Longitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
-					LongitudeTable.InsertOnSubmit(objectToAdd);
+					LongitudeTable.Add(objectToAdd);
                     break;
                 }
                 case "Latitude":
@@ -5378,7 +5394,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new Latitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
-					LatitudeTable.InsertOnSubmit(objectToAdd);
+					LatitudeTable.Add(objectToAdd);
                     break;
                 }
                 case "Location":
@@ -5397,7 +5413,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.LatitudeID = serializedObject.Latitude.ID;
 					else
 						objectToAdd.LatitudeID = null;
-					LocationTable.InsertOnSubmit(objectToAdd);
+					LocationTable.Add(objectToAdd);
                     break;
                 }
                 case "Date":
@@ -5411,7 +5427,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Week = serializedObject.Week;
 		            objectToAdd.Month = serializedObject.Month;
 		            objectToAdd.Year = serializedObject.Year;
-					DateTable.InsertOnSubmit(objectToAdd);
+					DateTable.Add(objectToAdd);
                     break;
                 }
                 case "CategoryContainer":
@@ -5425,7 +5441,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
 					else
 						objectToAdd.CategoriesID = null;
-					CategoryContainerTable.InsertOnSubmit(objectToAdd);
+					CategoryContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "Category":
@@ -5450,7 +5466,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ParentCategoryID = serializedObject.ParentCategory.ID;
 					else
 						objectToAdd.ParentCategoryID = null;
-					CategoryTable.InsertOnSubmit(objectToAdd);
+					CategoryTable.Add(objectToAdd);
                     break;
                 }
                 case "UpdateWebContentOperation":
@@ -5469,7 +5485,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.HandlersID = serializedObject.Handlers.ID;
 					else
 						objectToAdd.HandlersID = null;
-					UpdateWebContentOperationTable.InsertOnSubmit(objectToAdd);
+					UpdateWebContentOperationTable.Add(objectToAdd);
                     break;
                 }
                 case "UpdateWebContentHandlerItem":
@@ -5481,7 +5497,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new UpdateWebContentHandlerItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InformationTypeName = serializedObject.InformationTypeName;
 		            objectToAdd.OptionName = serializedObject.OptionName;
-					UpdateWebContentHandlerItemTable.InsertOnSubmit(objectToAdd);
+					UpdateWebContentHandlerItemTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -5492,7 +5508,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		    {
                 if (deleteData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -5502,7 +5518,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBSystemTable.Attach(objectToDelete);
 						var objectToDelete = TBSystemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBSystemTable.DeleteOnSubmit(objectToDelete);
+							TBSystemTable.Remove(objectToDelete);
 						break;
 					}
 					case "WebPublishInfo":
@@ -5511,7 +5527,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//WebPublishInfoTable.Attach(objectToDelete);
 						var objectToDelete = WebPublishInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
+							WebPublishInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "PublicationPackage":
@@ -5520,7 +5536,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//PublicationPackageTable.Attach(objectToDelete);
 						var objectToDelete = PublicationPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PublicationPackageTable.DeleteOnSubmit(objectToDelete);
+							PublicationPackageTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBRLoginRoot":
@@ -5529,7 +5545,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBRLoginRootTable.Attach(objectToDelete);
 						var objectToDelete = TBRLoginRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
+							TBRLoginRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBRAccountRoot":
@@ -5538,7 +5554,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBRAccountRootTable.Attach(objectToDelete);
 						var objectToDelete = TBRAccountRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
+							TBRAccountRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBRGroupRoot":
@@ -5547,7 +5563,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBRGroupRootTable.Attach(objectToDelete);
 						var objectToDelete = TBRGroupRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
+							TBRGroupRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBRLoginGroupRoot":
@@ -5556,7 +5572,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBRLoginGroupRootTable.Attach(objectToDelete);
 						var objectToDelete = TBRLoginGroupRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
+							TBRLoginGroupRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBREmailRoot":
@@ -5565,7 +5581,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBREmailRootTable.Attach(objectToDelete);
 						var objectToDelete = TBREmailRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBREmailRootTable.DeleteOnSubmit(objectToDelete);
+							TBREmailRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBAccount":
@@ -5574,7 +5590,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBAccountTable.Attach(objectToDelete);
 						var objectToDelete = TBAccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBAccountTable.DeleteOnSubmit(objectToDelete);
+							TBAccountTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBAccountCollaborationGroup":
@@ -5583,7 +5599,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBAccountCollaborationGroupTable.Attach(objectToDelete);
 						var objectToDelete = TBAccountCollaborationGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
+							TBAccountCollaborationGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBLoginInfo":
@@ -5592,7 +5608,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBLoginInfoTable.Attach(objectToDelete);
 						var objectToDelete = TBLoginInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
+							TBLoginInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBEmail":
@@ -5601,7 +5617,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBEmailTable.Attach(objectToDelete);
 						var objectToDelete = TBEmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBEmailTable.DeleteOnSubmit(objectToDelete);
+							TBEmailTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBCollaboratorRole":
@@ -5610,7 +5626,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBCollaboratorRoleTable.Attach(objectToDelete);
 						var objectToDelete = TBCollaboratorRoleTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
+							TBCollaboratorRoleTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBCollaboratingGroup":
@@ -5619,7 +5635,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBCollaboratingGroupTable.Attach(objectToDelete);
 						var objectToDelete = TBCollaboratingGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
+							TBCollaboratingGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBEmailValidation":
@@ -5628,7 +5644,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBEmailValidationTable.Attach(objectToDelete);
 						var objectToDelete = TBEmailValidationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
+							TBEmailValidationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBMergeAccountConfirmation":
@@ -5637,7 +5653,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBMergeAccountConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBMergeAccountConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBMergeAccountConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBGroupJoinConfirmation":
@@ -5646,7 +5662,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBGroupJoinConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBGroupJoinConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBGroupJoinConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBDeviceJoinConfirmation":
@@ -5655,7 +5671,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBDeviceJoinConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBDeviceJoinConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBDeviceJoinConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBInformationInputConfirmation":
@@ -5664,7 +5680,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBInformationInputConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBInformationInputConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBInformationInputConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBInformationOutputConfirmation":
@@ -5673,7 +5689,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBInformationOutputConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBInformationOutputConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBInformationOutputConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "LoginProvider":
@@ -5682,7 +5698,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LoginProviderTable.Attach(objectToDelete);
 						var objectToDelete = LoginProviderTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LoginProviderTable.DeleteOnSubmit(objectToDelete);
+							LoginProviderTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBPRegisterEmail":
@@ -5691,7 +5707,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBPRegisterEmailTable.Attach(objectToDelete);
 						var objectToDelete = TBPRegisterEmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
+							TBPRegisterEmailTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountSummary":
@@ -5700,7 +5716,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountSummaryTable.Attach(objectToDelete);
 						var objectToDelete = AccountSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountSummaryTable.DeleteOnSubmit(objectToDelete);
+							AccountSummaryTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountContainer":
@@ -5709,7 +5725,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountContainerTable.Attach(objectToDelete);
 						var objectToDelete = AccountContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountContainerTable.DeleteOnSubmit(objectToDelete);
+							AccountContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountModule":
@@ -5718,7 +5734,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountModuleTable.Attach(objectToDelete);
 						var objectToDelete = AccountModuleTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountModuleTable.DeleteOnSubmit(objectToDelete);
+							AccountModuleTable.Remove(objectToDelete);
 						break;
 					}
 					case "LocationContainer":
@@ -5727,7 +5743,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LocationContainerTable.Attach(objectToDelete);
 						var objectToDelete = LocationContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LocationContainerTable.DeleteOnSubmit(objectToDelete);
+							LocationContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddressAndLocation":
@@ -5736,7 +5752,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddressAndLocationTable.Attach(objectToDelete);
 						var objectToDelete = AddressAndLocationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
+							AddressAndLocationTable.Remove(objectToDelete);
 						break;
 					}
 					case "StreetAddress":
@@ -5745,7 +5761,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//StreetAddressTable.Attach(objectToDelete);
 						var objectToDelete = StreetAddressTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StreetAddressTable.DeleteOnSubmit(objectToDelete);
+							StreetAddressTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountProfile":
@@ -5754,7 +5770,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountProfileTable.Attach(objectToDelete);
 						var objectToDelete = AccountProfileTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountProfileTable.DeleteOnSubmit(objectToDelete);
+							AccountProfileTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountSecurity":
@@ -5763,7 +5779,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountSecurityTable.Attach(objectToDelete);
 						var objectToDelete = AccountSecurityTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountSecurityTable.DeleteOnSubmit(objectToDelete);
+							AccountSecurityTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountRoles":
@@ -5772,7 +5788,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountRolesTable.Attach(objectToDelete);
 						var objectToDelete = AccountRolesTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountRolesTable.DeleteOnSubmit(objectToDelete);
+							AccountRolesTable.Remove(objectToDelete);
 						break;
 					}
 					case "PersonalInfoVisibility":
@@ -5781,7 +5797,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//PersonalInfoVisibilityTable.Attach(objectToDelete);
 						var objectToDelete = PersonalInfoVisibilityTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
+							PersonalInfoVisibilityTable.Remove(objectToDelete);
 						break;
 					}
 					case "ReferenceToInformation":
@@ -5790,7 +5806,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ReferenceToInformationTable.Attach(objectToDelete);
 						var objectToDelete = ReferenceToInformationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
+							ReferenceToInformationTable.Remove(objectToDelete);
 						break;
 					}
 					case "NodeSummaryContainer":
@@ -5799,7 +5815,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//NodeSummaryContainerTable.Attach(objectToDelete);
 						var objectToDelete = NodeSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+							NodeSummaryContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "RenderedNode":
@@ -5808,7 +5824,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//RenderedNodeTable.Attach(objectToDelete);
 						var objectToDelete = RenderedNodeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							RenderedNodeTable.DeleteOnSubmit(objectToDelete);
+							RenderedNodeTable.Remove(objectToDelete);
 						break;
 					}
 					case "ShortTextObject":
@@ -5817,7 +5833,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ShortTextObjectTable.Attach(objectToDelete);
 						var objectToDelete = ShortTextObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
+							ShortTextObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "LongTextObject":
@@ -5826,7 +5842,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LongTextObjectTable.Attach(objectToDelete);
 						var objectToDelete = LongTextObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LongTextObjectTable.DeleteOnSubmit(objectToDelete);
+							LongTextObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapMarker":
@@ -5835,7 +5851,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapMarkerTable.Attach(objectToDelete);
 						var objectToDelete = MapMarkerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapMarkerTable.DeleteOnSubmit(objectToDelete);
+							MapMarkerTable.Remove(objectToDelete);
 						break;
 					}
 					case "Moderator":
@@ -5844,7 +5860,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ModeratorTable.Attach(objectToDelete);
 						var objectToDelete = ModeratorTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ModeratorTable.DeleteOnSubmit(objectToDelete);
+							ModeratorTable.Remove(objectToDelete);
 						break;
 					}
 					case "Collaborator":
@@ -5853,7 +5869,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CollaboratorTable.Attach(objectToDelete);
 						var objectToDelete = CollaboratorTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CollaboratorTable.DeleteOnSubmit(objectToDelete);
+							CollaboratorTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupSummaryContainer":
@@ -5862,7 +5878,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupSummaryContainerTable.Attach(objectToDelete);
 						var objectToDelete = GroupSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+							GroupSummaryContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupContainer":
@@ -5871,7 +5887,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupContainerTable.Attach(objectToDelete);
 						var objectToDelete = GroupContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupContainerTable.DeleteOnSubmit(objectToDelete);
+							GroupContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupIndex":
@@ -5880,7 +5896,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupIndexTable.Attach(objectToDelete);
 						var objectToDelete = GroupIndexTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupIndexTable.DeleteOnSubmit(objectToDelete);
+							GroupIndexTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddAddressAndLocationInfo":
@@ -5889,7 +5905,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddAddressAndLocationInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddAddressAndLocationInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
+							AddAddressAndLocationInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddImageInfo":
@@ -5898,7 +5914,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddImageInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddImageInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddImageInfoTable.DeleteOnSubmit(objectToDelete);
+							AddImageInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddImageGroupInfo":
@@ -5907,7 +5923,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddImageGroupInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddImageGroupInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
+							AddImageGroupInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddEmailAddressInfo":
@@ -5916,7 +5932,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddEmailAddressInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddEmailAddressInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
+							AddEmailAddressInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "CreateGroupInfo":
@@ -5925,7 +5941,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CreateGroupInfoTable.Attach(objectToDelete);
 						var objectToDelete = CreateGroupInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
+							CreateGroupInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddActivityInfo":
@@ -5934,7 +5950,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddActivityInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddActivityInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
+							AddActivityInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddBlogPostInfo":
@@ -5943,7 +5959,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddBlogPostInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddBlogPostInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
+							AddBlogPostInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddCategoryInfo":
@@ -5952,7 +5968,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddCategoryInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddCategoryInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
+							AddCategoryInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "Group":
@@ -5961,7 +5977,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupTable.Attach(objectToDelete);
 						var objectToDelete = GroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupTable.DeleteOnSubmit(objectToDelete);
+							GroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "Introduction":
@@ -5970,7 +5986,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//IntroductionTable.Attach(objectToDelete);
 						var objectToDelete = IntroductionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							IntroductionTable.DeleteOnSubmit(objectToDelete);
+							IntroductionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ContentCategoryRank":
@@ -5979,7 +5995,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ContentCategoryRankTable.Attach(objectToDelete);
 						var objectToDelete = ContentCategoryRankTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
+							ContentCategoryRankTable.Remove(objectToDelete);
 						break;
 					}
 					case "LinkToContent":
@@ -5988,7 +6004,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LinkToContentTable.Attach(objectToDelete);
 						var objectToDelete = LinkToContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LinkToContentTable.DeleteOnSubmit(objectToDelete);
+							LinkToContentTable.Remove(objectToDelete);
 						break;
 					}
 					case "EmbeddedContent":
@@ -5997,7 +6013,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//EmbeddedContentTable.Attach(objectToDelete);
 						var objectToDelete = EmbeddedContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
+							EmbeddedContentTable.Remove(objectToDelete);
 						break;
 					}
 					case "DynamicContentGroup":
@@ -6006,7 +6022,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DynamicContentGroupTable.Attach(objectToDelete);
 						var objectToDelete = DynamicContentGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
+							DynamicContentGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "DynamicContent":
@@ -6015,7 +6031,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DynamicContentTable.Attach(objectToDelete);
 						var objectToDelete = DynamicContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DynamicContentTable.DeleteOnSubmit(objectToDelete);
+							DynamicContentTable.Remove(objectToDelete);
 						break;
 					}
 					case "AttachedToObject":
@@ -6024,7 +6040,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AttachedToObjectTable.Attach(objectToDelete);
 						var objectToDelete = AttachedToObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
+							AttachedToObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "Comment":
@@ -6033,7 +6049,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CommentTable.Attach(objectToDelete);
 						var objectToDelete = CommentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CommentTable.DeleteOnSubmit(objectToDelete);
+							CommentTable.Remove(objectToDelete);
 						break;
 					}
 					case "Selection":
@@ -6042,7 +6058,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//SelectionTable.Attach(objectToDelete);
 						var objectToDelete = SelectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SelectionTable.DeleteOnSubmit(objectToDelete);
+							SelectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TextContent":
@@ -6051,7 +6067,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TextContentTable.Attach(objectToDelete);
 						var objectToDelete = TextContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TextContentTable.DeleteOnSubmit(objectToDelete);
+							TextContentTable.Remove(objectToDelete);
 						break;
 					}
 					case "Map":
@@ -6060,7 +6076,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapTable.Attach(objectToDelete);
 						var objectToDelete = MapTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapTable.DeleteOnSubmit(objectToDelete);
+							MapTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapResult":
@@ -6069,7 +6085,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapResultTable.Attach(objectToDelete);
 						var objectToDelete = MapResultTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapResultTable.DeleteOnSubmit(objectToDelete);
+							MapResultTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapResultsCollection":
@@ -6078,7 +6094,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapResultsCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MapResultsCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
+							MapResultsCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "Video":
@@ -6087,7 +6103,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//VideoTable.Attach(objectToDelete);
 						var objectToDelete = VideoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							VideoTable.DeleteOnSubmit(objectToDelete);
+							VideoTable.Remove(objectToDelete);
 						break;
 					}
 					case "Image":
@@ -6096,7 +6112,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ImageTable.Attach(objectToDelete);
 						var objectToDelete = ImageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ImageTable.DeleteOnSubmit(objectToDelete);
+							ImageTable.Remove(objectToDelete);
 						break;
 					}
 					case "BinaryFile":
@@ -6105,7 +6121,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//BinaryFileTable.Attach(objectToDelete);
 						var objectToDelete = BinaryFileTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							BinaryFileTable.DeleteOnSubmit(objectToDelete);
+							BinaryFileTable.Remove(objectToDelete);
 						break;
 					}
 					case "Longitude":
@@ -6114,7 +6130,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LongitudeTable.Attach(objectToDelete);
 						var objectToDelete = LongitudeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LongitudeTable.DeleteOnSubmit(objectToDelete);
+							LongitudeTable.Remove(objectToDelete);
 						break;
 					}
 					case "Latitude":
@@ -6123,7 +6139,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LatitudeTable.Attach(objectToDelete);
 						var objectToDelete = LatitudeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LatitudeTable.DeleteOnSubmit(objectToDelete);
+							LatitudeTable.Remove(objectToDelete);
 						break;
 					}
 					case "Location":
@@ -6132,7 +6148,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LocationTable.Attach(objectToDelete);
 						var objectToDelete = LocationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LocationTable.DeleteOnSubmit(objectToDelete);
+							LocationTable.Remove(objectToDelete);
 						break;
 					}
 					case "Date":
@@ -6141,7 +6157,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DateTable.Attach(objectToDelete);
 						var objectToDelete = DateTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DateTable.DeleteOnSubmit(objectToDelete);
+							DateTable.Remove(objectToDelete);
 						break;
 					}
 					case "CategoryContainer":
@@ -6150,7 +6166,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CategoryContainerTable.Attach(objectToDelete);
 						var objectToDelete = CategoryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryContainerTable.DeleteOnSubmit(objectToDelete);
+							CategoryContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "Category":
@@ -6159,7 +6175,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CategoryTable.Attach(objectToDelete);
 						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryTable.DeleteOnSubmit(objectToDelete);
+							CategoryTable.Remove(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentOperation":
@@ -6168,7 +6184,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//UpdateWebContentOperationTable.Attach(objectToDelete);
 						var objectToDelete = UpdateWebContentOperationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
+							UpdateWebContentOperationTable.Remove(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentHandlerItem":
@@ -6177,7 +6193,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//UpdateWebContentHandlerItemTable.Attach(objectToDelete);
 						var objectToDelete = UpdateWebContentHandlerItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
+							UpdateWebContentHandlerItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "PublicationPackageCollection":
@@ -6186,7 +6202,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//PublicationPackageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = PublicationPackageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+							PublicationPackageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBAccountCollaborationGroupCollection":
@@ -6195,7 +6211,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TBAccountCollaborationGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							TBAccountCollaborationGroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBLoginInfoCollection":
@@ -6204,7 +6220,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBLoginInfoCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TBLoginInfoCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
+							TBLoginInfoCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBEmailCollection":
@@ -6213,7 +6229,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBEmailCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TBEmailCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
+							TBEmailCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBCollaboratorRoleCollection":
@@ -6222,7 +6238,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TBCollaboratorRoleCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
+							TBCollaboratorRoleCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "LoginProviderCollection":
@@ -6231,7 +6247,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LoginProviderCollectionTable.Attach(objectToDelete);
 						var objectToDelete = LoginProviderCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
+							LoginProviderCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddressAndLocationCollection":
@@ -6240,7 +6256,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddressAndLocationCollectionTable.Attach(objectToDelete);
 						var objectToDelete = AddressAndLocationCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
+							AddressAndLocationCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ReferenceCollection":
@@ -6249,7 +6265,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ReferenceCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ReferenceCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
+							ReferenceCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "RenderedNodeCollection":
@@ -6258,7 +6274,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//RenderedNodeCollectionTable.Attach(objectToDelete);
 						var objectToDelete = RenderedNodeCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+							RenderedNodeCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ShortTextCollection":
@@ -6267,7 +6283,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ShortTextCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ShortTextCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+							ShortTextCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "LongTextCollection":
@@ -6276,7 +6292,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LongTextCollectionTable.Attach(objectToDelete);
 						var objectToDelete = LongTextCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
+							LongTextCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapMarkerCollection":
@@ -6285,7 +6301,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapMarkerCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MapMarkerCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
+							MapMarkerCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ModeratorCollection":
@@ -6294,7 +6310,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ModeratorCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ModeratorCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
+							ModeratorCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CollaboratorCollection":
@@ -6303,7 +6319,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CollaboratorCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CollaboratorCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
+							CollaboratorCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupCollection":
@@ -6312,7 +6328,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = GroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							GroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ContentCategoryRankCollection":
@@ -6321,7 +6337,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ContentCategoryRankCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ContentCategoryRankCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
+							ContentCategoryRankCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "LinkToContentCollection":
@@ -6330,7 +6346,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LinkToContentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = LinkToContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
+							LinkToContentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "EmbeddedContentCollection":
@@ -6339,7 +6355,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//EmbeddedContentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = EmbeddedContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
+							EmbeddedContentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "DynamicContentGroupCollection":
@@ -6348,7 +6364,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DynamicContentGroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = DynamicContentGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							DynamicContentGroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "DynamicContentCollection":
@@ -6357,7 +6373,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DynamicContentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = DynamicContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
+							DynamicContentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "AttachedToObjectCollection":
@@ -6366,7 +6382,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AttachedToObjectCollectionTable.Attach(objectToDelete);
 						var objectToDelete = AttachedToObjectCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+							AttachedToObjectCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CommentCollection":
@@ -6375,7 +6391,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CommentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CommentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CommentCollectionTable.DeleteOnSubmit(objectToDelete);
+							CommentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "SelectionCollection":
@@ -6384,7 +6400,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//SelectionCollectionTable.Attach(objectToDelete);
 						var objectToDelete = SelectionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
+							SelectionCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TextContentCollection":
@@ -6393,7 +6409,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TextContentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TextContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
+							TextContentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapCollection":
@@ -6402,7 +6418,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MapCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapCollectionTable.DeleteOnSubmit(objectToDelete);
+							MapCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapResultCollection":
@@ -6411,7 +6427,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapResultCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MapResultCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
+							MapResultCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ImageCollection":
@@ -6420,7 +6436,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ImageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ImageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ImageCollectionTable.DeleteOnSubmit(objectToDelete);
+							ImageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "BinaryFileCollection":
@@ -6429,7 +6445,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//BinaryFileCollectionTable.Attach(objectToDelete);
 						var objectToDelete = BinaryFileCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
+							BinaryFileCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "LocationCollection":
@@ -6438,7 +6454,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LocationCollectionTable.Attach(objectToDelete);
 						var objectToDelete = LocationCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LocationCollectionTable.DeleteOnSubmit(objectToDelete);
+							LocationCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CategoryCollection":
@@ -6447,7 +6463,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CategoryCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CategoryCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+							CategoryCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentHandlerCollection":
@@ -6456,7 +6472,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
 						var objectToDelete = UpdateWebContentHandlerCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
+							UpdateWebContentHandlerCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -6468,7 +6484,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		    {
                 if (deleteData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -6478,7 +6494,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBSystemTable.Attach(objectToDelete);
 						var objectToDelete = TBSystemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBSystemTable.DeleteOnSubmit(objectToDelete);
+							TBSystemTable.Remove(objectToDelete);
 						break;
 					}
 					case "WebPublishInfo":
@@ -6487,7 +6503,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//WebPublishInfoTable.Attach(objectToDelete);
 						var objectToDelete = WebPublishInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
+							WebPublishInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "PublicationPackage":
@@ -6496,7 +6512,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//PublicationPackageTable.Attach(objectToDelete);
 						var objectToDelete = PublicationPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PublicationPackageTable.DeleteOnSubmit(objectToDelete);
+							PublicationPackageTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBRLoginRoot":
@@ -6505,7 +6521,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBRLoginRootTable.Attach(objectToDelete);
 						var objectToDelete = TBRLoginRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
+							TBRLoginRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBRAccountRoot":
@@ -6514,7 +6530,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBRAccountRootTable.Attach(objectToDelete);
 						var objectToDelete = TBRAccountRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
+							TBRAccountRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBRGroupRoot":
@@ -6523,7 +6539,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBRGroupRootTable.Attach(objectToDelete);
 						var objectToDelete = TBRGroupRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
+							TBRGroupRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBRLoginGroupRoot":
@@ -6532,7 +6548,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBRLoginGroupRootTable.Attach(objectToDelete);
 						var objectToDelete = TBRLoginGroupRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
+							TBRLoginGroupRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBREmailRoot":
@@ -6541,7 +6557,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBREmailRootTable.Attach(objectToDelete);
 						var objectToDelete = TBREmailRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBREmailRootTable.DeleteOnSubmit(objectToDelete);
+							TBREmailRootTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBAccount":
@@ -6550,7 +6566,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBAccountTable.Attach(objectToDelete);
 						var objectToDelete = TBAccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBAccountTable.DeleteOnSubmit(objectToDelete);
+							TBAccountTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBAccountCollaborationGroup":
@@ -6559,7 +6575,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBAccountCollaborationGroupTable.Attach(objectToDelete);
 						var objectToDelete = TBAccountCollaborationGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
+							TBAccountCollaborationGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBLoginInfo":
@@ -6568,7 +6584,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBLoginInfoTable.Attach(objectToDelete);
 						var objectToDelete = TBLoginInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
+							TBLoginInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBEmail":
@@ -6577,7 +6593,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBEmailTable.Attach(objectToDelete);
 						var objectToDelete = TBEmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBEmailTable.DeleteOnSubmit(objectToDelete);
+							TBEmailTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBCollaboratorRole":
@@ -6586,7 +6602,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBCollaboratorRoleTable.Attach(objectToDelete);
 						var objectToDelete = TBCollaboratorRoleTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
+							TBCollaboratorRoleTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBCollaboratingGroup":
@@ -6595,7 +6611,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBCollaboratingGroupTable.Attach(objectToDelete);
 						var objectToDelete = TBCollaboratingGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
+							TBCollaboratingGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBEmailValidation":
@@ -6604,7 +6620,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBEmailValidationTable.Attach(objectToDelete);
 						var objectToDelete = TBEmailValidationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
+							TBEmailValidationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBMergeAccountConfirmation":
@@ -6613,7 +6629,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBMergeAccountConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBMergeAccountConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBMergeAccountConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBGroupJoinConfirmation":
@@ -6622,7 +6638,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBGroupJoinConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBGroupJoinConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBGroupJoinConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBDeviceJoinConfirmation":
@@ -6631,7 +6647,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBDeviceJoinConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBDeviceJoinConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBDeviceJoinConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBInformationInputConfirmation":
@@ -6640,7 +6656,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBInformationInputConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBInformationInputConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBInformationInputConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBInformationOutputConfirmation":
@@ -6649,7 +6665,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBInformationOutputConfirmationTable.Attach(objectToDelete);
 						var objectToDelete = TBInformationOutputConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
+							TBInformationOutputConfirmationTable.Remove(objectToDelete);
 						break;
 					}
 					case "LoginProvider":
@@ -6658,7 +6674,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LoginProviderTable.Attach(objectToDelete);
 						var objectToDelete = LoginProviderTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LoginProviderTable.DeleteOnSubmit(objectToDelete);
+							LoginProviderTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBPRegisterEmail":
@@ -6667,7 +6683,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBPRegisterEmailTable.Attach(objectToDelete);
 						var objectToDelete = TBPRegisterEmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
+							TBPRegisterEmailTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountSummary":
@@ -6676,7 +6692,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountSummaryTable.Attach(objectToDelete);
 						var objectToDelete = AccountSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountSummaryTable.DeleteOnSubmit(objectToDelete);
+							AccountSummaryTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountContainer":
@@ -6685,7 +6701,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountContainerTable.Attach(objectToDelete);
 						var objectToDelete = AccountContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountContainerTable.DeleteOnSubmit(objectToDelete);
+							AccountContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountModule":
@@ -6694,7 +6710,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountModuleTable.Attach(objectToDelete);
 						var objectToDelete = AccountModuleTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountModuleTable.DeleteOnSubmit(objectToDelete);
+							AccountModuleTable.Remove(objectToDelete);
 						break;
 					}
 					case "LocationContainer":
@@ -6703,7 +6719,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LocationContainerTable.Attach(objectToDelete);
 						var objectToDelete = LocationContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LocationContainerTable.DeleteOnSubmit(objectToDelete);
+							LocationContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddressAndLocation":
@@ -6712,7 +6728,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddressAndLocationTable.Attach(objectToDelete);
 						var objectToDelete = AddressAndLocationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
+							AddressAndLocationTable.Remove(objectToDelete);
 						break;
 					}
 					case "StreetAddress":
@@ -6721,7 +6737,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//StreetAddressTable.Attach(objectToDelete);
 						var objectToDelete = StreetAddressTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StreetAddressTable.DeleteOnSubmit(objectToDelete);
+							StreetAddressTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountProfile":
@@ -6730,7 +6746,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountProfileTable.Attach(objectToDelete);
 						var objectToDelete = AccountProfileTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountProfileTable.DeleteOnSubmit(objectToDelete);
+							AccountProfileTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountSecurity":
@@ -6739,7 +6755,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountSecurityTable.Attach(objectToDelete);
 						var objectToDelete = AccountSecurityTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountSecurityTable.DeleteOnSubmit(objectToDelete);
+							AccountSecurityTable.Remove(objectToDelete);
 						break;
 					}
 					case "AccountRoles":
@@ -6748,7 +6764,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AccountRolesTable.Attach(objectToDelete);
 						var objectToDelete = AccountRolesTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountRolesTable.DeleteOnSubmit(objectToDelete);
+							AccountRolesTable.Remove(objectToDelete);
 						break;
 					}
 					case "PersonalInfoVisibility":
@@ -6757,7 +6773,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//PersonalInfoVisibilityTable.Attach(objectToDelete);
 						var objectToDelete = PersonalInfoVisibilityTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
+							PersonalInfoVisibilityTable.Remove(objectToDelete);
 						break;
 					}
 					case "ReferenceToInformation":
@@ -6766,7 +6782,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ReferenceToInformationTable.Attach(objectToDelete);
 						var objectToDelete = ReferenceToInformationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
+							ReferenceToInformationTable.Remove(objectToDelete);
 						break;
 					}
 					case "NodeSummaryContainer":
@@ -6775,7 +6791,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//NodeSummaryContainerTable.Attach(objectToDelete);
 						var objectToDelete = NodeSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+							NodeSummaryContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "RenderedNode":
@@ -6784,7 +6800,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//RenderedNodeTable.Attach(objectToDelete);
 						var objectToDelete = RenderedNodeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							RenderedNodeTable.DeleteOnSubmit(objectToDelete);
+							RenderedNodeTable.Remove(objectToDelete);
 						break;
 					}
 					case "ShortTextObject":
@@ -6793,7 +6809,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ShortTextObjectTable.Attach(objectToDelete);
 						var objectToDelete = ShortTextObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
+							ShortTextObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "LongTextObject":
@@ -6802,7 +6818,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LongTextObjectTable.Attach(objectToDelete);
 						var objectToDelete = LongTextObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LongTextObjectTable.DeleteOnSubmit(objectToDelete);
+							LongTextObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapMarker":
@@ -6811,7 +6827,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapMarkerTable.Attach(objectToDelete);
 						var objectToDelete = MapMarkerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapMarkerTable.DeleteOnSubmit(objectToDelete);
+							MapMarkerTable.Remove(objectToDelete);
 						break;
 					}
 					case "Moderator":
@@ -6820,7 +6836,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ModeratorTable.Attach(objectToDelete);
 						var objectToDelete = ModeratorTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ModeratorTable.DeleteOnSubmit(objectToDelete);
+							ModeratorTable.Remove(objectToDelete);
 						break;
 					}
 					case "Collaborator":
@@ -6829,7 +6845,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CollaboratorTable.Attach(objectToDelete);
 						var objectToDelete = CollaboratorTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CollaboratorTable.DeleteOnSubmit(objectToDelete);
+							CollaboratorTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupSummaryContainer":
@@ -6838,7 +6854,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupSummaryContainerTable.Attach(objectToDelete);
 						var objectToDelete = GroupSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+							GroupSummaryContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupContainer":
@@ -6847,7 +6863,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupContainerTable.Attach(objectToDelete);
 						var objectToDelete = GroupContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupContainerTable.DeleteOnSubmit(objectToDelete);
+							GroupContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupIndex":
@@ -6856,7 +6872,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupIndexTable.Attach(objectToDelete);
 						var objectToDelete = GroupIndexTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupIndexTable.DeleteOnSubmit(objectToDelete);
+							GroupIndexTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddAddressAndLocationInfo":
@@ -6865,7 +6881,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddAddressAndLocationInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddAddressAndLocationInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
+							AddAddressAndLocationInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddImageInfo":
@@ -6874,7 +6890,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddImageInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddImageInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddImageInfoTable.DeleteOnSubmit(objectToDelete);
+							AddImageInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddImageGroupInfo":
@@ -6883,7 +6899,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddImageGroupInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddImageGroupInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
+							AddImageGroupInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddEmailAddressInfo":
@@ -6892,7 +6908,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddEmailAddressInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddEmailAddressInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
+							AddEmailAddressInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "CreateGroupInfo":
@@ -6901,7 +6917,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CreateGroupInfoTable.Attach(objectToDelete);
 						var objectToDelete = CreateGroupInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
+							CreateGroupInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddActivityInfo":
@@ -6910,7 +6926,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddActivityInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddActivityInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
+							AddActivityInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddBlogPostInfo":
@@ -6919,7 +6935,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddBlogPostInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddBlogPostInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
+							AddBlogPostInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddCategoryInfo":
@@ -6928,7 +6944,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddCategoryInfoTable.Attach(objectToDelete);
 						var objectToDelete = AddCategoryInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
+							AddCategoryInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "Group":
@@ -6937,7 +6953,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupTable.Attach(objectToDelete);
 						var objectToDelete = GroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupTable.DeleteOnSubmit(objectToDelete);
+							GroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "Introduction":
@@ -6946,7 +6962,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//IntroductionTable.Attach(objectToDelete);
 						var objectToDelete = IntroductionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							IntroductionTable.DeleteOnSubmit(objectToDelete);
+							IntroductionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ContentCategoryRank":
@@ -6955,7 +6971,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ContentCategoryRankTable.Attach(objectToDelete);
 						var objectToDelete = ContentCategoryRankTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
+							ContentCategoryRankTable.Remove(objectToDelete);
 						break;
 					}
 					case "LinkToContent":
@@ -6964,7 +6980,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LinkToContentTable.Attach(objectToDelete);
 						var objectToDelete = LinkToContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LinkToContentTable.DeleteOnSubmit(objectToDelete);
+							LinkToContentTable.Remove(objectToDelete);
 						break;
 					}
 					case "EmbeddedContent":
@@ -6973,7 +6989,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//EmbeddedContentTable.Attach(objectToDelete);
 						var objectToDelete = EmbeddedContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
+							EmbeddedContentTable.Remove(objectToDelete);
 						break;
 					}
 					case "DynamicContentGroup":
@@ -6982,7 +6998,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DynamicContentGroupTable.Attach(objectToDelete);
 						var objectToDelete = DynamicContentGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
+							DynamicContentGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "DynamicContent":
@@ -6991,7 +7007,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DynamicContentTable.Attach(objectToDelete);
 						var objectToDelete = DynamicContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DynamicContentTable.DeleteOnSubmit(objectToDelete);
+							DynamicContentTable.Remove(objectToDelete);
 						break;
 					}
 					case "AttachedToObject":
@@ -7000,7 +7016,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AttachedToObjectTable.Attach(objectToDelete);
 						var objectToDelete = AttachedToObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
+							AttachedToObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "Comment":
@@ -7009,7 +7025,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CommentTable.Attach(objectToDelete);
 						var objectToDelete = CommentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CommentTable.DeleteOnSubmit(objectToDelete);
+							CommentTable.Remove(objectToDelete);
 						break;
 					}
 					case "Selection":
@@ -7018,7 +7034,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//SelectionTable.Attach(objectToDelete);
 						var objectToDelete = SelectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SelectionTable.DeleteOnSubmit(objectToDelete);
+							SelectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TextContent":
@@ -7027,7 +7043,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TextContentTable.Attach(objectToDelete);
 						var objectToDelete = TextContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TextContentTable.DeleteOnSubmit(objectToDelete);
+							TextContentTable.Remove(objectToDelete);
 						break;
 					}
 					case "Map":
@@ -7036,7 +7052,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapTable.Attach(objectToDelete);
 						var objectToDelete = MapTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapTable.DeleteOnSubmit(objectToDelete);
+							MapTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapResult":
@@ -7045,7 +7061,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapResultTable.Attach(objectToDelete);
 						var objectToDelete = MapResultTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapResultTable.DeleteOnSubmit(objectToDelete);
+							MapResultTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapResultsCollection":
@@ -7054,7 +7070,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapResultsCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MapResultsCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
+							MapResultsCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "Video":
@@ -7063,7 +7079,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//VideoTable.Attach(objectToDelete);
 						var objectToDelete = VideoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							VideoTable.DeleteOnSubmit(objectToDelete);
+							VideoTable.Remove(objectToDelete);
 						break;
 					}
 					case "Image":
@@ -7072,7 +7088,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ImageTable.Attach(objectToDelete);
 						var objectToDelete = ImageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ImageTable.DeleteOnSubmit(objectToDelete);
+							ImageTable.Remove(objectToDelete);
 						break;
 					}
 					case "BinaryFile":
@@ -7081,7 +7097,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//BinaryFileTable.Attach(objectToDelete);
 						var objectToDelete = BinaryFileTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							BinaryFileTable.DeleteOnSubmit(objectToDelete);
+							BinaryFileTable.Remove(objectToDelete);
 						break;
 					}
 					case "Longitude":
@@ -7090,7 +7106,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LongitudeTable.Attach(objectToDelete);
 						var objectToDelete = LongitudeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LongitudeTable.DeleteOnSubmit(objectToDelete);
+							LongitudeTable.Remove(objectToDelete);
 						break;
 					}
 					case "Latitude":
@@ -7099,7 +7115,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LatitudeTable.Attach(objectToDelete);
 						var objectToDelete = LatitudeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LatitudeTable.DeleteOnSubmit(objectToDelete);
+							LatitudeTable.Remove(objectToDelete);
 						break;
 					}
 					case "Location":
@@ -7108,7 +7124,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LocationTable.Attach(objectToDelete);
 						var objectToDelete = LocationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LocationTable.DeleteOnSubmit(objectToDelete);
+							LocationTable.Remove(objectToDelete);
 						break;
 					}
 					case "Date":
@@ -7117,7 +7133,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DateTable.Attach(objectToDelete);
 						var objectToDelete = DateTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DateTable.DeleteOnSubmit(objectToDelete);
+							DateTable.Remove(objectToDelete);
 						break;
 					}
 					case "CategoryContainer":
@@ -7126,7 +7142,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CategoryContainerTable.Attach(objectToDelete);
 						var objectToDelete = CategoryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryContainerTable.DeleteOnSubmit(objectToDelete);
+							CategoryContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "Category":
@@ -7135,7 +7151,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CategoryTable.Attach(objectToDelete);
 						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryTable.DeleteOnSubmit(objectToDelete);
+							CategoryTable.Remove(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentOperation":
@@ -7144,7 +7160,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//UpdateWebContentOperationTable.Attach(objectToDelete);
 						var objectToDelete = UpdateWebContentOperationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
+							UpdateWebContentOperationTable.Remove(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentHandlerItem":
@@ -7153,7 +7169,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//UpdateWebContentHandlerItemTable.Attach(objectToDelete);
 						var objectToDelete = UpdateWebContentHandlerItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
+							UpdateWebContentHandlerItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "PublicationPackageCollection":
@@ -7162,7 +7178,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//PublicationPackageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = PublicationPackageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+							PublicationPackageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBAccountCollaborationGroupCollection":
@@ -7171,7 +7187,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TBAccountCollaborationGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							TBAccountCollaborationGroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBLoginInfoCollection":
@@ -7180,7 +7196,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBLoginInfoCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TBLoginInfoCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
+							TBLoginInfoCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBEmailCollection":
@@ -7189,7 +7205,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBEmailCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TBEmailCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
+							TBEmailCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TBCollaboratorRoleCollection":
@@ -7198,7 +7214,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TBCollaboratorRoleCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
+							TBCollaboratorRoleCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "LoginProviderCollection":
@@ -7207,7 +7223,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LoginProviderCollectionTable.Attach(objectToDelete);
 						var objectToDelete = LoginProviderCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
+							LoginProviderCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "AddressAndLocationCollection":
@@ -7216,7 +7232,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AddressAndLocationCollectionTable.Attach(objectToDelete);
 						var objectToDelete = AddressAndLocationCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
+							AddressAndLocationCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ReferenceCollection":
@@ -7225,7 +7241,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ReferenceCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ReferenceCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
+							ReferenceCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "RenderedNodeCollection":
@@ -7234,7 +7250,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//RenderedNodeCollectionTable.Attach(objectToDelete);
 						var objectToDelete = RenderedNodeCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+							RenderedNodeCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ShortTextCollection":
@@ -7243,7 +7259,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ShortTextCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ShortTextCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+							ShortTextCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "LongTextCollection":
@@ -7252,7 +7268,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LongTextCollectionTable.Attach(objectToDelete);
 						var objectToDelete = LongTextCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
+							LongTextCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapMarkerCollection":
@@ -7261,7 +7277,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapMarkerCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MapMarkerCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
+							MapMarkerCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ModeratorCollection":
@@ -7270,7 +7286,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ModeratorCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ModeratorCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
+							ModeratorCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CollaboratorCollection":
@@ -7279,7 +7295,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CollaboratorCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CollaboratorCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
+							CollaboratorCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupCollection":
@@ -7288,7 +7304,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//GroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = GroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							GroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ContentCategoryRankCollection":
@@ -7297,7 +7313,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ContentCategoryRankCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ContentCategoryRankCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
+							ContentCategoryRankCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "LinkToContentCollection":
@@ -7306,7 +7322,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LinkToContentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = LinkToContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
+							LinkToContentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "EmbeddedContentCollection":
@@ -7315,7 +7331,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//EmbeddedContentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = EmbeddedContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
+							EmbeddedContentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "DynamicContentGroupCollection":
@@ -7324,7 +7340,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DynamicContentGroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = DynamicContentGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							DynamicContentGroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "DynamicContentCollection":
@@ -7333,7 +7349,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//DynamicContentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = DynamicContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
+							DynamicContentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "AttachedToObjectCollection":
@@ -7342,7 +7358,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//AttachedToObjectCollectionTable.Attach(objectToDelete);
 						var objectToDelete = AttachedToObjectCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+							AttachedToObjectCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CommentCollection":
@@ -7351,7 +7367,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CommentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CommentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CommentCollectionTable.DeleteOnSubmit(objectToDelete);
+							CommentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "SelectionCollection":
@@ -7360,7 +7376,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//SelectionCollectionTable.Attach(objectToDelete);
 						var objectToDelete = SelectionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
+							SelectionCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TextContentCollection":
@@ -7369,7 +7385,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//TextContentCollectionTable.Attach(objectToDelete);
 						var objectToDelete = TextContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
+							TextContentCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapCollection":
@@ -7378,7 +7394,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MapCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapCollectionTable.DeleteOnSubmit(objectToDelete);
+							MapCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "MapResultCollection":
@@ -7387,7 +7403,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//MapResultCollectionTable.Attach(objectToDelete);
 						var objectToDelete = MapResultCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
+							MapResultCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ImageCollection":
@@ -7396,7 +7412,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//ImageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ImageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ImageCollectionTable.DeleteOnSubmit(objectToDelete);
+							ImageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "BinaryFileCollection":
@@ -7405,7 +7421,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//BinaryFileCollectionTable.Attach(objectToDelete);
 						var objectToDelete = BinaryFileCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
+							BinaryFileCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "LocationCollection":
@@ -7414,7 +7430,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//LocationCollectionTable.Attach(objectToDelete);
 						var objectToDelete = LocationCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LocationCollectionTable.DeleteOnSubmit(objectToDelete);
+							LocationCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CategoryCollection":
@@ -7423,7 +7439,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//CategoryCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CategoryCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+							CategoryCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentHandlerCollection":
@@ -7432,7 +7448,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						//UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
 						var objectToDelete = UpdateWebContentHandlerCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
+							UpdateWebContentHandlerCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -7440,557 +7456,130 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 
 
 
-			public Table<TBSystem> TBSystemTable {
-				get {
-					return this.GetTable<TBSystem>();
-				}
-			}
-			public Table<WebPublishInfo> WebPublishInfoTable {
-				get {
-					return this.GetTable<WebPublishInfo>();
-				}
-			}
-			public Table<PublicationPackage> PublicationPackageTable {
-				get {
-					return this.GetTable<PublicationPackage>();
-				}
-			}
-			public Table<TBRLoginRoot> TBRLoginRootTable {
-				get {
-					return this.GetTable<TBRLoginRoot>();
-				}
-			}
-			public Table<TBRAccountRoot> TBRAccountRootTable {
-				get {
-					return this.GetTable<TBRAccountRoot>();
-				}
-			}
-			public Table<TBRGroupRoot> TBRGroupRootTable {
-				get {
-					return this.GetTable<TBRGroupRoot>();
-				}
-			}
-			public Table<TBRLoginGroupRoot> TBRLoginGroupRootTable {
-				get {
-					return this.GetTable<TBRLoginGroupRoot>();
-				}
-			}
-			public Table<TBREmailRoot> TBREmailRootTable {
-				get {
-					return this.GetTable<TBREmailRoot>();
-				}
-			}
-			public Table<TBAccount> TBAccountTable {
-				get {
-					return this.GetTable<TBAccount>();
-				}
-			}
-			public Table<TBAccountCollaborationGroup> TBAccountCollaborationGroupTable {
-				get {
-					return this.GetTable<TBAccountCollaborationGroup>();
-				}
-			}
-			public Table<TBLoginInfo> TBLoginInfoTable {
-				get {
-					return this.GetTable<TBLoginInfo>();
-				}
-			}
-			public Table<TBEmail> TBEmailTable {
-				get {
-					return this.GetTable<TBEmail>();
-				}
-			}
-			public Table<TBCollaboratorRole> TBCollaboratorRoleTable {
-				get {
-					return this.GetTable<TBCollaboratorRole>();
-				}
-			}
-			public Table<TBCollaboratingGroup> TBCollaboratingGroupTable {
-				get {
-					return this.GetTable<TBCollaboratingGroup>();
-				}
-			}
-			public Table<TBEmailValidation> TBEmailValidationTable {
-				get {
-					return this.GetTable<TBEmailValidation>();
-				}
-			}
-			public Table<TBMergeAccountConfirmation> TBMergeAccountConfirmationTable {
-				get {
-					return this.GetTable<TBMergeAccountConfirmation>();
-				}
-			}
-			public Table<TBGroupJoinConfirmation> TBGroupJoinConfirmationTable {
-				get {
-					return this.GetTable<TBGroupJoinConfirmation>();
-				}
-			}
-			public Table<TBDeviceJoinConfirmation> TBDeviceJoinConfirmationTable {
-				get {
-					return this.GetTable<TBDeviceJoinConfirmation>();
-				}
-			}
-			public Table<TBInformationInputConfirmation> TBInformationInputConfirmationTable {
-				get {
-					return this.GetTable<TBInformationInputConfirmation>();
-				}
-			}
-			public Table<TBInformationOutputConfirmation> TBInformationOutputConfirmationTable {
-				get {
-					return this.GetTable<TBInformationOutputConfirmation>();
-				}
-			}
-			public Table<LoginProvider> LoginProviderTable {
-				get {
-					return this.GetTable<LoginProvider>();
-				}
-			}
-			public Table<TBPRegisterEmail> TBPRegisterEmailTable {
-				get {
-					return this.GetTable<TBPRegisterEmail>();
-				}
-			}
-			public Table<AccountSummary> AccountSummaryTable {
-				get {
-					return this.GetTable<AccountSummary>();
-				}
-			}
-			public Table<AccountContainer> AccountContainerTable {
-				get {
-					return this.GetTable<AccountContainer>();
-				}
-			}
-			public Table<AccountModule> AccountModuleTable {
-				get {
-					return this.GetTable<AccountModule>();
-				}
-			}
-			public Table<LocationContainer> LocationContainerTable {
-				get {
-					return this.GetTable<LocationContainer>();
-				}
-			}
-			public Table<AddressAndLocation> AddressAndLocationTable {
-				get {
-					return this.GetTable<AddressAndLocation>();
-				}
-			}
-			public Table<StreetAddress> StreetAddressTable {
-				get {
-					return this.GetTable<StreetAddress>();
-				}
-			}
-			public Table<AccountProfile> AccountProfileTable {
-				get {
-					return this.GetTable<AccountProfile>();
-				}
-			}
-			public Table<AccountSecurity> AccountSecurityTable {
-				get {
-					return this.GetTable<AccountSecurity>();
-				}
-			}
-			public Table<AccountRoles> AccountRolesTable {
-				get {
-					return this.GetTable<AccountRoles>();
-				}
-			}
-			public Table<PersonalInfoVisibility> PersonalInfoVisibilityTable {
-				get {
-					return this.GetTable<PersonalInfoVisibility>();
-				}
-			}
-			public Table<ReferenceToInformation> ReferenceToInformationTable {
-				get {
-					return this.GetTable<ReferenceToInformation>();
-				}
-			}
-			public Table<NodeSummaryContainer> NodeSummaryContainerTable {
-				get {
-					return this.GetTable<NodeSummaryContainer>();
-				}
-			}
-			public Table<RenderedNode> RenderedNodeTable {
-				get {
-					return this.GetTable<RenderedNode>();
-				}
-			}
-			public Table<ShortTextObject> ShortTextObjectTable {
-				get {
-					return this.GetTable<ShortTextObject>();
-				}
-			}
-			public Table<LongTextObject> LongTextObjectTable {
-				get {
-					return this.GetTable<LongTextObject>();
-				}
-			}
-			public Table<MapMarker> MapMarkerTable {
-				get {
-					return this.GetTable<MapMarker>();
-				}
-			}
-			public Table<Moderator> ModeratorTable {
-				get {
-					return this.GetTable<Moderator>();
-				}
-			}
-			public Table<Collaborator> CollaboratorTable {
-				get {
-					return this.GetTable<Collaborator>();
-				}
-			}
-			public Table<GroupSummaryContainer> GroupSummaryContainerTable {
-				get {
-					return this.GetTable<GroupSummaryContainer>();
-				}
-			}
-			public Table<GroupContainer> GroupContainerTable {
-				get {
-					return this.GetTable<GroupContainer>();
-				}
-			}
-			public Table<GroupIndex> GroupIndexTable {
-				get {
-					return this.GetTable<GroupIndex>();
-				}
-			}
-			public Table<AddAddressAndLocationInfo> AddAddressAndLocationInfoTable {
-				get {
-					return this.GetTable<AddAddressAndLocationInfo>();
-				}
-			}
-			public Table<AddImageInfo> AddImageInfoTable {
-				get {
-					return this.GetTable<AddImageInfo>();
-				}
-			}
-			public Table<AddImageGroupInfo> AddImageGroupInfoTable {
-				get {
-					return this.GetTable<AddImageGroupInfo>();
-				}
-			}
-			public Table<AddEmailAddressInfo> AddEmailAddressInfoTable {
-				get {
-					return this.GetTable<AddEmailAddressInfo>();
-				}
-			}
-			public Table<CreateGroupInfo> CreateGroupInfoTable {
-				get {
-					return this.GetTable<CreateGroupInfo>();
-				}
-			}
-			public Table<AddActivityInfo> AddActivityInfoTable {
-				get {
-					return this.GetTable<AddActivityInfo>();
-				}
-			}
-			public Table<AddBlogPostInfo> AddBlogPostInfoTable {
-				get {
-					return this.GetTable<AddBlogPostInfo>();
-				}
-			}
-			public Table<AddCategoryInfo> AddCategoryInfoTable {
-				get {
-					return this.GetTable<AddCategoryInfo>();
-				}
-			}
-			public Table<Group> GroupTable {
-				get {
-					return this.GetTable<Group>();
-				}
-			}
-			public Table<Introduction> IntroductionTable {
-				get {
-					return this.GetTable<Introduction>();
-				}
-			}
-			public Table<ContentCategoryRank> ContentCategoryRankTable {
-				get {
-					return this.GetTable<ContentCategoryRank>();
-				}
-			}
-			public Table<LinkToContent> LinkToContentTable {
-				get {
-					return this.GetTable<LinkToContent>();
-				}
-			}
-			public Table<EmbeddedContent> EmbeddedContentTable {
-				get {
-					return this.GetTable<EmbeddedContent>();
-				}
-			}
-			public Table<DynamicContentGroup> DynamicContentGroupTable {
-				get {
-					return this.GetTable<DynamicContentGroup>();
-				}
-			}
-			public Table<DynamicContent> DynamicContentTable {
-				get {
-					return this.GetTable<DynamicContent>();
-				}
-			}
-			public Table<AttachedToObject> AttachedToObjectTable {
-				get {
-					return this.GetTable<AttachedToObject>();
-				}
-			}
-			public Table<Comment> CommentTable {
-				get {
-					return this.GetTable<Comment>();
-				}
-			}
-			public Table<Selection> SelectionTable {
-				get {
-					return this.GetTable<Selection>();
-				}
-			}
-			public Table<TextContent> TextContentTable {
-				get {
-					return this.GetTable<TextContent>();
-				}
-			}
-			public Table<Map> MapTable {
-				get {
-					return this.GetTable<Map>();
-				}
-			}
-			public Table<MapResult> MapResultTable {
-				get {
-					return this.GetTable<MapResult>();
-				}
-			}
-			public Table<MapResultsCollection> MapResultsCollectionTable {
-				get {
-					return this.GetTable<MapResultsCollection>();
-				}
-			}
-			public Table<Video> VideoTable {
-				get {
-					return this.GetTable<Video>();
-				}
-			}
-			public Table<Image> ImageTable {
-				get {
-					return this.GetTable<Image>();
-				}
-			}
-			public Table<BinaryFile> BinaryFileTable {
-				get {
-					return this.GetTable<BinaryFile>();
-				}
-			}
-			public Table<Longitude> LongitudeTable {
-				get {
-					return this.GetTable<Longitude>();
-				}
-			}
-			public Table<Latitude> LatitudeTable {
-				get {
-					return this.GetTable<Latitude>();
-				}
-			}
-			public Table<Location> LocationTable {
-				get {
-					return this.GetTable<Location>();
-				}
-			}
-			public Table<Date> DateTable {
-				get {
-					return this.GetTable<Date>();
-				}
-			}
-			public Table<CategoryContainer> CategoryContainerTable {
-				get {
-					return this.GetTable<CategoryContainer>();
-				}
-			}
-			public Table<Category> CategoryTable {
-				get {
-					return this.GetTable<Category>();
-				}
-			}
-			public Table<UpdateWebContentOperation> UpdateWebContentOperationTable {
-				get {
-					return this.GetTable<UpdateWebContentOperation>();
-				}
-			}
-			public Table<UpdateWebContentHandlerItem> UpdateWebContentHandlerItemTable {
-				get {
-					return this.GetTable<UpdateWebContentHandlerItem>();
-				}
-			}
-			public Table<PublicationPackageCollection> PublicationPackageCollectionTable {
-				get {
-					return this.GetTable<PublicationPackageCollection>();
-				}
-			}
-			public Table<TBAccountCollaborationGroupCollection> TBAccountCollaborationGroupCollectionTable {
-				get {
-					return this.GetTable<TBAccountCollaborationGroupCollection>();
-				}
-			}
-			public Table<TBLoginInfoCollection> TBLoginInfoCollectionTable {
-				get {
-					return this.GetTable<TBLoginInfoCollection>();
-				}
-			}
-			public Table<TBEmailCollection> TBEmailCollectionTable {
-				get {
-					return this.GetTable<TBEmailCollection>();
-				}
-			}
-			public Table<TBCollaboratorRoleCollection> TBCollaboratorRoleCollectionTable {
-				get {
-					return this.GetTable<TBCollaboratorRoleCollection>();
-				}
-			}
-			public Table<LoginProviderCollection> LoginProviderCollectionTable {
-				get {
-					return this.GetTable<LoginProviderCollection>();
-				}
-			}
-			public Table<AddressAndLocationCollection> AddressAndLocationCollectionTable {
-				get {
-					return this.GetTable<AddressAndLocationCollection>();
-				}
-			}
-			public Table<ReferenceCollection> ReferenceCollectionTable {
-				get {
-					return this.GetTable<ReferenceCollection>();
-				}
-			}
-			public Table<RenderedNodeCollection> RenderedNodeCollectionTable {
-				get {
-					return this.GetTable<RenderedNodeCollection>();
-				}
-			}
-			public Table<ShortTextCollection> ShortTextCollectionTable {
-				get {
-					return this.GetTable<ShortTextCollection>();
-				}
-			}
-			public Table<LongTextCollection> LongTextCollectionTable {
-				get {
-					return this.GetTable<LongTextCollection>();
-				}
-			}
-			public Table<MapMarkerCollection> MapMarkerCollectionTable {
-				get {
-					return this.GetTable<MapMarkerCollection>();
-				}
-			}
-			public Table<ModeratorCollection> ModeratorCollectionTable {
-				get {
-					return this.GetTable<ModeratorCollection>();
-				}
-			}
-			public Table<CollaboratorCollection> CollaboratorCollectionTable {
-				get {
-					return this.GetTable<CollaboratorCollection>();
-				}
-			}
-			public Table<GroupCollection> GroupCollectionTable {
-				get {
-					return this.GetTable<GroupCollection>();
-				}
-			}
-			public Table<ContentCategoryRankCollection> ContentCategoryRankCollectionTable {
-				get {
-					return this.GetTable<ContentCategoryRankCollection>();
-				}
-			}
-			public Table<LinkToContentCollection> LinkToContentCollectionTable {
-				get {
-					return this.GetTable<LinkToContentCollection>();
-				}
-			}
-			public Table<EmbeddedContentCollection> EmbeddedContentCollectionTable {
-				get {
-					return this.GetTable<EmbeddedContentCollection>();
-				}
-			}
-			public Table<DynamicContentGroupCollection> DynamicContentGroupCollectionTable {
-				get {
-					return this.GetTable<DynamicContentGroupCollection>();
-				}
-			}
-			public Table<DynamicContentCollection> DynamicContentCollectionTable {
-				get {
-					return this.GetTable<DynamicContentCollection>();
-				}
-			}
-			public Table<AttachedToObjectCollection> AttachedToObjectCollectionTable {
-				get {
-					return this.GetTable<AttachedToObjectCollection>();
-				}
-			}
-			public Table<CommentCollection> CommentCollectionTable {
-				get {
-					return this.GetTable<CommentCollection>();
-				}
-			}
-			public Table<SelectionCollection> SelectionCollectionTable {
-				get {
-					return this.GetTable<SelectionCollection>();
-				}
-			}
-			public Table<TextContentCollection> TextContentCollectionTable {
-				get {
-					return this.GetTable<TextContentCollection>();
-				}
-			}
-			public Table<MapCollection> MapCollectionTable {
-				get {
-					return this.GetTable<MapCollection>();
-				}
-			}
-			public Table<MapResultCollection> MapResultCollectionTable {
-				get {
-					return this.GetTable<MapResultCollection>();
-				}
-			}
-			public Table<ImageCollection> ImageCollectionTable {
-				get {
-					return this.GetTable<ImageCollection>();
-				}
-			}
-			public Table<BinaryFileCollection> BinaryFileCollectionTable {
-				get {
-					return this.GetTable<BinaryFileCollection>();
-				}
-			}
-			public Table<LocationCollection> LocationCollectionTable {
-				get {
-					return this.GetTable<LocationCollection>();
-				}
-			}
-			public Table<CategoryCollection> CategoryCollectionTable {
-				get {
-					return this.GetTable<CategoryCollection>();
-				}
-			}
-			public Table<UpdateWebContentHandlerCollection> UpdateWebContentHandlerCollectionTable {
-				get {
-					return this.GetTable<UpdateWebContentHandlerCollection>();
-				}
-			}
+			public DbSet<TBSystem> TBSystemTable { get; set; }
+			public DbSet<WebPublishInfo> WebPublishInfoTable { get; set; }
+			public DbSet<PublicationPackage> PublicationPackageTable { get; set; }
+			public DbSet<TBRLoginRoot> TBRLoginRootTable { get; set; }
+			public DbSet<TBRAccountRoot> TBRAccountRootTable { get; set; }
+			public DbSet<TBRGroupRoot> TBRGroupRootTable { get; set; }
+			public DbSet<TBRLoginGroupRoot> TBRLoginGroupRootTable { get; set; }
+			public DbSet<TBREmailRoot> TBREmailRootTable { get; set; }
+			public DbSet<TBAccount> TBAccountTable { get; set; }
+			public DbSet<TBAccountCollaborationGroup> TBAccountCollaborationGroupTable { get; set; }
+			public DbSet<TBLoginInfo> TBLoginInfoTable { get; set; }
+			public DbSet<TBEmail> TBEmailTable { get; set; }
+			public DbSet<TBCollaboratorRole> TBCollaboratorRoleTable { get; set; }
+			public DbSet<TBCollaboratingGroup> TBCollaboratingGroupTable { get; set; }
+			public DbSet<TBEmailValidation> TBEmailValidationTable { get; set; }
+			public DbSet<TBMergeAccountConfirmation> TBMergeAccountConfirmationTable { get; set; }
+			public DbSet<TBGroupJoinConfirmation> TBGroupJoinConfirmationTable { get; set; }
+			public DbSet<TBDeviceJoinConfirmation> TBDeviceJoinConfirmationTable { get; set; }
+			public DbSet<TBInformationInputConfirmation> TBInformationInputConfirmationTable { get; set; }
+			public DbSet<TBInformationOutputConfirmation> TBInformationOutputConfirmationTable { get; set; }
+			public DbSet<LoginProvider> LoginProviderTable { get; set; }
+			public DbSet<TBPRegisterEmail> TBPRegisterEmailTable { get; set; }
+			public DbSet<AccountSummary> AccountSummaryTable { get; set; }
+			public DbSet<AccountContainer> AccountContainerTable { get; set; }
+			public DbSet<AccountModule> AccountModuleTable { get; set; }
+			public DbSet<LocationContainer> LocationContainerTable { get; set; }
+			public DbSet<AddressAndLocation> AddressAndLocationTable { get; set; }
+			public DbSet<StreetAddress> StreetAddressTable { get; set; }
+			public DbSet<AccountProfile> AccountProfileTable { get; set; }
+			public DbSet<AccountSecurity> AccountSecurityTable { get; set; }
+			public DbSet<AccountRoles> AccountRolesTable { get; set; }
+			public DbSet<PersonalInfoVisibility> PersonalInfoVisibilityTable { get; set; }
+			public DbSet<ReferenceToInformation> ReferenceToInformationTable { get; set; }
+			public DbSet<NodeSummaryContainer> NodeSummaryContainerTable { get; set; }
+			public DbSet<RenderedNode> RenderedNodeTable { get; set; }
+			public DbSet<ShortTextObject> ShortTextObjectTable { get; set; }
+			public DbSet<LongTextObject> LongTextObjectTable { get; set; }
+			public DbSet<MapMarker> MapMarkerTable { get; set; }
+			public DbSet<Moderator> ModeratorTable { get; set; }
+			public DbSet<Collaborator> CollaboratorTable { get; set; }
+			public DbSet<GroupSummaryContainer> GroupSummaryContainerTable { get; set; }
+			public DbSet<GroupContainer> GroupContainerTable { get; set; }
+			public DbSet<GroupIndex> GroupIndexTable { get; set; }
+			public DbSet<AddAddressAndLocationInfo> AddAddressAndLocationInfoTable { get; set; }
+			public DbSet<AddImageInfo> AddImageInfoTable { get; set; }
+			public DbSet<AddImageGroupInfo> AddImageGroupInfoTable { get; set; }
+			public DbSet<AddEmailAddressInfo> AddEmailAddressInfoTable { get; set; }
+			public DbSet<CreateGroupInfo> CreateGroupInfoTable { get; set; }
+			public DbSet<AddActivityInfo> AddActivityInfoTable { get; set; }
+			public DbSet<AddBlogPostInfo> AddBlogPostInfoTable { get; set; }
+			public DbSet<AddCategoryInfo> AddCategoryInfoTable { get; set; }
+			public DbSet<Group> GroupTable { get; set; }
+			public DbSet<Introduction> IntroductionTable { get; set; }
+			public DbSet<ContentCategoryRank> ContentCategoryRankTable { get; set; }
+			public DbSet<LinkToContent> LinkToContentTable { get; set; }
+			public DbSet<EmbeddedContent> EmbeddedContentTable { get; set; }
+			public DbSet<DynamicContentGroup> DynamicContentGroupTable { get; set; }
+			public DbSet<DynamicContent> DynamicContentTable { get; set; }
+			public DbSet<AttachedToObject> AttachedToObjectTable { get; set; }
+			public DbSet<Comment> CommentTable { get; set; }
+			public DbSet<Selection> SelectionTable { get; set; }
+			public DbSet<TextContent> TextContentTable { get; set; }
+			public DbSet<Map> MapTable { get; set; }
+			public DbSet<MapResult> MapResultTable { get; set; }
+			public DbSet<MapResultsCollection> MapResultsCollectionTable { get; set; }
+			public DbSet<Video> VideoTable { get; set; }
+			public DbSet<Image> ImageTable { get; set; }
+			public DbSet<BinaryFile> BinaryFileTable { get; set; }
+			public DbSet<Longitude> LongitudeTable { get; set; }
+			public DbSet<Latitude> LatitudeTable { get; set; }
+			public DbSet<Location> LocationTable { get; set; }
+			public DbSet<Date> DateTable { get; set; }
+			public DbSet<CategoryContainer> CategoryContainerTable { get; set; }
+			public DbSet<Category> CategoryTable { get; set; }
+			public DbSet<UpdateWebContentOperation> UpdateWebContentOperationTable { get; set; }
+			public DbSet<UpdateWebContentHandlerItem> UpdateWebContentHandlerItemTable { get; set; }
+			public DbSet<PublicationPackageCollection> PublicationPackageCollectionTable { get; set; }
+			public DbSet<TBAccountCollaborationGroupCollection> TBAccountCollaborationGroupCollectionTable { get; set; }
+			public DbSet<TBLoginInfoCollection> TBLoginInfoCollectionTable { get; set; }
+			public DbSet<TBEmailCollection> TBEmailCollectionTable { get; set; }
+			public DbSet<TBCollaboratorRoleCollection> TBCollaboratorRoleCollectionTable { get; set; }
+			public DbSet<LoginProviderCollection> LoginProviderCollectionTable { get; set; }
+			public DbSet<AddressAndLocationCollection> AddressAndLocationCollectionTable { get; set; }
+			public DbSet<ReferenceCollection> ReferenceCollectionTable { get; set; }
+			public DbSet<RenderedNodeCollection> RenderedNodeCollectionTable { get; set; }
+			public DbSet<ShortTextCollection> ShortTextCollectionTable { get; set; }
+			public DbSet<LongTextCollection> LongTextCollectionTable { get; set; }
+			public DbSet<MapMarkerCollection> MapMarkerCollectionTable { get; set; }
+			public DbSet<ModeratorCollection> ModeratorCollectionTable { get; set; }
+			public DbSet<CollaboratorCollection> CollaboratorCollectionTable { get; set; }
+			public DbSet<GroupCollection> GroupCollectionTable { get; set; }
+			public DbSet<ContentCategoryRankCollection> ContentCategoryRankCollectionTable { get; set; }
+			public DbSet<LinkToContentCollection> LinkToContentCollectionTable { get; set; }
+			public DbSet<EmbeddedContentCollection> EmbeddedContentCollectionTable { get; set; }
+			public DbSet<DynamicContentGroupCollection> DynamicContentGroupCollectionTable { get; set; }
+			public DbSet<DynamicContentCollection> DynamicContentCollectionTable { get; set; }
+			public DbSet<AttachedToObjectCollection> AttachedToObjectCollectionTable { get; set; }
+			public DbSet<CommentCollection> CommentCollectionTable { get; set; }
+			public DbSet<SelectionCollection> SelectionCollectionTable { get; set; }
+			public DbSet<TextContentCollection> TextContentCollectionTable { get; set; }
+			public DbSet<MapCollection> MapCollectionTable { get; set; }
+			public DbSet<MapResultCollection> MapResultCollectionTable { get; set; }
+			public DbSet<ImageCollection> ImageCollectionTable { get; set; }
+			public DbSet<BinaryFileCollection> BinaryFileCollectionTable { get; set; }
+			public DbSet<LocationCollection> LocationCollectionTable { get; set; }
+			public DbSet<CategoryCollection> CategoryCollectionTable { get; set; }
+			public DbSet<UpdateWebContentHandlerCollection> UpdateWebContentHandlerCollectionTable { get; set; }
         }
 
-    [Table(Name = "TBSystem")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBSystem")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBSystem: {ID}")]
 	public class TBSystem : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8014,13 +7603,13 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InstanceName { get; set; }
 		// private string _unmodified_InstanceName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AdminGroupID { get; set; }
 		// private string _unmodified_AdminGroupID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8032,20 +7621,21 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
 				AdminGroupID = string.Empty;
 		}
 	}
-    [Table(Name = "WebPublishInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "WebPublishInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("WebPublishInfo: {ID}")]
 	public class WebPublishInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8071,16 +7661,16 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PublishType { get; set; }
 		// private string _unmodified_PublishType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PublishContainer { get; set; }
 		// private string _unmodified_PublishContainer;
-			[Column]
+			//[Column]
 			public string ActivePublicationID { get; set; }
 			private EntityRef< PublicationPackage > _ActivePublication;
 			[Association(Storage = "_ActivePublication", ThisKey = "ActivePublicationID")]
@@ -8090,7 +7680,7 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 				set { this._ActivePublication.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string PublicationsID { get; set; }
 			private EntityRef< PublicationPackageCollection > _Publications;
 			[Association(Storage = "_Publications", ThisKey = "PublicationsID")]
@@ -8108,20 +7698,21 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 				PublishContainer = string.Empty;
 		}
 	}
-    [Table(Name = "PublicationPackage")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "PublicationPackage")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PublicationPackage: {ID}")]
 	public class PublicationPackage : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8145,13 +7736,13 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PackageName { get; set; }
 		// private string _unmodified_PackageName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime PublicationTime { get; set; }
 		// private DateTime _unmodified_PublicationTime;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8161,20 +7752,21 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
 				PackageName = string.Empty;
 		}
 	}
-    [Table(Name = "TBRLoginRoot")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBRLoginRoot")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBRLoginRoot: {ID}")]
 	public class TBRLoginRoot : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8198,11 +7790,11 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string DomainName { get; set; }
 		// private string _unmodified_DomainName;
-			[Column]
+			//[Column]
 			public string AccountID { get; set; }
 			private EntityRef< TBAccount > _Account;
 			[Association(Storage = "_Account", ThisKey = "AccountID")]
@@ -8219,20 +7811,21 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 				DomainName = string.Empty;
 		}
 	}
-    [Table(Name = "TBRAccountRoot")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBRAccountRoot")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBRAccountRoot: {ID}")]
 	public class TBRAccountRoot : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8254,7 +7847,7 @@ CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string AccountID { get; set; }
 			private EntityRef< TBAccount > _Account;
 			[Association(Storage = "_Account", ThisKey = "AccountID")]
@@ -8269,20 +7862,21 @@ CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
 		
 		}
 	}
-    [Table(Name = "TBRGroupRoot")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBRGroupRoot")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBRGroupRoot: {ID}")]
 	public class TBRGroupRoot : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8304,7 +7898,7 @@ CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string GroupID { get; set; }
 			private EntityRef< TBCollaboratingGroup > _Group;
 			[Association(Storage = "_Group", ThisKey = "GroupID")]
@@ -8319,20 +7913,21 @@ CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
 		
 		}
 	}
-    [Table(Name = "TBRLoginGroupRoot")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBRLoginGroupRoot")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBRLoginGroupRoot: {ID}")]
 	public class TBRLoginGroupRoot : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8356,13 +7951,13 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Role { get; set; }
 		// private string _unmodified_Role;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupID { get; set; }
 		// private string _unmodified_GroupID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8374,20 +7969,21 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 				GroupID = string.Empty;
 		}
 	}
-    [Table(Name = "TBREmailRoot")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBREmailRoot")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBREmailRoot: {ID}")]
 	public class TBREmailRoot : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8409,7 +8005,7 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string AccountID { get; set; }
 			private EntityRef< TBAccount > _Account;
 			[Association(Storage = "_Account", ThisKey = "AccountID")]
@@ -8424,20 +8020,21 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 		
 		}
 	}
-    [Table(Name = "TBAccount")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBAccount")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBAccount: {ID}")]
 	public class TBAccount : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8461,7 +8058,7 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string EmailsID { get; set; }
 			private EntityRef< TBEmailCollection > _Emails;
 			[Association(Storage = "_Emails", ThisKey = "EmailsID")]
@@ -8470,7 +8067,7 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 				get { return this._Emails.Entity; }
 				set { this._Emails.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string LoginsID { get; set; }
 			private EntityRef< TBLoginInfoCollection > _Logins;
 			[Association(Storage = "_Logins", ThisKey = "LoginsID")]
@@ -8479,7 +8076,7 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 				get { return this._Logins.Entity; }
 				set { this._Logins.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string GroupRoleCollectionID { get; set; }
 			private EntityRef< TBAccountCollaborationGroupCollection > _GroupRoleCollection;
 			[Association(Storage = "_GroupRoleCollection", ThisKey = "GroupRoleCollectionID")]
@@ -8493,20 +8090,21 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 		
 		}
 	}
-    [Table(Name = "TBAccountCollaborationGroup")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBAccountCollaborationGroup")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBAccountCollaborationGroup: {ID}")]
 	public class TBAccountCollaborationGroup : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8531,18 +8129,18 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupID { get; set; }
 		// private string _unmodified_GroupID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupRole { get; set; }
 		// private string _unmodified_GroupRole;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RoleStatus { get; set; }
 		// private string _unmodified_RoleStatus;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8556,20 +8154,21 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 				RoleStatus = string.Empty;
 		}
 	}
-    [Table(Name = "TBLoginInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBLoginInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBLoginInfo: {ID}")]
 	public class TBLoginInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8592,8 +8191,8 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OpenIDUrl { get; set; }
 		// private string _unmodified_OpenIDUrl;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8603,20 +8202,21 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 				OpenIDUrl = string.Empty;
 		}
 	}
-    [Table(Name = "TBEmail")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBEmail")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBEmail: {ID}")]
 	public class TBEmail : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8640,13 +8240,13 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime ValidatedAt { get; set; }
 		// private DateTime _unmodified_ValidatedAt;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8656,20 +8256,21 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
 				EmailAddress = string.Empty;
 		}
 	}
-    [Table(Name = "TBCollaboratorRole")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBCollaboratorRole")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBCollaboratorRole: {ID}")]
 	public class TBCollaboratorRole : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8693,7 +8294,7 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string EmailID { get; set; }
 			private EntityRef< TBEmail > _Email;
 			[Association(Storage = "_Email", ThisKey = "EmailID")]
@@ -8704,13 +8305,13 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Role { get; set; }
 		// private string _unmodified_Role;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RoleStatus { get; set; }
 		// private string _unmodified_RoleStatus;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8722,20 +8323,21 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 				RoleStatus = string.Empty;
 		}
 	}
-    [Table(Name = "TBCollaboratingGroup")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBCollaboratingGroup")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBCollaboratingGroup: {ID}")]
 	public class TBCollaboratingGroup : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8759,11 +8361,11 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
-			[Column]
+			//[Column]
 			public string RolesID { get; set; }
 			private EntityRef< TBCollaboratorRoleCollection > _Roles;
 			[Association(Storage = "_Roles", ThisKey = "RolesID")]
@@ -8779,20 +8381,21 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 				Title = string.Empty;
 		}
 	}
-    [Table(Name = "TBEmailValidation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBEmailValidation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBEmailValidation: {ID}")]
 	public class TBEmailValidation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8823,21 +8426,21 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Email { get; set; }
 		// private string _unmodified_Email;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AccountID { get; set; }
 		// private string _unmodified_AccountID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime ValidUntil { get; set; }
 		// private DateTime _unmodified_ValidUntil;
-			[Column]
+			//[Column]
 			public string GroupJoinConfirmationID { get; set; }
 			private EntityRef< TBGroupJoinConfirmation > _GroupJoinConfirmation;
 			[Association(Storage = "_GroupJoinConfirmation", ThisKey = "GroupJoinConfirmationID")]
@@ -8847,7 +8450,7 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 				set { this._GroupJoinConfirmation.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string DeviceJoinConfirmationID { get; set; }
 			private EntityRef< TBDeviceJoinConfirmation > _DeviceJoinConfirmation;
 			[Association(Storage = "_DeviceJoinConfirmation", ThisKey = "DeviceJoinConfirmationID")]
@@ -8857,7 +8460,7 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 				set { this._DeviceJoinConfirmation.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string InformationInputConfirmationID { get; set; }
 			private EntityRef< TBInformationInputConfirmation > _InformationInputConfirmation;
 			[Association(Storage = "_InformationInputConfirmation", ThisKey = "InformationInputConfirmationID")]
@@ -8867,7 +8470,7 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 				set { this._InformationInputConfirmation.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string InformationOutputConfirmationID { get; set; }
 			private EntityRef< TBInformationOutputConfirmation > _InformationOutputConfirmation;
 			[Association(Storage = "_InformationOutputConfirmation", ThisKey = "InformationOutputConfirmationID")]
@@ -8877,7 +8480,7 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 				set { this._InformationOutputConfirmation.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string MergeAccountsConfirmationID { get; set; }
 			private EntityRef< TBMergeAccountConfirmation > _MergeAccountsConfirmation;
 			[Association(Storage = "_MergeAccountsConfirmation", ThisKey = "MergeAccountsConfirmationID")]
@@ -8888,8 +8491,8 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RedirectUrlAfterValidation { get; set; }
 		// private string _unmodified_RedirectUrlAfterValidation;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8903,20 +8506,21 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 				RedirectUrlAfterValidation = string.Empty;
 		}
 	}
-    [Table(Name = "TBMergeAccountConfirmation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBMergeAccountConfirmation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBMergeAccountConfirmation: {ID}")]
 	public class TBMergeAccountConfirmation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8940,13 +8544,13 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AccountToBeMergedID { get; set; }
 		// private string _unmodified_AccountToBeMergedID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AccountToMergeToID { get; set; }
 		// private string _unmodified_AccountToMergeToID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -8958,20 +8562,21 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 				AccountToMergeToID = string.Empty;
 		}
 	}
-    [Table(Name = "TBGroupJoinConfirmation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBGroupJoinConfirmation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBGroupJoinConfirmation: {ID}")]
 	public class TBGroupJoinConfirmation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -8995,13 +8600,13 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupID { get; set; }
 		// private string _unmodified_GroupID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InvitationMode { get; set; }
 		// private string _unmodified_InvitationMode;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9013,20 +8618,21 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 				InvitationMode = string.Empty;
 		}
 	}
-    [Table(Name = "TBDeviceJoinConfirmation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBDeviceJoinConfirmation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBDeviceJoinConfirmation: {ID}")]
 	public class TBDeviceJoinConfirmation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9051,18 +8657,18 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupID { get; set; }
 		// private string _unmodified_GroupID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AccountID { get; set; }
 		// private string _unmodified_AccountID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string DeviceMembershipID { get; set; }
 		// private string _unmodified_DeviceMembershipID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9076,20 +8682,21 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 				DeviceMembershipID = string.Empty;
 		}
 	}
-    [Table(Name = "TBInformationInputConfirmation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBInformationInputConfirmation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBInformationInputConfirmation: {ID}")]
 	public class TBInformationInputConfirmation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9114,18 +8721,18 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupID { get; set; }
 		// private string _unmodified_GroupID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AccountID { get; set; }
 		// private string _unmodified_AccountID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InformationInputID { get; set; }
 		// private string _unmodified_InformationInputID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9139,20 +8746,21 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 				InformationInputID = string.Empty;
 		}
 	}
-    [Table(Name = "TBInformationOutputConfirmation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBInformationOutputConfirmation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBInformationOutputConfirmation: {ID}")]
 	public class TBInformationOutputConfirmation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9177,18 +8785,18 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupID { get; set; }
 		// private string _unmodified_GroupID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AccountID { get; set; }
 		// private string _unmodified_AccountID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InformationOutputID { get; set; }
 		// private string _unmodified_InformationOutputID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9202,20 +8810,21 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 				InformationOutputID = string.Empty;
 		}
 	}
-    [Table(Name = "LoginProvider")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LoginProvider")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LoginProvider: {ID}")]
 	public class LoginProvider : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9242,28 +8851,28 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProviderName { get; set; }
 		// private string _unmodified_ProviderName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProviderIconClass { get; set; }
 		// private string _unmodified_ProviderIconClass;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProviderType { get; set; }
 		// private string _unmodified_ProviderType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProviderUrl { get; set; }
 		// private string _unmodified_ProviderUrl;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ReturnUrl { get; set; }
 		// private string _unmodified_ReturnUrl;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9281,20 +8890,21 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
 				ReturnUrl = string.Empty;
 		}
 	}
-    [Table(Name = "TBPRegisterEmail")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBPRegisterEmail")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBPRegisterEmail: {ID}")]
 	public class TBPRegisterEmail : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9317,8 +8927,8 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9328,20 +8938,21 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 				EmailAddress = string.Empty;
 		}
 	}
-    [Table(Name = "AccountSummary")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountSummary")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountSummary: {ID}")]
 	public class AccountSummary : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9363,7 +8974,7 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string GroupSummaryID { get; set; }
 			private EntityRef< GroupSummaryContainer > _GroupSummary;
 			[Association(Storage = "_GroupSummary", ThisKey = "GroupSummaryID")]
@@ -9378,20 +8989,21 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
 		
 		}
 	}
-    [Table(Name = "AccountContainer")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountContainer")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountContainer: {ID}")]
 	public class AccountContainer : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9414,7 +9026,7 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string AccountModuleID { get; set; }
 			private EntityRef< AccountModule > _AccountModule;
 			[Association(Storage = "_AccountModule", ThisKey = "AccountModuleID")]
@@ -9424,7 +9036,7 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 				set { this._AccountModule.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string AccountSummaryID { get; set; }
 			private EntityRef< AccountSummary > _AccountSummary;
 			[Association(Storage = "_AccountSummary", ThisKey = "AccountSummaryID")]
@@ -9439,20 +9051,21 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 		
 		}
 	}
-    [Table(Name = "AccountModule")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountModule")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountModule: {ID}")]
 	public class AccountModule : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9477,7 +9090,7 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ProfileID { get; set; }
 			private EntityRef< AccountProfile > _Profile;
 			[Association(Storage = "_Profile", ThisKey = "ProfileID")]
@@ -9487,7 +9100,7 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 				set { this._Profile.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string SecurityID { get; set; }
 			private EntityRef< AccountSecurity > _Security;
 			[Association(Storage = "_Security", ThisKey = "SecurityID")]
@@ -9497,7 +9110,7 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 				set { this._Security.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string RolesID { get; set; }
 			private EntityRef< AccountRoles > _Roles;
 			[Association(Storage = "_Roles", ThisKey = "RolesID")]
@@ -9507,7 +9120,7 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 				set { this._Roles.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string LocationCollectionID { get; set; }
 			private EntityRef< AddressAndLocationCollection > _LocationCollection;
 			[Association(Storage = "_LocationCollection", ThisKey = "LocationCollectionID")]
@@ -9521,20 +9134,21 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 		
 		}
 	}
-    [Table(Name = "LocationContainer")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LocationContainer")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LocationContainer: {ID}")]
 	public class LocationContainer : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9556,7 +9170,7 @@ CREATE TABLE IF NOT EXISTS [LocationContainer](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string LocationsID { get; set; }
 			private EntityRef< AddressAndLocationCollection > _Locations;
 			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
@@ -9570,20 +9184,21 @@ CREATE TABLE IF NOT EXISTS [LocationContainer](
 		
 		}
 	}
-    [Table(Name = "AddressAndLocation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddressAndLocation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddressAndLocation: {ID}")]
 	public class AddressAndLocation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9607,7 +9222,7 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ReferenceToInformationID { get; set; }
 			private EntityRef< ReferenceToInformation > _ReferenceToInformation;
 			[Association(Storage = "_ReferenceToInformation", ThisKey = "ReferenceToInformationID")]
@@ -9617,7 +9232,7 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 				set { this._ReferenceToInformation.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string AddressID { get; set; }
 			private EntityRef< StreetAddress > _Address;
 			[Association(Storage = "_Address", ThisKey = "AddressID")]
@@ -9627,7 +9242,7 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 				set { this._Address.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string LocationID { get; set; }
 			private EntityRef< Location > _Location;
 			[Association(Storage = "_Location", ThisKey = "LocationID")]
@@ -9642,20 +9257,21 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 		
 		}
 	}
-    [Table(Name = "StreetAddress")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "StreetAddress")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("StreetAddress: {ID}")]
 	public class StreetAddress : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9681,23 +9297,23 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Street { get; set; }
 		// private string _unmodified_Street;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ZipCode { get; set; }
 		// private string _unmodified_ZipCode;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Town { get; set; }
 		// private string _unmodified_Town;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Country { get; set; }
 		// private string _unmodified_Country;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9713,20 +9329,21 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
 				Country = string.Empty;
 		}
 	}
-    [Table(Name = "AccountProfile")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountProfile")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountProfile: {ID}")]
 	public class AccountProfile : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9754,7 +9371,7 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ProfileImageID { get; set; }
 			private EntityRef< Image > _ProfileImage;
 			[Association(Storage = "_ProfileImage", ThisKey = "ProfileImageID")]
@@ -9765,16 +9382,16 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string FirstName { get; set; }
 		// private string _unmodified_FirstName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LastName { get; set; }
 		// private string _unmodified_LastName;
-			[Column]
+			//[Column]
 			public string AddressID { get; set; }
 			private EntityRef< StreetAddress > _Address;
 			[Association(Storage = "_Address", ThisKey = "AddressID")]
@@ -9785,18 +9402,18 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsSimplifiedAccount { get; set; }
 		// private bool _unmodified_IsSimplifiedAccount;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SimplifiedAccountEmail { get; set; }
 		// private string _unmodified_SimplifiedAccountEmail;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SimplifiedAccountGroupID { get; set; }
 		// private string _unmodified_SimplifiedAccountGroupID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9812,20 +9429,21 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 				SimplifiedAccountGroupID = string.Empty;
 		}
 	}
-    [Table(Name = "AccountSecurity")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountSecurity")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountSecurity: {ID}")]
 	public class AccountSecurity : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9848,7 +9466,7 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string LoginInfoCollectionID { get; set; }
 			private EntityRef< TBLoginInfoCollection > _LoginInfoCollection;
 			[Association(Storage = "_LoginInfoCollection", ThisKey = "LoginInfoCollectionID")]
@@ -9857,7 +9475,7 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
 				get { return this._LoginInfoCollection.Entity; }
 				set { this._LoginInfoCollection.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string EmailCollectionID { get; set; }
 			private EntityRef< TBEmailCollection > _EmailCollection;
 			[Association(Storage = "_EmailCollection", ThisKey = "EmailCollectionID")]
@@ -9871,20 +9489,21 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
 		
 		}
 	}
-    [Table(Name = "AccountRoles")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountRoles")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountRoles: {ID}")]
 	public class AccountRoles : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9908,7 +9527,7 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ModeratorInGroupsID { get; set; }
 			private EntityRef< ReferenceCollection > _ModeratorInGroups;
 			[Association(Storage = "_ModeratorInGroups", ThisKey = "ModeratorInGroupsID")]
@@ -9917,7 +9536,7 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 				get { return this._ModeratorInGroups.Entity; }
 				set { this._ModeratorInGroups.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string MemberInGroupsID { get; set; }
 			private EntityRef< ReferenceCollection > _MemberInGroups;
 			[Association(Storage = "_MemberInGroups", ThisKey = "MemberInGroupsID")]
@@ -9927,8 +9546,8 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 				set { this._MemberInGroups.Entity = value; }
 			}
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OrganizationsImPartOf { get; set; }
 		// private string _unmodified_OrganizationsImPartOf;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9938,20 +9557,21 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 				OrganizationsImPartOf = string.Empty;
 		}
 	}
-    [Table(Name = "PersonalInfoVisibility")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "PersonalInfoVisibility")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PersonalInfoVisibility: {ID}")]
 	public class PersonalInfoVisibility : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -9974,8 +9594,8 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string NoOne_Network_All { get; set; }
 		// private string _unmodified_NoOne_Network_All;
         public void PrepareForStoring(bool isInitialInsert)
@@ -9985,20 +9605,21 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 				NoOne_Network_All = string.Empty;
 		}
 	}
-    [Table(Name = "ReferenceToInformation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ReferenceToInformation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ReferenceToInformation: {ID}")]
 	public class ReferenceToInformation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10022,13 +9643,13 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string URL { get; set; }
 		// private string _unmodified_URL;
         public void PrepareForStoring(bool isInitialInsert)
@@ -10040,20 +9661,21 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 				URL = string.Empty;
 		}
 	}
-    [Table(Name = "NodeSummaryContainer")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "NodeSummaryContainer")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("NodeSummaryContainer: {ID}")]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10081,7 +9703,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string NodesID { get; set; }
 			private EntityRef< RenderedNodeCollection > _Nodes;
 			[Association(Storage = "_Nodes", ThisKey = "NodesID")]
@@ -10090,7 +9712,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 				get { return this._Nodes.Entity; }
 				set { this._Nodes.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string NodeSourceTextContentID { get; set; }
 			private EntityRef< TextContentCollection > _NodeSourceTextContent;
 			[Association(Storage = "_NodeSourceTextContent", ThisKey = "NodeSourceTextContentID")]
@@ -10099,7 +9721,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 				get { return this._NodeSourceTextContent.Entity; }
 				set { this._NodeSourceTextContent.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string NodeSourceLinkToContentID { get; set; }
 			private EntityRef< LinkToContentCollection > _NodeSourceLinkToContent;
 			[Association(Storage = "_NodeSourceLinkToContent", ThisKey = "NodeSourceLinkToContentID")]
@@ -10108,7 +9730,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 				get { return this._NodeSourceLinkToContent.Entity; }
 				set { this._NodeSourceLinkToContent.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string NodeSourceEmbeddedContentID { get; set; }
 			private EntityRef< EmbeddedContentCollection > _NodeSourceEmbeddedContent;
 			[Association(Storage = "_NodeSourceEmbeddedContent", ThisKey = "NodeSourceEmbeddedContentID")]
@@ -10117,7 +9739,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 				get { return this._NodeSourceEmbeddedContent.Entity; }
 				set { this._NodeSourceEmbeddedContent.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string NodeSourceImagesID { get; set; }
 			private EntityRef< ImageCollection > _NodeSourceImages;
 			[Association(Storage = "_NodeSourceImages", ThisKey = "NodeSourceImagesID")]
@@ -10126,7 +9748,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 				get { return this._NodeSourceImages.Entity; }
 				set { this._NodeSourceImages.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string NodeSourceBinaryFilesID { get; set; }
 			private EntityRef< BinaryFileCollection > _NodeSourceBinaryFiles;
 			[Association(Storage = "_NodeSourceBinaryFiles", ThisKey = "NodeSourceBinaryFilesID")]
@@ -10135,7 +9757,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 				get { return this._NodeSourceBinaryFiles.Entity; }
 				set { this._NodeSourceBinaryFiles.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string NodeSourceCategoriesID { get; set; }
 			private EntityRef< CategoryCollection > _NodeSourceCategories;
 			[Association(Storage = "_NodeSourceCategories", ThisKey = "NodeSourceCategoriesID")]
@@ -10149,20 +9771,21 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 		
 		}
 	}
-    [Table(Name = "RenderedNode")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "RenderedNode")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("RenderedNode: {ID}")]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10201,61 +9824,61 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OriginalContentID { get; set; }
 		// private string _unmodified_OriginalContentID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TechnicalSource { get; set; }
 		// private string _unmodified_TechnicalSource;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ImageBaseUrl { get; set; }
 		// private string _unmodified_ImageBaseUrl;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ImageExt { get; set; }
 		// private string _unmodified_ImageExt;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OpenNodeTitle { get; set; }
 		// private string _unmodified_OpenNodeTitle;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ActualContentUrl { get; set; }
 		// private string _unmodified_ActualContentUrl;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Excerpt { get; set; }
 		// private string _unmodified_Excerpt;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TimestampText { get; set; }
 		// private string _unmodified_TimestampText;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string MainSortableText { get; set; }
 		// private string _unmodified_MainSortableText;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsCategoryFilteringNode { get; set; }
 		// private bool _unmodified_IsCategoryFilteringNode;
-			[Column]
+			//[Column]
 			public string CategoryFiltersID { get; set; }
 			private EntityRef< ShortTextCollection > _CategoryFilters;
 			[Association(Storage = "_CategoryFilters", ThisKey = "CategoryFiltersID")]
@@ -10264,7 +9887,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 				get { return this._CategoryFilters.Entity; }
 				set { this._CategoryFilters.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string CategoryNamesID { get; set; }
 			private EntityRef< ShortTextCollection > _CategoryNames;
 			[Association(Storage = "_CategoryNames", ThisKey = "CategoryNamesID")]
@@ -10273,7 +9896,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 				get { return this._CategoryNames.Entity; }
 				set { this._CategoryNames.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string CategoriesID { get; set; }
 			private EntityRef< ShortTextCollection > _Categories;
 			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
@@ -10283,11 +9906,11 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 				set { this._Categories.Entity = value; }
 			}
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CategoryIDList { get; set; }
 		// private string _unmodified_CategoryIDList;
-			[Column]
+			//[Column]
 			public string AuthorsID { get; set; }
 			private EntityRef< ShortTextCollection > _Authors;
 			[Association(Storage = "_Authors", ThisKey = "AuthorsID")]
@@ -10296,7 +9919,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 				get { return this._Authors.Entity; }
 				set { this._Authors.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string LocationsID { get; set; }
 			private EntityRef< ShortTextCollection > _Locations;
 			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
@@ -10332,20 +9955,21 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 				CategoryIDList = string.Empty;
 		}
 	}
-    [Table(Name = "ShortTextObject")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ShortTextObject")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ShortTextObject: {ID}")]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10368,8 +9992,8 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
         public void PrepareForStoring(bool isInitialInsert)
@@ -10379,20 +10003,21 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 				Content = string.Empty;
 		}
 	}
-    [Table(Name = "LongTextObject")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LongTextObject")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LongTextObject: {ID}")]
 	public class LongTextObject : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10415,8 +10040,8 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
         public void PrepareForStoring(bool isInitialInsert)
@@ -10426,20 +10051,21 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
 				Content = string.Empty;
 		}
 	}
-    [Table(Name = "MapMarker")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MapMarker")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapMarker: {ID}")]
 	public class MapMarker : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10468,36 +10094,36 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IconUrl { get; set; }
 		// private string _unmodified_IconUrl;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string MarkerSource { get; set; }
 		// private string _unmodified_MarkerSource;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LocationText { get; set; }
 		// private string _unmodified_LocationText;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PopupTitle { get; set; }
 		// private string _unmodified_PopupTitle;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PopupContent { get; set; }
 		// private string _unmodified_PopupContent;
-			[Column]
+			//[Column]
 			public string LocationID { get; set; }
 			private EntityRef< Location > _Location;
 			[Association(Storage = "_Location", ThisKey = "LocationID")]
@@ -10524,20 +10150,21 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
 				PopupContent = string.Empty;
 		}
 	}
-    [Table(Name = "Moderator")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Moderator")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Moderator: {ID}")]
 	public class Moderator : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10561,13 +10188,13 @@ CREATE TABLE IF NOT EXISTS [Moderator](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ModeratorName { get; set; }
 		// private string _unmodified_ModeratorName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProfileUrl { get; set; }
 		// private string _unmodified_ProfileUrl;
         public void PrepareForStoring(bool isInitialInsert)
@@ -10579,20 +10206,21 @@ CREATE TABLE IF NOT EXISTS [Moderator](
 				ProfileUrl = string.Empty;
 		}
 	}
-    [Table(Name = "Collaborator")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Collaborator")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Collaborator: {ID}")]
 	public class Collaborator : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10619,28 +10247,28 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AccountID { get; set; }
 		// private string _unmodified_AccountID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CollaboratorName { get; set; }
 		// private string _unmodified_CollaboratorName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Role { get; set; }
 		// private string _unmodified_Role;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProfileUrl { get; set; }
 		// private string _unmodified_ProfileUrl;
         public void PrepareForStoring(bool isInitialInsert)
@@ -10658,20 +10286,21 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
 				ProfileUrl = string.Empty;
 		}
 	}
-    [Table(Name = "GroupSummaryContainer")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "GroupSummaryContainer")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupSummaryContainer: {ID}")]
 	public class GroupSummaryContainer : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10697,11 +10326,11 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SummaryBody { get; set; }
 		// private string _unmodified_SummaryBody;
-			[Column]
+			//[Column]
 			public string IntroductionID { get; set; }
 			private EntityRef< Introduction > _Introduction;
 			[Association(Storage = "_Introduction", ThisKey = "IntroductionID")]
@@ -10711,7 +10340,7 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 				set { this._Introduction.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string GroupSummaryIndexID { get; set; }
 			private EntityRef< GroupIndex > _GroupSummaryIndex;
 			[Association(Storage = "_GroupSummaryIndex", ThisKey = "GroupSummaryIndexID")]
@@ -10721,7 +10350,7 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 				set { this._GroupSummaryIndex.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string GroupCollectionID { get; set; }
 			private EntityRef< GroupCollection > _GroupCollection;
 			[Association(Storage = "_GroupCollection", ThisKey = "GroupCollectionID")]
@@ -10737,20 +10366,21 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 				SummaryBody = string.Empty;
 		}
 	}
-    [Table(Name = "GroupContainer")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "GroupContainer")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupContainer: {ID}")]
 	public class GroupContainer : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10776,7 +10406,7 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string GroupIndexID { get; set; }
 			private EntityRef< GroupIndex > _GroupIndex;
 			[Association(Storage = "_GroupIndex", ThisKey = "GroupIndexID")]
@@ -10786,7 +10416,7 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 				set { this._GroupIndex.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string GroupProfileID { get; set; }
 			private EntityRef< Group > _GroupProfile;
 			[Association(Storage = "_GroupProfile", ThisKey = "GroupProfileID")]
@@ -10796,7 +10426,7 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 				set { this._GroupProfile.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string CollaboratorsID { get; set; }
 			private EntityRef< CollaboratorCollection > _Collaborators;
 			[Association(Storage = "_Collaborators", ThisKey = "CollaboratorsID")]
@@ -10805,7 +10435,7 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 				get { return this._Collaborators.Entity; }
 				set { this._Collaborators.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string PendingCollaboratorsID { get; set; }
 			private EntityRef< CollaboratorCollection > _PendingCollaborators;
 			[Association(Storage = "_PendingCollaborators", ThisKey = "PendingCollaboratorsID")]
@@ -10814,7 +10444,7 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 				get { return this._PendingCollaborators.Entity; }
 				set { this._PendingCollaborators.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string LocationCollectionID { get; set; }
 			private EntityRef< AddressAndLocationCollection > _LocationCollection;
 			[Association(Storage = "_LocationCollection", ThisKey = "LocationCollectionID")]
@@ -10828,20 +10458,21 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 		
 		}
 	}
-    [Table(Name = "GroupIndex")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "GroupIndex")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupIndex: {ID}")]
 	public class GroupIndex : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10866,7 +10497,7 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string IconID { get; set; }
 			private EntityRef< Image > _Icon;
 			[Association(Storage = "_Icon", ThisKey = "IconID")]
@@ -10877,18 +10508,18 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Introduction { get; set; }
 		// private string _unmodified_Introduction;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
         public void PrepareForStoring(bool isInitialInsert)
@@ -10902,20 +10533,21 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
 				Summary = string.Empty;
 		}
 	}
-    [Table(Name = "AddAddressAndLocationInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddAddressAndLocationInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddAddressAndLocationInfo: {ID}")]
 	public class AddAddressAndLocationInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10938,8 +10570,8 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LocationName { get; set; }
 		// private string _unmodified_LocationName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -10949,20 +10581,21 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 				LocationName = string.Empty;
 		}
 	}
-    [Table(Name = "AddImageInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddImageInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddImageInfo: {ID}")]
 	public class AddImageInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -10985,8 +10618,8 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ImageTitle { get; set; }
 		// private string _unmodified_ImageTitle;
         public void PrepareForStoring(bool isInitialInsert)
@@ -10996,20 +10629,21 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
 				ImageTitle = string.Empty;
 		}
 	}
-    [Table(Name = "AddImageGroupInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddImageGroupInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddImageGroupInfo: {ID}")]
 	public class AddImageGroupInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11032,8 +10666,8 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ImageGroupTitle { get; set; }
 		// private string _unmodified_ImageGroupTitle;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11043,20 +10677,21 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 				ImageGroupTitle = string.Empty;
 		}
 	}
-    [Table(Name = "AddEmailAddressInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddEmailAddressInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddEmailAddressInfo: {ID}")]
 	public class AddEmailAddressInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11079,8 +10714,8 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11090,20 +10725,21 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 				EmailAddress = string.Empty;
 		}
 	}
-    [Table(Name = "CreateGroupInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "CreateGroupInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CreateGroupInfo: {ID}")]
 	public class CreateGroupInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11126,8 +10762,8 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11137,20 +10773,21 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 				GroupName = string.Empty;
 		}
 	}
-    [Table(Name = "AddActivityInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddActivityInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddActivityInfo: {ID}")]
 	public class AddActivityInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11173,8 +10810,8 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ActivityName { get; set; }
 		// private string _unmodified_ActivityName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11184,20 +10821,21 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 				ActivityName = string.Empty;
 		}
 	}
-    [Table(Name = "AddBlogPostInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddBlogPostInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddBlogPostInfo: {ID}")]
 	public class AddBlogPostInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11220,8 +10858,8 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11231,20 +10869,21 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 				Title = string.Empty;
 		}
 	}
-    [Table(Name = "AddCategoryInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddCategoryInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddCategoryInfo: {ID}")]
 	public class AddCategoryInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11267,8 +10906,8 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11278,20 +10917,21 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 				CategoryName = string.Empty;
 		}
 	}
-    [Table(Name = "Group")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Group")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Group: {ID}")]
 	public class Group : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11322,7 +10962,7 @@ CREATE TABLE IF NOT EXISTS [Group](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ReferenceToInformationID { get; set; }
 			private EntityRef< ReferenceToInformation > _ReferenceToInformation;
 			[Association(Storage = "_ReferenceToInformation", ThisKey = "ReferenceToInformationID")]
@@ -11332,7 +10972,7 @@ CREATE TABLE IF NOT EXISTS [Group](
 				set { this._ReferenceToInformation.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string ProfileImageID { get; set; }
 			private EntityRef< Image > _ProfileImage;
 			[Association(Storage = "_ProfileImage", ThisKey = "ProfileImageID")]
@@ -11342,7 +10982,7 @@ CREATE TABLE IF NOT EXISTS [Group](
 				set { this._ProfileImage.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string IconImageID { get; set; }
 			private EntityRef< Image > _IconImage;
 			[Association(Storage = "_IconImage", ThisKey = "IconImageID")]
@@ -11353,26 +10993,26 @@ CREATE TABLE IF NOT EXISTS [Group](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OrganizationsAndGroupsLinkedToUs { get; set; }
 		// private string _unmodified_OrganizationsAndGroupsLinkedToUs;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string WwwSiteToPublishTo { get; set; }
 		// private string _unmodified_WwwSiteToPublishTo;
-			[Column]
+			//[Column]
 			public string CustomUICollectionID { get; set; }
 			private EntityRef< ShortTextCollection > _CustomUICollection;
 			[Association(Storage = "_CustomUICollection", ThisKey = "CustomUICollectionID")]
@@ -11381,7 +11021,7 @@ CREATE TABLE IF NOT EXISTS [Group](
 				get { return this._CustomUICollection.Entity; }
 				set { this._CustomUICollection.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string ModeratorsID { get; set; }
 			private EntityRef< ModeratorCollection > _Moderators;
 			[Association(Storage = "_Moderators", ThisKey = "ModeratorsID")]
@@ -11390,7 +11030,7 @@ CREATE TABLE IF NOT EXISTS [Group](
 				get { return this._Moderators.Entity; }
 				set { this._Moderators.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string CategoryCollectionID { get; set; }
 			private EntityRef< CategoryCollection > _CategoryCollection;
 			[Association(Storage = "_CategoryCollection", ThisKey = "CategoryCollectionID")]
@@ -11412,20 +11052,21 @@ CREATE TABLE IF NOT EXISTS [Group](
 				WwwSiteToPublishTo = string.Empty;
 		}
 	}
-    [Table(Name = "Introduction")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Introduction")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Introduction: {ID}")]
 	public class Introduction : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11449,13 +11090,13 @@ CREATE TABLE IF NOT EXISTS [Introduction](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Body { get; set; }
 		// private string _unmodified_Body;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11467,20 +11108,21 @@ CREATE TABLE IF NOT EXISTS [Introduction](
 				Body = string.Empty;
 		}
 	}
-    [Table(Name = "ContentCategoryRank")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ContentCategoryRank")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ContentCategoryRank: {ID}")]
 	public class ContentCategoryRank : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11507,28 +11149,28 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ContentID { get; set; }
 		// private string _unmodified_ContentID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ContentSemanticType { get; set; }
 		// private string _unmodified_ContentSemanticType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CategoryID { get; set; }
 		// private string _unmodified_CategoryID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RankName { get; set; }
 		// private string _unmodified_RankName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RankValue { get; set; }
 		// private string _unmodified_RankValue;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11546,20 +11188,21 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 				RankValue = string.Empty;
 		}
 	}
-    [Table(Name = "LinkToContent")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LinkToContent")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LinkToContent: {ID}")]
 	public class LinkToContent : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11589,33 +11232,33 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string URL { get; set; }
 		// private string _unmodified_URL;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Published { get; set; }
 		// private DateTime _unmodified_Published;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Author { get; set; }
 		// private string _unmodified_Author;
-			[Column]
+			//[Column]
 			public string ImageDataID { get; set; }
-			[Column]
+			//[Column]
 			public string LocationsID { get; set; }
 			private EntityRef< AddressAndLocationCollection > _Locations;
 			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
@@ -11624,7 +11267,7 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 				get { return this._Locations.Entity; }
 				set { this._Locations.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string CategoriesID { get; set; }
 			private EntityRef< CategoryCollection > _Categories;
 			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
@@ -11646,20 +11289,21 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 				Author = string.Empty;
 		}
 	}
-    [Table(Name = "EmbeddedContent")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "EmbeddedContent")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("EmbeddedContent: {ID}")]
 	public class EmbeddedContent : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11688,31 +11332,31 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IFrameTagContents { get; set; }
 		// private string _unmodified_IFrameTagContents;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Published { get; set; }
 		// private DateTime _unmodified_Published;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Author { get; set; }
 		// private string _unmodified_Author;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-			[Column]
+			//[Column]
 			public string LocationsID { get; set; }
 			private EntityRef< AddressAndLocationCollection > _Locations;
 			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
@@ -11721,7 +11365,7 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 				get { return this._Locations.Entity; }
 				set { this._Locations.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string CategoriesID { get; set; }
 			private EntityRef< CategoryCollection > _Categories;
 			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
@@ -11743,20 +11387,21 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 				Description = string.Empty;
 		}
 	}
-    [Table(Name = "DynamicContentGroup")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "DynamicContentGroup")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DynamicContentGroup: {ID}")]
 	public class DynamicContentGroup : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11783,28 +11428,28 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string HostName { get; set; }
 		// private string _unmodified_HostName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupHeader { get; set; }
 		// private string _unmodified_GroupHeader;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SortValue { get; set; }
 		// private string _unmodified_SortValue;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PageLocation { get; set; }
 		// private string _unmodified_PageLocation;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ContentItemNames { get; set; }
 		// private string _unmodified_ContentItemNames;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11822,20 +11467,21 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 				ContentItemNames = string.Empty;
 		}
 	}
-    [Table(Name = "DynamicContent")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "DynamicContent")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DynamicContent: {ID}")]
 	public class DynamicContent : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11869,60 +11515,60 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string HostName { get; set; }
 		// private string _unmodified_HostName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ContentName { get; set; }
 		// private string _unmodified_ContentName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ElementQuery { get; set; }
 		// private string _unmodified_ElementQuery;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RawContent { get; set; }
 		// private string _unmodified_RawContent;
-			[Column]
+			//[Column]
 			public string ImageDataID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsEnabled { get; set; }
 		// private bool _unmodified_IsEnabled;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool ApplyActively { get; set; }
 		// private bool _unmodified_ApplyActively;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string EditType { get; set; }
 		// private string _unmodified_EditType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PageLocation { get; set; }
 		// private string _unmodified_PageLocation;
         public void PrepareForStoring(bool isInitialInsert)
@@ -11948,20 +11594,21 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
 				PageLocation = string.Empty;
 		}
 	}
-    [Table(Name = "AttachedToObject")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AttachedToObject")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AttachedToObject: {ID}")]
 	public class AttachedToObject : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -11989,33 +11636,33 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SourceObjectID { get; set; }
 		// private string _unmodified_SourceObjectID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SourceObjectName { get; set; }
 		// private string _unmodified_SourceObjectName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SourceObjectDomain { get; set; }
 		// private string _unmodified_SourceObjectDomain;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectID { get; set; }
 		// private string _unmodified_TargetObjectID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectName { get; set; }
 		// private string _unmodified_TargetObjectName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectDomain { get; set; }
 		// private string _unmodified_TargetObjectDomain;
         public void PrepareForStoring(bool isInitialInsert)
@@ -12035,20 +11682,21 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
 				TargetObjectDomain = string.Empty;
 		}
 	}
-    [Table(Name = "Comment")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Comment")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Comment: {ID}")]
 	public class Comment : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12082,63 +11730,63 @@ CREATE TABLE IF NOT EXISTS [Comment](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectID { get; set; }
 		// private string _unmodified_TargetObjectID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectName { get; set; }
 		// private string _unmodified_TargetObjectName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectDomain { get; set; }
 		// private string _unmodified_TargetObjectDomain;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CommentText { get; set; }
 		// private string _unmodified_CommentText;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Created { get; set; }
 		// private DateTime _unmodified_Created;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OriginalAuthorName { get; set; }
 		// private string _unmodified_OriginalAuthorName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OriginalAuthorEmail { get; set; }
 		// private string _unmodified_OriginalAuthorEmail;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OriginalAuthorAccountID { get; set; }
 		// private string _unmodified_OriginalAuthorAccountID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime LastModified { get; set; }
 		// private DateTime _unmodified_LastModified;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LastAuthorName { get; set; }
 		// private string _unmodified_LastAuthorName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LastAuthorEmail { get; set; }
 		// private string _unmodified_LastAuthorEmail;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LastAuthorAccountID { get; set; }
 		// private string _unmodified_LastAuthorAccountID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -12166,20 +11814,21 @@ CREATE TABLE IF NOT EXISTS [Comment](
 				LastAuthorAccountID = string.Empty;
 		}
 	}
-    [Table(Name = "Selection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Selection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Selection: {ID}")]
 	public class Selection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12208,38 +11857,38 @@ CREATE TABLE IF NOT EXISTS [Selection](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectID { get; set; }
 		// private string _unmodified_TargetObjectID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectName { get; set; }
 		// private string _unmodified_TargetObjectName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetObjectDomain { get; set; }
 		// private string _unmodified_TargetObjectDomain;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SelectionCategory { get; set; }
 		// private string _unmodified_SelectionCategory;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TextValue { get; set; }
 		// private string _unmodified_TextValue;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool BooleanValue { get; set; }
 		// private bool _unmodified_BooleanValue;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double DoubleValue { get; set; }
 		// private double _unmodified_DoubleValue;
         public void PrepareForStoring(bool isInitialInsert)
@@ -12257,20 +11906,21 @@ CREATE TABLE IF NOT EXISTS [Selection](
 				TextValue = string.Empty;
 		}
 	}
-    [Table(Name = "TextContent")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TextContent")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TextContent: {ID}")]
 	public class TextContent : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12305,46 +11955,46 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ImageDataID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OpenArticleTitle { get; set; }
 		// private string _unmodified_OpenArticleTitle;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SubTitle { get; set; }
 		// private string _unmodified_SubTitle;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Published { get; set; }
 		// private DateTime _unmodified_Published;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Author { get; set; }
 		// private string _unmodified_Author;
-			[Column]
+			//[Column]
 			public string ArticleImageDataID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Excerpt { get; set; }
 		// private string _unmodified_Excerpt;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Body { get; set; }
 		// private string _unmodified_Body;
-			[Column]
+			//[Column]
 			public string LocationsID { get; set; }
 			private EntityRef< AddressAndLocationCollection > _Locations;
 			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
@@ -12353,7 +12003,7 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 				get { return this._Locations.Entity; }
 				set { this._Locations.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string CategoriesID { get; set; }
 			private EntityRef< CategoryCollection > _Categories;
 			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
@@ -12363,18 +12013,18 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 				set { this._Categories.Entity = value; }
 			}
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double SortOrderNumber { get; set; }
 		// private double _unmodified_SortOrderNumber;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IFrameSources { get; set; }
 		// private string _unmodified_IFrameSources;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RawHtmlContent { get; set; }
 		// private string _unmodified_RawHtmlContent;
         public void PrepareForStoring(bool isInitialInsert)
@@ -12398,20 +12048,21 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 				RawHtmlContent = string.Empty;
 		}
 	}
-    [Table(Name = "Map")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Map")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Map: {ID}")]
 	public class Map : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12434,8 +12085,8 @@ CREATE TABLE IF NOT EXISTS [Map](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
         public void PrepareForStoring(bool isInitialInsert)
@@ -12445,20 +12096,21 @@ CREATE TABLE IF NOT EXISTS [Map](
 				Title = string.Empty;
 		}
 	}
-    [Table(Name = "MapResult")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MapResult")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapResult: {ID}")]
 	public class MapResult : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12480,7 +12132,7 @@ CREATE TABLE IF NOT EXISTS [MapResult](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string LocationID { get; set; }
 			private EntityRef< Location > _Location;
 			[Association(Storage = "_Location", ThisKey = "LocationID")]
@@ -12495,20 +12147,21 @@ CREATE TABLE IF NOT EXISTS [MapResult](
 		
 		}
 	}
-    [Table(Name = "MapResultsCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MapResultsCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapResultsCollection: {ID}")]
 	public class MapResultsCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12532,7 +12185,7 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ResultByDateID { get; set; }
 			private EntityRef< MapResultCollection > _ResultByDate;
 			[Association(Storage = "_ResultByDate", ThisKey = "ResultByDateID")]
@@ -12541,7 +12194,7 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 				get { return this._ResultByDate.Entity; }
 				set { this._ResultByDate.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string ResultByAuthorID { get; set; }
 			private EntityRef< MapResultCollection > _ResultByAuthor;
 			[Association(Storage = "_ResultByAuthor", ThisKey = "ResultByAuthorID")]
@@ -12550,7 +12203,7 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 				get { return this._ResultByAuthor.Entity; }
 				set { this._ResultByAuthor.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string ResultByProximityID { get; set; }
 			private EntityRef< MapResultCollection > _ResultByProximity;
 			[Association(Storage = "_ResultByProximity", ThisKey = "ResultByProximityID")]
@@ -12564,20 +12217,21 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 		
 		}
 	}
-    [Table(Name = "Video")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Video")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Video: {ID}")]
 	public class Video : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12601,16 +12255,16 @@ CREATE TABLE IF NOT EXISTS [Video](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string VideoDataID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Caption { get; set; }
 		// private string _unmodified_Caption;
         public void PrepareForStoring(bool isInitialInsert)
@@ -12622,20 +12276,21 @@ CREATE TABLE IF NOT EXISTS [Video](
 				Caption = string.Empty;
 		}
 	}
-    [Table(Name = "Image")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Image")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Image: {ID}")]
 	public class Image : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12663,7 +12318,7 @@ CREATE TABLE IF NOT EXISTS [Image](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ReferenceToInformationID { get; set; }
 			private EntityRef< ReferenceToInformation > _ReferenceToInformation;
 			[Association(Storage = "_ReferenceToInformation", ThisKey = "ReferenceToInformationID")]
@@ -12673,24 +12328,24 @@ CREATE TABLE IF NOT EXISTS [Image](
 				set { this._ReferenceToInformation.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string ImageDataID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Caption { get; set; }
 		// private string _unmodified_Caption;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-			[Column]
+			//[Column]
 			public string LocationsID { get; set; }
 			private EntityRef< AddressAndLocationCollection > _Locations;
 			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
@@ -12699,7 +12354,7 @@ CREATE TABLE IF NOT EXISTS [Image](
 				get { return this._Locations.Entity; }
 				set { this._Locations.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string CategoriesID { get; set; }
 			private EntityRef< CategoryCollection > _Categories;
 			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
@@ -12719,20 +12374,21 @@ CREATE TABLE IF NOT EXISTS [Image](
 				Description = string.Empty;
 		}
 	}
-    [Table(Name = "BinaryFile")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "BinaryFile")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("BinaryFile: {ID}")]
 	public class BinaryFile : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12759,23 +12415,23 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OriginalFileName { get; set; }
 		// private string _unmodified_OriginalFileName;
-			[Column]
+			//[Column]
 			public string DataID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-			[Column]
+			//[Column]
 			public string CategoriesID { get; set; }
 			private EntityRef< CategoryCollection > _Categories;
 			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
@@ -12795,20 +12451,21 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
 				Description = string.Empty;
 		}
 	}
-    [Table(Name = "Longitude")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Longitude")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Longitude: {ID}")]
 	public class Longitude : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12831,8 +12488,8 @@ CREATE TABLE IF NOT EXISTS [Longitude](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TextValue { get; set; }
 		// private string _unmodified_TextValue;
         public void PrepareForStoring(bool isInitialInsert)
@@ -12842,20 +12499,21 @@ CREATE TABLE IF NOT EXISTS [Longitude](
 				TextValue = string.Empty;
 		}
 	}
-    [Table(Name = "Latitude")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Latitude")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Latitude: {ID}")]
 	public class Latitude : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12878,8 +12536,8 @@ CREATE TABLE IF NOT EXISTS [Latitude](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TextValue { get; set; }
 		// private string _unmodified_TextValue;
         public void PrepareForStoring(bool isInitialInsert)
@@ -12889,20 +12547,21 @@ CREATE TABLE IF NOT EXISTS [Latitude](
 				TextValue = string.Empty;
 		}
 	}
-    [Table(Name = "Location")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Location")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Location: {ID}")]
 	public class Location : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12927,11 +12586,11 @@ CREATE TABLE IF NOT EXISTS [Location](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LocationName { get; set; }
 		// private string _unmodified_LocationName;
-			[Column]
+			//[Column]
 			public string LongitudeID { get; set; }
 			private EntityRef< Longitude > _Longitude;
 			[Association(Storage = "_Longitude", ThisKey = "LongitudeID")]
@@ -12941,7 +12600,7 @@ CREATE TABLE IF NOT EXISTS [Location](
 				set { this._Longitude.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string LatitudeID { get; set; }
 			private EntityRef< Latitude > _Latitude;
 			[Association(Storage = "_Latitude", ThisKey = "LatitudeID")]
@@ -12958,20 +12617,21 @@ CREATE TABLE IF NOT EXISTS [Location](
 				LocationName = string.Empty;
 		}
 	}
-    [Table(Name = "Date")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Date")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Date: {ID}")]
 	public class Date : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -12997,23 +12657,23 @@ CREATE TABLE IF NOT EXISTS [Date](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Day { get; set; }
 		// private DateTime _unmodified_Day;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Week { get; set; }
 		// private DateTime _unmodified_Week;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Month { get; set; }
 		// private DateTime _unmodified_Month;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Year { get; set; }
 		// private DateTime _unmodified_Year;
         public void PrepareForStoring(bool isInitialInsert)
@@ -13021,20 +12681,21 @@ CREATE TABLE IF NOT EXISTS [Date](
 		
 		}
 	}
-    [Table(Name = "CategoryContainer")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "CategoryContainer")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CategoryContainer: {ID}")]
 	public class CategoryContainer : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13056,7 +12717,7 @@ CREATE TABLE IF NOT EXISTS [CategoryContainer](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string CategoriesID { get; set; }
 			private EntityRef< CategoryCollection > _Categories;
 			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
@@ -13070,20 +12731,21 @@ CREATE TABLE IF NOT EXISTS [CategoryContainer](
 		
 		}
 	}
-    [Table(Name = "Category")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Category")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Category: {ID}")]
 	public class Category : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13110,7 +12772,7 @@ CREATE TABLE IF NOT EXISTS [Category](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ReferenceToInformationID { get; set; }
 			private EntityRef< ReferenceToInformation > _ReferenceToInformation;
 			[Association(Storage = "_ReferenceToInformation", ThisKey = "ReferenceToInformationID")]
@@ -13121,23 +12783,23 @@ CREATE TABLE IF NOT EXISTS [Category](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
-			[Column]
+			//[Column]
 			public string ImageDataID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Excerpt { get; set; }
 		// private string _unmodified_Excerpt;
-			[Column]
+			//[Column]
 			public string ParentCategoryID { get; set; }
 			private EntityRef< Category > _ParentCategory;
 			[Association(Storage = "_ParentCategory", ThisKey = "ParentCategoryID")]
@@ -13158,20 +12820,21 @@ CREATE TABLE IF NOT EXISTS [Category](
 				Excerpt = string.Empty;
 		}
 	}
-    [Table(Name = "UpdateWebContentOperation")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "UpdateWebContentOperation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("UpdateWebContentOperation: {ID}")]
 	public class UpdateWebContentOperation : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13199,31 +12862,31 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SourceContainerName { get; set; }
 		// private string _unmodified_SourceContainerName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SourcePathRoot { get; set; }
 		// private string _unmodified_SourcePathRoot;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetContainerName { get; set; }
 		// private string _unmodified_TargetContainerName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetPathRoot { get; set; }
 		// private string _unmodified_TargetPathRoot;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool RenderWhileSync { get; set; }
 		// private bool _unmodified_RenderWhileSync;
-			[Column]
+			//[Column]
 			public string HandlersID { get; set; }
 			private EntityRef< UpdateWebContentHandlerCollection > _Handlers;
 			[Association(Storage = "_Handlers", ThisKey = "HandlersID")]
@@ -13245,20 +12908,21 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 				TargetPathRoot = string.Empty;
 		}
 	}
-    [Table(Name = "UpdateWebContentHandlerItem")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "UpdateWebContentHandlerItem")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("UpdateWebContentHandlerItem: {ID}")]
 	public class UpdateWebContentHandlerItem : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13282,13 +12946,13 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InformationTypeName { get; set; }
 		// private string _unmodified_InformationTypeName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OptionName { get; set; }
 		// private string _unmodified_OptionName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -13300,20 +12964,21 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 				OptionName = string.Empty;
 		}
 	}
-    [Table(Name = "PublicationPackageCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "PublicationPackageCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PublicationPackageCollection: {ID}")]
 	public class PublicationPackageCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13338,24 +13003,25 @@ CREATE TABLE IF NOT EXISTS [PublicationPackageCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "TBAccountCollaborationGroupCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBAccountCollaborationGroupCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBAccountCollaborationGroupCollection: {ID}")]
 	public class TBAccountCollaborationGroupCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13380,24 +13046,25 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroupCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "TBLoginInfoCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBLoginInfoCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBLoginInfoCollection: {ID}")]
 	public class TBLoginInfoCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13422,24 +13089,25 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfoCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "TBEmailCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBEmailCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBEmailCollection: {ID}")]
 	public class TBEmailCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13464,24 +13132,25 @@ CREATE TABLE IF NOT EXISTS [TBEmailCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "TBCollaboratorRoleCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TBCollaboratorRoleCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBCollaboratorRoleCollection: {ID}")]
 	public class TBCollaboratorRoleCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13506,24 +13175,25 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRoleCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "LoginProviderCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LoginProviderCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LoginProviderCollection: {ID}")]
 	public class LoginProviderCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13548,24 +13218,25 @@ CREATE TABLE IF NOT EXISTS [LoginProviderCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "AddressAndLocationCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AddressAndLocationCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddressAndLocationCollection: {ID}")]
 	public class AddressAndLocationCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13590,24 +13261,25 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocationCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "ReferenceCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ReferenceCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ReferenceCollection: {ID}")]
 	public class ReferenceCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13632,24 +13304,25 @@ CREATE TABLE IF NOT EXISTS [ReferenceCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "RenderedNodeCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "RenderedNodeCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("RenderedNodeCollection: {ID}")]
 	public class RenderedNodeCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13674,24 +13347,25 @@ CREATE TABLE IF NOT EXISTS [RenderedNodeCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "ShortTextCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ShortTextCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ShortTextCollection: {ID}")]
 	public class ShortTextCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13716,24 +13390,25 @@ CREATE TABLE IF NOT EXISTS [ShortTextCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "LongTextCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LongTextCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LongTextCollection: {ID}")]
 	public class LongTextCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13758,24 +13433,25 @@ CREATE TABLE IF NOT EXISTS [LongTextCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "MapMarkerCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MapMarkerCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapMarkerCollection: {ID}")]
 	public class MapMarkerCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13800,24 +13476,25 @@ CREATE TABLE IF NOT EXISTS [MapMarkerCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "ModeratorCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ModeratorCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ModeratorCollection: {ID}")]
 	public class ModeratorCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13842,24 +13519,25 @@ CREATE TABLE IF NOT EXISTS [ModeratorCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "CollaboratorCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "CollaboratorCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CollaboratorCollection: {ID}")]
 	public class CollaboratorCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13884,24 +13562,25 @@ CREATE TABLE IF NOT EXISTS [CollaboratorCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "GroupCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "GroupCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupCollection: {ID}")]
 	public class GroupCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13926,24 +13605,25 @@ CREATE TABLE IF NOT EXISTS [GroupCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "ContentCategoryRankCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ContentCategoryRankCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ContentCategoryRankCollection: {ID}")]
 	public class ContentCategoryRankCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -13968,24 +13648,25 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRankCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "LinkToContentCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LinkToContentCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LinkToContentCollection: {ID}")]
 	public class LinkToContentCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14010,24 +13691,25 @@ CREATE TABLE IF NOT EXISTS [LinkToContentCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "EmbeddedContentCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "EmbeddedContentCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("EmbeddedContentCollection: {ID}")]
 	public class EmbeddedContentCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14052,24 +13734,25 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContentCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "DynamicContentGroupCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "DynamicContentGroupCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DynamicContentGroupCollection: {ID}")]
 	public class DynamicContentGroupCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14094,24 +13777,25 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroupCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "DynamicContentCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "DynamicContentCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DynamicContentCollection: {ID}")]
 	public class DynamicContentCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14136,24 +13820,25 @@ CREATE TABLE IF NOT EXISTS [DynamicContentCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "AttachedToObjectCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AttachedToObjectCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AttachedToObjectCollection: {ID}")]
 	public class AttachedToObjectCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14178,24 +13863,25 @@ CREATE TABLE IF NOT EXISTS [AttachedToObjectCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "CommentCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "CommentCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CommentCollection: {ID}")]
 	public class CommentCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14220,24 +13906,25 @@ CREATE TABLE IF NOT EXISTS [CommentCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "SelectionCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "SelectionCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SelectionCollection: {ID}")]
 	public class SelectionCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14262,24 +13949,25 @@ CREATE TABLE IF NOT EXISTS [SelectionCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "TextContentCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TextContentCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TextContentCollection: {ID}")]
 	public class TextContentCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14304,24 +13992,25 @@ CREATE TABLE IF NOT EXISTS [TextContentCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "MapCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MapCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapCollection: {ID}")]
 	public class MapCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14346,24 +14035,25 @@ CREATE TABLE IF NOT EXISTS [MapCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "MapResultCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "MapResultCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapResultCollection: {ID}")]
 	public class MapResultCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14388,24 +14078,25 @@ CREATE TABLE IF NOT EXISTS [MapResultCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "ImageCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ImageCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ImageCollection: {ID}")]
 	public class ImageCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14430,24 +14121,25 @@ CREATE TABLE IF NOT EXISTS [ImageCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "BinaryFileCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "BinaryFileCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("BinaryFileCollection: {ID}")]
 	public class BinaryFileCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14472,24 +14164,25 @@ CREATE TABLE IF NOT EXISTS [BinaryFileCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "LocationCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LocationCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LocationCollection: {ID}")]
 	public class LocationCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14514,24 +14207,25 @@ CREATE TABLE IF NOT EXISTS [LocationCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "CategoryCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "CategoryCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CategoryCollection: {ID}")]
 	public class CategoryCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14556,24 +14250,25 @@ CREATE TABLE IF NOT EXISTS [CategoryCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "UpdateWebContentHandlerCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "UpdateWebContentHandlerCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("UpdateWebContentHandlerCollection: {ID}")]
 	public class UpdateWebContentHandlerCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -14598,8 +14293,8 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
  } 

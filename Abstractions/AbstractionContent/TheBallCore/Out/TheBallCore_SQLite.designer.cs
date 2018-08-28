@@ -5,9 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -17,11 +14,13 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
-using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
-using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
+//using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+//using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SQLite.TheBall.CORE { 
@@ -31,15 +30,14 @@ namespace SQLite.TheBall.CORE {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
+		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
             // Track whether Dispose has been called. 
             private bool disposed = false;
-		    protected override void Dispose(bool disposing)
+		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
 		            return;
-                base.Dispose(disposing);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
@@ -47,16 +45,24 @@ namespace SQLite.TheBall.CORE {
 
             public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
+		    public TheBallDataContext() : base(new DbContextOptions<TheBallDataContext>())
 		    {
 		        
 		    }
 
+		    public readonly string SQLiteDBPath;
+		    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		    {
+		        optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
+		    }
+
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
-		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                var dataContext = new TheBallDataContext(connection);
-		        using (var transaction = connection.BeginTransaction())
+		        var sqliteConnectionString = $"{pathToDBFile}";
+                var dataContext = new TheBallDataContext(sqliteConnectionString);
+		        var db = dataContext.Database;
+                db.OpenConnection();
+		        using (var transaction = db.BeginTransaction())
 		        {
                     dataContext.CreateDomainDatabaseTablesIfNotExists();
                     transaction.Commit();
@@ -64,12 +70,19 @@ namespace SQLite.TheBall.CORE {
                 return dataContext;
 		    }
 
-            public TheBallDataContext(SQLiteConnection connection) : base(connection)
+            public TheBallDataContext(string sqLiteDBPath) : base()
+            {
+                SQLiteDBPath = sqLiteDBPath;
+            }
+
+		    public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		    {
-                if(connection.State != ConnectionState.Open)
-                    connection.Open();
+                //if(connection.State != ConnectionState.Open)
+                //    connection.Open();
+		        return base.SaveChanges(acceptAllChangesOnSuccess);
 		    }
 
+			/*
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
@@ -86,6 +99,7 @@ namespace SQLite.TheBall.CORE {
 		    {
 		        await Task.Run(() => SubmitChanges());
 		    }
+			*/
 
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
@@ -151,7 +165,9 @@ namespace SQLite.TheBall.CORE {
 				tableCreationCommands.Add(StorageUsageCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(NetworkUsageCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(HTTPActivityDetailsCollection.GetCreateTableSQL());
-			    var connection = this.Connection;
+			    //var connection = this.Connection;
+			    var db = this.Database;
+			    var connection = db.GetDbConnection();
 				foreach (string commandText in tableCreationCommands)
 			    {
 			        var command = connection.CreateCommand();
@@ -161,9 +177,9 @@ namespace SQLite.TheBall.CORE {
 			    }
 			}
 
-			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
+			public DbSet<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
-					return this.GetTable<InformationObjectMetaData>();
+					return this.Set<InformationObjectMetaData>();
 				}
 			}
 
@@ -193,7 +209,7 @@ namespace SQLite.TheBall.CORE {
                                 LoginID = existingObject.ID,
                                 AccountID = serializedObject.Account
                             };
-                            LoginAccountTable.InsertOnSubmit(relationObject);
+                            LoginAccountTable.Add(relationObject);
 							existingObject.Account = relationObject;
                     }
 
@@ -215,7 +231,7 @@ namespace SQLite.TheBall.CORE {
                                 EmailID = existingObject.ID,
                                 AccountID = serializedObject.Account
                             };
-                            EmailAccountTable.InsertOnSubmit(relationObject);
+                            EmailAccountTable.Add(relationObject);
 							existingObject.Account = relationObject;
                     }
 
@@ -243,7 +259,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = existingObject.ID,
                                     EmailID = item
                                 };
-                                AccountEmailsTable.InsertOnSubmit(relationObject);
+                                AccountEmailsTable.Add(relationObject);
                                 existingObject.Emails.Add(relationObject);
 
                             });
@@ -260,7 +276,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = existingObject.ID,
                                     LoginID = item
                                 };
-                                AccountLoginsTable.InsertOnSubmit(relationObject);
+                                AccountLoginsTable.Add(relationObject);
                                 existingObject.Logins.Add(relationObject);
 
                             });
@@ -277,7 +293,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = existingObject.ID,
                                     GroupMembershipID = item
                                 };
-                                AccountGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                AccountGroupMembershipsTable.Add(relationObject);
                                 existingObject.GroupMemberships.Add(relationObject);
 
                             });
@@ -306,7 +322,7 @@ namespace SQLite.TheBall.CORE {
                                     GroupID = existingObject.ID,
                                     GroupMembershipID = item
                                 };
-                                GroupGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                GroupGroupMembershipsTable.Add(relationObject);
                                 existingObject.GroupMemberships.Add(relationObject);
 
                             });
@@ -329,7 +345,7 @@ namespace SQLite.TheBall.CORE {
                                 GroupMembershipID = existingObject.ID,
                                 AccountID = serializedObject.Account
                             };
-                            GroupMembershipAccountTable.InsertOnSubmit(relationObject);
+                            GroupMembershipAccountTable.Add(relationObject);
 							existingObject.Account = relationObject;
                     }
 
@@ -340,7 +356,7 @@ namespace SQLite.TheBall.CORE {
                                 GroupMembershipID = existingObject.ID,
                                 GroupID = serializedObject.Group
                             };
-                            GroupMembershipGroupTable.InsertOnSubmit(relationObject);
+                            GroupMembershipGroupTable.Add(relationObject);
 							existingObject.Group = relationObject;
                     }
 
@@ -893,7 +909,7 @@ namespace SQLite.TheBall.CORE {
                                 LoginID = existingObject.ID,
                                 AccountID = serializedObject.Account
                             };
-                            LoginAccountTable.InsertOnSubmit(relationObject);
+                            LoginAccountTable.Add(relationObject);
 							existingObject.Account = relationObject;
                     }
 
@@ -915,7 +931,7 @@ namespace SQLite.TheBall.CORE {
                                 EmailID = existingObject.ID,
                                 AccountID = serializedObject.Account
                             };
-                            EmailAccountTable.InsertOnSubmit(relationObject);
+                            EmailAccountTable.Add(relationObject);
 							existingObject.Account = relationObject;
                     }
 
@@ -943,7 +959,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = existingObject.ID,
                                     EmailID = item
                                 };
-                                AccountEmailsTable.InsertOnSubmit(relationObject);
+                                AccountEmailsTable.Add(relationObject);
                                 existingObject.Emails.Add(relationObject);
 
                             });
@@ -960,7 +976,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = existingObject.ID,
                                     LoginID = item
                                 };
-                                AccountLoginsTable.InsertOnSubmit(relationObject);
+                                AccountLoginsTable.Add(relationObject);
                                 existingObject.Logins.Add(relationObject);
 
                             });
@@ -977,7 +993,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = existingObject.ID,
                                     GroupMembershipID = item
                                 };
-                                AccountGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                AccountGroupMembershipsTable.Add(relationObject);
                                 existingObject.GroupMemberships.Add(relationObject);
 
                             });
@@ -1006,7 +1022,7 @@ namespace SQLite.TheBall.CORE {
                                     GroupID = existingObject.ID,
                                     GroupMembershipID = item
                                 };
-                                GroupGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                GroupGroupMembershipsTable.Add(relationObject);
                                 existingObject.GroupMemberships.Add(relationObject);
 
                             });
@@ -1029,7 +1045,7 @@ namespace SQLite.TheBall.CORE {
                                 GroupMembershipID = existingObject.ID,
                                 AccountID = serializedObject.Account
                             };
-                            GroupMembershipAccountTable.InsertOnSubmit(relationObject);
+                            GroupMembershipAccountTable.Add(relationObject);
 							existingObject.Account = relationObject;
                     }
 
@@ -1040,7 +1056,7 @@ namespace SQLite.TheBall.CORE {
                                 GroupMembershipID = existingObject.ID,
                                 GroupID = serializedObject.Group
                             };
-                            GroupMembershipGroupTable.InsertOnSubmit(relationObject);
+                            GroupMembershipGroupTable.Add(relationObject);
 							existingObject.Group = relationObject;
                     }
 
@@ -1571,7 +1587,7 @@ namespace SQLite.TheBall.CORE {
 		    {
                 if (insertData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -1592,11 +1608,11 @@ namespace SQLite.TheBall.CORE {
                                 LoginID = objectToAdd.ID,
                                 AccountID = serializedObject.Account
                             };
-                            LoginAccountTable.InsertOnSubmit(relationObject);
+                            LoginAccountTable.Add(relationObject);
                             objectToAdd.Account = relationObject;
                     }
 
-					LoginTable.InsertOnSubmit(objectToAdd);
+					LoginTable.Add(objectToAdd);
                     break;
                 }
                 case "Email":
@@ -1614,14 +1630,14 @@ namespace SQLite.TheBall.CORE {
                                 EmailID = objectToAdd.ID,
                                 AccountID = serializedObject.Account
                             };
-                            EmailAccountTable.InsertOnSubmit(relationObject);
+                            EmailAccountTable.Add(relationObject);
                             objectToAdd.Account = relationObject;
                     }
 
 		            objectToAdd.PendingValidation = serializedObject.PendingValidation;
 		            objectToAdd.ValidationKey = serializedObject.ValidationKey;
 		            objectToAdd.ValidationProcessExpiration = serializedObject.ValidationProcessExpiration;
-					EmailTable.InsertOnSubmit(objectToAdd);
+					EmailTable.Add(objectToAdd);
                     break;
                 }
                 case "Account":
@@ -1641,7 +1657,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = objectToAdd.ID,
                                     EmailID = item
                                 };
-                                AccountEmailsTable.InsertOnSubmit(relationObject);
+                                AccountEmailsTable.Add(relationObject);
                                 objectToAdd.Emails.Add(relationObject);
 
                             });
@@ -1657,7 +1673,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = objectToAdd.ID,
                                     LoginID = item
                                 };
-                                AccountLoginsTable.InsertOnSubmit(relationObject);
+                                AccountLoginsTable.Add(relationObject);
                                 objectToAdd.Logins.Add(relationObject);
 
                             });
@@ -1673,7 +1689,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = objectToAdd.ID,
                                     GroupMembershipID = item
                                 };
-                                AccountGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                AccountGroupMembershipsTable.Add(relationObject);
                                 objectToAdd.GroupMemberships.Add(relationObject);
 
                             });
@@ -1681,7 +1697,7 @@ namespace SQLite.TheBall.CORE {
 
 		            objectToAdd.ServerMetadataJSON = serializedObject.ServerMetadataJSON;
 		            objectToAdd.ClientMetadataJSON = serializedObject.ClientMetadataJSON;
-					AccountTable.InsertOnSubmit(objectToAdd);
+					AccountTable.Add(objectToAdd);
                     break;
                 }
                 case "Group":
@@ -1701,13 +1717,13 @@ namespace SQLite.TheBall.CORE {
                                     GroupID = objectToAdd.ID,
                                     GroupMembershipID = item
                                 };
-                                GroupGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                GroupGroupMembershipsTable.Add(relationObject);
                                 objectToAdd.GroupMemberships.Add(relationObject);
 
                             });
                     }
 
-					GroupTable.InsertOnSubmit(objectToAdd);
+					GroupTable.Add(objectToAdd);
                     break;
                 }
                 case "GroupMembership":
@@ -1724,7 +1740,7 @@ namespace SQLite.TheBall.CORE {
                                 GroupMembershipID = objectToAdd.ID,
                                 AccountID = serializedObject.Account
                             };
-                            GroupMembershipAccountTable.InsertOnSubmit(relationObject);
+                            GroupMembershipAccountTable.Add(relationObject);
                             objectToAdd.Account = relationObject;
                     }
 
@@ -1735,12 +1751,12 @@ namespace SQLite.TheBall.CORE {
                                 GroupMembershipID = objectToAdd.ID,
                                 GroupID = serializedObject.Group
                             };
-                            GroupMembershipGroupTable.InsertOnSubmit(relationObject);
+                            GroupMembershipGroupTable.Add(relationObject);
                             objectToAdd.Group = relationObject;
                     }
 
 		            objectToAdd.Role = serializedObject.Role;
-					GroupMembershipTable.InsertOnSubmit(objectToAdd);
+					GroupMembershipTable.Add(objectToAdd);
                     break;
                 }
                 case "ContentPackage":
@@ -1755,7 +1771,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.Description = serializedObject.Description;
 		            objectToAdd.PackageRootFolder = serializedObject.PackageRootFolder;
 		            objectToAdd.CreationTime = serializedObject.CreationTime;
-					ContentPackageTable.InsertOnSubmit(objectToAdd);
+					ContentPackageTable.Add(objectToAdd);
                     break;
                 }
                 case "InformationInput":
@@ -1770,7 +1786,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.LocalContentName = serializedObject.LocalContentName;
 		            objectToAdd.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-					InformationInputTable.InsertOnSubmit(objectToAdd);
+					InformationInputTable.Add(objectToAdd);
                     break;
                 }
                 case "InformationOutput":
@@ -1786,7 +1802,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.LocalContentURL = serializedObject.LocalContentURL;
 		            objectToAdd.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-					InformationOutputTable.InsertOnSubmit(objectToAdd);
+					InformationOutputTable.Add(objectToAdd);
                     break;
                 }
                 case "AuthenticatedAsActiveDevice":
@@ -1803,7 +1819,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 		            objectToAdd.NegotiationURL = serializedObject.NegotiationURL;
 		            objectToAdd.ConnectionURL = serializedObject.ConnectionURL;
-					AuthenticatedAsActiveDeviceTable.InsertOnSubmit(objectToAdd);
+					AuthenticatedAsActiveDeviceTable.Add(objectToAdd);
                     break;
                 }
                 case "DeviceMembership":
@@ -1817,7 +1833,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.SharedSecret = serializedObject.SharedSecret;
 		            objectToAdd.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-					DeviceMembershipTable.InsertOnSubmit(objectToAdd);
+					DeviceMembershipTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceFiscalExportSummary":
@@ -1833,7 +1849,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.ExportedInvoicesID = serializedObject.ExportedInvoices.ID;
 					else
 						objectToAdd.ExportedInvoicesID = null;
-					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
+					InvoiceFiscalExportSummaryTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceSummaryContainer":
@@ -1859,7 +1875,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.PaidInvoicesLast12MonthsID = serializedObject.PaidInvoicesLast12Months.ID;
 					else
 						objectToAdd.PaidInvoicesLast12MonthsID = null;
-					InvoiceSummaryContainerTable.InsertOnSubmit(objectToAdd);
+					InvoiceSummaryContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "Invoice":
@@ -1885,7 +1901,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceUsersID = serializedObject.InvoiceUsers.ID;
 					else
 						objectToAdd.InvoiceUsersID = null;
-					InvoiceTable.InsertOnSubmit(objectToAdd);
+					InvoiceTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceDetails":
@@ -1901,7 +1917,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.InterestFeesTotal = serializedObject.InterestFeesTotal;
 		            objectToAdd.PenaltyFeesTotal = serializedObject.PenaltyFeesTotal;
 		            objectToAdd.TotalFeesTotal = serializedObject.TotalFeesTotal;
-					InvoiceDetailsTable.InsertOnSubmit(objectToAdd);
+					InvoiceDetailsTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceUser":
@@ -1924,7 +1940,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceEventDetailGroupCollectionID = serializedObject.InvoiceEventDetailGroupCollection.ID;
 					else
 						objectToAdd.InvoiceEventDetailGroupCollectionID = null;
-					InvoiceUserTable.InsertOnSubmit(objectToAdd);
+					InvoiceUserTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceRowGroup":
@@ -1942,7 +1958,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceRowCollectionID = serializedObject.InvoiceRowCollection.ID;
 					else
 						objectToAdd.InvoiceRowCollectionID = null;
-					InvoiceRowGroupTable.InsertOnSubmit(objectToAdd);
+					InvoiceRowGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceEventDetailGroup":
@@ -1957,7 +1973,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceEventDetailCollectionID = serializedObject.InvoiceEventDetailCollection.ID;
 					else
 						objectToAdd.InvoiceEventDetailCollectionID = null;
-					InvoiceEventDetailGroupTable.InsertOnSubmit(objectToAdd);
+					InvoiceEventDetailGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceEventDetail":
@@ -1977,7 +1993,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PriceWithoutTaxes = serializedObject.PriceWithoutTaxes;
 		            objectToAdd.Taxes = serializedObject.Taxes;
 		            objectToAdd.PriceWithTaxes = serializedObject.PriceWithTaxes;
-					InvoiceEventDetailTable.InsertOnSubmit(objectToAdd);
+					InvoiceEventDetailTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceRow":
@@ -1994,7 +2010,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PriceWithoutTaxes = serializedObject.PriceWithoutTaxes;
 		            objectToAdd.Taxes = serializedObject.Taxes;
 		            objectToAdd.PriceWithTaxes = serializedObject.PriceWithTaxes;
-					InvoiceRowTable.InsertOnSubmit(objectToAdd);
+					InvoiceRowTable.Add(objectToAdd);
                     break;
                 }
                 case "Category":
@@ -2005,7 +2021,7 @@ namespace SQLite.TheBall.CORE {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
-					CategoryTable.InsertOnSubmit(objectToAdd);
+					CategoryTable.Add(objectToAdd);
                     break;
                 }
                 case "ProcessContainer":
@@ -2017,7 +2033,7 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new ProcessContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ProcessIDs != null)
 						serializedObject.ProcessIDs.ForEach(item => objectToAdd.ProcessIDs.Add(item));
-					ProcessContainerTable.InsertOnSubmit(objectToAdd);
+					ProcessContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "Process":
@@ -2036,7 +2052,7 @@ namespace SQLite.TheBall.CORE {
 						serializedObject.InitialArguments.ForEach(item => objectToAdd.InitialArguments.Add(item));
 					if(serializedObject.ProcessItems != null)
 						serializedObject.ProcessItems.ForEach(item => objectToAdd.ProcessItems.Add(item));
-					ProcessTable.InsertOnSubmit(objectToAdd);
+					ProcessTable.Add(objectToAdd);
                     break;
                 }
                 case "ProcessItem":
@@ -2050,7 +2066,7 @@ namespace SQLite.TheBall.CORE {
 						serializedObject.Outputs.ForEach(item => objectToAdd.Outputs.Add(item));
 					if(serializedObject.Inputs != null)
 						serializedObject.Inputs.ForEach(item => objectToAdd.Inputs.Add(item));
-					ProcessItemTable.InsertOnSubmit(objectToAdd);
+					ProcessItemTable.Add(objectToAdd);
                     break;
                 }
                 case "SemanticInformationItem":
@@ -2062,7 +2078,7 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new SemanticInformationItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ItemFullType = serializedObject.ItemFullType;
 		            objectToAdd.ItemValue = serializedObject.ItemValue;
-					SemanticInformationItemTable.InsertOnSubmit(objectToAdd);
+					SemanticInformationItemTable.Add(objectToAdd);
                     break;
                 }
                 case "InformationOwnerInfo":
@@ -2074,7 +2090,7 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new InformationOwnerInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OwnerType = serializedObject.OwnerType;
 		            objectToAdd.OwnerIdentifier = serializedObject.OwnerIdentifier;
-					InformationOwnerInfoTable.InsertOnSubmit(objectToAdd);
+					InformationOwnerInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "UsageSummary":
@@ -2089,7 +2105,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.SummaryMonitoringItemID = serializedObject.SummaryMonitoringItem.ID;
 					else
 						objectToAdd.SummaryMonitoringItemID = null;
-					UsageSummaryTable.InsertOnSubmit(objectToAdd);
+					UsageSummaryTable.Add(objectToAdd);
                     break;
                 }
                 case "UsageMonitorItem":
@@ -2124,7 +2140,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.NetworkUsagesID = serializedObject.NetworkUsages.ID;
 					else
 						objectToAdd.NetworkUsagesID = null;
-					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
+					UsageMonitorItemTable.Add(objectToAdd);
                     break;
                 }
                 case "RequestResourceUsage":
@@ -2154,7 +2170,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.RequestDetailsID = serializedObject.RequestDetails.ID;
 					else
 						objectToAdd.RequestDetailsID = null;
-					RequestResourceUsageTable.InsertOnSubmit(objectToAdd);
+					RequestResourceUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "ProcessorUsage":
@@ -2172,7 +2188,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.AmountOfTicks = serializedObject.AmountOfTicks;
 		            objectToAdd.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
 		            objectToAdd.Milliseconds = serializedObject.Milliseconds;
-					ProcessorUsageTable.InsertOnSubmit(objectToAdd);
+					ProcessorUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "StorageTransactionUsage":
@@ -2188,7 +2204,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.TimeRangeID = null;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTransactions = serializedObject.AmountOfTransactions;
-					StorageTransactionUsageTable.InsertOnSubmit(objectToAdd);
+					StorageTransactionUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "StorageUsage":
@@ -2202,7 +2218,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.UsageUnit = serializedObject.UsageUnit;
 		            objectToAdd.AmountOfUnits = serializedObject.AmountOfUnits;
-					StorageUsageTable.InsertOnSubmit(objectToAdd);
+					StorageUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "NetworkUsage":
@@ -2218,7 +2234,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.TimeRangeID = null;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfBytes = serializedObject.AmountOfBytes;
-					NetworkUsageTable.InsertOnSubmit(objectToAdd);
+					NetworkUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "TimeRange":
@@ -2230,7 +2246,7 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new TimeRange {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StartTime = serializedObject.StartTime;
 		            objectToAdd.EndTime = serializedObject.EndTime;
-					TimeRangeTable.InsertOnSubmit(objectToAdd);
+					TimeRangeTable.Add(objectToAdd);
                     break;
                 }
                 case "HTTPActivityDetails":
@@ -2247,7 +2263,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.RequestLine = serializedObject.RequestLine;
 		            objectToAdd.HTTPStatusCode = serializedObject.HTTPStatusCode;
 		            objectToAdd.ReturnedContentLength = serializedObject.ReturnedContentLength;
-					HTTPActivityDetailsTable.InsertOnSubmit(objectToAdd);
+					HTTPActivityDetailsTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -2258,7 +2274,7 @@ namespace SQLite.TheBall.CORE {
 		    {
                 if (insertData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -2279,11 +2295,11 @@ namespace SQLite.TheBall.CORE {
                                 LoginID = objectToAdd.ID,
                                 AccountID = serializedObject.Account
                             };
-                            LoginAccountTable.InsertOnSubmit(relationObject);
+                            LoginAccountTable.Add(relationObject);
                             objectToAdd.Account = relationObject;
                     }
 
-					LoginTable.InsertOnSubmit(objectToAdd);
+					LoginTable.Add(objectToAdd);
                     break;
                 }
                 case "Email":
@@ -2301,14 +2317,14 @@ namespace SQLite.TheBall.CORE {
                                 EmailID = objectToAdd.ID,
                                 AccountID = serializedObject.Account
                             };
-                            EmailAccountTable.InsertOnSubmit(relationObject);
+                            EmailAccountTable.Add(relationObject);
                             objectToAdd.Account = relationObject;
                     }
 
 		            objectToAdd.PendingValidation = serializedObject.PendingValidation;
 		            objectToAdd.ValidationKey = serializedObject.ValidationKey;
 		            objectToAdd.ValidationProcessExpiration = serializedObject.ValidationProcessExpiration;
-					EmailTable.InsertOnSubmit(objectToAdd);
+					EmailTable.Add(objectToAdd);
                     break;
                 }
                 case "Account":
@@ -2328,7 +2344,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = objectToAdd.ID,
                                     EmailID = item
                                 };
-                                AccountEmailsTable.InsertOnSubmit(relationObject);
+                                AccountEmailsTable.Add(relationObject);
                                 objectToAdd.Emails.Add(relationObject);
 
                             });
@@ -2344,7 +2360,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = objectToAdd.ID,
                                     LoginID = item
                                 };
-                                AccountLoginsTable.InsertOnSubmit(relationObject);
+                                AccountLoginsTable.Add(relationObject);
                                 objectToAdd.Logins.Add(relationObject);
 
                             });
@@ -2360,7 +2376,7 @@ namespace SQLite.TheBall.CORE {
                                     AccountID = objectToAdd.ID,
                                     GroupMembershipID = item
                                 };
-                                AccountGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                AccountGroupMembershipsTable.Add(relationObject);
                                 objectToAdd.GroupMemberships.Add(relationObject);
 
                             });
@@ -2368,7 +2384,7 @@ namespace SQLite.TheBall.CORE {
 
 		            objectToAdd.ServerMetadataJSON = serializedObject.ServerMetadataJSON;
 		            objectToAdd.ClientMetadataJSON = serializedObject.ClientMetadataJSON;
-					AccountTable.InsertOnSubmit(objectToAdd);
+					AccountTable.Add(objectToAdd);
                     break;
                 }
                 case "Group":
@@ -2388,13 +2404,13 @@ namespace SQLite.TheBall.CORE {
                                     GroupID = objectToAdd.ID,
                                     GroupMembershipID = item
                                 };
-                                GroupGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                GroupGroupMembershipsTable.Add(relationObject);
                                 objectToAdd.GroupMemberships.Add(relationObject);
 
                             });
                     }
 
-					GroupTable.InsertOnSubmit(objectToAdd);
+					GroupTable.Add(objectToAdd);
                     break;
                 }
                 case "GroupMembership":
@@ -2411,7 +2427,7 @@ namespace SQLite.TheBall.CORE {
                                 GroupMembershipID = objectToAdd.ID,
                                 AccountID = serializedObject.Account
                             };
-                            GroupMembershipAccountTable.InsertOnSubmit(relationObject);
+                            GroupMembershipAccountTable.Add(relationObject);
                             objectToAdd.Account = relationObject;
                     }
 
@@ -2422,12 +2438,12 @@ namespace SQLite.TheBall.CORE {
                                 GroupMembershipID = objectToAdd.ID,
                                 GroupID = serializedObject.Group
                             };
-                            GroupMembershipGroupTable.InsertOnSubmit(relationObject);
+                            GroupMembershipGroupTable.Add(relationObject);
                             objectToAdd.Group = relationObject;
                     }
 
 		            objectToAdd.Role = serializedObject.Role;
-					GroupMembershipTable.InsertOnSubmit(objectToAdd);
+					GroupMembershipTable.Add(objectToAdd);
                     break;
                 }
                 case "ContentPackage":
@@ -2442,7 +2458,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.Description = serializedObject.Description;
 		            objectToAdd.PackageRootFolder = serializedObject.PackageRootFolder;
 		            objectToAdd.CreationTime = serializedObject.CreationTime;
-					ContentPackageTable.InsertOnSubmit(objectToAdd);
+					ContentPackageTable.Add(objectToAdd);
                     break;
                 }
                 case "InformationInput":
@@ -2457,7 +2473,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.LocalContentName = serializedObject.LocalContentName;
 		            objectToAdd.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-					InformationInputTable.InsertOnSubmit(objectToAdd);
+					InformationInputTable.Add(objectToAdd);
                     break;
                 }
                 case "InformationOutput":
@@ -2473,7 +2489,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.LocalContentURL = serializedObject.LocalContentURL;
 		            objectToAdd.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-					InformationOutputTable.InsertOnSubmit(objectToAdd);
+					InformationOutputTable.Add(objectToAdd);
                     break;
                 }
                 case "AuthenticatedAsActiveDevice":
@@ -2490,7 +2506,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 		            objectToAdd.NegotiationURL = serializedObject.NegotiationURL;
 		            objectToAdd.ConnectionURL = serializedObject.ConnectionURL;
-					AuthenticatedAsActiveDeviceTable.InsertOnSubmit(objectToAdd);
+					AuthenticatedAsActiveDeviceTable.Add(objectToAdd);
                     break;
                 }
                 case "DeviceMembership":
@@ -2504,7 +2520,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.SharedSecret = serializedObject.SharedSecret;
 		            objectToAdd.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-					DeviceMembershipTable.InsertOnSubmit(objectToAdd);
+					DeviceMembershipTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceFiscalExportSummary":
@@ -2520,7 +2536,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.ExportedInvoicesID = serializedObject.ExportedInvoices.ID;
 					else
 						objectToAdd.ExportedInvoicesID = null;
-					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
+					InvoiceFiscalExportSummaryTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceSummaryContainer":
@@ -2546,7 +2562,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.PaidInvoicesLast12MonthsID = serializedObject.PaidInvoicesLast12Months.ID;
 					else
 						objectToAdd.PaidInvoicesLast12MonthsID = null;
-					InvoiceSummaryContainerTable.InsertOnSubmit(objectToAdd);
+					InvoiceSummaryContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "Invoice":
@@ -2572,7 +2588,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceUsersID = serializedObject.InvoiceUsers.ID;
 					else
 						objectToAdd.InvoiceUsersID = null;
-					InvoiceTable.InsertOnSubmit(objectToAdd);
+					InvoiceTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceDetails":
@@ -2588,7 +2604,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.InterestFeesTotal = serializedObject.InterestFeesTotal;
 		            objectToAdd.PenaltyFeesTotal = serializedObject.PenaltyFeesTotal;
 		            objectToAdd.TotalFeesTotal = serializedObject.TotalFeesTotal;
-					InvoiceDetailsTable.InsertOnSubmit(objectToAdd);
+					InvoiceDetailsTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceUser":
@@ -2611,7 +2627,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceEventDetailGroupCollectionID = serializedObject.InvoiceEventDetailGroupCollection.ID;
 					else
 						objectToAdd.InvoiceEventDetailGroupCollectionID = null;
-					InvoiceUserTable.InsertOnSubmit(objectToAdd);
+					InvoiceUserTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceRowGroup":
@@ -2629,7 +2645,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceRowCollectionID = serializedObject.InvoiceRowCollection.ID;
 					else
 						objectToAdd.InvoiceRowCollectionID = null;
-					InvoiceRowGroupTable.InsertOnSubmit(objectToAdd);
+					InvoiceRowGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceEventDetailGroup":
@@ -2644,7 +2660,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceEventDetailCollectionID = serializedObject.InvoiceEventDetailCollection.ID;
 					else
 						objectToAdd.InvoiceEventDetailCollectionID = null;
-					InvoiceEventDetailGroupTable.InsertOnSubmit(objectToAdd);
+					InvoiceEventDetailGroupTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceEventDetail":
@@ -2664,7 +2680,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PriceWithoutTaxes = serializedObject.PriceWithoutTaxes;
 		            objectToAdd.Taxes = serializedObject.Taxes;
 		            objectToAdd.PriceWithTaxes = serializedObject.PriceWithTaxes;
-					InvoiceEventDetailTable.InsertOnSubmit(objectToAdd);
+					InvoiceEventDetailTable.Add(objectToAdd);
                     break;
                 }
                 case "InvoiceRow":
@@ -2681,7 +2697,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PriceWithoutTaxes = serializedObject.PriceWithoutTaxes;
 		            objectToAdd.Taxes = serializedObject.Taxes;
 		            objectToAdd.PriceWithTaxes = serializedObject.PriceWithTaxes;
-					InvoiceRowTable.InsertOnSubmit(objectToAdd);
+					InvoiceRowTable.Add(objectToAdd);
                     break;
                 }
                 case "Category":
@@ -2692,7 +2708,7 @@ namespace SQLite.TheBall.CORE {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
-					CategoryTable.InsertOnSubmit(objectToAdd);
+					CategoryTable.Add(objectToAdd);
                     break;
                 }
                 case "ProcessContainer":
@@ -2704,7 +2720,7 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new ProcessContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ProcessIDs != null)
 						serializedObject.ProcessIDs.ForEach(item => objectToAdd.ProcessIDs.Add(item));
-					ProcessContainerTable.InsertOnSubmit(objectToAdd);
+					ProcessContainerTable.Add(objectToAdd);
                     break;
                 }
                 case "Process":
@@ -2723,7 +2739,7 @@ namespace SQLite.TheBall.CORE {
 						serializedObject.InitialArguments.ForEach(item => objectToAdd.InitialArguments.Add(item));
 					if(serializedObject.ProcessItems != null)
 						serializedObject.ProcessItems.ForEach(item => objectToAdd.ProcessItems.Add(item));
-					ProcessTable.InsertOnSubmit(objectToAdd);
+					ProcessTable.Add(objectToAdd);
                     break;
                 }
                 case "ProcessItem":
@@ -2737,7 +2753,7 @@ namespace SQLite.TheBall.CORE {
 						serializedObject.Outputs.ForEach(item => objectToAdd.Outputs.Add(item));
 					if(serializedObject.Inputs != null)
 						serializedObject.Inputs.ForEach(item => objectToAdd.Inputs.Add(item));
-					ProcessItemTable.InsertOnSubmit(objectToAdd);
+					ProcessItemTable.Add(objectToAdd);
                     break;
                 }
                 case "SemanticInformationItem":
@@ -2749,7 +2765,7 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new SemanticInformationItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ItemFullType = serializedObject.ItemFullType;
 		            objectToAdd.ItemValue = serializedObject.ItemValue;
-					SemanticInformationItemTable.InsertOnSubmit(objectToAdd);
+					SemanticInformationItemTable.Add(objectToAdd);
                     break;
                 }
                 case "InformationOwnerInfo":
@@ -2761,7 +2777,7 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new InformationOwnerInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OwnerType = serializedObject.OwnerType;
 		            objectToAdd.OwnerIdentifier = serializedObject.OwnerIdentifier;
-					InformationOwnerInfoTable.InsertOnSubmit(objectToAdd);
+					InformationOwnerInfoTable.Add(objectToAdd);
                     break;
                 }
                 case "UsageSummary":
@@ -2776,7 +2792,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.SummaryMonitoringItemID = serializedObject.SummaryMonitoringItem.ID;
 					else
 						objectToAdd.SummaryMonitoringItemID = null;
-					UsageSummaryTable.InsertOnSubmit(objectToAdd);
+					UsageSummaryTable.Add(objectToAdd);
                     break;
                 }
                 case "UsageMonitorItem":
@@ -2811,7 +2827,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.NetworkUsagesID = serializedObject.NetworkUsages.ID;
 					else
 						objectToAdd.NetworkUsagesID = null;
-					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
+					UsageMonitorItemTable.Add(objectToAdd);
                     break;
                 }
                 case "RequestResourceUsage":
@@ -2841,7 +2857,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.RequestDetailsID = serializedObject.RequestDetails.ID;
 					else
 						objectToAdd.RequestDetailsID = null;
-					RequestResourceUsageTable.InsertOnSubmit(objectToAdd);
+					RequestResourceUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "ProcessorUsage":
@@ -2859,7 +2875,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.AmountOfTicks = serializedObject.AmountOfTicks;
 		            objectToAdd.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
 		            objectToAdd.Milliseconds = serializedObject.Milliseconds;
-					ProcessorUsageTable.InsertOnSubmit(objectToAdd);
+					ProcessorUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "StorageTransactionUsage":
@@ -2875,7 +2891,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.TimeRangeID = null;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTransactions = serializedObject.AmountOfTransactions;
-					StorageTransactionUsageTable.InsertOnSubmit(objectToAdd);
+					StorageTransactionUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "StorageUsage":
@@ -2889,7 +2905,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.UsageUnit = serializedObject.UsageUnit;
 		            objectToAdd.AmountOfUnits = serializedObject.AmountOfUnits;
-					StorageUsageTable.InsertOnSubmit(objectToAdd);
+					StorageUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "NetworkUsage":
@@ -2905,7 +2921,7 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.TimeRangeID = null;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfBytes = serializedObject.AmountOfBytes;
-					NetworkUsageTable.InsertOnSubmit(objectToAdd);
+					NetworkUsageTable.Add(objectToAdd);
                     break;
                 }
                 case "TimeRange":
@@ -2917,7 +2933,7 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new TimeRange {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StartTime = serializedObject.StartTime;
 		            objectToAdd.EndTime = serializedObject.EndTime;
-					TimeRangeTable.InsertOnSubmit(objectToAdd);
+					TimeRangeTable.Add(objectToAdd);
                     break;
                 }
                 case "HTTPActivityDetails":
@@ -2934,7 +2950,7 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.RequestLine = serializedObject.RequestLine;
 		            objectToAdd.HTTPStatusCode = serializedObject.HTTPStatusCode;
 		            objectToAdd.ReturnedContentLength = serializedObject.ReturnedContentLength;
-					HTTPActivityDetailsTable.InsertOnSubmit(objectToAdd);
+					HTTPActivityDetailsTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -2945,7 +2961,7 @@ namespace SQLite.TheBall.CORE {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -2955,7 +2971,7 @@ namespace SQLite.TheBall.CORE {
 						//LoginTable.Attach(objectToDelete);
 						var objectToDelete = LoginTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LoginTable.DeleteOnSubmit(objectToDelete);
+							LoginTable.Remove(objectToDelete);
 						break;
 					}
 					case "Email":
@@ -2964,7 +2980,7 @@ namespace SQLite.TheBall.CORE {
 						//EmailTable.Attach(objectToDelete);
 						var objectToDelete = EmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							EmailTable.DeleteOnSubmit(objectToDelete);
+							EmailTable.Remove(objectToDelete);
 						break;
 					}
 					case "Account":
@@ -2973,7 +2989,7 @@ namespace SQLite.TheBall.CORE {
 						//AccountTable.Attach(objectToDelete);
 						var objectToDelete = AccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountTable.DeleteOnSubmit(objectToDelete);
+							AccountTable.Remove(objectToDelete);
 						break;
 					}
 					case "Group":
@@ -2982,7 +2998,7 @@ namespace SQLite.TheBall.CORE {
 						//GroupTable.Attach(objectToDelete);
 						var objectToDelete = GroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupTable.DeleteOnSubmit(objectToDelete);
+							GroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupMembership":
@@ -2991,7 +3007,7 @@ namespace SQLite.TheBall.CORE {
 						//GroupMembershipTable.Attach(objectToDelete);
 						var objectToDelete = GroupMembershipTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupMembershipTable.DeleteOnSubmit(objectToDelete);
+							GroupMembershipTable.Remove(objectToDelete);
 						break;
 					}
 					case "ContentPackage":
@@ -3000,7 +3016,7 @@ namespace SQLite.TheBall.CORE {
 						//ContentPackageTable.Attach(objectToDelete);
 						var objectToDelete = ContentPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ContentPackageTable.DeleteOnSubmit(objectToDelete);
+							ContentPackageTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationInput":
@@ -3009,7 +3025,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationInputTable.Attach(objectToDelete);
 						var objectToDelete = InformationInputTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationInputTable.DeleteOnSubmit(objectToDelete);
+							InformationInputTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationOutput":
@@ -3018,7 +3034,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationOutputTable.Attach(objectToDelete);
 						var objectToDelete = InformationOutputTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationOutputTable.DeleteOnSubmit(objectToDelete);
+							InformationOutputTable.Remove(objectToDelete);
 						break;
 					}
 					case "AuthenticatedAsActiveDevice":
@@ -3027,7 +3043,7 @@ namespace SQLite.TheBall.CORE {
 						//AuthenticatedAsActiveDeviceTable.Attach(objectToDelete);
 						var objectToDelete = AuthenticatedAsActiveDeviceTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AuthenticatedAsActiveDeviceTable.DeleteOnSubmit(objectToDelete);
+							AuthenticatedAsActiveDeviceTable.Remove(objectToDelete);
 						break;
 					}
 					case "DeviceMembership":
@@ -3036,7 +3052,7 @@ namespace SQLite.TheBall.CORE {
 						//DeviceMembershipTable.Attach(objectToDelete);
 						var objectToDelete = DeviceMembershipTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DeviceMembershipTable.DeleteOnSubmit(objectToDelete);
+							DeviceMembershipTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceFiscalExportSummary":
@@ -3045,7 +3061,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceFiscalExportSummaryTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceFiscalExportSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceFiscalExportSummaryTable.DeleteOnSubmit(objectToDelete);
+							InvoiceFiscalExportSummaryTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceSummaryContainer":
@@ -3054,7 +3070,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceSummaryContainerTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+							InvoiceSummaryContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "Invoice":
@@ -3063,7 +3079,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceTable.DeleteOnSubmit(objectToDelete);
+							InvoiceTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceDetails":
@@ -3072,7 +3088,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceDetailsTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceDetailsTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceDetailsTable.DeleteOnSubmit(objectToDelete);
+							InvoiceDetailsTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceUser":
@@ -3081,7 +3097,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceUserTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceUserTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceUserTable.DeleteOnSubmit(objectToDelete);
+							InvoiceUserTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceRowGroup":
@@ -3090,7 +3106,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceRowGroupTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceRowGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceRowGroupTable.DeleteOnSubmit(objectToDelete);
+							InvoiceRowGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceEventDetailGroup":
@@ -3099,7 +3115,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceEventDetailGroupTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceEventDetailGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceEventDetailGroupTable.DeleteOnSubmit(objectToDelete);
+							InvoiceEventDetailGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceEventDetail":
@@ -3108,7 +3124,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceEventDetailTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceEventDetailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceEventDetailTable.DeleteOnSubmit(objectToDelete);
+							InvoiceEventDetailTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceRow":
@@ -3117,7 +3133,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceRowTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceRowTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceRowTable.DeleteOnSubmit(objectToDelete);
+							InvoiceRowTable.Remove(objectToDelete);
 						break;
 					}
 					case "Category":
@@ -3126,7 +3142,7 @@ namespace SQLite.TheBall.CORE {
 						//CategoryTable.Attach(objectToDelete);
 						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryTable.DeleteOnSubmit(objectToDelete);
+							CategoryTable.Remove(objectToDelete);
 						break;
 					}
 					case "ProcessContainer":
@@ -3135,7 +3151,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessContainerTable.Attach(objectToDelete);
 						var objectToDelete = ProcessContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessContainerTable.DeleteOnSubmit(objectToDelete);
+							ProcessContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "Process":
@@ -3144,7 +3160,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessTable.Attach(objectToDelete);
 						var objectToDelete = ProcessTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessTable.DeleteOnSubmit(objectToDelete);
+							ProcessTable.Remove(objectToDelete);
 						break;
 					}
 					case "ProcessItem":
@@ -3153,7 +3169,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessItemTable.Attach(objectToDelete);
 						var objectToDelete = ProcessItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessItemTable.DeleteOnSubmit(objectToDelete);
+							ProcessItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "SemanticInformationItem":
@@ -3162,7 +3178,7 @@ namespace SQLite.TheBall.CORE {
 						//SemanticInformationItemTable.Attach(objectToDelete);
 						var objectToDelete = SemanticInformationItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SemanticInformationItemTable.DeleteOnSubmit(objectToDelete);
+							SemanticInformationItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationOwnerInfo":
@@ -3171,7 +3187,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationOwnerInfoTable.Attach(objectToDelete);
 						var objectToDelete = InformationOwnerInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationOwnerInfoTable.DeleteOnSubmit(objectToDelete);
+							InformationOwnerInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "UsageSummary":
@@ -3180,7 +3196,7 @@ namespace SQLite.TheBall.CORE {
 						//UsageSummaryTable.Attach(objectToDelete);
 						var objectToDelete = UsageSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UsageSummaryTable.DeleteOnSubmit(objectToDelete);
+							UsageSummaryTable.Remove(objectToDelete);
 						break;
 					}
 					case "UsageMonitorItem":
@@ -3189,7 +3205,7 @@ namespace SQLite.TheBall.CORE {
 						//UsageMonitorItemTable.Attach(objectToDelete);
 						var objectToDelete = UsageMonitorItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UsageMonitorItemTable.DeleteOnSubmit(objectToDelete);
+							UsageMonitorItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "RequestResourceUsage":
@@ -3198,7 +3214,7 @@ namespace SQLite.TheBall.CORE {
 						//RequestResourceUsageTable.Attach(objectToDelete);
 						var objectToDelete = RequestResourceUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							RequestResourceUsageTable.DeleteOnSubmit(objectToDelete);
+							RequestResourceUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "ProcessorUsage":
@@ -3207,7 +3223,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessorUsageTable.Attach(objectToDelete);
 						var objectToDelete = ProcessorUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessorUsageTable.DeleteOnSubmit(objectToDelete);
+							ProcessorUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "StorageTransactionUsage":
@@ -3216,7 +3232,7 @@ namespace SQLite.TheBall.CORE {
 						//StorageTransactionUsageTable.Attach(objectToDelete);
 						var objectToDelete = StorageTransactionUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StorageTransactionUsageTable.DeleteOnSubmit(objectToDelete);
+							StorageTransactionUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "StorageUsage":
@@ -3225,7 +3241,7 @@ namespace SQLite.TheBall.CORE {
 						//StorageUsageTable.Attach(objectToDelete);
 						var objectToDelete = StorageUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StorageUsageTable.DeleteOnSubmit(objectToDelete);
+							StorageUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "NetworkUsage":
@@ -3234,7 +3250,7 @@ namespace SQLite.TheBall.CORE {
 						//NetworkUsageTable.Attach(objectToDelete);
 						var objectToDelete = NetworkUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							NetworkUsageTable.DeleteOnSubmit(objectToDelete);
+							NetworkUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "TimeRange":
@@ -3243,7 +3259,7 @@ namespace SQLite.TheBall.CORE {
 						//TimeRangeTable.Attach(objectToDelete);
 						var objectToDelete = TimeRangeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TimeRangeTable.DeleteOnSubmit(objectToDelete);
+							TimeRangeTable.Remove(objectToDelete);
 						break;
 					}
 					case "HTTPActivityDetails":
@@ -3252,7 +3268,7 @@ namespace SQLite.TheBall.CORE {
 						//HTTPActivityDetailsTable.Attach(objectToDelete);
 						var objectToDelete = HTTPActivityDetailsTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							HTTPActivityDetailsTable.DeleteOnSubmit(objectToDelete);
+							HTTPActivityDetailsTable.Remove(objectToDelete);
 						break;
 					}
 					case "ContentPackageCollection":
@@ -3261,7 +3277,7 @@ namespace SQLite.TheBall.CORE {
 						//ContentPackageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ContentPackageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ContentPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+							ContentPackageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationInputCollection":
@@ -3270,7 +3286,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationInputCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InformationInputCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationInputCollectionTable.DeleteOnSubmit(objectToDelete);
+							InformationInputCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationOutputCollection":
@@ -3279,7 +3295,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationOutputCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InformationOutputCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationOutputCollectionTable.DeleteOnSubmit(objectToDelete);
+							InformationOutputCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "AuthenticatedAsActiveDeviceCollection":
@@ -3288,7 +3304,7 @@ namespace SQLite.TheBall.CORE {
 						//AuthenticatedAsActiveDeviceCollectionTable.Attach(objectToDelete);
 						var objectToDelete = AuthenticatedAsActiveDeviceCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AuthenticatedAsActiveDeviceCollectionTable.DeleteOnSubmit(objectToDelete);
+							AuthenticatedAsActiveDeviceCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "DeviceMembershipCollection":
@@ -3297,7 +3313,7 @@ namespace SQLite.TheBall.CORE {
 						//DeviceMembershipCollectionTable.Attach(objectToDelete);
 						var objectToDelete = DeviceMembershipCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DeviceMembershipCollectionTable.DeleteOnSubmit(objectToDelete);
+							DeviceMembershipCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceCollection":
@@ -3306,7 +3322,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceUserCollection":
@@ -3315,7 +3331,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceUserCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceUserCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceUserCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceUserCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceRowGroupCollection":
@@ -3324,7 +3340,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceRowGroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceRowGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceRowGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceRowGroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceEventDetailGroupCollection":
@@ -3333,7 +3349,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceEventDetailGroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceEventDetailGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceEventDetailGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceEventDetailGroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceEventDetailCollection":
@@ -3342,7 +3358,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceEventDetailCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceEventDetailCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceEventDetailCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceEventDetailCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceRowCollection":
@@ -3351,7 +3367,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceRowCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceRowCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceRowCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceRowCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CategoryCollection":
@@ -3360,7 +3376,7 @@ namespace SQLite.TheBall.CORE {
 						//CategoryCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CategoryCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+							CategoryCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "RequestResourceUsageCollection":
@@ -3369,7 +3385,7 @@ namespace SQLite.TheBall.CORE {
 						//RequestResourceUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = RequestResourceUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							RequestResourceUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							RequestResourceUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ProcessorUsageCollection":
@@ -3378,7 +3394,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessorUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ProcessorUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessorUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							ProcessorUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "StorageTransactionUsageCollection":
@@ -3387,7 +3403,7 @@ namespace SQLite.TheBall.CORE {
 						//StorageTransactionUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = StorageTransactionUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StorageTransactionUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							StorageTransactionUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "StorageUsageCollection":
@@ -3396,7 +3412,7 @@ namespace SQLite.TheBall.CORE {
 						//StorageUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = StorageUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StorageUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							StorageUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "NetworkUsageCollection":
@@ -3405,7 +3421,7 @@ namespace SQLite.TheBall.CORE {
 						//NetworkUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = NetworkUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							NetworkUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							NetworkUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "HTTPActivityDetailsCollection":
@@ -3414,7 +3430,7 @@ namespace SQLite.TheBall.CORE {
 						//HTTPActivityDetailsCollectionTable.Attach(objectToDelete);
 						var objectToDelete = HTTPActivityDetailsCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							HTTPActivityDetailsCollectionTable.DeleteOnSubmit(objectToDelete);
+							HTTPActivityDetailsCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -3426,7 +3442,7 @@ namespace SQLite.TheBall.CORE {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -3436,7 +3452,7 @@ namespace SQLite.TheBall.CORE {
 						//LoginTable.Attach(objectToDelete);
 						var objectToDelete = LoginTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							LoginTable.DeleteOnSubmit(objectToDelete);
+							LoginTable.Remove(objectToDelete);
 						break;
 					}
 					case "Email":
@@ -3445,7 +3461,7 @@ namespace SQLite.TheBall.CORE {
 						//EmailTable.Attach(objectToDelete);
 						var objectToDelete = EmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							EmailTable.DeleteOnSubmit(objectToDelete);
+							EmailTable.Remove(objectToDelete);
 						break;
 					}
 					case "Account":
@@ -3454,7 +3470,7 @@ namespace SQLite.TheBall.CORE {
 						//AccountTable.Attach(objectToDelete);
 						var objectToDelete = AccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AccountTable.DeleteOnSubmit(objectToDelete);
+							AccountTable.Remove(objectToDelete);
 						break;
 					}
 					case "Group":
@@ -3463,7 +3479,7 @@ namespace SQLite.TheBall.CORE {
 						//GroupTable.Attach(objectToDelete);
 						var objectToDelete = GroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupTable.DeleteOnSubmit(objectToDelete);
+							GroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupMembership":
@@ -3472,7 +3488,7 @@ namespace SQLite.TheBall.CORE {
 						//GroupMembershipTable.Attach(objectToDelete);
 						var objectToDelete = GroupMembershipTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupMembershipTable.DeleteOnSubmit(objectToDelete);
+							GroupMembershipTable.Remove(objectToDelete);
 						break;
 					}
 					case "ContentPackage":
@@ -3481,7 +3497,7 @@ namespace SQLite.TheBall.CORE {
 						//ContentPackageTable.Attach(objectToDelete);
 						var objectToDelete = ContentPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ContentPackageTable.DeleteOnSubmit(objectToDelete);
+							ContentPackageTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationInput":
@@ -3490,7 +3506,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationInputTable.Attach(objectToDelete);
 						var objectToDelete = InformationInputTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationInputTable.DeleteOnSubmit(objectToDelete);
+							InformationInputTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationOutput":
@@ -3499,7 +3515,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationOutputTable.Attach(objectToDelete);
 						var objectToDelete = InformationOutputTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationOutputTable.DeleteOnSubmit(objectToDelete);
+							InformationOutputTable.Remove(objectToDelete);
 						break;
 					}
 					case "AuthenticatedAsActiveDevice":
@@ -3508,7 +3524,7 @@ namespace SQLite.TheBall.CORE {
 						//AuthenticatedAsActiveDeviceTable.Attach(objectToDelete);
 						var objectToDelete = AuthenticatedAsActiveDeviceTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AuthenticatedAsActiveDeviceTable.DeleteOnSubmit(objectToDelete);
+							AuthenticatedAsActiveDeviceTable.Remove(objectToDelete);
 						break;
 					}
 					case "DeviceMembership":
@@ -3517,7 +3533,7 @@ namespace SQLite.TheBall.CORE {
 						//DeviceMembershipTable.Attach(objectToDelete);
 						var objectToDelete = DeviceMembershipTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DeviceMembershipTable.DeleteOnSubmit(objectToDelete);
+							DeviceMembershipTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceFiscalExportSummary":
@@ -3526,7 +3542,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceFiscalExportSummaryTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceFiscalExportSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceFiscalExportSummaryTable.DeleteOnSubmit(objectToDelete);
+							InvoiceFiscalExportSummaryTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceSummaryContainer":
@@ -3535,7 +3551,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceSummaryContainerTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+							InvoiceSummaryContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "Invoice":
@@ -3544,7 +3560,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceTable.DeleteOnSubmit(objectToDelete);
+							InvoiceTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceDetails":
@@ -3553,7 +3569,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceDetailsTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceDetailsTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceDetailsTable.DeleteOnSubmit(objectToDelete);
+							InvoiceDetailsTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceUser":
@@ -3562,7 +3578,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceUserTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceUserTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceUserTable.DeleteOnSubmit(objectToDelete);
+							InvoiceUserTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceRowGroup":
@@ -3571,7 +3587,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceRowGroupTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceRowGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceRowGroupTable.DeleteOnSubmit(objectToDelete);
+							InvoiceRowGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceEventDetailGroup":
@@ -3580,7 +3596,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceEventDetailGroupTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceEventDetailGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceEventDetailGroupTable.DeleteOnSubmit(objectToDelete);
+							InvoiceEventDetailGroupTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceEventDetail":
@@ -3589,7 +3605,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceEventDetailTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceEventDetailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceEventDetailTable.DeleteOnSubmit(objectToDelete);
+							InvoiceEventDetailTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceRow":
@@ -3598,7 +3614,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceRowTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceRowTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceRowTable.DeleteOnSubmit(objectToDelete);
+							InvoiceRowTable.Remove(objectToDelete);
 						break;
 					}
 					case "Category":
@@ -3607,7 +3623,7 @@ namespace SQLite.TheBall.CORE {
 						//CategoryTable.Attach(objectToDelete);
 						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryTable.DeleteOnSubmit(objectToDelete);
+							CategoryTable.Remove(objectToDelete);
 						break;
 					}
 					case "ProcessContainer":
@@ -3616,7 +3632,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessContainerTable.Attach(objectToDelete);
 						var objectToDelete = ProcessContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessContainerTable.DeleteOnSubmit(objectToDelete);
+							ProcessContainerTable.Remove(objectToDelete);
 						break;
 					}
 					case "Process":
@@ -3625,7 +3641,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessTable.Attach(objectToDelete);
 						var objectToDelete = ProcessTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessTable.DeleteOnSubmit(objectToDelete);
+							ProcessTable.Remove(objectToDelete);
 						break;
 					}
 					case "ProcessItem":
@@ -3634,7 +3650,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessItemTable.Attach(objectToDelete);
 						var objectToDelete = ProcessItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessItemTable.DeleteOnSubmit(objectToDelete);
+							ProcessItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "SemanticInformationItem":
@@ -3643,7 +3659,7 @@ namespace SQLite.TheBall.CORE {
 						//SemanticInformationItemTable.Attach(objectToDelete);
 						var objectToDelete = SemanticInformationItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SemanticInformationItemTable.DeleteOnSubmit(objectToDelete);
+							SemanticInformationItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationOwnerInfo":
@@ -3652,7 +3668,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationOwnerInfoTable.Attach(objectToDelete);
 						var objectToDelete = InformationOwnerInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationOwnerInfoTable.DeleteOnSubmit(objectToDelete);
+							InformationOwnerInfoTable.Remove(objectToDelete);
 						break;
 					}
 					case "UsageSummary":
@@ -3661,7 +3677,7 @@ namespace SQLite.TheBall.CORE {
 						//UsageSummaryTable.Attach(objectToDelete);
 						var objectToDelete = UsageSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UsageSummaryTable.DeleteOnSubmit(objectToDelete);
+							UsageSummaryTable.Remove(objectToDelete);
 						break;
 					}
 					case "UsageMonitorItem":
@@ -3670,7 +3686,7 @@ namespace SQLite.TheBall.CORE {
 						//UsageMonitorItemTable.Attach(objectToDelete);
 						var objectToDelete = UsageMonitorItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							UsageMonitorItemTable.DeleteOnSubmit(objectToDelete);
+							UsageMonitorItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "RequestResourceUsage":
@@ -3679,7 +3695,7 @@ namespace SQLite.TheBall.CORE {
 						//RequestResourceUsageTable.Attach(objectToDelete);
 						var objectToDelete = RequestResourceUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							RequestResourceUsageTable.DeleteOnSubmit(objectToDelete);
+							RequestResourceUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "ProcessorUsage":
@@ -3688,7 +3704,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessorUsageTable.Attach(objectToDelete);
 						var objectToDelete = ProcessorUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessorUsageTable.DeleteOnSubmit(objectToDelete);
+							ProcessorUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "StorageTransactionUsage":
@@ -3697,7 +3713,7 @@ namespace SQLite.TheBall.CORE {
 						//StorageTransactionUsageTable.Attach(objectToDelete);
 						var objectToDelete = StorageTransactionUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StorageTransactionUsageTable.DeleteOnSubmit(objectToDelete);
+							StorageTransactionUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "StorageUsage":
@@ -3706,7 +3722,7 @@ namespace SQLite.TheBall.CORE {
 						//StorageUsageTable.Attach(objectToDelete);
 						var objectToDelete = StorageUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StorageUsageTable.DeleteOnSubmit(objectToDelete);
+							StorageUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "NetworkUsage":
@@ -3715,7 +3731,7 @@ namespace SQLite.TheBall.CORE {
 						//NetworkUsageTable.Attach(objectToDelete);
 						var objectToDelete = NetworkUsageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							NetworkUsageTable.DeleteOnSubmit(objectToDelete);
+							NetworkUsageTable.Remove(objectToDelete);
 						break;
 					}
 					case "TimeRange":
@@ -3724,7 +3740,7 @@ namespace SQLite.TheBall.CORE {
 						//TimeRangeTable.Attach(objectToDelete);
 						var objectToDelete = TimeRangeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TimeRangeTable.DeleteOnSubmit(objectToDelete);
+							TimeRangeTable.Remove(objectToDelete);
 						break;
 					}
 					case "HTTPActivityDetails":
@@ -3733,7 +3749,7 @@ namespace SQLite.TheBall.CORE {
 						//HTTPActivityDetailsTable.Attach(objectToDelete);
 						var objectToDelete = HTTPActivityDetailsTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							HTTPActivityDetailsTable.DeleteOnSubmit(objectToDelete);
+							HTTPActivityDetailsTable.Remove(objectToDelete);
 						break;
 					}
 					case "ContentPackageCollection":
@@ -3742,7 +3758,7 @@ namespace SQLite.TheBall.CORE {
 						//ContentPackageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ContentPackageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ContentPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+							ContentPackageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationInputCollection":
@@ -3751,7 +3767,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationInputCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InformationInputCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationInputCollectionTable.DeleteOnSubmit(objectToDelete);
+							InformationInputCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationOutputCollection":
@@ -3760,7 +3776,7 @@ namespace SQLite.TheBall.CORE {
 						//InformationOutputCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InformationOutputCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationOutputCollectionTable.DeleteOnSubmit(objectToDelete);
+							InformationOutputCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "AuthenticatedAsActiveDeviceCollection":
@@ -3769,7 +3785,7 @@ namespace SQLite.TheBall.CORE {
 						//AuthenticatedAsActiveDeviceCollectionTable.Attach(objectToDelete);
 						var objectToDelete = AuthenticatedAsActiveDeviceCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							AuthenticatedAsActiveDeviceCollectionTable.DeleteOnSubmit(objectToDelete);
+							AuthenticatedAsActiveDeviceCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "DeviceMembershipCollection":
@@ -3778,7 +3794,7 @@ namespace SQLite.TheBall.CORE {
 						//DeviceMembershipCollectionTable.Attach(objectToDelete);
 						var objectToDelete = DeviceMembershipCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							DeviceMembershipCollectionTable.DeleteOnSubmit(objectToDelete);
+							DeviceMembershipCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceCollection":
@@ -3787,7 +3803,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceUserCollection":
@@ -3796,7 +3812,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceUserCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceUserCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceUserCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceUserCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceRowGroupCollection":
@@ -3805,7 +3821,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceRowGroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceRowGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceRowGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceRowGroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceEventDetailGroupCollection":
@@ -3814,7 +3830,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceEventDetailGroupCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceEventDetailGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceEventDetailGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceEventDetailGroupCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceEventDetailCollection":
@@ -3823,7 +3839,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceEventDetailCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceEventDetailCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceEventDetailCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceEventDetailCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "InvoiceRowCollection":
@@ -3832,7 +3848,7 @@ namespace SQLite.TheBall.CORE {
 						//InvoiceRowCollectionTable.Attach(objectToDelete);
 						var objectToDelete = InvoiceRowCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InvoiceRowCollectionTable.DeleteOnSubmit(objectToDelete);
+							InvoiceRowCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CategoryCollection":
@@ -3841,7 +3857,7 @@ namespace SQLite.TheBall.CORE {
 						//CategoryCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CategoryCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+							CategoryCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "RequestResourceUsageCollection":
@@ -3850,7 +3866,7 @@ namespace SQLite.TheBall.CORE {
 						//RequestResourceUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = RequestResourceUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							RequestResourceUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							RequestResourceUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "ProcessorUsageCollection":
@@ -3859,7 +3875,7 @@ namespace SQLite.TheBall.CORE {
 						//ProcessorUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ProcessorUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ProcessorUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							ProcessorUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "StorageTransactionUsageCollection":
@@ -3868,7 +3884,7 @@ namespace SQLite.TheBall.CORE {
 						//StorageTransactionUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = StorageTransactionUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StorageTransactionUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							StorageTransactionUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "StorageUsageCollection":
@@ -3877,7 +3893,7 @@ namespace SQLite.TheBall.CORE {
 						//StorageUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = StorageUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StorageUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							StorageUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "NetworkUsageCollection":
@@ -3886,7 +3902,7 @@ namespace SQLite.TheBall.CORE {
 						//NetworkUsageCollectionTable.Attach(objectToDelete);
 						var objectToDelete = NetworkUsageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							NetworkUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+							NetworkUsageCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "HTTPActivityDetailsCollection":
@@ -3895,7 +3911,7 @@ namespace SQLite.TheBall.CORE {
 						//HTTPActivityDetailsCollectionTable.Attach(objectToDelete);
 						var objectToDelete = HTTPActivityDetailsCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							HTTPActivityDetailsCollectionTable.DeleteOnSubmit(objectToDelete);
+							HTTPActivityDetailsCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -3903,33 +3919,21 @@ namespace SQLite.TheBall.CORE {
 
 
 
-			public Table<Login> LoginTable {
-				get {
-					return this.GetTable<Login>();
-				}
-			}
+			public DbSet<Login> LoginTable { get; set; }
 			public Table<LoginAccount> LoginAccountTable {
 				get {
 					return this.GetTable<LoginAccount>();
 				}
 			}
 
-			public Table<Email> EmailTable {
-				get {
-					return this.GetTable<Email>();
-				}
-			}
+			public DbSet<Email> EmailTable { get; set; }
 			public Table<EmailAccount> EmailAccountTable {
 				get {
 					return this.GetTable<EmailAccount>();
 				}
 			}
 
-			public Table<Account> AccountTable {
-				get {
-					return this.GetTable<Account>();
-				}
-			}
+			public DbSet<Account> AccountTable { get; set; }
 			public Table<AccountEmails> AccountEmailsTable {
 				get {
 					return this.GetTable<AccountEmails>();
@@ -3948,22 +3952,14 @@ namespace SQLite.TheBall.CORE {
 				}
 			}
 
-			public Table<Group> GroupTable {
-				get {
-					return this.GetTable<Group>();
-				}
-			}
+			public DbSet<Group> GroupTable { get; set; }
 			public Table<GroupGroupMemberships> GroupGroupMembershipsTable {
 				get {
 					return this.GetTable<GroupGroupMemberships>();
 				}
 			}
 
-			public Table<GroupMembership> GroupMembershipTable {
-				get {
-					return this.GetTable<GroupMembership>();
-				}
-			}
+			public DbSet<GroupMembership> GroupMembershipTable { get; set; }
 			public Table<GroupMembershipAccount> GroupMembershipAccountTable {
 				get {
 					return this.GetTable<GroupMembershipAccount>();
@@ -3976,257 +3972,70 @@ namespace SQLite.TheBall.CORE {
 				}
 			}
 
-			public Table<ContentPackage> ContentPackageTable {
-				get {
-					return this.GetTable<ContentPackage>();
-				}
-			}
-			public Table<InformationInput> InformationInputTable {
-				get {
-					return this.GetTable<InformationInput>();
-				}
-			}
-			public Table<InformationOutput> InformationOutputTable {
-				get {
-					return this.GetTable<InformationOutput>();
-				}
-			}
-			public Table<AuthenticatedAsActiveDevice> AuthenticatedAsActiveDeviceTable {
-				get {
-					return this.GetTable<AuthenticatedAsActiveDevice>();
-				}
-			}
-			public Table<DeviceMembership> DeviceMembershipTable {
-				get {
-					return this.GetTable<DeviceMembership>();
-				}
-			}
-			public Table<InvoiceFiscalExportSummary> InvoiceFiscalExportSummaryTable {
-				get {
-					return this.GetTable<InvoiceFiscalExportSummary>();
-				}
-			}
-			public Table<InvoiceSummaryContainer> InvoiceSummaryContainerTable {
-				get {
-					return this.GetTable<InvoiceSummaryContainer>();
-				}
-			}
-			public Table<Invoice> InvoiceTable {
-				get {
-					return this.GetTable<Invoice>();
-				}
-			}
-			public Table<InvoiceDetails> InvoiceDetailsTable {
-				get {
-					return this.GetTable<InvoiceDetails>();
-				}
-			}
-			public Table<InvoiceUser> InvoiceUserTable {
-				get {
-					return this.GetTable<InvoiceUser>();
-				}
-			}
-			public Table<InvoiceRowGroup> InvoiceRowGroupTable {
-				get {
-					return this.GetTable<InvoiceRowGroup>();
-				}
-			}
-			public Table<InvoiceEventDetailGroup> InvoiceEventDetailGroupTable {
-				get {
-					return this.GetTable<InvoiceEventDetailGroup>();
-				}
-			}
-			public Table<InvoiceEventDetail> InvoiceEventDetailTable {
-				get {
-					return this.GetTable<InvoiceEventDetail>();
-				}
-			}
-			public Table<InvoiceRow> InvoiceRowTable {
-				get {
-					return this.GetTable<InvoiceRow>();
-				}
-			}
-			public Table<Category> CategoryTable {
-				get {
-					return this.GetTable<Category>();
-				}
-			}
-			public Table<ProcessContainer> ProcessContainerTable {
-				get {
-					return this.GetTable<ProcessContainer>();
-				}
-			}
-			public Table<Process> ProcessTable {
-				get {
-					return this.GetTable<Process>();
-				}
-			}
-			public Table<ProcessItem> ProcessItemTable {
-				get {
-					return this.GetTable<ProcessItem>();
-				}
-			}
-			public Table<SemanticInformationItem> SemanticInformationItemTable {
-				get {
-					return this.GetTable<SemanticInformationItem>();
-				}
-			}
-			public Table<InformationOwnerInfo> InformationOwnerInfoTable {
-				get {
-					return this.GetTable<InformationOwnerInfo>();
-				}
-			}
-			public Table<UsageSummary> UsageSummaryTable {
-				get {
-					return this.GetTable<UsageSummary>();
-				}
-			}
-			public Table<UsageMonitorItem> UsageMonitorItemTable {
-				get {
-					return this.GetTable<UsageMonitorItem>();
-				}
-			}
-			public Table<RequestResourceUsage> RequestResourceUsageTable {
-				get {
-					return this.GetTable<RequestResourceUsage>();
-				}
-			}
-			public Table<ProcessorUsage> ProcessorUsageTable {
-				get {
-					return this.GetTable<ProcessorUsage>();
-				}
-			}
-			public Table<StorageTransactionUsage> StorageTransactionUsageTable {
-				get {
-					return this.GetTable<StorageTransactionUsage>();
-				}
-			}
-			public Table<StorageUsage> StorageUsageTable {
-				get {
-					return this.GetTable<StorageUsage>();
-				}
-			}
-			public Table<NetworkUsage> NetworkUsageTable {
-				get {
-					return this.GetTable<NetworkUsage>();
-				}
-			}
-			public Table<TimeRange> TimeRangeTable {
-				get {
-					return this.GetTable<TimeRange>();
-				}
-			}
-			public Table<HTTPActivityDetails> HTTPActivityDetailsTable {
-				get {
-					return this.GetTable<HTTPActivityDetails>();
-				}
-			}
-			public Table<ContentPackageCollection> ContentPackageCollectionTable {
-				get {
-					return this.GetTable<ContentPackageCollection>();
-				}
-			}
-			public Table<InformationInputCollection> InformationInputCollectionTable {
-				get {
-					return this.GetTable<InformationInputCollection>();
-				}
-			}
-			public Table<InformationOutputCollection> InformationOutputCollectionTable {
-				get {
-					return this.GetTable<InformationOutputCollection>();
-				}
-			}
-			public Table<AuthenticatedAsActiveDeviceCollection> AuthenticatedAsActiveDeviceCollectionTable {
-				get {
-					return this.GetTable<AuthenticatedAsActiveDeviceCollection>();
-				}
-			}
-			public Table<DeviceMembershipCollection> DeviceMembershipCollectionTable {
-				get {
-					return this.GetTable<DeviceMembershipCollection>();
-				}
-			}
-			public Table<InvoiceCollection> InvoiceCollectionTable {
-				get {
-					return this.GetTable<InvoiceCollection>();
-				}
-			}
-			public Table<InvoiceUserCollection> InvoiceUserCollectionTable {
-				get {
-					return this.GetTable<InvoiceUserCollection>();
-				}
-			}
-			public Table<InvoiceRowGroupCollection> InvoiceRowGroupCollectionTable {
-				get {
-					return this.GetTable<InvoiceRowGroupCollection>();
-				}
-			}
-			public Table<InvoiceEventDetailGroupCollection> InvoiceEventDetailGroupCollectionTable {
-				get {
-					return this.GetTable<InvoiceEventDetailGroupCollection>();
-				}
-			}
-			public Table<InvoiceEventDetailCollection> InvoiceEventDetailCollectionTable {
-				get {
-					return this.GetTable<InvoiceEventDetailCollection>();
-				}
-			}
-			public Table<InvoiceRowCollection> InvoiceRowCollectionTable {
-				get {
-					return this.GetTable<InvoiceRowCollection>();
-				}
-			}
-			public Table<CategoryCollection> CategoryCollectionTable {
-				get {
-					return this.GetTable<CategoryCollection>();
-				}
-			}
-			public Table<RequestResourceUsageCollection> RequestResourceUsageCollectionTable {
-				get {
-					return this.GetTable<RequestResourceUsageCollection>();
-				}
-			}
-			public Table<ProcessorUsageCollection> ProcessorUsageCollectionTable {
-				get {
-					return this.GetTable<ProcessorUsageCollection>();
-				}
-			}
-			public Table<StorageTransactionUsageCollection> StorageTransactionUsageCollectionTable {
-				get {
-					return this.GetTable<StorageTransactionUsageCollection>();
-				}
-			}
-			public Table<StorageUsageCollection> StorageUsageCollectionTable {
-				get {
-					return this.GetTable<StorageUsageCollection>();
-				}
-			}
-			public Table<NetworkUsageCollection> NetworkUsageCollectionTable {
-				get {
-					return this.GetTable<NetworkUsageCollection>();
-				}
-			}
-			public Table<HTTPActivityDetailsCollection> HTTPActivityDetailsCollectionTable {
-				get {
-					return this.GetTable<HTTPActivityDetailsCollection>();
-				}
-			}
+			public DbSet<ContentPackage> ContentPackageTable { get; set; }
+			public DbSet<InformationInput> InformationInputTable { get; set; }
+			public DbSet<InformationOutput> InformationOutputTable { get; set; }
+			public DbSet<AuthenticatedAsActiveDevice> AuthenticatedAsActiveDeviceTable { get; set; }
+			public DbSet<DeviceMembership> DeviceMembershipTable { get; set; }
+			public DbSet<InvoiceFiscalExportSummary> InvoiceFiscalExportSummaryTable { get; set; }
+			public DbSet<InvoiceSummaryContainer> InvoiceSummaryContainerTable { get; set; }
+			public DbSet<Invoice> InvoiceTable { get; set; }
+			public DbSet<InvoiceDetails> InvoiceDetailsTable { get; set; }
+			public DbSet<InvoiceUser> InvoiceUserTable { get; set; }
+			public DbSet<InvoiceRowGroup> InvoiceRowGroupTable { get; set; }
+			public DbSet<InvoiceEventDetailGroup> InvoiceEventDetailGroupTable { get; set; }
+			public DbSet<InvoiceEventDetail> InvoiceEventDetailTable { get; set; }
+			public DbSet<InvoiceRow> InvoiceRowTable { get; set; }
+			public DbSet<Category> CategoryTable { get; set; }
+			public DbSet<ProcessContainer> ProcessContainerTable { get; set; }
+			public DbSet<Process> ProcessTable { get; set; }
+			public DbSet<ProcessItem> ProcessItemTable { get; set; }
+			public DbSet<SemanticInformationItem> SemanticInformationItemTable { get; set; }
+			public DbSet<InformationOwnerInfo> InformationOwnerInfoTable { get; set; }
+			public DbSet<UsageSummary> UsageSummaryTable { get; set; }
+			public DbSet<UsageMonitorItem> UsageMonitorItemTable { get; set; }
+			public DbSet<RequestResourceUsage> RequestResourceUsageTable { get; set; }
+			public DbSet<ProcessorUsage> ProcessorUsageTable { get; set; }
+			public DbSet<StorageTransactionUsage> StorageTransactionUsageTable { get; set; }
+			public DbSet<StorageUsage> StorageUsageTable { get; set; }
+			public DbSet<NetworkUsage> NetworkUsageTable { get; set; }
+			public DbSet<TimeRange> TimeRangeTable { get; set; }
+			public DbSet<HTTPActivityDetails> HTTPActivityDetailsTable { get; set; }
+			public DbSet<ContentPackageCollection> ContentPackageCollectionTable { get; set; }
+			public DbSet<InformationInputCollection> InformationInputCollectionTable { get; set; }
+			public DbSet<InformationOutputCollection> InformationOutputCollectionTable { get; set; }
+			public DbSet<AuthenticatedAsActiveDeviceCollection> AuthenticatedAsActiveDeviceCollectionTable { get; set; }
+			public DbSet<DeviceMembershipCollection> DeviceMembershipCollectionTable { get; set; }
+			public DbSet<InvoiceCollection> InvoiceCollectionTable { get; set; }
+			public DbSet<InvoiceUserCollection> InvoiceUserCollectionTable { get; set; }
+			public DbSet<InvoiceRowGroupCollection> InvoiceRowGroupCollectionTable { get; set; }
+			public DbSet<InvoiceEventDetailGroupCollection> InvoiceEventDetailGroupCollectionTable { get; set; }
+			public DbSet<InvoiceEventDetailCollection> InvoiceEventDetailCollectionTable { get; set; }
+			public DbSet<InvoiceRowCollection> InvoiceRowCollectionTable { get; set; }
+			public DbSet<CategoryCollection> CategoryCollectionTable { get; set; }
+			public DbSet<RequestResourceUsageCollection> RequestResourceUsageCollectionTable { get; set; }
+			public DbSet<ProcessorUsageCollection> ProcessorUsageCollectionTable { get; set; }
+			public DbSet<StorageTransactionUsageCollection> StorageTransactionUsageCollectionTable { get; set; }
+			public DbSet<StorageUsageCollection> StorageUsageCollectionTable { get; set; }
+			public DbSet<NetworkUsageCollection> NetworkUsageCollectionTable { get; set; }
+			public DbSet<HTTPActivityDetailsCollection> HTTPActivityDetailsCollectionTable { get; set; }
         }
 
-    [Table(Name = "Login")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Login")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Login: {ID}")]
 	public class Login : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4251,18 +4060,18 @@ CREATE TABLE IF NOT EXISTS [Login](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LoginName { get; set; }
 		// private string _unmodified_LoginName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PasswordHash { get; set; }
 		// private string _unmodified_PasswordHash;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PasswordSalt { get; set; }
 		// private string _unmodified_PasswordSalt;
 		private EntityRef<LoginAccount> _Account = new EntityRef<LoginAccount>();
@@ -4284,20 +4093,21 @@ CREATE TABLE IF NOT EXISTS [Login](
 				PasswordSalt = string.Empty;
 		}
 	}
-    [Table(Name = "Email")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Email")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Email: {ID}")]
 	public class Email : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4323,8 +4133,8 @@ CREATE TABLE IF NOT EXISTS [Email](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
 		private EntityRef<EmailAccount> _Account = new EntityRef<EmailAccount>();
@@ -4336,18 +4146,18 @@ CREATE TABLE IF NOT EXISTS [Email](
 		}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool PendingValidation { get; set; }
 		// private bool _unmodified_PendingValidation;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ValidationKey { get; set; }
 		// private string _unmodified_ValidationKey;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime ValidationProcessExpiration { get; set; }
 		// private DateTime _unmodified_ValidationProcessExpiration;
         public void PrepareForStoring(bool isInitialInsert)
@@ -4359,20 +4169,21 @@ CREATE TABLE IF NOT EXISTS [Email](
 				ValidationKey = string.Empty;
 		}
 	}
-    [Table(Name = "Account")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Account")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Account: {ID}")]
 	public class Account : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4417,13 +4228,13 @@ CREATE TABLE IF NOT EXISTS [Account](
 		}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ServerMetadataJSON { get; set; }
 		// private string _unmodified_ServerMetadataJSON;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ClientMetadataJSON { get; set; }
 		// private string _unmodified_ClientMetadataJSON;
         public void PrepareForStoring(bool isInitialInsert)
@@ -4435,20 +4246,21 @@ CREATE TABLE IF NOT EXISTS [Account](
 				ClientMetadataJSON = string.Empty;
 		}
 	}
-    [Table(Name = "Group")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Group")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Group: {ID}")]
 	public class Group : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4481,20 +4293,21 @@ CREATE TABLE IF NOT EXISTS [Group](
 		
 		}
 	}
-    [Table(Name = "GroupMembership")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "GroupMembership")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupMembership: {ID}")]
 	public class GroupMembership : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4533,8 +4346,8 @@ CREATE TABLE IF NOT EXISTS [GroupMembership](
 		}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Role { get; set; }
 		// private string _unmodified_Role;
         public void PrepareForStoring(bool isInitialInsert)
@@ -4544,20 +4357,21 @@ CREATE TABLE IF NOT EXISTS [GroupMembership](
 				Role = string.Empty;
 		}
 	}
-    [Table(Name = "ContentPackage")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ContentPackage")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ContentPackage: {ID}")]
 	public class ContentPackage : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4584,28 +4398,28 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PackageType { get; set; }
 		// private string _unmodified_PackageType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PackageName { get; set; }
 		// private string _unmodified_PackageName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PackageRootFolder { get; set; }
 		// private string _unmodified_PackageRootFolder;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime CreationTime { get; set; }
 		// private DateTime _unmodified_CreationTime;
         public void PrepareForStoring(bool isInitialInsert)
@@ -4621,20 +4435,21 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
 				PackageRootFolder = string.Empty;
 		}
 	}
-    [Table(Name = "InformationInput")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InformationInput")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InformationInput: {ID}")]
 	public class InformationInput : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4661,28 +4476,28 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InputDescription { get; set; }
 		// private string _unmodified_InputDescription;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LocationURL { get; set; }
 		// private string _unmodified_LocationURL;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LocalContentName { get; set; }
 		// private string _unmodified_LocalContentName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AuthenticatedDeviceID { get; set; }
 		// private string _unmodified_AuthenticatedDeviceID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
         public void PrepareForStoring(bool isInitialInsert)
@@ -4698,20 +4513,21 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
 				AuthenticatedDeviceID = string.Empty;
 		}
 	}
-    [Table(Name = "InformationOutput")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InformationOutput")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InformationOutput: {ID}")]
 	public class InformationOutput : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4739,33 +4555,33 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OutputDescription { get; set; }
 		// private string _unmodified_OutputDescription;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string DestinationURL { get; set; }
 		// private string _unmodified_DestinationURL;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string DestinationContentName { get; set; }
 		// private string _unmodified_DestinationContentName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LocalContentURL { get; set; }
 		// private string _unmodified_LocalContentURL;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AuthenticatedDeviceID { get; set; }
 		// private string _unmodified_AuthenticatedDeviceID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
         public void PrepareForStoring(bool isInitialInsert)
@@ -4783,20 +4599,21 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
 				AuthenticatedDeviceID = string.Empty;
 		}
 	}
-    [Table(Name = "AuthenticatedAsActiveDevice")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AuthenticatedAsActiveDevice")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AuthenticatedAsActiveDevice: {ID}")]
 	public class AuthenticatedAsActiveDevice : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4825,38 +4642,38 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AuthenticationDescription { get; set; }
 		// private string _unmodified_AuthenticationDescription;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SharedSecret { get; set; }
 		// private string _unmodified_SharedSecret;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public byte[] ActiveSymmetricAESKey { get; set; }
 		// private byte[] _unmodified_ActiveSymmetricAESKey;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string EstablishedTrustID { get; set; }
 		// private string _unmodified_EstablishedTrustID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string NegotiationURL { get; set; }
 		// private string _unmodified_NegotiationURL;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ConnectionURL { get; set; }
 		// private string _unmodified_ConnectionURL;
         public void PrepareForStoring(bool isInitialInsert)
@@ -4874,20 +4691,21 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
 				ConnectionURL = string.Empty;
 		}
 	}
-    [Table(Name = "DeviceMembership")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "DeviceMembership")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DeviceMembership: {ID}")]
 	public class DeviceMembership : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4913,23 +4731,23 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string DeviceDescription { get; set; }
 		// private string _unmodified_DeviceDescription;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SharedSecret { get; set; }
 		// private string _unmodified_SharedSecret;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public byte[] ActiveSymmetricAESKey { get; set; }
 		// private byte[] _unmodified_ActiveSymmetricAESKey;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
         public void PrepareForStoring(bool isInitialInsert)
@@ -4941,20 +4759,21 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
 				SharedSecret = string.Empty;
 		}
 	}
-    [Table(Name = "InvoiceFiscalExportSummary")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceFiscalExportSummary")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceFiscalExportSummary: {ID}")]
 	public class InvoiceFiscalExportSummary : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -4979,16 +4798,16 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime FiscalInclusiveStartDate { get; set; }
 		// private DateTime _unmodified_FiscalInclusiveStartDate;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime FiscalInclusiveEndDate { get; set; }
 		// private DateTime _unmodified_FiscalInclusiveEndDate;
-			[Column]
+			//[Column]
 			public string ExportedInvoicesID { get; set; }
 			private EntityRef< InvoiceCollection > _ExportedInvoices;
 			[Association(Storage = "_ExportedInvoices", ThisKey = "ExportedInvoicesID")]
@@ -5002,20 +4821,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 		
 		}
 	}
-    [Table(Name = "InvoiceSummaryContainer")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceSummaryContainer")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceSummaryContainer: {ID}")]
 	public class InvoiceSummaryContainer : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5040,7 +4860,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string OpenInvoicesID { get; set; }
 			private EntityRef< InvoiceCollection > _OpenInvoices;
 			[Association(Storage = "_OpenInvoices", ThisKey = "OpenInvoicesID")]
@@ -5049,7 +4869,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
 				get { return this._OpenInvoices.Entity; }
 				set { this._OpenInvoices.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string PredictedInvoicesID { get; set; }
 			private EntityRef< InvoiceCollection > _PredictedInvoices;
 			[Association(Storage = "_PredictedInvoices", ThisKey = "PredictedInvoicesID")]
@@ -5058,7 +4878,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
 				get { return this._PredictedInvoices.Entity; }
 				set { this._PredictedInvoices.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string PaidInvoicesActiveYearID { get; set; }
 			private EntityRef< InvoiceCollection > _PaidInvoicesActiveYear;
 			[Association(Storage = "_PaidInvoicesActiveYear", ThisKey = "PaidInvoicesActiveYearID")]
@@ -5067,7 +4887,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
 				get { return this._PaidInvoicesActiveYear.Entity; }
 				set { this._PaidInvoicesActiveYear.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string PaidInvoicesLast12MonthsID { get; set; }
 			private EntityRef< InvoiceCollection > _PaidInvoicesLast12Months;
 			[Association(Storage = "_PaidInvoicesLast12Months", ThisKey = "PaidInvoicesLast12MonthsID")]
@@ -5081,20 +4901,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
 		
 		}
 	}
-    [Table(Name = "Invoice")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Invoice")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Invoice: {ID}")]
 	public class Invoice : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5126,46 +4947,46 @@ CREATE TABLE IF NOT EXISTS [Invoice](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InvoiceName { get; set; }
 		// private string _unmodified_InvoiceName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InvoiceID { get; set; }
 		// private string _unmodified_InvoiceID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InvoicedAmount { get; set; }
 		// private string _unmodified_InvoicedAmount;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime CreateDate { get; set; }
 		// private DateTime _unmodified_CreateDate;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime DueDate { get; set; }
 		// private DateTime _unmodified_DueDate;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PaidAmount { get; set; }
 		// private string _unmodified_PaidAmount;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string FeesAndInterestAmount { get; set; }
 		// private string _unmodified_FeesAndInterestAmount;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UnpaidAmount { get; set; }
 		// private string _unmodified_UnpaidAmount;
-			[Column]
+			//[Column]
 			public string InvoiceDetailsID { get; set; }
 			private EntityRef< InvoiceDetails > _InvoiceDetails;
 			[Association(Storage = "_InvoiceDetails", ThisKey = "InvoiceDetailsID")]
@@ -5175,7 +4996,7 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 				set { this._InvoiceDetails.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string InvoiceUsersID { get; set; }
 			private EntityRef< InvoiceUserCollection > _InvoiceUsers;
 			[Association(Storage = "_InvoiceUsers", ThisKey = "InvoiceUsersID")]
@@ -5201,20 +5022,21 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 				UnpaidAmount = string.Empty;
 		}
 	}
-    [Table(Name = "InvoiceDetails")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceDetails")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceDetails: {ID}")]
 	public class InvoiceDetails : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5242,33 +5064,33 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string MonthlyFeesTotal { get; set; }
 		// private string _unmodified_MonthlyFeesTotal;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OneTimeFeesTotal { get; set; }
 		// private string _unmodified_OneTimeFeesTotal;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UsageFeesTotal { get; set; }
 		// private string _unmodified_UsageFeesTotal;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string InterestFeesTotal { get; set; }
 		// private string _unmodified_InterestFeesTotal;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PenaltyFeesTotal { get; set; }
 		// private string _unmodified_PenaltyFeesTotal;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TotalFeesTotal { get; set; }
 		// private string _unmodified_TotalFeesTotal;
         public void PrepareForStoring(bool isInitialInsert)
@@ -5288,20 +5110,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
 				TotalFeesTotal = string.Empty;
 		}
 	}
-    [Table(Name = "InvoiceUser")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceUser")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceUser: {ID}")]
 	public class InvoiceUser : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5330,31 +5153,31 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UserName { get; set; }
 		// private string _unmodified_UserName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UserID { get; set; }
 		// private string _unmodified_UserID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UserPhoneNumber { get; set; }
 		// private string _unmodified_UserPhoneNumber;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UserSubscriptionNumber { get; set; }
 		// private string _unmodified_UserSubscriptionNumber;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UserInvoiceTotalAmount { get; set; }
 		// private string _unmodified_UserInvoiceTotalAmount;
-			[Column]
+			//[Column]
 			public string InvoiceRowGroupCollectionID { get; set; }
 			private EntityRef< InvoiceRowGroupCollection > _InvoiceRowGroupCollection;
 			[Association(Storage = "_InvoiceRowGroupCollection", ThisKey = "InvoiceRowGroupCollectionID")]
@@ -5363,7 +5186,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
 				get { return this._InvoiceRowGroupCollection.Entity; }
 				set { this._InvoiceRowGroupCollection.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string InvoiceEventDetailGroupCollectionID { get; set; }
 			private EntityRef< InvoiceEventDetailGroupCollection > _InvoiceEventDetailGroupCollection;
 			[Association(Storage = "_InvoiceEventDetailGroupCollection", ThisKey = "InvoiceEventDetailGroupCollectionID")]
@@ -5387,20 +5210,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
 				UserInvoiceTotalAmount = string.Empty;
 		}
 	}
-    [Table(Name = "InvoiceRowGroup")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceRowGroup")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceRowGroup: {ID}")]
 	public class InvoiceRowGroup : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5427,26 +5251,26 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupTotalPriceWithoutTaxes { get; set; }
 		// private string _unmodified_GroupTotalPriceWithoutTaxes;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupTotalTaxes { get; set; }
 		// private string _unmodified_GroupTotalTaxes;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupTotalPriceWithTaxes { get; set; }
 		// private string _unmodified_GroupTotalPriceWithTaxes;
-			[Column]
+			//[Column]
 			public string InvoiceRowCollectionID { get; set; }
 			private EntityRef< InvoiceRowCollection > _InvoiceRowCollection;
 			[Association(Storage = "_InvoiceRowCollection", ThisKey = "InvoiceRowCollectionID")]
@@ -5468,20 +5292,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 				GroupTotalPriceWithTaxes = string.Empty;
 		}
 	}
-    [Table(Name = "InvoiceEventDetailGroup")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceEventDetailGroup")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceEventDetailGroup: {ID}")]
 	public class InvoiceEventDetailGroup : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5505,11 +5330,11 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
-			[Column]
+			//[Column]
 			public string InvoiceEventDetailCollectionID { get; set; }
 			private EntityRef< InvoiceEventDetailCollection > _InvoiceEventDetailCollection;
 			[Association(Storage = "_InvoiceEventDetailCollection", ThisKey = "InvoiceEventDetailCollectionID")]
@@ -5525,20 +5350,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 				GroupName = string.Empty;
 		}
 	}
-    [Table(Name = "InvoiceEventDetail")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceEventDetail")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceEventDetail: {ID}")]
 	public class InvoiceEventDetail : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5570,53 +5396,53 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IndentMode { get; set; }
 		// private string _unmodified_IndentMode;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime EventStartDateTime { get; set; }
 		// private DateTime _unmodified_EventStartDateTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime EventEndDateTime { get; set; }
 		// private DateTime _unmodified_EventEndDateTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ReceivingParty { get; set; }
 		// private string _unmodified_ReceivingParty;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AmountOfUnits { get; set; }
 		// private string _unmodified_AmountOfUnits;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Duration { get; set; }
 		// private string _unmodified_Duration;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UnitPrice { get; set; }
 		// private string _unmodified_UnitPrice;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PriceWithoutTaxes { get; set; }
 		// private string _unmodified_PriceWithoutTaxes;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Taxes { get; set; }
 		// private string _unmodified_Taxes;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PriceWithTaxes { get; set; }
 		// private string _unmodified_PriceWithTaxes;
         public void PrepareForStoring(bool isInitialInsert)
@@ -5640,20 +5466,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
 				PriceWithTaxes = string.Empty;
 		}
 	}
-    [Table(Name = "InvoiceRow")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceRow")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceRow: {ID}")]
 	public class InvoiceRow : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5682,38 +5509,38 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IndentMode { get; set; }
 		// private string _unmodified_IndentMode;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string AmountOfUnits { get; set; }
 		// private string _unmodified_AmountOfUnits;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Duration { get; set; }
 		// private string _unmodified_Duration;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UnitPrice { get; set; }
 		// private string _unmodified_UnitPrice;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PriceWithoutTaxes { get; set; }
 		// private string _unmodified_PriceWithoutTaxes;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Taxes { get; set; }
 		// private string _unmodified_Taxes;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PriceWithTaxes { get; set; }
 		// private string _unmodified_PriceWithTaxes;
         public void PrepareForStoring(bool isInitialInsert)
@@ -5735,20 +5562,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
 				PriceWithTaxes = string.Empty;
 		}
 	}
-    [Table(Name = "Category")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Category")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Category: {ID}")]
 	public class Category : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5771,8 +5599,8 @@ CREATE TABLE IF NOT EXISTS [Category](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -5782,20 +5610,21 @@ CREATE TABLE IF NOT EXISTS [Category](
 				CategoryName = string.Empty;
 		}
 	}
-    [Table(Name = "ProcessContainer")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ProcessContainer")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ProcessContainer: {ID}")]
 	public class ProcessContainer : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5817,8 +5646,8 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
 )";
         }
 
-        [Column(Name = "ProcessIDs")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "ProcessIDs")] 
+        //[ScaffoldColumn(true)]
 		public string ProcessIDsData { get; set; }
 
         private bool _IsProcessIDsRetrieved = false;
@@ -5873,20 +5702,21 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
 
 		}
 	}
-    [Table(Name = "Process")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "Process")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Process: {ID}")]
 	public class Process : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -5912,11 +5742,11 @@ CREATE TABLE IF NOT EXISTS [Process](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProcessDescription { get; set; }
 		// private string _unmodified_ProcessDescription;
-			[Column]
+			//[Column]
 			public string ExecutingOperationID { get; set; }
 			private EntityRef< SemanticInformationItem > _ExecutingOperation;
 			[Association(Storage = "_ExecutingOperation", ThisKey = "ExecutingOperationID")]
@@ -5926,8 +5756,8 @@ CREATE TABLE IF NOT EXISTS [Process](
 				set { this._ExecutingOperation.Entity = value; }
 			}
 
-        [Column(Name = "InitialArguments")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "InitialArguments")] 
+        //[ScaffoldColumn(true)]
 		public string InitialArgumentsData { get; set; }
 
         private bool _IsInitialArgumentsRetrieved = false;
@@ -5971,8 +5801,8 @@ CREATE TABLE IF NOT EXISTS [Process](
 			}
         }
 
-        [Column(Name = "ProcessItems")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "ProcessItems")] 
+        //[ScaffoldColumn(true)]
 		public string ProcessItemsData { get; set; }
 
         private bool _IsProcessItemsRetrieved = false;
@@ -6035,20 +5865,21 @@ CREATE TABLE IF NOT EXISTS [Process](
 
 		}
 	}
-    [Table(Name = "ProcessItem")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ProcessItem")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ProcessItem: {ID}")]
 	public class ProcessItem : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6071,8 +5902,8 @@ CREATE TABLE IF NOT EXISTS [ProcessItem](
 )";
         }
 
-        [Column(Name = "Outputs")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "Outputs")] 
+        //[ScaffoldColumn(true)]
 		public string OutputsData { get; set; }
 
         private bool _IsOutputsRetrieved = false;
@@ -6116,8 +5947,8 @@ CREATE TABLE IF NOT EXISTS [ProcessItem](
 			}
         }
 
-        [Column(Name = "Inputs")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "Inputs")] 
+        //[ScaffoldColumn(true)]
 		public string InputsData { get; set; }
 
         private bool _IsInputsRetrieved = false;
@@ -6178,20 +6009,21 @@ CREATE TABLE IF NOT EXISTS [ProcessItem](
 
 		}
 	}
-    [Table(Name = "SemanticInformationItem")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "SemanticInformationItem")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SemanticInformationItem: {ID}")]
 	public class SemanticInformationItem : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6215,13 +6047,13 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ItemFullType { get; set; }
 		// private string _unmodified_ItemFullType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ItemValue { get; set; }
 		// private string _unmodified_ItemValue;
         public void PrepareForStoring(bool isInitialInsert)
@@ -6233,20 +6065,21 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
 				ItemValue = string.Empty;
 		}
 	}
-    [Table(Name = "InformationOwnerInfo")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InformationOwnerInfo")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InformationOwnerInfo: {ID}")]
 	public class InformationOwnerInfo : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6270,13 +6103,13 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OwnerType { get; set; }
 		// private string _unmodified_OwnerType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OwnerIdentifier { get; set; }
 		// private string _unmodified_OwnerIdentifier;
         public void PrepareForStoring(bool isInitialInsert)
@@ -6288,20 +6121,21 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 				OwnerIdentifier = string.Empty;
 		}
 	}
-    [Table(Name = "UsageSummary")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "UsageSummary")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("UsageSummary: {ID}")]
 	public class UsageSummary : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6325,11 +6159,11 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SummaryName { get; set; }
 		// private string _unmodified_SummaryName;
-			[Column]
+			//[Column]
 			public string SummaryMonitoringItemID { get; set; }
 			private EntityRef< UsageMonitorItem > _SummaryMonitoringItem;
 			[Association(Storage = "_SummaryMonitoringItem", ThisKey = "SummaryMonitoringItemID")]
@@ -6346,20 +6180,21 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
 				SummaryName = string.Empty;
 		}
 	}
-    [Table(Name = "UsageMonitorItem")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "UsageMonitorItem")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("UsageMonitorItem: {ID}")]
 	public class UsageMonitorItem : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6387,7 +6222,7 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string OwnerInfoID { get; set; }
 			private EntityRef< InformationOwnerInfo > _OwnerInfo;
 			[Association(Storage = "_OwnerInfo", ThisKey = "OwnerInfoID")]
@@ -6397,7 +6232,7 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 				set { this._OwnerInfo.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string TimeRangeInclusiveStartExclusiveEndID { get; set; }
 			private EntityRef< TimeRange > _TimeRangeInclusiveStartExclusiveEnd;
 			[Association(Storage = "_TimeRangeInclusiveStartExclusiveEnd", ThisKey = "TimeRangeInclusiveStartExclusiveEndID")]
@@ -6408,11 +6243,11 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public long StepSizeInMinutes { get; set; }
 		// private long _unmodified_StepSizeInMinutes;
-			[Column]
+			//[Column]
 			public string ProcessorUsagesID { get; set; }
 			private EntityRef< ProcessorUsageCollection > _ProcessorUsages;
 			[Association(Storage = "_ProcessorUsages", ThisKey = "ProcessorUsagesID")]
@@ -6421,7 +6256,7 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 				get { return this._ProcessorUsages.Entity; }
 				set { this._ProcessorUsages.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string StorageTransactionUsagesID { get; set; }
 			private EntityRef< StorageTransactionUsageCollection > _StorageTransactionUsages;
 			[Association(Storage = "_StorageTransactionUsages", ThisKey = "StorageTransactionUsagesID")]
@@ -6430,7 +6265,7 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 				get { return this._StorageTransactionUsages.Entity; }
 				set { this._StorageTransactionUsages.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string StorageUsagesID { get; set; }
 			private EntityRef< StorageUsageCollection > _StorageUsages;
 			[Association(Storage = "_StorageUsages", ThisKey = "StorageUsagesID")]
@@ -6439,7 +6274,7 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 				get { return this._StorageUsages.Entity; }
 				set { this._StorageUsages.Entity = value; }
 			}
-			[Column]
+			//[Column]
 			public string NetworkUsagesID { get; set; }
 			private EntityRef< NetworkUsageCollection > _NetworkUsages;
 			[Association(Storage = "_NetworkUsages", ThisKey = "NetworkUsagesID")]
@@ -6453,20 +6288,21 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 		
 		}
 	}
-    [Table(Name = "RequestResourceUsage")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "RequestResourceUsage")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("RequestResourceUsage: {ID}")]
 	public class RequestResourceUsage : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6492,7 +6328,7 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string OwnerInfoID { get; set; }
 			private EntityRef< InformationOwnerInfo > _OwnerInfo;
 			[Association(Storage = "_OwnerInfo", ThisKey = "OwnerInfoID")]
@@ -6502,7 +6338,7 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 				set { this._OwnerInfo.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string ProcessorUsageID { get; set; }
 			private EntityRef< ProcessorUsage > _ProcessorUsage;
 			[Association(Storage = "_ProcessorUsage", ThisKey = "ProcessorUsageID")]
@@ -6512,7 +6348,7 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 				set { this._ProcessorUsage.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string StorageTransactionUsageID { get; set; }
 			private EntityRef< StorageTransactionUsage > _StorageTransactionUsage;
 			[Association(Storage = "_StorageTransactionUsage", ThisKey = "StorageTransactionUsageID")]
@@ -6522,7 +6358,7 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 				set { this._StorageTransactionUsage.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string NetworkUsageID { get; set; }
 			private EntityRef< NetworkUsage > _NetworkUsage;
 			[Association(Storage = "_NetworkUsage", ThisKey = "NetworkUsageID")]
@@ -6532,7 +6368,7 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 				set { this._NetworkUsage.Entity = value; }
 			}
 
-			[Column]
+			//[Column]
 			public string RequestDetailsID { get; set; }
 			private EntityRef< HTTPActivityDetails > _RequestDetails;
 			[Association(Storage = "_RequestDetails", ThisKey = "RequestDetailsID")]
@@ -6547,20 +6383,21 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 		
 		}
 	}
-    [Table(Name = "ProcessorUsage")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ProcessorUsage")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ProcessorUsage: {ID}")]
 	public class ProcessorUsage : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6586,7 +6423,7 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string TimeRangeID { get; set; }
 			private EntityRef< TimeRange > _TimeRange;
 			[Association(Storage = "_TimeRange", ThisKey = "TimeRangeID")]
@@ -6597,23 +6434,23 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UsageType { get; set; }
 		// private string _unmodified_UsageType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double AmountOfTicks { get; set; }
 		// private double _unmodified_AmountOfTicks;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double FrequencyTicksPerSecond { get; set; }
 		// private double _unmodified_FrequencyTicksPerSecond;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public long Milliseconds { get; set; }
 		// private long _unmodified_Milliseconds;
         public void PrepareForStoring(bool isInitialInsert)
@@ -6623,20 +6460,21 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 				UsageType = string.Empty;
 		}
 	}
-    [Table(Name = "StorageTransactionUsage")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "StorageTransactionUsage")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("StorageTransactionUsage: {ID}")]
 	public class StorageTransactionUsage : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6660,7 +6498,7 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string TimeRangeID { get; set; }
 			private EntityRef< TimeRange > _TimeRange;
 			[Association(Storage = "_TimeRange", ThisKey = "TimeRangeID")]
@@ -6671,13 +6509,13 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UsageType { get; set; }
 		// private string _unmodified_UsageType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public long AmountOfTransactions { get; set; }
 		// private long _unmodified_AmountOfTransactions;
         public void PrepareForStoring(bool isInitialInsert)
@@ -6687,20 +6525,21 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 				UsageType = string.Empty;
 		}
 	}
-    [Table(Name = "StorageUsage")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "StorageUsage")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("StorageUsage: {ID}")]
 	public class StorageUsage : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6726,23 +6565,23 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime SnapshotTime { get; set; }
 		// private DateTime _unmodified_SnapshotTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UsageType { get; set; }
 		// private string _unmodified_UsageType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UsageUnit { get; set; }
 		// private string _unmodified_UsageUnit;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double AmountOfUnits { get; set; }
 		// private double _unmodified_AmountOfUnits;
         public void PrepareForStoring(bool isInitialInsert)
@@ -6754,20 +6593,21 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
 				UsageUnit = string.Empty;
 		}
 	}
-    [Table(Name = "NetworkUsage")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "NetworkUsage")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("NetworkUsage: {ID}")]
 	public class NetworkUsage : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6791,7 +6631,7 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
 )";
         }
 
-			[Column]
+			//[Column]
 			public string TimeRangeID { get; set; }
 			private EntityRef< TimeRange > _TimeRange;
 			[Association(Storage = "_TimeRange", ThisKey = "TimeRangeID")]
@@ -6802,13 +6642,13 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
 			}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UsageType { get; set; }
 		// private string _unmodified_UsageType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public long AmountOfBytes { get; set; }
 		// private long _unmodified_AmountOfBytes;
         public void PrepareForStoring(bool isInitialInsert)
@@ -6818,20 +6658,21 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
 				UsageType = string.Empty;
 		}
 	}
-    [Table(Name = "TimeRange")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "TimeRange")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TimeRange: {ID}")]
 	public class TimeRange : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6855,13 +6696,13 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime StartTime { get; set; }
 		// private DateTime _unmodified_StartTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime EndTime { get; set; }
 		// private DateTime _unmodified_EndTime;
         public void PrepareForStoring(bool isInitialInsert)
@@ -6869,20 +6710,21 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
 		
 		}
 	}
-    [Table(Name = "HTTPActivityDetails")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "HTTPActivityDetails")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("HTTPActivityDetails: {ID}")]
 	public class HTTPActivityDetails : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6911,38 +6753,38 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RemoteIPAddress { get; set; }
 		// private string _unmodified_RemoteIPAddress;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RemoteEndpointUserName { get; set; }
 		// private string _unmodified_RemoteEndpointUserName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string UserID { get; set; }
 		// private string _unmodified_UserID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime UTCDateTime { get; set; }
 		// private DateTime _unmodified_UTCDateTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string RequestLine { get; set; }
 		// private string _unmodified_RequestLine;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public long HTTPStatusCode { get; set; }
 		// private long _unmodified_HTTPStatusCode;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public long ReturnedContentLength { get; set; }
 		// private long _unmodified_ReturnedContentLength;
         public void PrepareForStoring(bool isInitialInsert)
@@ -6958,20 +6800,21 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
 				RequestLine = string.Empty;
 		}
 	}
-    [Table(Name = "ContentPackageCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ContentPackageCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ContentPackageCollection: {ID}")]
 	public class ContentPackageCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -6996,24 +6839,25 @@ CREATE TABLE IF NOT EXISTS [ContentPackageCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "InformationInputCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InformationInputCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InformationInputCollection: {ID}")]
 	public class InformationInputCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7038,24 +6882,25 @@ CREATE TABLE IF NOT EXISTS [InformationInputCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "InformationOutputCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InformationOutputCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InformationOutputCollection: {ID}")]
 	public class InformationOutputCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7080,24 +6925,25 @@ CREATE TABLE IF NOT EXISTS [InformationOutputCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "AuthenticatedAsActiveDeviceCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AuthenticatedAsActiveDeviceCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AuthenticatedAsActiveDeviceCollection: {ID}")]
 	public class AuthenticatedAsActiveDeviceCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7122,24 +6968,25 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDeviceCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "DeviceMembershipCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "DeviceMembershipCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DeviceMembershipCollection: {ID}")]
 	public class DeviceMembershipCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7164,24 +7011,25 @@ CREATE TABLE IF NOT EXISTS [DeviceMembershipCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "InvoiceCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceCollection: {ID}")]
 	public class InvoiceCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7206,24 +7054,25 @@ CREATE TABLE IF NOT EXISTS [InvoiceCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "InvoiceUserCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceUserCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceUserCollection: {ID}")]
 	public class InvoiceUserCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7248,24 +7097,25 @@ CREATE TABLE IF NOT EXISTS [InvoiceUserCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "InvoiceRowGroupCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceRowGroupCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceRowGroupCollection: {ID}")]
 	public class InvoiceRowGroupCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7290,24 +7140,25 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroupCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "InvoiceEventDetailGroupCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceEventDetailGroupCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceEventDetailGroupCollection: {ID}")]
 	public class InvoiceEventDetailGroupCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7332,24 +7183,25 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroupCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "InvoiceEventDetailCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceEventDetailCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceEventDetailCollection: {ID}")]
 	public class InvoiceEventDetailCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7374,24 +7226,25 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "InvoiceRowCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "InvoiceRowCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InvoiceRowCollection: {ID}")]
 	public class InvoiceRowCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7416,24 +7269,25 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "CategoryCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "CategoryCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CategoryCollection: {ID}")]
 	public class CategoryCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7458,24 +7312,25 @@ CREATE TABLE IF NOT EXISTS [CategoryCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "RequestResourceUsageCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "RequestResourceUsageCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("RequestResourceUsageCollection: {ID}")]
 	public class RequestResourceUsageCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7500,24 +7355,25 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsageCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "ProcessorUsageCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "ProcessorUsageCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ProcessorUsageCollection: {ID}")]
 	public class ProcessorUsageCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7542,24 +7398,25 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsageCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "StorageTransactionUsageCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "StorageTransactionUsageCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("StorageTransactionUsageCollection: {ID}")]
 	public class StorageTransactionUsageCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7584,24 +7441,25 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsageCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "StorageUsageCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "StorageUsageCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("StorageUsageCollection: {ID}")]
 	public class StorageUsageCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7626,24 +7484,25 @@ CREATE TABLE IF NOT EXISTS [StorageUsageCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "NetworkUsageCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "NetworkUsageCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("NetworkUsageCollection: {ID}")]
 	public class NetworkUsageCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7668,24 +7527,25 @@ CREATE TABLE IF NOT EXISTS [NetworkUsageCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "HTTPActivityDetailsCollection")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "HTTPActivityDetailsCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("HTTPActivityDetailsCollection: {ID}")]
 	public class HTTPActivityDetailsCollection : ITheBallDataContextStorable
 	{
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -7710,12 +7570,12 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetailsCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "LoginAccount")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "LoginAccount")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LoginAccount: {LoginID} - {AccountID}")]
 	public class LoginAccount // : ITheBallDataContextStorable
 	{
@@ -7731,9 +7591,9 @@ PRIMARY KEY (LoginID, AccountID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string LoginID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string AccountID { get; set; }
 
 
@@ -7757,8 +7617,8 @@ PRIMARY KEY (LoginID, AccountID)
 
     }
 
-    [Table(Name = "EmailAccount")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "EmailAccount")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("EmailAccount: {EmailID} - {AccountID}")]
 	public class EmailAccount // : ITheBallDataContextStorable
 	{
@@ -7774,9 +7634,9 @@ PRIMARY KEY (EmailID, AccountID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string EmailID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string AccountID { get; set; }
 
 
@@ -7800,8 +7660,8 @@ PRIMARY KEY (EmailID, AccountID)
 
     }
 
-    [Table(Name = "AccountEmails")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountEmails")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountEmails: {AccountID} - {EmailID}")]
 	public class AccountEmails // : ITheBallDataContextStorable
 	{
@@ -7817,9 +7677,9 @@ PRIMARY KEY (AccountID, EmailID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string AccountID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string EmailID { get; set; }
 
 
@@ -7843,8 +7703,8 @@ PRIMARY KEY (AccountID, EmailID)
 
     }
 
-    [Table(Name = "AccountLogins")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountLogins")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountLogins: {AccountID} - {LoginID}")]
 	public class AccountLogins // : ITheBallDataContextStorable
 	{
@@ -7860,9 +7720,9 @@ PRIMARY KEY (AccountID, LoginID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string AccountID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string LoginID { get; set; }
 
 
@@ -7886,8 +7746,8 @@ PRIMARY KEY (AccountID, LoginID)
 
     }
 
-    [Table(Name = "AccountGroupMemberships")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "AccountGroupMemberships")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountGroupMemberships: {AccountID} - {GroupMembershipID}")]
 	public class AccountGroupMemberships // : ITheBallDataContextStorable
 	{
@@ -7903,9 +7763,9 @@ PRIMARY KEY (AccountID, GroupMembershipID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string AccountID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string GroupMembershipID { get; set; }
 
 
@@ -7929,8 +7789,8 @@ PRIMARY KEY (AccountID, GroupMembershipID)
 
     }
 
-    [Table(Name = "GroupGroupMemberships")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "GroupGroupMemberships")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupGroupMemberships: {GroupID} - {GroupMembershipID}")]
 	public class GroupGroupMemberships // : ITheBallDataContextStorable
 	{
@@ -7946,9 +7806,9 @@ PRIMARY KEY (GroupID, GroupMembershipID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string GroupID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string GroupMembershipID { get; set; }
 
 
@@ -7972,8 +7832,8 @@ PRIMARY KEY (GroupID, GroupMembershipID)
 
     }
 
-    [Table(Name = "GroupMembershipAccount")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "GroupMembershipAccount")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupMembershipAccount: {GroupMembershipID} - {AccountID}")]
 	public class GroupMembershipAccount // : ITheBallDataContextStorable
 	{
@@ -7989,9 +7849,9 @@ PRIMARY KEY (GroupMembershipID, AccountID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string GroupMembershipID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string AccountID { get; set; }
 
 
@@ -8015,8 +7875,8 @@ PRIMARY KEY (GroupMembershipID, AccountID)
 
     }
 
-    [Table(Name = "GroupMembershipGroup")]
-	[ScaffoldTable(true)]
+    //[Table(Name = "GroupMembershipGroup")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupMembershipGroup: {GroupMembershipID} - {GroupID}")]
 	public class GroupMembershipGroup // : ITheBallDataContextStorable
 	{
@@ -8032,9 +7892,9 @@ PRIMARY KEY (GroupMembershipID, GroupID)
         }
 
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string GroupMembershipID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string GroupID { get; set; }
 
 
