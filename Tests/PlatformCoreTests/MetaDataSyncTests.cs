@@ -1,4 +1,3 @@
-using System.Data.Linq;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using SQLite.TheBall.Payments;
