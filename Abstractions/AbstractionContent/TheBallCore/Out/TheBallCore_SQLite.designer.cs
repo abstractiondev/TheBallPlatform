@@ -3920,58 +3920,18 @@ namespace SQLite.TheBall.CORE {
 
 
 			public DbSet<Login> LoginTable { get; set; }
-			public Table<LoginAccount> LoginAccountTable {
-				get {
-					return this.GetTable<LoginAccount>();
-				}
-			}
-
+			public DbSet<LoginAccount> LoginAccountTable { get; set; }
 			public DbSet<Email> EmailTable { get; set; }
-			public Table<EmailAccount> EmailAccountTable {
-				get {
-					return this.GetTable<EmailAccount>();
-				}
-			}
-
+			public DbSet<EmailAccount> EmailAccountTable { get; set; }
 			public DbSet<Account> AccountTable { get; set; }
-			public Table<AccountEmails> AccountEmailsTable {
-				get {
-					return this.GetTable<AccountEmails>();
-				}
-			}
-
-			public Table<AccountLogins> AccountLoginsTable {
-				get {
-					return this.GetTable<AccountLogins>();
-				}
-			}
-
-			public Table<AccountGroupMemberships> AccountGroupMembershipsTable {
-				get {
-					return this.GetTable<AccountGroupMemberships>();
-				}
-			}
-
+			public DbSet<AccountEmails> AccountEmailsTable { get; set; }
+			public DbSet<AccountLogins> AccountLoginsTable { get; set; }
+			public DbSet<AccountGroupMemberships> AccountGroupMembershipsTable { get; set; }
 			public DbSet<Group> GroupTable { get; set; }
-			public Table<GroupGroupMemberships> GroupGroupMembershipsTable {
-				get {
-					return this.GetTable<GroupGroupMemberships>();
-				}
-			}
-
+			public DbSet<GroupGroupMemberships> GroupGroupMembershipsTable { get; set; }
 			public DbSet<GroupMembership> GroupMembershipTable { get; set; }
-			public Table<GroupMembershipAccount> GroupMembershipAccountTable {
-				get {
-					return this.GetTable<GroupMembershipAccount>();
-				}
-			}
-
-			public Table<GroupMembershipGroup> GroupMembershipGroupTable {
-				get {
-					return this.GetTable<GroupMembershipGroup>();
-				}
-			}
-
+			public DbSet<GroupMembershipAccount> GroupMembershipAccountTable { get; set; }
+			public DbSet<GroupMembershipGroup> GroupMembershipGroupTable { get; set; }
 			public DbSet<ContentPackage> ContentPackageTable { get; set; }
 			public DbSet<InformationInput> InformationInputTable { get; set; }
 			public DbSet<InformationOutput> InformationOutputTable { get; set; }
@@ -4074,12 +4034,14 @@ CREATE TABLE IF NOT EXISTS [Login](
         //[ScaffoldColumn(true)]
 		public string PasswordSalt { get; set; }
 		// private string _unmodified_PasswordSalt;
-		private EntityRef<LoginAccount> _Account = new EntityRef<LoginAccount>();
-        [Association(ThisKey = "ID", OtherKey = "LoginID", Storage="_Account")]
+		//private obsoleted<LoginAccount> _Account = new obsoleted<LoginAccount>();
+        //[Association(ThisKey = "ID", OtherKey = "LoginID", Storage="_Account")]
         public LoginAccount Account 
 		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
+			get;
+			set;
+			//get { return _Account.Entity; }
+			//set { _Account.Entity = value; }
 		}
 
         public void PrepareForStoring(bool isInitialInsert)
@@ -4137,12 +4099,14 @@ CREATE TABLE IF NOT EXISTS [Email](
         //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
-		private EntityRef<EmailAccount> _Account = new EntityRef<EmailAccount>();
-        [Association(ThisKey = "ID", OtherKey = "EmailID", Storage="_Account")]
+		//private obsoleted<EmailAccount> _Account = new obsoleted<EmailAccount>();
+        //[Association(ThisKey = "ID", OtherKey = "EmailID", Storage="_Account")]
         public EmailAccount Account 
 		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
+			get;
+			set;
+			//get { return _Account.Entity; }
+			//set { _Account.Entity = value; }
 		}
 
 
@@ -4206,25 +4170,31 @@ CREATE TABLE IF NOT EXISTS [Account](
 )";
         }
 
-		private EntitySet<AccountEmails> _Emails = new EntitySet<AccountEmails>();
-        [Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_Emails")]
-        public EntitySet<AccountEmails> Emails { 
-			get { return _Emails; }
-			set { _Emails.Assign(value); }
+		//private obsoleted<AccountEmails> _Emails = new obsoleted<AccountEmails>();
+        //[Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_Emails")]
+        public List<AccountEmails> Emails { 
+			get; 
+			set;
+			//get { return _Emails; }
+			//set { _Emails.Assign(value); }
 		}
 
-		private EntitySet<AccountLogins> _Logins = new EntitySet<AccountLogins>();
-        [Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_Logins")]
-        public EntitySet<AccountLogins> Logins { 
-			get { return _Logins; }
-			set { _Logins.Assign(value); }
+		//private obsoleted<AccountLogins> _Logins = new obsoleted<AccountLogins>();
+        //[Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_Logins")]
+        public List<AccountLogins> Logins { 
+			get; 
+			set;
+			//get { return _Logins; }
+			//set { _Logins.Assign(value); }
 		}
 
-		private EntitySet<AccountGroupMemberships> _GroupMemberships = new EntitySet<AccountGroupMemberships>();
-        [Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_GroupMemberships")]
-        public EntitySet<AccountGroupMemberships> GroupMemberships { 
-			get { return _GroupMemberships; }
-			set { _GroupMemberships.Assign(value); }
+		//private obsoleted<AccountGroupMemberships> _GroupMemberships = new obsoleted<AccountGroupMemberships>();
+        //[Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_GroupMemberships")]
+        public List<AccountGroupMemberships> GroupMemberships { 
+			get; 
+			set;
+			//get { return _GroupMemberships; }
+			//set { _GroupMemberships.Assign(value); }
 		}
 
 
@@ -4281,11 +4251,13 @@ CREATE TABLE IF NOT EXISTS [Group](
 )";
         }
 
-		private EntitySet<GroupGroupMemberships> _GroupMemberships = new EntitySet<GroupGroupMemberships>();
-        [Association(ThisKey = "ID", OtherKey = "GroupID", Storage="_GroupMemberships")]
-        public EntitySet<GroupGroupMemberships> GroupMemberships { 
-			get { return _GroupMemberships; }
-			set { _GroupMemberships.Assign(value); }
+		//private obsoleted<GroupGroupMemberships> _GroupMemberships = new obsoleted<GroupGroupMemberships>();
+        //[Association(ThisKey = "ID", OtherKey = "GroupID", Storage="_GroupMemberships")]
+        public List<GroupGroupMemberships> GroupMemberships { 
+			get; 
+			set;
+			//get { return _GroupMemberships; }
+			//set { _GroupMemberships.Assign(value); }
 		}
 
         public void PrepareForStoring(bool isInitialInsert)
@@ -4329,20 +4301,24 @@ CREATE TABLE IF NOT EXISTS [GroupMembership](
 )";
         }
 
-		private EntityRef<GroupMembershipAccount> _Account = new EntityRef<GroupMembershipAccount>();
-        [Association(ThisKey = "ID", OtherKey = "GroupMembershipID", Storage="_Account")]
+		//private obsoleted<GroupMembershipAccount> _Account = new obsoleted<GroupMembershipAccount>();
+        //[Association(ThisKey = "ID", OtherKey = "GroupMembershipID", Storage="_Account")]
         public GroupMembershipAccount Account 
 		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
+			get;
+			set;
+			//get { return _Account.Entity; }
+			//set { _Account.Entity = value; }
 		}
 
-		private EntityRef<GroupMembershipGroup> _Group = new EntityRef<GroupMembershipGroup>();
-        [Association(ThisKey = "ID", OtherKey = "GroupMembershipID", Storage="_Group")]
+		//private obsoleted<GroupMembershipGroup> _Group = new obsoleted<GroupMembershipGroup>();
+        //[Association(ThisKey = "ID", OtherKey = "GroupMembershipID", Storage="_Group")]
         public GroupMembershipGroup Group 
 		{ 
-			get { return _Group.Entity; }
-			set { _Group.Entity = value; }
+			get;
+			set;
+			//get { return _Group.Entity; }
+			//set { _Group.Entity = value; }
 		}
 
 
@@ -7597,23 +7573,15 @@ PRIMARY KEY (LoginID, AccountID)
         public string AccountID { get; set; }
 
 
-        private EntityRef<Login> _Login = new EntityRef<Login>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "LoginID", OtherKey = "ID", 
-			Storage = "_Login", IsUnique = true)]
-        public Login Login 
-		{ 
-			get { return _Login.Entity; }
-			set { _Login.Entity = value; }
-		}
+        //private EntityRef<Login> _Login = new EntityRef<Login>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "LoginID", OtherKey = "ID", 
+		//	Storage = "_Login", IsUnique = true)]
+        public Login Login { get; set; }
 
-        private EntityRef<Account> _Account = new EntityRef<Account>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
-			Storage = "_Account")]
-		public Account Account 
-		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
-		}
+        //private EntityRef<Account> _Account = new EntityRef<Account>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+		//	Storage = "_Account")]
+		public Account Account { get; set; }
 
     }
 
@@ -7640,23 +7608,15 @@ PRIMARY KEY (EmailID, AccountID)
         public string AccountID { get; set; }
 
 
-        private EntityRef<Email> _Email = new EntityRef<Email>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "EmailID", OtherKey = "ID", 
-			Storage = "_Email", IsUnique = true)]
-        public Email Email 
-		{ 
-			get { return _Email.Entity; }
-			set { _Email.Entity = value; }
-		}
+        //private EntityRef<Email> _Email = new EntityRef<Email>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "EmailID", OtherKey = "ID", 
+		//	Storage = "_Email", IsUnique = true)]
+        public Email Email { get; set; }
 
-        private EntityRef<Account> _Account = new EntityRef<Account>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
-			Storage = "_Account")]
-		public Account Account 
-		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
-		}
+        //private EntityRef<Account> _Account = new EntityRef<Account>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+		//	Storage = "_Account")]
+		public Account Account { get; set; }
 
     }
 
@@ -7683,23 +7643,15 @@ PRIMARY KEY (AccountID, EmailID)
         public string EmailID { get; set; }
 
 
-        private EntityRef<Account> _Account = new EntityRef<Account>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
-			Storage = "_Account", IsUnique = false)]
-        public Account Account 
-		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
-		}
+        //private EntityRef<Account> _Account = new EntityRef<Account>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+		//	Storage = "_Account", IsUnique = false)]
+        public Account Account { get; set; }
 
-        private EntityRef<Email> _Email = new EntityRef<Email>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "EmailID", OtherKey = "ID", 
-			Storage = "_Email")]
-		public Email Email 
-		{ 
-			get { return _Email.Entity; }
-			set { _Email.Entity = value; }
-		}
+        //private EntityRef<Email> _Email = new EntityRef<Email>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "EmailID", OtherKey = "ID", 
+		//	Storage = "_Email")]
+		public Email Email { get; set; }
 
     }
 
@@ -7726,23 +7678,15 @@ PRIMARY KEY (AccountID, LoginID)
         public string LoginID { get; set; }
 
 
-        private EntityRef<Account> _Account = new EntityRef<Account>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
-			Storage = "_Account", IsUnique = false)]
-        public Account Account 
-		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
-		}
+        //private EntityRef<Account> _Account = new EntityRef<Account>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+		//	Storage = "_Account", IsUnique = false)]
+        public Account Account { get; set; }
 
-        private EntityRef<Login> _Login = new EntityRef<Login>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "LoginID", OtherKey = "ID", 
-			Storage = "_Login")]
-		public Login Login 
-		{ 
-			get { return _Login.Entity; }
-			set { _Login.Entity = value; }
-		}
+        //private EntityRef<Login> _Login = new EntityRef<Login>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "LoginID", OtherKey = "ID", 
+		//	Storage = "_Login")]
+		public Login Login { get; set; }
 
     }
 
@@ -7769,23 +7713,15 @@ PRIMARY KEY (AccountID, GroupMembershipID)
         public string GroupMembershipID { get; set; }
 
 
-        private EntityRef<Account> _Account = new EntityRef<Account>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
-			Storage = "_Account", IsUnique = false)]
-        public Account Account 
-		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
-		}
+        //private EntityRef<Account> _Account = new EntityRef<Account>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+		//	Storage = "_Account", IsUnique = false)]
+        public Account Account { get; set; }
 
-        private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
-			Storage = "_GroupMembership")]
-		public GroupMembership GroupMembership 
-		{ 
-			get { return _GroupMembership.Entity; }
-			set { _GroupMembership.Entity = value; }
-		}
+        //private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
+		//	Storage = "_GroupMembership")]
+		public GroupMembership GroupMembership { get; set; }
 
     }
 
@@ -7812,23 +7748,15 @@ PRIMARY KEY (GroupID, GroupMembershipID)
         public string GroupMembershipID { get; set; }
 
 
-        private EntityRef<Group> _Group = new EntityRef<Group>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupID", OtherKey = "ID", 
-			Storage = "_Group", IsUnique = false)]
-        public Group Group 
-		{ 
-			get { return _Group.Entity; }
-			set { _Group.Entity = value; }
-		}
+        //private EntityRef<Group> _Group = new EntityRef<Group>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupID", OtherKey = "ID", 
+		//	Storage = "_Group", IsUnique = false)]
+        public Group Group { get; set; }
 
-        private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
-			Storage = "_GroupMembership")]
-		public GroupMembership GroupMembership 
-		{ 
-			get { return _GroupMembership.Entity; }
-			set { _GroupMembership.Entity = value; }
-		}
+        //private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
+		//	Storage = "_GroupMembership")]
+		public GroupMembership GroupMembership { get; set; }
 
     }
 
@@ -7855,23 +7783,15 @@ PRIMARY KEY (GroupMembershipID, AccountID)
         public string AccountID { get; set; }
 
 
-        private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
-			Storage = "_GroupMembership", IsUnique = true)]
-        public GroupMembership GroupMembership 
-		{ 
-			get { return _GroupMembership.Entity; }
-			set { _GroupMembership.Entity = value; }
-		}
+        //private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
+		//	Storage = "_GroupMembership", IsUnique = true)]
+        public GroupMembership GroupMembership { get; set; }
 
-        private EntityRef<Account> _Account = new EntityRef<Account>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
-			Storage = "_Account")]
-		public Account Account 
-		{ 
-			get { return _Account.Entity; }
-			set { _Account.Entity = value; }
-		}
+        //private EntityRef<Account> _Account = new EntityRef<Account>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+		//	Storage = "_Account")]
+		public Account Account { get; set; }
 
     }
 
@@ -7898,23 +7818,15 @@ PRIMARY KEY (GroupMembershipID, GroupID)
         public string GroupID { get; set; }
 
 
-        private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
-			Storage = "_GroupMembership", IsUnique = true)]
-        public GroupMembership GroupMembership 
-		{ 
-			get { return _GroupMembership.Entity; }
-			set { _GroupMembership.Entity = value; }
-		}
+        //private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
+		//	Storage = "_GroupMembership", IsUnique = true)]
+        public GroupMembership GroupMembership { get; set; }
 
-        private EntityRef<Group> _Group = new EntityRef<Group>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupID", OtherKey = "ID", 
-			Storage = "_Group")]
-		public Group Group 
-		{ 
-			get { return _Group.Entity; }
-			set { _Group.Entity = value; }
-		}
+        //private EntityRef<Group> _Group = new EntityRef<Group>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupID", OtherKey = "ID", 
+		//	Storage = "_Group")]
+		public Group Group { get; set; }
 
     }
 

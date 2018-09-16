@@ -975,39 +975,14 @@ namespace SQLite.ProBroz.OnlineTraining {
 
 
 			public DbSet<Member> MemberTable { get; set; }
-			public Table<MemberSubscriptions> MemberSubscriptionsTable {
-				get {
-					return this.GetTable<MemberSubscriptions>();
-				}
-			}
-
+			public DbSet<MemberSubscriptions> MemberSubscriptionsTable { get; set; }
 			public DbSet<MembershipPlan> MembershipPlanTable { get; set; }
-			public Table<MembershipPlanPaymentOptions> MembershipPlanPaymentOptionsTable {
-				get {
-					return this.GetTable<MembershipPlanPaymentOptions>();
-				}
-			}
-
-			public Table<MembershipPlanGym> MembershipPlanGymTable {
-				get {
-					return this.GetTable<MembershipPlanGym>();
-				}
-			}
-
+			public DbSet<MembershipPlanPaymentOptions> MembershipPlanPaymentOptionsTable { get; set; }
+			public DbSet<MembershipPlanGym> MembershipPlanGymTable { get; set; }
 			public DbSet<PaymentOption> PaymentOptionTable { get; set; }
 			public DbSet<Subscription> SubscriptionTable { get; set; }
-			public Table<SubscriptionPlan> SubscriptionPlanTable {
-				get {
-					return this.GetTable<SubscriptionPlan>();
-				}
-			}
-
-			public Table<SubscriptionPaymentOption> SubscriptionPaymentOptionTable {
-				get {
-					return this.GetTable<SubscriptionPaymentOption>();
-				}
-			}
-
+			public DbSet<SubscriptionPlan> SubscriptionPlanTable { get; set; }
+			public DbSet<SubscriptionPaymentOption> SubscriptionPaymentOptionTable { get; set; }
 			public DbSet<TenantGym> TenantGymTable { get; set; }
 			public DbSet<MemberCollection> MemberCollectionTable { get; set; }
 			public DbSet<MembershipPlanCollection> MembershipPlanCollectionTable { get; set; }
@@ -1135,11 +1110,13 @@ CREATE TABLE IF NOT EXISTS [Member](
         //[ScaffoldColumn(true)]
 		public bool VideoPermission { get; set; }
 		// private bool _unmodified_VideoPermission;
-		private EntitySet<MemberSubscriptions> _Subscriptions = new EntitySet<MemberSubscriptions>();
-        [Association(ThisKey = "ID", OtherKey = "MemberID", Storage="_Subscriptions")]
-        public EntitySet<MemberSubscriptions> Subscriptions { 
-			get { return _Subscriptions; }
-			set { _Subscriptions.Assign(value); }
+		//private obsoleted<MemberSubscriptions> _Subscriptions = new obsoleted<MemberSubscriptions>();
+        //[Association(ThisKey = "ID", OtherKey = "MemberID", Storage="_Subscriptions")]
+        public List<MemberSubscriptions> Subscriptions { 
+			get; 
+			set;
+			//get { return _Subscriptions; }
+			//set { _Subscriptions.Assign(value); }
 		}
 
         public void PrepareForStoring(bool isInitialInsert)
@@ -1216,19 +1193,23 @@ CREATE TABLE IF NOT EXISTS [MembershipPlan](
         //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-		private EntitySet<MembershipPlanPaymentOptions> _PaymentOptions = new EntitySet<MembershipPlanPaymentOptions>();
-        [Association(ThisKey = "ID", OtherKey = "MembershipPlanID", Storage="_PaymentOptions")]
-        public EntitySet<MembershipPlanPaymentOptions> PaymentOptions { 
-			get { return _PaymentOptions; }
-			set { _PaymentOptions.Assign(value); }
+		//private obsoleted<MembershipPlanPaymentOptions> _PaymentOptions = new obsoleted<MembershipPlanPaymentOptions>();
+        //[Association(ThisKey = "ID", OtherKey = "MembershipPlanID", Storage="_PaymentOptions")]
+        public List<MembershipPlanPaymentOptions> PaymentOptions { 
+			get; 
+			set;
+			//get { return _PaymentOptions; }
+			//set { _PaymentOptions.Assign(value); }
 		}
 
-		private EntityRef<MembershipPlanGym> _Gym = new EntityRef<MembershipPlanGym>();
-        [Association(ThisKey = "ID", OtherKey = "MembershipPlanID", Storage="_Gym")]
+		//private obsoleted<MembershipPlanGym> _Gym = new obsoleted<MembershipPlanGym>();
+        //[Association(ThisKey = "ID", OtherKey = "MembershipPlanID", Storage="_Gym")]
         public MembershipPlanGym Gym 
 		{ 
-			get { return _Gym.Entity; }
-			set { _Gym.Entity = value; }
+			get;
+			set;
+			//get { return _Gym.Entity; }
+			//set { _Gym.Entity = value; }
 		}
 
         public void PrepareForStoring(bool isInitialInsert)
@@ -1338,20 +1319,24 @@ CREATE TABLE IF NOT EXISTS [Subscription](
 )";
         }
 
-		private EntityRef<SubscriptionPlan> _Plan = new EntityRef<SubscriptionPlan>();
-        [Association(ThisKey = "ID", OtherKey = "SubscriptionID", Storage="_Plan")]
+		//private obsoleted<SubscriptionPlan> _Plan = new obsoleted<SubscriptionPlan>();
+        //[Association(ThisKey = "ID", OtherKey = "SubscriptionID", Storage="_Plan")]
         public SubscriptionPlan Plan 
 		{ 
-			get { return _Plan.Entity; }
-			set { _Plan.Entity = value; }
+			get;
+			set;
+			//get { return _Plan.Entity; }
+			//set { _Plan.Entity = value; }
 		}
 
-		private EntityRef<SubscriptionPaymentOption> _PaymentOption = new EntityRef<SubscriptionPaymentOption>();
-        [Association(ThisKey = "ID", OtherKey = "SubscriptionID", Storage="_PaymentOption")]
+		//private obsoleted<SubscriptionPaymentOption> _PaymentOption = new obsoleted<SubscriptionPaymentOption>();
+        //[Association(ThisKey = "ID", OtherKey = "SubscriptionID", Storage="_PaymentOption")]
         public SubscriptionPaymentOption PaymentOption 
 		{ 
-			get { return _PaymentOption.Entity; }
-			set { _PaymentOption.Entity = value; }
+			get;
+			set;
+			//get { return _PaymentOption.Entity; }
+			//set { _PaymentOption.Entity = value; }
 		}
 
 
@@ -1716,23 +1701,15 @@ PRIMARY KEY (MemberID, SubscriptionID)
         public string SubscriptionID { get; set; }
 
 
-        private EntityRef<Member> _Member = new EntityRef<Member>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "MemberID", OtherKey = "ID", 
-			Storage = "_Member", IsUnique = false)]
-        public Member Member 
-		{ 
-			get { return _Member.Entity; }
-			set { _Member.Entity = value; }
-		}
+        //private EntityRef<Member> _Member = new EntityRef<Member>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "MemberID", OtherKey = "ID", 
+		//	Storage = "_Member", IsUnique = false)]
+        public Member Member { get; set; }
 
-        private EntityRef<Subscription> _Subscription = new EntityRef<Subscription>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionID", OtherKey = "ID", 
-			Storage = "_Subscription")]
-		public Subscription Subscription 
-		{ 
-			get { return _Subscription.Entity; }
-			set { _Subscription.Entity = value; }
-		}
+        //private EntityRef<Subscription> _Subscription = new EntityRef<Subscription>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionID", OtherKey = "ID", 
+		//	Storage = "_Subscription")]
+		public Subscription Subscription { get; set; }
 
     }
 
@@ -1759,23 +1736,15 @@ PRIMARY KEY (MembershipPlanID, PaymentOptionID)
         public string PaymentOptionID { get; set; }
 
 
-        private EntityRef<MembershipPlan> _MembershipPlan = new EntityRef<MembershipPlan>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "MembershipPlanID", OtherKey = "ID", 
-			Storage = "_MembershipPlan", IsUnique = false)]
-        public MembershipPlan MembershipPlan 
-		{ 
-			get { return _MembershipPlan.Entity; }
-			set { _MembershipPlan.Entity = value; }
-		}
+        //private EntityRef<MembershipPlan> _MembershipPlan = new EntityRef<MembershipPlan>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "MembershipPlanID", OtherKey = "ID", 
+		//	Storage = "_MembershipPlan", IsUnique = false)]
+        public MembershipPlan MembershipPlan { get; set; }
 
-        private EntityRef<PaymentOption> _PaymentOption = new EntityRef<PaymentOption>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "PaymentOptionID", OtherKey = "ID", 
-			Storage = "_PaymentOption")]
-		public PaymentOption PaymentOption 
-		{ 
-			get { return _PaymentOption.Entity; }
-			set { _PaymentOption.Entity = value; }
-		}
+        //private EntityRef<PaymentOption> _PaymentOption = new EntityRef<PaymentOption>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "PaymentOptionID", OtherKey = "ID", 
+		//	Storage = "_PaymentOption")]
+		public PaymentOption PaymentOption { get; set; }
 
     }
 
@@ -1802,23 +1771,15 @@ PRIMARY KEY (MembershipPlanID, TenantGymID)
         public string TenantGymID { get; set; }
 
 
-        private EntityRef<MembershipPlan> _MembershipPlan = new EntityRef<MembershipPlan>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "MembershipPlanID", OtherKey = "ID", 
-			Storage = "_MembershipPlan", IsUnique = true)]
-        public MembershipPlan MembershipPlan 
-		{ 
-			get { return _MembershipPlan.Entity; }
-			set { _MembershipPlan.Entity = value; }
-		}
+        //private EntityRef<MembershipPlan> _MembershipPlan = new EntityRef<MembershipPlan>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "MembershipPlanID", OtherKey = "ID", 
+		//	Storage = "_MembershipPlan", IsUnique = true)]
+        public MembershipPlan MembershipPlan { get; set; }
 
-        private EntityRef<TenantGym> _TenantGym = new EntityRef<TenantGym>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "TenantGymID", OtherKey = "ID", 
-			Storage = "_TenantGym")]
-		public TenantGym TenantGym 
-		{ 
-			get { return _TenantGym.Entity; }
-			set { _TenantGym.Entity = value; }
-		}
+        //private EntityRef<TenantGym> _TenantGym = new EntityRef<TenantGym>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "TenantGymID", OtherKey = "ID", 
+		//	Storage = "_TenantGym")]
+		public TenantGym TenantGym { get; set; }
 
     }
 
@@ -1845,23 +1806,15 @@ PRIMARY KEY (SubscriptionID, MembershipPlanID)
         public string MembershipPlanID { get; set; }
 
 
-        private EntityRef<Subscription> _Subscription = new EntityRef<Subscription>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionID", OtherKey = "ID", 
-			Storage = "_Subscription", IsUnique = true)]
-        public Subscription Subscription 
-		{ 
-			get { return _Subscription.Entity; }
-			set { _Subscription.Entity = value; }
-		}
+        //private EntityRef<Subscription> _Subscription = new EntityRef<Subscription>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionID", OtherKey = "ID", 
+		//	Storage = "_Subscription", IsUnique = true)]
+        public Subscription Subscription { get; set; }
 
-        private EntityRef<MembershipPlan> _MembershipPlan = new EntityRef<MembershipPlan>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "MembershipPlanID", OtherKey = "ID", 
-			Storage = "_MembershipPlan")]
-		public MembershipPlan MembershipPlan 
-		{ 
-			get { return _MembershipPlan.Entity; }
-			set { _MembershipPlan.Entity = value; }
-		}
+        //private EntityRef<MembershipPlan> _MembershipPlan = new EntityRef<MembershipPlan>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "MembershipPlanID", OtherKey = "ID", 
+		//	Storage = "_MembershipPlan")]
+		public MembershipPlan MembershipPlan { get; set; }
 
     }
 
@@ -1888,23 +1841,15 @@ PRIMARY KEY (SubscriptionID, PaymentOptionID)
         public string PaymentOptionID { get; set; }
 
 
-        private EntityRef<Subscription> _Subscription = new EntityRef<Subscription>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionID", OtherKey = "ID", 
-			Storage = "_Subscription", IsUnique = true)]
-        public Subscription Subscription 
-		{ 
-			get { return _Subscription.Entity; }
-			set { _Subscription.Entity = value; }
-		}
+        //private EntityRef<Subscription> _Subscription = new EntityRef<Subscription>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionID", OtherKey = "ID", 
+		//	Storage = "_Subscription", IsUnique = true)]
+        public Subscription Subscription { get; set; }
 
-        private EntityRef<PaymentOption> _PaymentOption = new EntityRef<PaymentOption>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "PaymentOptionID", OtherKey = "ID", 
-			Storage = "_PaymentOption")]
-		public PaymentOption PaymentOption 
-		{ 
-			get { return _PaymentOption.Entity; }
-			set { _PaymentOption.Entity = value; }
-		}
+        //private EntityRef<PaymentOption> _PaymentOption = new EntityRef<PaymentOption>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "PaymentOptionID", OtherKey = "ID", 
+		//	Storage = "_PaymentOption")]
+		public PaymentOption PaymentOption { get; set; }
 
     }
 

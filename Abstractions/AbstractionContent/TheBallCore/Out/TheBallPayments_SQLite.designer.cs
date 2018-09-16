@@ -564,19 +564,9 @@ namespace SQLite.TheBall.Payments {
 
 			public DbSet<GroupSubscriptionPlan> GroupSubscriptionPlanTable { get; set; }
 			public DbSet<SubscriptionPlanStatus> SubscriptionPlanStatusTable { get; set; }
-			public Table<SubscriptionPlanStatusSubscriptionPlan> SubscriptionPlanStatusSubscriptionPlanTable {
-				get {
-					return this.GetTable<SubscriptionPlanStatusSubscriptionPlan>();
-				}
-			}
-
+			public DbSet<SubscriptionPlanStatusSubscriptionPlan> SubscriptionPlanStatusSubscriptionPlanTable { get; set; }
 			public DbSet<CustomerAccount> CustomerAccountTable { get; set; }
-			public Table<CustomerAccountActivePlans> CustomerAccountActivePlansTable {
-				get {
-					return this.GetTable<CustomerAccountActivePlans>();
-				}
-			}
-
+			public DbSet<CustomerAccountActivePlans> CustomerAccountActivePlansTable { get; set; }
 			public DbSet<GroupSubscriptionPlanCollection> GroupSubscriptionPlanCollectionTable { get; set; }
 			public DbSet<CustomerAccountCollection> CustomerAccountCollectionTable { get; set; }
         }
@@ -725,12 +715,14 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
 )";
         }
 
-		private EntityRef<SubscriptionPlanStatusSubscriptionPlan> _SubscriptionPlan = new EntityRef<SubscriptionPlanStatusSubscriptionPlan>();
-        [Association(ThisKey = "ID", OtherKey = "SubscriptionPlanStatusID", Storage="_SubscriptionPlan")]
+		//private obsoleted<SubscriptionPlanStatusSubscriptionPlan> _SubscriptionPlan = new obsoleted<SubscriptionPlanStatusSubscriptionPlan>();
+        //[Association(ThisKey = "ID", OtherKey = "SubscriptionPlanStatusID", Storage="_SubscriptionPlan")]
         public SubscriptionPlanStatusSubscriptionPlan SubscriptionPlan 
 		{ 
-			get { return _SubscriptionPlan.Entity; }
-			set { _SubscriptionPlan.Entity = value; }
+			get;
+			set;
+			//get { return _SubscriptionPlan.Entity; }
+			//set { _SubscriptionPlan.Entity = value; }
 		}
 
 
@@ -802,11 +794,13 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
         //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-		private EntitySet<CustomerAccountActivePlans> _ActivePlans = new EntitySet<CustomerAccountActivePlans>();
-        [Association(ThisKey = "ID", OtherKey = "CustomerAccountID", Storage="_ActivePlans")]
-        public EntitySet<CustomerAccountActivePlans> ActivePlans { 
-			get { return _ActivePlans; }
-			set { _ActivePlans.Assign(value); }
+		//private obsoleted<CustomerAccountActivePlans> _ActivePlans = new obsoleted<CustomerAccountActivePlans>();
+        //[Association(ThisKey = "ID", OtherKey = "CustomerAccountID", Storage="_ActivePlans")]
+        public List<CustomerAccountActivePlans> ActivePlans { 
+			get; 
+			set;
+			//get { return _ActivePlans; }
+			//set { _ActivePlans.Assign(value); }
 		}
 
         public void PrepareForStoring(bool isInitialInsert)
@@ -929,23 +923,15 @@ PRIMARY KEY (SubscriptionPlanStatusID, GroupSubscriptionPlanID)
         public string GroupSubscriptionPlanID { get; set; }
 
 
-        private EntityRef<SubscriptionPlanStatus> _SubscriptionPlanStatus = new EntityRef<SubscriptionPlanStatus>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", 
-			Storage = "_SubscriptionPlanStatus", IsUnique = true)]
-        public SubscriptionPlanStatus SubscriptionPlanStatus 
-		{ 
-			get { return _SubscriptionPlanStatus.Entity; }
-			set { _SubscriptionPlanStatus.Entity = value; }
-		}
+        //private EntityRef<SubscriptionPlanStatus> _SubscriptionPlanStatus = new EntityRef<SubscriptionPlanStatus>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", 
+		//	Storage = "_SubscriptionPlanStatus", IsUnique = true)]
+        public SubscriptionPlanStatus SubscriptionPlanStatus { get; set; }
 
-        private EntityRef<GroupSubscriptionPlan> _GroupSubscriptionPlan = new EntityRef<GroupSubscriptionPlan>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupSubscriptionPlanID", OtherKey = "ID", 
-			Storage = "_GroupSubscriptionPlan")]
-		public GroupSubscriptionPlan GroupSubscriptionPlan 
-		{ 
-			get { return _GroupSubscriptionPlan.Entity; }
-			set { _GroupSubscriptionPlan.Entity = value; }
-		}
+        //private EntityRef<GroupSubscriptionPlan> _GroupSubscriptionPlan = new EntityRef<GroupSubscriptionPlan>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupSubscriptionPlanID", OtherKey = "ID", 
+		//	Storage = "_GroupSubscriptionPlan")]
+		public GroupSubscriptionPlan GroupSubscriptionPlan { get; set; }
 
     }
 
@@ -972,23 +958,15 @@ PRIMARY KEY (CustomerAccountID, SubscriptionPlanStatusID)
         public string SubscriptionPlanStatusID { get; set; }
 
 
-        private EntityRef<CustomerAccount> _CustomerAccount = new EntityRef<CustomerAccount>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "CustomerAccountID", OtherKey = "ID", 
-			Storage = "_CustomerAccount", IsUnique = false)]
-        public CustomerAccount CustomerAccount 
-		{ 
-			get { return _CustomerAccount.Entity; }
-			set { _CustomerAccount.Entity = value; }
-		}
+        //private EntityRef<CustomerAccount> _CustomerAccount = new EntityRef<CustomerAccount>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "CustomerAccountID", OtherKey = "ID", 
+		//	Storage = "_CustomerAccount", IsUnique = false)]
+        public CustomerAccount CustomerAccount { get; set; }
 
-        private EntityRef<SubscriptionPlanStatus> _SubscriptionPlanStatus = new EntityRef<SubscriptionPlanStatus>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", 
-			Storage = "_SubscriptionPlanStatus")]
-		public SubscriptionPlanStatus SubscriptionPlanStatus 
-		{ 
-			get { return _SubscriptionPlanStatus.Entity; }
-			set { _SubscriptionPlanStatus.Entity = value; }
-		}
+        //private EntityRef<SubscriptionPlanStatus> _SubscriptionPlanStatus = new EntityRef<SubscriptionPlanStatus>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", 
+		//	Storage = "_SubscriptionPlanStatus")]
+		public SubscriptionPlanStatus SubscriptionPlanStatus { get; set; }
 
     }
 

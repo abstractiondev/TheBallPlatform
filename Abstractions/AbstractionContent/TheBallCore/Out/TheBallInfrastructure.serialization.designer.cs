@@ -117,13 +117,29 @@ namespace INT {
  } 	#region Operation Calls
 	public partial class Server 
 	{
+	    public delegate Task ExecuteOperationFunc(string operationName, object parameters = null);
 
-		// TODO: Implement in partial 
-		//public static async Task ExecuteOperation(string operationName, object parameters) 
+	    public static ExecuteOperationFunc ExecuteOperation;
 
-		// TODO: Implement in partial 
+	    public delegate Task<object> GetObjectFunc(Type type, string id);
 
-		// TODO: Implement in partial 
+	    public static GetObjectFunc GetInformationObjectImplementation;
+	    public static GetObjectFunc GetInterfaceObjectImplementation;
+
+
+        private static async Task<T> GetInformationObject<T>(string id)
+	    {
+	        Type type = typeof(T);
+	        var objResult = await GetInformationObjectImplementation(type, id);
+	        return (T) objResult;
+	    }
+
+	    private static async Task<T> GetInterfaceObject<T>(string id)
+	    {
+	        Type type = typeof(T);
+	        var objResult = await GetInterfaceObjectImplementation(type, id);
+	        return (T)objResult;
+	    }
 
 
 		public static async Task UpdateInfraDataInterfaceObjects() 

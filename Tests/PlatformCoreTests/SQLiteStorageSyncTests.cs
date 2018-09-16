@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using SQLite.TheBall.Payments;
+using SQLite.TheBall.Payments;
 using SQLiteSupport;
 
 namespace PlatformCoreTests
 {
-#if notported
-    [TestClass]
+    //[TestClass]
     public class SQLiteStorageSyncTests
     {
         private readonly string PathRoot = TestSupport.TheBallPath;
@@ -104,5 +103,4 @@ namespace PlatformCoreTests
         }
 
     }
-#endif
 }

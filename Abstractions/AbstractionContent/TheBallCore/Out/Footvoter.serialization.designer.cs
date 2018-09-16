@@ -261,31 +261,32 @@ namespace INT {
 	#region Operation Calls
 	public partial class Server 
 	{
+	    public delegate Task ExecuteOperationFunc(string operationName, object parameters = null);
 
-		// TODO: Implement in partial 
-	    public static async Task ExecuteOperation(string operationName, object parameters)
-	    {
-	        throw new NotImplementedException();
-        }
+	    public static ExecuteOperationFunc ExecuteOperation;
+
+	    public delegate Task<object> GetObjectFunc(Type type, string id);
+
+	    public static GetObjectFunc GetInformationObjectImplementation;
+	    public static GetObjectFunc GetInterfaceObjectImplementation;
+
 
         private static async Task<T> GetInformationObject<T>(string id)
 	    {
-	        throw new NotImplementedException();
+	        Type type = typeof(T);
+	        var objResult = await GetInformationObjectImplementation(type, id);
+	        return (T) objResult;
 	    }
 
 	    private static async Task<T> GetInterfaceObject<T>(string id)
 	    {
-	        throw new NotImplementedException();
+	        Type type = typeof(T);
+	        var objResult = await GetInterfaceObjectImplementation(type, id);
+	        return (T)objResult;
 	    }
 
 
-
-        // TODO: Implement in partial 
-
-        // TODO: Implement in partial 
-
-
-        public static async Task UpdateUserProfile(INT.UserProfile param) 
+		public static async Task UpdateUserProfile(INT.UserProfile param) 
 		{
 			await ExecuteOperation("Footvoter.Services.UpdateUserProfile", param);
 		}
@@ -309,8 +310,7 @@ namespace INT {
 			var result = await GetInformationObject<Company>(id);
 			return result;
 		}
-
-	    public static async Task<Vote> GetVote(string id = null)
+		public static async Task<Vote> GetVote(string id = null)
 		{
 			var result = await GetInformationObject<Vote>(id);
 			return result;
@@ -320,8 +320,7 @@ namespace INT {
 			var result = await GetInterfaceObject<INT.UserProfile>(id);
 			return result;
 		}
-
-	    public static async Task<INT.CompanyFollowData> GetCompanyFollowData(string id = null)
+		public static async Task<INT.CompanyFollowData> GetCompanyFollowData(string id = null)
 		{
 			var result = await GetInterfaceObject<INT.CompanyFollowData>(id);
 			return result;

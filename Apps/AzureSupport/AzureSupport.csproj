@@ -12,7 +12,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallIndex.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromTheBallIndex.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallInfrastructure.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromTheBallInfrastructure.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallInterface.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromTheBallInterface.designer.cs" />
-    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallPayments.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromTheBallPayments.designer.cs" />
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallPayments.designer.cs" Link="TheBall.Payments\OperationAbstractionFromTheBallPayments.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\Footvoter.designer.cs" Link="Footvoter.Services\Footvoter.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\Footvoter.serialization.designer.cs" Link="Footvoter.Services\Footvoter.serialization.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\Footvoter_SQLite.designer.cs" Link="Footvoter.Services\Footvoter_SQLite.designer.cs" />
@@ -24,7 +24,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallIndex.designer.cs" Link="AaltoGlobalImpact.OIP\TheBallIndex.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInfrastructure.designer.cs" Link="AaltoGlobalImpact.OIP\TheBallInfrastructure.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInterface.designer.cs" Link="AaltoGlobalImpact.OIP\TheBallInterface.designer.cs" />
-    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments.designer.cs" Link="AaltoGlobalImpact.OIP\TheBallPayments.designer.cs" />
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments.designer.cs" Link="TheBall.Payments\TheBallPayments.designer.cs" />
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments.serialization.designer.cs" Link="TheBall.Payments\TheBallPayments.serialization.designer.cs" />
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments_SQLite.designer.cs" Link="TheBall.Payments\TheBallPayments_SQLite.designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
