@@ -80,7 +80,9 @@ namespace SQLiteSupport
         [Editable(false)]
         public SerializationType SerializationType { get; set; }
 
+        [NotMapped]
         public ChangeAction CurrentChangeAction { get; set; }
+        [NotMapped]
         public string CurrentStoragePath { get; set; }
 
         public static string[] GetMetaDataTableCreateSQLs()

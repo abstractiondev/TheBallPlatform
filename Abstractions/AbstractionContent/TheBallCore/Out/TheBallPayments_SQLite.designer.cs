@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Common;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Xml;
 using System.Linq;
@@ -32,8 +33,18 @@ namespace SQLite.TheBall.Payments {
 
 		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
-            // Track whether Dispose has been called. 
-            private bool disposed = false;
+
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+		        modelBuilder.Entity<CustomerAccountActivePlans>()
+		            .HasKey(c => new { c.CustomerAccountID, c.SubscriptionPlanStatusID });
+		        modelBuilder.Entity<SubscriptionPlanStatusSubscriptionPlan>()
+		            .HasKey(c => new { c.SubscriptionPlanStatusID, c.GroupSubscriptionPlanID });
+		        //modelBuilder.Entity<Customer>()
+		        //    .HasKey(c => new { c.State, c.LicensePlate });
+		    }
+        // Track whether Dispose has been called. 
+        private bool disposed = false;
 		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
@@ -571,7 +582,7 @@ namespace SQLite.TheBall.Payments {
 			public DbSet<CustomerAccountCollection> CustomerAccountCollectionTable { get; set; }
         }
 
-    //[Table(Name = "GroupSubscriptionPlan")]
+    [Table("GroupSubscriptionPlan")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupSubscriptionPlan: {ID}")]
 	public class GroupSubscriptionPlan : ITheBallDataContextStorable
@@ -626,7 +637,8 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
         private bool _IsGroupIDsRetrieved = false;
         private bool _IsGroupIDsChanged = false;
         private ObservableCollection<string> _GroupIDs = null;
-        public ObservableCollection<string> GroupIDs
+	    [NotMapped]
+	    public ObservableCollection<string> GroupIDs
         {
             get
             {
@@ -679,7 +691,7 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 
 		}
 	}
-    //[Table(Name = "SubscriptionPlanStatus")]
+    [Table("SubscriptionPlanStatus")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionPlanStatus: {ID}")]
 	public class SubscriptionPlanStatus : ITheBallDataContextStorable
@@ -735,9 +747,10 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
 		
 		}
 	}
-    //[Table(Name = "CustomerAccount")]
+    [Table("CustomerAccount")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CustomerAccount: {ID}")]
+
 	public class CustomerAccount : ITheBallDataContextStorable
 	{
 
@@ -769,8 +782,8 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 , 
 [StripeID] TEXT NOT NULL, 
 [IsTestAccount] INTEGER NOT NULL, 
-[EmailAddress] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[EmailAddress] TEXT NULL, 
+[Description] TEXT NULL
 )";
         }
 
@@ -785,7 +798,6 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 		public bool IsTestAccount { get; set; }
 		// private bool _unmodified_IsTestAccount;
 
-		//[Column]
         //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
@@ -814,7 +826,7 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 				Description = string.Empty;
 		}
 	}
-    //[Table(Name = "GroupSubscriptionPlanCollection")]
+    [Table("GroupSubscriptionPlanCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupSubscriptionPlanCollection: {ID}")]
 	public class GroupSubscriptionPlanCollection : ITheBallDataContextStorable
@@ -857,7 +869,7 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlanCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "CustomerAccountCollection")]
+    [Table("CustomerAccountCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CustomerAccountCollection: {ID}")]
 	public class CustomerAccountCollection : ITheBallDataContextStorable
@@ -900,7 +912,7 @@ CREATE TABLE IF NOT EXISTS [CustomerAccountCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "SubscriptionPlanStatusSubscriptionPlan")]
+    [Table("SubscriptionPlanStatusSubscriptionPlan")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionPlanStatusSubscriptionPlan: {SubscriptionPlanStatusID} - {GroupSubscriptionPlanID}")]
 	public class SubscriptionPlanStatusSubscriptionPlan // : ITheBallDataContextStorable
@@ -935,7 +947,7 @@ PRIMARY KEY (SubscriptionPlanStatusID, GroupSubscriptionPlanID)
 
     }
 
-    //[Table(Name = "CustomerAccountActivePlans")]
+    [Table("CustomerAccountActivePlans")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CustomerAccountActivePlans: {CustomerAccountID} - {SubscriptionPlanStatusID}")]
 	public class CustomerAccountActivePlans // : ITheBallDataContextStorable
