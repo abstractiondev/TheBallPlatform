@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations.Schema;
 using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
 //using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 //using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
@@ -32,6 +33,26 @@ namespace SQLite.ProBroz.OnlineTraining {
 
 		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+				Member.EntityConfig(modelBuilder);
+				MemberSubscriptions.EntityConfig(modelBuilder);
+				MembershipPlan.EntityConfig(modelBuilder);
+				MembershipPlanPaymentOptions.EntityConfig(modelBuilder);
+				MembershipPlanGym.EntityConfig(modelBuilder);
+				PaymentOption.EntityConfig(modelBuilder);
+				Subscription.EntityConfig(modelBuilder);
+				SubscriptionPlan.EntityConfig(modelBuilder);
+				SubscriptionPaymentOption.EntityConfig(modelBuilder);
+				TenantGym.EntityConfig(modelBuilder);
+				MemberCollection.EntityConfig(modelBuilder);
+				MembershipPlanCollection.EntityConfig(modelBuilder);
+				PaymentOptionCollection.EntityConfig(modelBuilder);
+				SubscriptionCollection.EntityConfig(modelBuilder);
+				TenantGymCollection.EntityConfig(modelBuilder);
+
+		    }
+
             // Track whether Dispose has been called. 
             private bool disposed = false;
 		    void IDisposable.Dispose()
@@ -991,11 +1012,13 @@ namespace SQLite.ProBroz.OnlineTraining {
 			public DbSet<TenantGymCollection> TenantGymCollectionTable { get; set; }
         }
 
-    //[Table(Name = "Member")]
+    [Table("Member")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Member: {ID}")]
 	public class Member : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1023,18 +1046,18 @@ CREATE TABLE IF NOT EXISTS [Member](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[FirstName] TEXT NOT NULL, 
-[LastName] TEXT NOT NULL, 
-[MiddleName] TEXT NOT NULL, 
-[BirthDay] TEXT NOT NULL, 
-[Email] TEXT NOT NULL, 
-[PhoneNumber] TEXT NOT NULL, 
-[Address] TEXT NOT NULL, 
-[Address2] TEXT NOT NULL, 
-[ZipCode] TEXT NOT NULL, 
-[PostOffice] TEXT NOT NULL, 
-[Country] TEXT NOT NULL, 
-[FederationLicense] TEXT NOT NULL, 
+[FirstName] TEXT DEFAULT '', 
+[LastName] TEXT DEFAULT '', 
+[MiddleName] TEXT DEFAULT '', 
+[BirthDay] TEXT DEFAULT '', 
+[Email] TEXT DEFAULT '', 
+[PhoneNumber] TEXT DEFAULT '', 
+[Address] TEXT DEFAULT '', 
+[Address2] TEXT DEFAULT '', 
+[ZipCode] TEXT DEFAULT '', 
+[PostOffice] TEXT DEFAULT '', 
+[Country] TEXT DEFAULT '', 
+[FederationLicense] TEXT DEFAULT '', 
 [PhotoPermission] INTEGER NOT NULL, 
 [VideoPermission] INTEGER NOT NULL
 )";
@@ -1146,11 +1169,13 @@ CREATE TABLE IF NOT EXISTS [Member](
 				FederationLicense = string.Empty;
 		}
 	}
-    //[Table(Name = "MembershipPlan")]
+    [Table("MembershipPlan")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MembershipPlan: {ID}")]
 	public class MembershipPlan : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1178,8 +1203,8 @@ CREATE TABLE IF NOT EXISTS [MembershipPlan](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[PlanName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[PlanName] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT ''
 )";
         }
 
@@ -1221,11 +1246,13 @@ CREATE TABLE IF NOT EXISTS [MembershipPlan](
 				Description = string.Empty;
 		}
 	}
-    //[Table(Name = "PaymentOption")]
+    [Table("PaymentOption")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PaymentOption: {ID}")]
 	public class PaymentOption : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1253,7 +1280,7 @@ CREATE TABLE IF NOT EXISTS [PaymentOption](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OptionName] TEXT NOT NULL, 
+[OptionName] TEXT DEFAULT '', 
 [PeriodInMonths] INTEGER NOT NULL, 
 [Price] REAL NOT NULL
 )";
@@ -1281,11 +1308,13 @@ CREATE TABLE IF NOT EXISTS [PaymentOption](
 				OptionName = string.Empty;
 		}
 	}
-    //[Table(Name = "Subscription")]
+    [Table("Subscription")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Subscription: {ID}")]
 	public class Subscription : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1313,9 +1342,9 @@ CREATE TABLE IF NOT EXISTS [Subscription](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Created] TEXT NOT NULL, 
-[ValidFrom] TEXT NOT NULL, 
-[ValidTo] TEXT NOT NULL
+[Created] TEXT DEFAULT '', 
+[ValidFrom] TEXT DEFAULT '', 
+[ValidTo] TEXT DEFAULT ''
 )";
         }
 
@@ -1359,11 +1388,13 @@ CREATE TABLE IF NOT EXISTS [Subscription](
 		
 		}
 	}
-    //[Table(Name = "TenantGym")]
+    [Table("TenantGym")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TenantGym: {ID}")]
 	public class TenantGym : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1391,14 +1422,14 @@ CREATE TABLE IF NOT EXISTS [TenantGym](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GymName] TEXT NOT NULL, 
-[Email] TEXT NOT NULL, 
-[PhoneNumber] TEXT NOT NULL, 
-[Address] TEXT NOT NULL, 
-[Address2] TEXT NOT NULL, 
-[ZipCode] TEXT NOT NULL, 
-[PostOffice] TEXT NOT NULL, 
-[Country] TEXT NOT NULL
+[GymName] TEXT DEFAULT '', 
+[Email] TEXT DEFAULT '', 
+[PhoneNumber] TEXT DEFAULT '', 
+[Address] TEXT DEFAULT '', 
+[Address2] TEXT DEFAULT '', 
+[ZipCode] TEXT DEFAULT '', 
+[PostOffice] TEXT DEFAULT '', 
+[Country] TEXT DEFAULT ''
 )";
         }
 
@@ -1463,11 +1494,13 @@ CREATE TABLE IF NOT EXISTS [TenantGym](
 				Country = string.Empty;
 		}
 	}
-    //[Table(Name = "MemberCollection")]
+    [Table("MemberCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MemberCollection: {ID}")]
 	public class MemberCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1506,11 +1539,13 @@ CREATE TABLE IF NOT EXISTS [MemberCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "MembershipPlanCollection")]
+    [Table("MembershipPlanCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MembershipPlanCollection: {ID}")]
 	public class MembershipPlanCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1549,11 +1584,13 @@ CREATE TABLE IF NOT EXISTS [MembershipPlanCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "PaymentOptionCollection")]
+    [Table("PaymentOptionCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PaymentOptionCollection: {ID}")]
 	public class PaymentOptionCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1592,11 +1629,13 @@ CREATE TABLE IF NOT EXISTS [PaymentOptionCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "SubscriptionCollection")]
+    [Table("SubscriptionCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionCollection: {ID}")]
 	public class SubscriptionCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1635,11 +1674,13 @@ CREATE TABLE IF NOT EXISTS [SubscriptionCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "TenantGymCollection")]
+    [Table("TenantGymCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TenantGymCollection: {ID}")]
 	public class TenantGymCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1678,7 +1719,7 @@ CREATE TABLE IF NOT EXISTS [TenantGymCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "MemberSubscriptions")]
+    [Table("MemberSubscriptions")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MemberSubscriptions: {MemberID} - {SubscriptionID}")]
 	public class MemberSubscriptions // : ITheBallDataContextStorable
@@ -1693,6 +1734,12 @@ CREATE TABLE IF NOT EXISTS [MemberSubscriptions](
 PRIMARY KEY (MemberID, SubscriptionID)
 )";
         }
+
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<MemberSubscriptions>()
+		        .HasKey(c => new { c.MemberID, c.SubscriptionID});
+			
+		}
 
 
         //[Column(IsPrimaryKey = true, CanBeNull = false)]
@@ -1713,7 +1760,7 @@ PRIMARY KEY (MemberID, SubscriptionID)
 
     }
 
-    //[Table(Name = "MembershipPlanPaymentOptions")]
+    [Table("MembershipPlanPaymentOptions")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MembershipPlanPaymentOptions: {MembershipPlanID} - {PaymentOptionID}")]
 	public class MembershipPlanPaymentOptions // : ITheBallDataContextStorable
@@ -1728,6 +1775,12 @@ CREATE TABLE IF NOT EXISTS [MembershipPlanPaymentOptions](
 PRIMARY KEY (MembershipPlanID, PaymentOptionID)
 )";
         }
+
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<MembershipPlanPaymentOptions>()
+		        .HasKey(c => new { c.MembershipPlanID, c.PaymentOptionID});
+			
+		}
 
 
         //[Column(IsPrimaryKey = true, CanBeNull = false)]
@@ -1748,7 +1801,7 @@ PRIMARY KEY (MembershipPlanID, PaymentOptionID)
 
     }
 
-    //[Table(Name = "MembershipPlanGym")]
+    [Table("MembershipPlanGym")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MembershipPlanGym: {MembershipPlanID} - {TenantGymID}")]
 	public class MembershipPlanGym // : ITheBallDataContextStorable
@@ -1763,6 +1816,12 @@ CREATE TABLE IF NOT EXISTS [MembershipPlanGym](
 PRIMARY KEY (MembershipPlanID, TenantGymID)
 )";
         }
+
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<MembershipPlanGym>()
+		        .HasKey(c => new { c.MembershipPlanID, c.TenantGymID});
+			
+		}
 
 
         //[Column(IsPrimaryKey = true, CanBeNull = false)]
@@ -1783,7 +1842,7 @@ PRIMARY KEY (MembershipPlanID, TenantGymID)
 
     }
 
-    //[Table(Name = "SubscriptionPlan")]
+    [Table("SubscriptionPlan")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionPlan: {SubscriptionID} - {MembershipPlanID}")]
 	public class SubscriptionPlan // : ITheBallDataContextStorable
@@ -1798,6 +1857,12 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlan](
 PRIMARY KEY (SubscriptionID, MembershipPlanID)
 )";
         }
+
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<SubscriptionPlan>()
+		        .HasKey(c => new { c.SubscriptionID, c.MembershipPlanID});
+			
+		}
 
 
         //[Column(IsPrimaryKey = true, CanBeNull = false)]
@@ -1818,7 +1883,7 @@ PRIMARY KEY (SubscriptionID, MembershipPlanID)
 
     }
 
-    //[Table(Name = "SubscriptionPaymentOption")]
+    [Table("SubscriptionPaymentOption")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionPaymentOption: {SubscriptionID} - {PaymentOptionID}")]
 	public class SubscriptionPaymentOption // : ITheBallDataContextStorable
@@ -1833,6 +1898,12 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPaymentOption](
 PRIMARY KEY (SubscriptionID, PaymentOptionID)
 )";
         }
+
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<SubscriptionPaymentOption>()
+		        .HasKey(c => new { c.SubscriptionID, c.PaymentOptionID});
+			
+		}
 
 
         //[Column(IsPrimaryKey = true, CanBeNull = false)]

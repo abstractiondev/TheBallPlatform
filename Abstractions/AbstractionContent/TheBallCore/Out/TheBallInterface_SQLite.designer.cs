@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations.Schema;
 using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
 //using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 //using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
@@ -32,6 +33,24 @@ namespace SQLite.TheBall.Interface {
 
 		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+				InterfaceOperation.EntityConfig(modelBuilder);
+				Connection.EntityConfig(modelBuilder);
+				TransferPackage.EntityConfig(modelBuilder);
+				CategoryLink.EntityConfig(modelBuilder);
+				Category.EntityConfig(modelBuilder);
+				StatusSummary.EntityConfig(modelBuilder);
+				InformationChangeItem.EntityConfig(modelBuilder);
+				OperationExecutionItem.EntityConfig(modelBuilder);
+				GenericCollectionableObject.EntityConfig(modelBuilder);
+				GenericObject.EntityConfig(modelBuilder);
+				GenericValue.EntityConfig(modelBuilder);
+				ConnectionCollection.EntityConfig(modelBuilder);
+				GenericObjectCollection.EntityConfig(modelBuilder);
+
+		    }
+
             // Track whether Dispose has been called. 
             private bool disposed = false;
 		    void IDisposable.Dispose()
@@ -1333,11 +1352,13 @@ namespace SQLite.TheBall.Interface {
 			public DbSet<GenericObjectCollection> GenericObjectCollectionTable { get; set; }
         }
 
-    //[Table(Name = "InterfaceOperation")]
+    [Table("InterfaceOperation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InterfaceOperation: {ID}")]
 	public class InterfaceOperation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1365,15 +1386,15 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OperationName] TEXT NOT NULL, 
-[Status] TEXT NOT NULL, 
-[OperationDataType] TEXT NOT NULL, 
-[Created] TEXT NOT NULL, 
-[Started] TEXT NOT NULL, 
+[OperationName] TEXT DEFAULT '', 
+[Status] TEXT DEFAULT '', 
+[OperationDataType] TEXT DEFAULT '', 
+[Created] TEXT DEFAULT '', 
+[Started] TEXT DEFAULT '', 
 [Progress] REAL NOT NULL, 
-[Finished] TEXT NOT NULL, 
-[ErrorCode] TEXT NOT NULL, 
-[ErrorMessage] TEXT NOT NULL
+[Finished] TEXT DEFAULT '', 
+[ErrorCode] TEXT DEFAULT '', 
+[ErrorMessage] TEXT DEFAULT ''
 )";
         }
 
@@ -1437,11 +1458,13 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 				ErrorMessage = string.Empty;
 		}
 	}
-    //[Table(Name = "Connection")]
+    [Table("Connection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Connection: {ID}")]
 	public class Connection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1469,22 +1492,22 @@ CREATE TABLE IF NOT EXISTS [Connection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OutputInformationID] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[DeviceID] TEXT NOT NULL, 
+[OutputInformationID] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[DeviceID] TEXT DEFAULT '', 
 [IsActiveParty] INTEGER NOT NULL, 
-[OtherSideConnectionID] TEXT NOT NULL, 
-[ThisSideCategoriesID] TEXT NULL, 
-[OtherSideCategoriesID] TEXT NULL, 
-[CategoryLinksID] TEXT NULL, 
-[IncomingPackagesID] TEXT NULL, 
-[OutgoingPackagesID] TEXT NULL, 
-[OperationNameToListPackageContents] TEXT NOT NULL, 
-[OperationNameToProcessReceived] TEXT NOT NULL, 
-[OperationNameToUpdateThisSideCategories] TEXT NOT NULL, 
-[ProcessIDToListPackageContents] TEXT NOT NULL, 
-[ProcessIDToProcessReceived] TEXT NOT NULL, 
-[ProcessIDToUpdateThisSideCategories] TEXT NOT NULL
+[OtherSideConnectionID] TEXT DEFAULT '', 
+[ThisSideCategoriesID] TEXT DEFAULT '', 
+[OtherSideCategoriesID] TEXT DEFAULT '', 
+[CategoryLinksID] TEXT DEFAULT '', 
+[IncomingPackagesID] TEXT DEFAULT '', 
+[OutgoingPackagesID] TEXT DEFAULT '', 
+[OperationNameToListPackageContents] TEXT DEFAULT '', 
+[OperationNameToProcessReceived] TEXT DEFAULT '', 
+[OperationNameToUpdateThisSideCategories] TEXT DEFAULT '', 
+[ProcessIDToListPackageContents] TEXT DEFAULT '', 
+[ProcessIDToProcessReceived] TEXT DEFAULT '', 
+[ProcessIDToUpdateThisSideCategories] TEXT DEFAULT ''
 )";
         }
 
@@ -1520,7 +1543,8 @@ CREATE TABLE IF NOT EXISTS [Connection](
         private bool _IsThisSideCategoriesRetrieved = false;
         private bool _IsThisSideCategoriesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.Category> _ThisSideCategories = null;
-        public ObservableCollection<SER.TheBall.Interface.Category> ThisSideCategories
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.Category> ThisSideCategories
         {
             get
             {
@@ -1565,7 +1589,8 @@ CREATE TABLE IF NOT EXISTS [Connection](
         private bool _IsOtherSideCategoriesRetrieved = false;
         private bool _IsOtherSideCategoriesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.Category> _OtherSideCategories = null;
-        public ObservableCollection<SER.TheBall.Interface.Category> OtherSideCategories
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.Category> OtherSideCategories
         {
             get
             {
@@ -1610,7 +1635,8 @@ CREATE TABLE IF NOT EXISTS [Connection](
         private bool _IsCategoryLinksRetrieved = false;
         private bool _IsCategoryLinksChanged = false;
         private ObservableCollection<SER.TheBall.Interface.CategoryLink> _CategoryLinks = null;
-        public ObservableCollection<SER.TheBall.Interface.CategoryLink> CategoryLinks
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.CategoryLink> CategoryLinks
         {
             get
             {
@@ -1655,7 +1681,8 @@ CREATE TABLE IF NOT EXISTS [Connection](
         private bool _IsIncomingPackagesRetrieved = false;
         private bool _IsIncomingPackagesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.TransferPackage> _IncomingPackages = null;
-        public ObservableCollection<SER.TheBall.Interface.TransferPackage> IncomingPackages
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.TransferPackage> IncomingPackages
         {
             get
             {
@@ -1700,7 +1727,8 @@ CREATE TABLE IF NOT EXISTS [Connection](
         private bool _IsOutgoingPackagesRetrieved = false;
         private bool _IsOutgoingPackagesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.TransferPackage> _OutgoingPackages = null;
-        public ObservableCollection<SER.TheBall.Interface.TransferPackage> OutgoingPackages
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.TransferPackage> OutgoingPackages
         {
             get
             {
@@ -1823,11 +1851,13 @@ CREATE TABLE IF NOT EXISTS [Connection](
 
 		}
 	}
-    //[Table(Name = "TransferPackage")]
+    [Table("TransferPackage")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TransferPackage: {ID}")]
 	public class TransferPackage : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1855,11 +1885,11 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ConnectionID] TEXT NOT NULL, 
-[PackageDirection] TEXT NOT NULL, 
-[PackageType] TEXT NOT NULL, 
+[ConnectionID] TEXT DEFAULT '', 
+[PackageDirection] TEXT DEFAULT '', 
+[PackageType] TEXT DEFAULT '', 
 [IsProcessed] INTEGER NOT NULL, 
-[PackageContentBlobs] TEXT NOT NULL
+[PackageContentBlobs] TEXT DEFAULT ''
 )";
         }
 
@@ -1890,7 +1920,8 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
         private bool _IsPackageContentBlobsRetrieved = false;
         private bool _IsPackageContentBlobsChanged = false;
         private ObservableCollection<string> _PackageContentBlobs = null;
-        public ObservableCollection<string> PackageContentBlobs
+        [NotMapped]
+		public ObservableCollection<string> PackageContentBlobs
         {
             get
             {
@@ -1945,11 +1976,13 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 
 		}
 	}
-    //[Table(Name = "CategoryLink")]
+    [Table("CategoryLink")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CategoryLink: {ID}")]
 	public class CategoryLink : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -1977,9 +2010,9 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[SourceCategoryID] TEXT NOT NULL, 
-[TargetCategoryID] TEXT NOT NULL, 
-[LinkingType] TEXT NOT NULL
+[SourceCategoryID] TEXT DEFAULT '', 
+[TargetCategoryID] TEXT DEFAULT '', 
+[LinkingType] TEXT DEFAULT ''
 )";
         }
 
@@ -2009,11 +2042,13 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 				LinkingType = string.Empty;
 		}
 	}
-    //[Table(Name = "Category")]
+    [Table("Category")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Category: {ID}")]
 	public class Category : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -2041,11 +2076,11 @@ CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[NativeCategoryID] TEXT NOT NULL, 
-[NativeCategoryDomainName] TEXT NOT NULL, 
-[NativeCategoryObjectName] TEXT NOT NULL, 
-[NativeCategoryTitle] TEXT NOT NULL, 
-[IdentifyingCategoryName] TEXT NOT NULL
+[NativeCategoryID] TEXT DEFAULT '', 
+[NativeCategoryDomainName] TEXT DEFAULT '', 
+[NativeCategoryObjectName] TEXT DEFAULT '', 
+[NativeCategoryTitle] TEXT DEFAULT '', 
+[IdentifyingCategoryName] TEXT DEFAULT ''
 )";
         }
 
@@ -2089,11 +2124,13 @@ CREATE TABLE IF NOT EXISTS [Category](
 				IdentifyingCategoryName = string.Empty;
 		}
 	}
-    //[Table(Name = "StatusSummary")]
+    [Table("StatusSummary")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("StatusSummary: {ID}")]
 	public class StatusSummary : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -2121,10 +2158,10 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[PendingOperationsID] TEXT NULL, 
-[ExecutingOperationsID] TEXT NULL, 
-[RecentCompletedOperationsID] TEXT NULL, 
-[ChangeItemTrackingList] TEXT NOT NULL
+[PendingOperationsID] TEXT DEFAULT '', 
+[ExecutingOperationsID] TEXT DEFAULT '', 
+[RecentCompletedOperationsID] TEXT DEFAULT '', 
+[ChangeItemTrackingList] TEXT DEFAULT ''
 )";
         }
 
@@ -2135,7 +2172,8 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
         private bool _IsPendingOperationsRetrieved = false;
         private bool _IsPendingOperationsChanged = false;
         private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _PendingOperations = null;
-        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> PendingOperations
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> PendingOperations
         {
             get
             {
@@ -2180,7 +2218,8 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
         private bool _IsExecutingOperationsRetrieved = false;
         private bool _IsExecutingOperationsChanged = false;
         private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _ExecutingOperations = null;
-        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> ExecutingOperations
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> ExecutingOperations
         {
             get
             {
@@ -2225,7 +2264,8 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
         private bool _IsRecentCompletedOperationsRetrieved = false;
         private bool _IsRecentCompletedOperationsChanged = false;
         private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _RecentCompletedOperations = null;
-        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> RecentCompletedOperations
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> RecentCompletedOperations
         {
             get
             {
@@ -2270,7 +2310,8 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
         private bool _IsChangeItemTrackingListRetrieved = false;
         private bool _IsChangeItemTrackingListChanged = false;
         private ObservableCollection<string> _ChangeItemTrackingList = null;
-        public ObservableCollection<string> ChangeItemTrackingList
+        [NotMapped]
+		public ObservableCollection<string> ChangeItemTrackingList
         {
             get
             {
@@ -2337,11 +2378,13 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 
 		}
 	}
-    //[Table(Name = "InformationChangeItem")]
+    [Table("InformationChangeItem")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InformationChangeItem: {ID}")]
 	public class InformationChangeItem : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -2369,9 +2412,9 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[StartTimeUTC] TEXT NOT NULL, 
-[EndTimeUTC] TEXT NOT NULL, 
-[ChangedObjectIDList] TEXT NOT NULL
+[StartTimeUTC] TEXT DEFAULT '', 
+[EndTimeUTC] TEXT DEFAULT '', 
+[ChangedObjectIDList] TEXT DEFAULT ''
 )";
         }
 
@@ -2392,7 +2435,8 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
         private bool _IsChangedObjectIDListRetrieved = false;
         private bool _IsChangedObjectIDListChanged = false;
         private ObservableCollection<string> _ChangedObjectIDList = null;
-        public ObservableCollection<string> ChangedObjectIDList
+        [NotMapped]
+		public ObservableCollection<string> ChangedObjectIDList
         {
             get
             {
@@ -2441,11 +2485,13 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 
 		}
 	}
-    //[Table(Name = "OperationExecutionItem")]
+    [Table("OperationExecutionItem")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("OperationExecutionItem: {ID}")]
 	public class OperationExecutionItem : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -2473,14 +2519,14 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OperationName] TEXT NOT NULL, 
-[OperationDomain] TEXT NOT NULL, 
-[OperationID] TEXT NOT NULL, 
-[CallerProvidedInfo] TEXT NOT NULL, 
-[CreationTime] TEXT NOT NULL, 
-[ExecutionBeginTime] TEXT NOT NULL, 
-[ExecutionCompletedTime] TEXT NOT NULL, 
-[ExecutionStatus] TEXT NOT NULL
+[OperationName] TEXT DEFAULT '', 
+[OperationDomain] TEXT DEFAULT '', 
+[OperationID] TEXT DEFAULT '', 
+[CallerProvidedInfo] TEXT DEFAULT '', 
+[CreationTime] TEXT DEFAULT '', 
+[ExecutionBeginTime] TEXT DEFAULT '', 
+[ExecutionCompletedTime] TEXT DEFAULT '', 
+[ExecutionStatus] TEXT DEFAULT ''
 )";
         }
 
@@ -2539,11 +2585,13 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 				ExecutionStatus = string.Empty;
 		}
 	}
-    //[Table(Name = "GenericCollectionableObject")]
+    [Table("GenericCollectionableObject")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GenericCollectionableObject: {ID}")]
 	public class GenericCollectionableObject : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -2571,7 +2619,7 @@ CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ValueObjectID] TEXT NULL
+[ValueObjectID] TEXT DEFAULT ''
 )";
         }
 
@@ -2590,11 +2638,13 @@ CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
 		
 		}
 	}
-    //[Table(Name = "GenericObject")]
+    [Table("GenericObject")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GenericObject: {ID}")]
 	public class GenericObject : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -2622,9 +2672,9 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ValuesID] TEXT NULL, 
+[ValuesID] TEXT DEFAULT '', 
 [IncludeInCollection] INTEGER NOT NULL, 
-[OptionalCollectionName] TEXT NOT NULL
+[OptionalCollectionName] TEXT DEFAULT ''
 )";
         }
 
@@ -2635,7 +2685,8 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
         private bool _IsValuesRetrieved = false;
         private bool _IsValuesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.GenericValue> _Values = null;
-        public ObservableCollection<SER.TheBall.Interface.GenericValue> Values
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.GenericValue> Values
         {
             get
             {
@@ -2696,11 +2747,13 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 
 		}
 	}
-    //[Table(Name = "GenericValue")]
+    [Table("GenericValue")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GenericValue: {ID}")]
 	public class GenericValue : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -2728,18 +2781,18 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ValueName] TEXT NOT NULL, 
-[String] TEXT NOT NULL, 
-[StringArray] TEXT NOT NULL, 
+[ValueName] TEXT DEFAULT '', 
+[String] TEXT DEFAULT '', 
+[StringArray] TEXT DEFAULT '', 
 [Number] REAL NOT NULL, 
-[NumberArray] TEXT NOT NULL, 
+[NumberArray] TEXT DEFAULT '', 
 [Boolean] INTEGER NOT NULL, 
-[BooleanArray] TEXT NOT NULL, 
-[DateTime] TEXT NOT NULL, 
-[DateTimeArray] TEXT NOT NULL, 
-[ObjectID] TEXT NULL, 
-[ObjectArrayID] TEXT NULL, 
-[IndexingInfo] TEXT NOT NULL
+[BooleanArray] TEXT DEFAULT '', 
+[DateTime] TEXT DEFAULT '', 
+[DateTimeArray] TEXT DEFAULT '', 
+[ObjectID] TEXT DEFAULT '', 
+[ObjectArrayID] TEXT DEFAULT '', 
+[IndexingInfo] TEXT DEFAULT ''
 )";
         }
 
@@ -2760,7 +2813,8 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         private bool _IsStringArrayRetrieved = false;
         private bool _IsStringArrayChanged = false;
         private ObservableCollection<string> _StringArray = null;
-        public ObservableCollection<string> StringArray
+        [NotMapped]
+		public ObservableCollection<string> StringArray
         {
             get
             {
@@ -2810,7 +2864,8 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         private bool _IsNumberArrayRetrieved = false;
         private bool _IsNumberArrayChanged = false;
         private ObservableCollection<double> _NumberArray = null;
-        public ObservableCollection<double> NumberArray
+        [NotMapped]
+		public ObservableCollection<double> NumberArray
         {
             get
             {
@@ -2860,7 +2915,8 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         private bool _IsBooleanArrayRetrieved = false;
         private bool _IsBooleanArrayChanged = false;
         private ObservableCollection<bool> _BooleanArray = null;
-        public ObservableCollection<bool> BooleanArray
+        [NotMapped]
+		public ObservableCollection<bool> BooleanArray
         {
             get
             {
@@ -2910,7 +2966,8 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         private bool _IsDateTimeArrayRetrieved = false;
         private bool _IsDateTimeArrayChanged = false;
         private ObservableCollection<DateTime> _DateTimeArray = null;
-        public ObservableCollection<DateTime> DateTimeArray
+        [NotMapped]
+		public ObservableCollection<DateTime> DateTimeArray
         {
             get
             {
@@ -2965,7 +3022,8 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         private bool _IsObjectArrayRetrieved = false;
         private bool _IsObjectArrayChanged = false;
         private ObservableCollection<SER.TheBall.Interface.GenericObject> _ObjectArray = null;
-        public ObservableCollection<SER.TheBall.Interface.GenericObject> ObjectArray
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.GenericObject> ObjectArray
         {
             get
             {
@@ -3049,11 +3107,13 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 
 		}
 	}
-    //[Table(Name = "ConnectionCollection")]
+    [Table("ConnectionCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ConnectionCollection: {ID}")]
 	public class ConnectionCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -3092,11 +3152,13 @@ CREATE TABLE IF NOT EXISTS [ConnectionCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "GenericObjectCollection")]
+    [Table("GenericObjectCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GenericObjectCollection: {ID}")]
 	public class GenericObjectCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]

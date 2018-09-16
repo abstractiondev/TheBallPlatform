@@ -7,7 +7,6 @@ using System.Data;
 using System.Data.Common;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Xml;
 using System.Linq;
@@ -15,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations.Schema;
 using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
 //using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 //using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
@@ -33,18 +33,20 @@ namespace SQLite.TheBall.Payments {
 
 		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
-
 		    protected override void OnModelCreating(ModelBuilder modelBuilder)
 		    {
-		        modelBuilder.Entity<CustomerAccountActivePlans>()
-		            .HasKey(c => new { c.CustomerAccountID, c.SubscriptionPlanStatusID });
-		        modelBuilder.Entity<SubscriptionPlanStatusSubscriptionPlan>()
-		            .HasKey(c => new { c.SubscriptionPlanStatusID, c.GroupSubscriptionPlanID });
-		        //modelBuilder.Entity<Customer>()
-		        //    .HasKey(c => new { c.State, c.LicensePlate });
+				GroupSubscriptionPlan.EntityConfig(modelBuilder);
+				SubscriptionPlanStatus.EntityConfig(modelBuilder);
+				SubscriptionPlanStatusSubscriptionPlan.EntityConfig(modelBuilder);
+				CustomerAccount.EntityConfig(modelBuilder);
+				CustomerAccountActivePlans.EntityConfig(modelBuilder);
+				GroupSubscriptionPlanCollection.EntityConfig(modelBuilder);
+				CustomerAccountCollection.EntityConfig(modelBuilder);
+
 		    }
-        // Track whether Dispose has been called. 
-        private bool disposed = false;
+
+            // Track whether Dispose has been called. 
+            private bool disposed = false;
 		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
@@ -587,6 +589,8 @@ namespace SQLite.TheBall.Payments {
 	[DebuggerDisplay("GroupSubscriptionPlan: {ID}")]
 	public class GroupSubscriptionPlan : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -614,9 +618,9 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[PlanName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[GroupIDs] TEXT NOT NULL
+[PlanName] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[GroupIDs] TEXT DEFAULT ''
 )";
         }
 
@@ -637,8 +641,8 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
         private bool _IsGroupIDsRetrieved = false;
         private bool _IsGroupIDsChanged = false;
         private ObservableCollection<string> _GroupIDs = null;
-	    [NotMapped]
-	    public ObservableCollection<string> GroupIDs
+        [NotMapped]
+		public ObservableCollection<string> GroupIDs
         {
             get
             {
@@ -696,6 +700,8 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 	[DebuggerDisplay("SubscriptionPlanStatus: {ID}")]
 	public class SubscriptionPlanStatus : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -723,7 +729,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ValidUntil] TEXT NOT NULL
+[ValidUntil] TEXT DEFAULT ''
 )";
         }
 
@@ -750,9 +756,10 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
     [Table("CustomerAccount")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CustomerAccount: {ID}")]
-
 	public class CustomerAccount : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -780,10 +787,10 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[StripeID] TEXT NOT NULL, 
+[StripeID] TEXT DEFAULT '', 
 [IsTestAccount] INTEGER NOT NULL, 
-[EmailAddress] TEXT NULL, 
-[Description] TEXT NULL
+[EmailAddress] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT ''
 )";
         }
 
@@ -798,6 +805,7 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 		public bool IsTestAccount { get; set; }
 		// private bool _unmodified_IsTestAccount;
 
+		//[Column]
         //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
@@ -831,6 +839,8 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 	[DebuggerDisplay("GroupSubscriptionPlanCollection: {ID}")]
 	public class GroupSubscriptionPlanCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -874,6 +884,8 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlanCollection](
 	[DebuggerDisplay("CustomerAccountCollection: {ID}")]
 	public class CustomerAccountCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -928,6 +940,12 @@ PRIMARY KEY (SubscriptionPlanStatusID, GroupSubscriptionPlanID)
 )";
         }
 
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<SubscriptionPlanStatusSubscriptionPlan>()
+		        .HasKey(c => new { c.SubscriptionPlanStatusID, c.GroupSubscriptionPlanID});
+			
+		}
+
 
         //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string SubscriptionPlanStatusID { get; set; }
@@ -962,6 +980,12 @@ CREATE TABLE IF NOT EXISTS [CustomerAccountActivePlans](
 PRIMARY KEY (CustomerAccountID, SubscriptionPlanStatusID)
 )";
         }
+
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<CustomerAccountActivePlans>()
+		        .HasKey(c => new { c.CustomerAccountID, c.SubscriptionPlanStatusID});
+			
+		}
 
 
         //[Column(IsPrimaryKey = true, CanBeNull = false)]

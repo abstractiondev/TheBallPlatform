@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations.Schema;
 using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
 //using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 //using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
@@ -32,6 +33,13 @@ namespace SQLite.Footvoter.Services {
 
 		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+				Company.EntityConfig(modelBuilder);
+				Vote.EntityConfig(modelBuilder);
+
+		    }
+
             // Track whether Dispose has been called. 
             private bool disposed = false;
 		    void IDisposable.Dispose()
@@ -353,11 +361,13 @@ namespace SQLite.Footvoter.Services {
 			public DbSet<Vote> VoteTable { get; set; }
         }
 
-    //[Table(Name = "Company")]
+    [Table("Company")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Company: {ID}")]
 	public class Company : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -385,10 +395,10 @@ CREATE TABLE IF NOT EXISTS [Company](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[CompanyName] TEXT NOT NULL, 
-[Details] TEXT NOT NULL, 
+[CompanyName] TEXT DEFAULT '', 
+[Details] TEXT DEFAULT '', 
 [Footprint] REAL NOT NULL, 
-[Footpath] TEXT NOT NULL
+[Footpath] TEXT DEFAULT ''
 )";
         }
 
@@ -414,7 +424,8 @@ CREATE TABLE IF NOT EXISTS [Company](
         private bool _IsFootpathRetrieved = false;
         private bool _IsFootpathChanged = false;
         private ObservableCollection<double> _Footpath = null;
-        public ObservableCollection<double> Footpath
+        [NotMapped]
+		public ObservableCollection<double> Footpath
         {
             get
             {
@@ -467,11 +478,13 @@ CREATE TABLE IF NOT EXISTS [Company](
 
 		}
 	}
-    //[Table(Name = "Vote")]
+    [Table("Vote")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Vote: {ID}")]
 	public class Vote : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -499,9 +512,9 @@ CREATE TABLE IF NOT EXISTS [Vote](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[CompanyID] TEXT NOT NULL, 
+[CompanyID] TEXT DEFAULT '', 
 [VoteValue] INTEGER NOT NULL, 
-[VoteTime] TEXT NOT NULL
+[VoteTime] TEXT DEFAULT ''
 )";
         }
 

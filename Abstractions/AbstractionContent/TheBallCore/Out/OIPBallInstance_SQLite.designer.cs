@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations.Schema;
 using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
 //using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 //using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
@@ -32,6 +33,118 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 
 		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+				TBSystem.EntityConfig(modelBuilder);
+				WebPublishInfo.EntityConfig(modelBuilder);
+				PublicationPackage.EntityConfig(modelBuilder);
+				TBRLoginRoot.EntityConfig(modelBuilder);
+				TBRAccountRoot.EntityConfig(modelBuilder);
+				TBRGroupRoot.EntityConfig(modelBuilder);
+				TBRLoginGroupRoot.EntityConfig(modelBuilder);
+				TBREmailRoot.EntityConfig(modelBuilder);
+				TBAccount.EntityConfig(modelBuilder);
+				TBAccountCollaborationGroup.EntityConfig(modelBuilder);
+				TBLoginInfo.EntityConfig(modelBuilder);
+				TBEmail.EntityConfig(modelBuilder);
+				TBCollaboratorRole.EntityConfig(modelBuilder);
+				TBCollaboratingGroup.EntityConfig(modelBuilder);
+				TBEmailValidation.EntityConfig(modelBuilder);
+				TBMergeAccountConfirmation.EntityConfig(modelBuilder);
+				TBGroupJoinConfirmation.EntityConfig(modelBuilder);
+				TBDeviceJoinConfirmation.EntityConfig(modelBuilder);
+				TBInformationInputConfirmation.EntityConfig(modelBuilder);
+				TBInformationOutputConfirmation.EntityConfig(modelBuilder);
+				LoginProvider.EntityConfig(modelBuilder);
+				TBPRegisterEmail.EntityConfig(modelBuilder);
+				AccountSummary.EntityConfig(modelBuilder);
+				AccountContainer.EntityConfig(modelBuilder);
+				AccountModule.EntityConfig(modelBuilder);
+				LocationContainer.EntityConfig(modelBuilder);
+				AddressAndLocation.EntityConfig(modelBuilder);
+				StreetAddress.EntityConfig(modelBuilder);
+				AccountProfile.EntityConfig(modelBuilder);
+				AccountSecurity.EntityConfig(modelBuilder);
+				AccountRoles.EntityConfig(modelBuilder);
+				PersonalInfoVisibility.EntityConfig(modelBuilder);
+				ReferenceToInformation.EntityConfig(modelBuilder);
+				NodeSummaryContainer.EntityConfig(modelBuilder);
+				RenderedNode.EntityConfig(modelBuilder);
+				ShortTextObject.EntityConfig(modelBuilder);
+				LongTextObject.EntityConfig(modelBuilder);
+				MapMarker.EntityConfig(modelBuilder);
+				Moderator.EntityConfig(modelBuilder);
+				Collaborator.EntityConfig(modelBuilder);
+				GroupSummaryContainer.EntityConfig(modelBuilder);
+				GroupContainer.EntityConfig(modelBuilder);
+				GroupIndex.EntityConfig(modelBuilder);
+				AddAddressAndLocationInfo.EntityConfig(modelBuilder);
+				AddImageInfo.EntityConfig(modelBuilder);
+				AddImageGroupInfo.EntityConfig(modelBuilder);
+				AddEmailAddressInfo.EntityConfig(modelBuilder);
+				CreateGroupInfo.EntityConfig(modelBuilder);
+				AddActivityInfo.EntityConfig(modelBuilder);
+				AddBlogPostInfo.EntityConfig(modelBuilder);
+				AddCategoryInfo.EntityConfig(modelBuilder);
+				Group.EntityConfig(modelBuilder);
+				Introduction.EntityConfig(modelBuilder);
+				ContentCategoryRank.EntityConfig(modelBuilder);
+				LinkToContent.EntityConfig(modelBuilder);
+				EmbeddedContent.EntityConfig(modelBuilder);
+				DynamicContentGroup.EntityConfig(modelBuilder);
+				DynamicContent.EntityConfig(modelBuilder);
+				AttachedToObject.EntityConfig(modelBuilder);
+				Comment.EntityConfig(modelBuilder);
+				Selection.EntityConfig(modelBuilder);
+				TextContent.EntityConfig(modelBuilder);
+				Map.EntityConfig(modelBuilder);
+				MapResult.EntityConfig(modelBuilder);
+				MapResultsCollection.EntityConfig(modelBuilder);
+				Video.EntityConfig(modelBuilder);
+				Image.EntityConfig(modelBuilder);
+				BinaryFile.EntityConfig(modelBuilder);
+				Longitude.EntityConfig(modelBuilder);
+				Latitude.EntityConfig(modelBuilder);
+				Location.EntityConfig(modelBuilder);
+				Date.EntityConfig(modelBuilder);
+				CategoryContainer.EntityConfig(modelBuilder);
+				Category.EntityConfig(modelBuilder);
+				UpdateWebContentOperation.EntityConfig(modelBuilder);
+				UpdateWebContentHandlerItem.EntityConfig(modelBuilder);
+				PublicationPackageCollection.EntityConfig(modelBuilder);
+				TBAccountCollaborationGroupCollection.EntityConfig(modelBuilder);
+				TBLoginInfoCollection.EntityConfig(modelBuilder);
+				TBEmailCollection.EntityConfig(modelBuilder);
+				TBCollaboratorRoleCollection.EntityConfig(modelBuilder);
+				LoginProviderCollection.EntityConfig(modelBuilder);
+				AddressAndLocationCollection.EntityConfig(modelBuilder);
+				ReferenceCollection.EntityConfig(modelBuilder);
+				RenderedNodeCollection.EntityConfig(modelBuilder);
+				ShortTextCollection.EntityConfig(modelBuilder);
+				LongTextCollection.EntityConfig(modelBuilder);
+				MapMarkerCollection.EntityConfig(modelBuilder);
+				ModeratorCollection.EntityConfig(modelBuilder);
+				CollaboratorCollection.EntityConfig(modelBuilder);
+				GroupCollection.EntityConfig(modelBuilder);
+				ContentCategoryRankCollection.EntityConfig(modelBuilder);
+				LinkToContentCollection.EntityConfig(modelBuilder);
+				EmbeddedContentCollection.EntityConfig(modelBuilder);
+				DynamicContentGroupCollection.EntityConfig(modelBuilder);
+				DynamicContentCollection.EntityConfig(modelBuilder);
+				AttachedToObjectCollection.EntityConfig(modelBuilder);
+				CommentCollection.EntityConfig(modelBuilder);
+				SelectionCollection.EntityConfig(modelBuilder);
+				TextContentCollection.EntityConfig(modelBuilder);
+				MapCollection.EntityConfig(modelBuilder);
+				MapResultCollection.EntityConfig(modelBuilder);
+				ImageCollection.EntityConfig(modelBuilder);
+				BinaryFileCollection.EntityConfig(modelBuilder);
+				LocationCollection.EntityConfig(modelBuilder);
+				CategoryCollection.EntityConfig(modelBuilder);
+				UpdateWebContentHandlerCollection.EntityConfig(modelBuilder);
+
+		    }
+
             // Track whether Dispose has been called. 
             private bool disposed = false;
 		    void IDisposable.Dispose()
@@ -7565,11 +7678,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 			public DbSet<UpdateWebContentHandlerCollection> UpdateWebContentHandlerCollectionTable { get; set; }
         }
 
-    //[Table(Name = "TBSystem")]
+    [Table("TBSystem")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBSystem: {ID}")]
 	public class TBSystem : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -7597,8 +7712,8 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[InstanceName] TEXT NOT NULL, 
-[AdminGroupID] TEXT NOT NULL
+[InstanceName] TEXT DEFAULT '', 
+[AdminGroupID] TEXT DEFAULT ''
 )";
         }
 
@@ -7621,11 +7736,13 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
 				AdminGroupID = string.Empty;
 		}
 	}
-    //[Table(Name = "WebPublishInfo")]
+    [Table("WebPublishInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("WebPublishInfo: {ID}")]
 	public class WebPublishInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -7653,10 +7770,10 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[PublishType] TEXT NOT NULL, 
-[PublishContainer] TEXT NOT NULL, 
-[ActivePublicationID] TEXT NULL, 
-[PublicationsID] TEXT NULL
+[PublishType] TEXT DEFAULT '', 
+[PublishContainer] TEXT DEFAULT '', 
+[ActivePublicationID] TEXT DEFAULT '', 
+[PublicationsID] TEXT DEFAULT ''
 )";
         }
 
@@ -7698,11 +7815,13 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 				PublishContainer = string.Empty;
 		}
 	}
-    //[Table(Name = "PublicationPackage")]
+    [Table("PublicationPackage")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PublicationPackage: {ID}")]
 	public class PublicationPackage : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -7730,8 +7849,8 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[PackageName] TEXT NOT NULL, 
-[PublicationTime] TEXT NOT NULL
+[PackageName] TEXT DEFAULT '', 
+[PublicationTime] TEXT DEFAULT ''
 )";
         }
 
@@ -7752,11 +7871,13 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
 				PackageName = string.Empty;
 		}
 	}
-    //[Table(Name = "TBRLoginRoot")]
+    [Table("TBRLoginRoot")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBRLoginRoot: {ID}")]
 	public class TBRLoginRoot : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -7784,8 +7905,8 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[DomainName] TEXT NOT NULL, 
-[AccountID] TEXT NULL
+[DomainName] TEXT DEFAULT '', 
+[AccountID] TEXT DEFAULT ''
 )";
         }
 
@@ -7811,11 +7932,13 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 				DomainName = string.Empty;
 		}
 	}
-    //[Table(Name = "TBRAccountRoot")]
+    [Table("TBRAccountRoot")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBRAccountRoot: {ID}")]
 	public class TBRAccountRoot : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -7843,7 +7966,7 @@ CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[AccountID] TEXT NULL
+[AccountID] TEXT DEFAULT ''
 )";
         }
 
@@ -7862,11 +7985,13 @@ CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
 		
 		}
 	}
-    //[Table(Name = "TBRGroupRoot")]
+    [Table("TBRGroupRoot")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBRGroupRoot: {ID}")]
 	public class TBRGroupRoot : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -7894,7 +8019,7 @@ CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupID] TEXT NULL
+[GroupID] TEXT DEFAULT ''
 )";
         }
 
@@ -7913,11 +8038,13 @@ CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
 		
 		}
 	}
-    //[Table(Name = "TBRLoginGroupRoot")]
+    [Table("TBRLoginGroupRoot")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBRLoginGroupRoot: {ID}")]
 	public class TBRLoginGroupRoot : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -7945,8 +8072,8 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Role] TEXT NOT NULL, 
-[GroupID] TEXT NOT NULL
+[Role] TEXT DEFAULT '', 
+[GroupID] TEXT DEFAULT ''
 )";
         }
 
@@ -7969,11 +8096,13 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 				GroupID = string.Empty;
 		}
 	}
-    //[Table(Name = "TBREmailRoot")]
+    [Table("TBREmailRoot")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBREmailRoot: {ID}")]
 	public class TBREmailRoot : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8001,7 +8130,7 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[AccountID] TEXT NULL
+[AccountID] TEXT DEFAULT ''
 )";
         }
 
@@ -8020,11 +8149,13 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 		
 		}
 	}
-    //[Table(Name = "TBAccount")]
+    [Table("TBAccount")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBAccount: {ID}")]
 	public class TBAccount : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8052,9 +8183,9 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[EmailsID] TEXT NULL, 
-[LoginsID] TEXT NULL, 
-[GroupRoleCollectionID] TEXT NULL
+[EmailsID] TEXT DEFAULT '', 
+[LoginsID] TEXT DEFAULT '', 
+[GroupRoleCollectionID] TEXT DEFAULT ''
 )";
         }
 
@@ -8090,11 +8221,13 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 		
 		}
 	}
-    //[Table(Name = "TBAccountCollaborationGroup")]
+    [Table("TBAccountCollaborationGroup")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBAccountCollaborationGroup: {ID}")]
 	public class TBAccountCollaborationGroup : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8122,9 +8255,9 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupID] TEXT NOT NULL, 
-[GroupRole] TEXT NOT NULL, 
-[RoleStatus] TEXT NOT NULL
+[GroupID] TEXT DEFAULT '', 
+[GroupRole] TEXT DEFAULT '', 
+[RoleStatus] TEXT DEFAULT ''
 )";
         }
 
@@ -8154,11 +8287,13 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 				RoleStatus = string.Empty;
 		}
 	}
-    //[Table(Name = "TBLoginInfo")]
+    [Table("TBLoginInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBLoginInfo: {ID}")]
 	public class TBLoginInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8186,7 +8321,7 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OpenIDUrl] TEXT NOT NULL
+[OpenIDUrl] TEXT DEFAULT ''
 )";
         }
 
@@ -8202,11 +8337,13 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 				OpenIDUrl = string.Empty;
 		}
 	}
-    //[Table(Name = "TBEmail")]
+    [Table("TBEmail")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBEmail: {ID}")]
 	public class TBEmail : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8234,8 +8371,8 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[EmailAddress] TEXT NOT NULL, 
-[ValidatedAt] TEXT NOT NULL
+[EmailAddress] TEXT DEFAULT '', 
+[ValidatedAt] TEXT DEFAULT ''
 )";
         }
 
@@ -8256,11 +8393,13 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
 				EmailAddress = string.Empty;
 		}
 	}
-    //[Table(Name = "TBCollaboratorRole")]
+    [Table("TBCollaboratorRole")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBCollaboratorRole: {ID}")]
 	public class TBCollaboratorRole : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8288,9 +8427,9 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[EmailID] TEXT NULL, 
-[Role] TEXT NOT NULL, 
-[RoleStatus] TEXT NOT NULL
+[EmailID] TEXT DEFAULT '', 
+[Role] TEXT DEFAULT '', 
+[RoleStatus] TEXT DEFAULT ''
 )";
         }
 
@@ -8323,11 +8462,13 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 				RoleStatus = string.Empty;
 		}
 	}
-    //[Table(Name = "TBCollaboratingGroup")]
+    [Table("TBCollaboratingGroup")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBCollaboratingGroup: {ID}")]
 	public class TBCollaboratingGroup : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8355,8 +8496,8 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Title] TEXT NOT NULL, 
-[RolesID] TEXT NULL
+[Title] TEXT DEFAULT '', 
+[RolesID] TEXT DEFAULT ''
 )";
         }
 
@@ -8381,11 +8522,13 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 				Title = string.Empty;
 		}
 	}
-    //[Table(Name = "TBEmailValidation")]
+    [Table("TBEmailValidation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBEmailValidation: {ID}")]
 	public class TBEmailValidation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8413,15 +8556,15 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Email] TEXT NOT NULL, 
-[AccountID] TEXT NOT NULL, 
-[ValidUntil] TEXT NOT NULL, 
-[GroupJoinConfirmationID] TEXT NULL, 
-[DeviceJoinConfirmationID] TEXT NULL, 
-[InformationInputConfirmationID] TEXT NULL, 
-[InformationOutputConfirmationID] TEXT NULL, 
-[MergeAccountsConfirmationID] TEXT NULL, 
-[RedirectUrlAfterValidation] TEXT NOT NULL
+[Email] TEXT DEFAULT '', 
+[AccountID] TEXT DEFAULT '', 
+[ValidUntil] TEXT DEFAULT '', 
+[GroupJoinConfirmationID] TEXT DEFAULT '', 
+[DeviceJoinConfirmationID] TEXT DEFAULT '', 
+[InformationInputConfirmationID] TEXT DEFAULT '', 
+[InformationOutputConfirmationID] TEXT DEFAULT '', 
+[MergeAccountsConfirmationID] TEXT DEFAULT '', 
+[RedirectUrlAfterValidation] TEXT DEFAULT ''
 )";
         }
 
@@ -8506,11 +8649,13 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 				RedirectUrlAfterValidation = string.Empty;
 		}
 	}
-    //[Table(Name = "TBMergeAccountConfirmation")]
+    [Table("TBMergeAccountConfirmation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBMergeAccountConfirmation: {ID}")]
 	public class TBMergeAccountConfirmation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8538,8 +8683,8 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[AccountToBeMergedID] TEXT NOT NULL, 
-[AccountToMergeToID] TEXT NOT NULL
+[AccountToBeMergedID] TEXT DEFAULT '', 
+[AccountToMergeToID] TEXT DEFAULT ''
 )";
         }
 
@@ -8562,11 +8707,13 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 				AccountToMergeToID = string.Empty;
 		}
 	}
-    //[Table(Name = "TBGroupJoinConfirmation")]
+    [Table("TBGroupJoinConfirmation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBGroupJoinConfirmation: {ID}")]
 	public class TBGroupJoinConfirmation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8594,8 +8741,8 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupID] TEXT NOT NULL, 
-[InvitationMode] TEXT NOT NULL
+[GroupID] TEXT DEFAULT '', 
+[InvitationMode] TEXT DEFAULT ''
 )";
         }
 
@@ -8618,11 +8765,13 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 				InvitationMode = string.Empty;
 		}
 	}
-    //[Table(Name = "TBDeviceJoinConfirmation")]
+    [Table("TBDeviceJoinConfirmation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBDeviceJoinConfirmation: {ID}")]
 	public class TBDeviceJoinConfirmation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8650,9 +8799,9 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupID] TEXT NOT NULL, 
-[AccountID] TEXT NOT NULL, 
-[DeviceMembershipID] TEXT NOT NULL
+[GroupID] TEXT DEFAULT '', 
+[AccountID] TEXT DEFAULT '', 
+[DeviceMembershipID] TEXT DEFAULT ''
 )";
         }
 
@@ -8682,11 +8831,13 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 				DeviceMembershipID = string.Empty;
 		}
 	}
-    //[Table(Name = "TBInformationInputConfirmation")]
+    [Table("TBInformationInputConfirmation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBInformationInputConfirmation: {ID}")]
 	public class TBInformationInputConfirmation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8714,9 +8865,9 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupID] TEXT NOT NULL, 
-[AccountID] TEXT NOT NULL, 
-[InformationInputID] TEXT NOT NULL
+[GroupID] TEXT DEFAULT '', 
+[AccountID] TEXT DEFAULT '', 
+[InformationInputID] TEXT DEFAULT ''
 )";
         }
 
@@ -8746,11 +8897,13 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 				InformationInputID = string.Empty;
 		}
 	}
-    //[Table(Name = "TBInformationOutputConfirmation")]
+    [Table("TBInformationOutputConfirmation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBInformationOutputConfirmation: {ID}")]
 	public class TBInformationOutputConfirmation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8778,9 +8931,9 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupID] TEXT NOT NULL, 
-[AccountID] TEXT NOT NULL, 
-[InformationOutputID] TEXT NOT NULL
+[GroupID] TEXT DEFAULT '', 
+[AccountID] TEXT DEFAULT '', 
+[InformationOutputID] TEXT DEFAULT ''
 )";
         }
 
@@ -8810,11 +8963,13 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 				InformationOutputID = string.Empty;
 		}
 	}
-    //[Table(Name = "LoginProvider")]
+    [Table("LoginProvider")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LoginProvider: {ID}")]
 	public class LoginProvider : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8842,11 +8997,11 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ProviderName] TEXT NOT NULL, 
-[ProviderIconClass] TEXT NOT NULL, 
-[ProviderType] TEXT NOT NULL, 
-[ProviderUrl] TEXT NOT NULL, 
-[ReturnUrl] TEXT NOT NULL
+[ProviderName] TEXT DEFAULT '', 
+[ProviderIconClass] TEXT DEFAULT '', 
+[ProviderType] TEXT DEFAULT '', 
+[ProviderUrl] TEXT DEFAULT '', 
+[ReturnUrl] TEXT DEFAULT ''
 )";
         }
 
@@ -8890,11 +9045,13 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
 				ReturnUrl = string.Empty;
 		}
 	}
-    //[Table(Name = "TBPRegisterEmail")]
+    [Table("TBPRegisterEmail")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBPRegisterEmail: {ID}")]
 	public class TBPRegisterEmail : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8922,7 +9079,7 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[EmailAddress] TEXT NOT NULL
+[EmailAddress] TEXT DEFAULT ''
 )";
         }
 
@@ -8938,11 +9095,13 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 				EmailAddress = string.Empty;
 		}
 	}
-    //[Table(Name = "AccountSummary")]
+    [Table("AccountSummary")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountSummary: {ID}")]
 	public class AccountSummary : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -8970,7 +9129,7 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupSummaryID] TEXT NULL
+[GroupSummaryID] TEXT DEFAULT ''
 )";
         }
 
@@ -8989,11 +9148,13 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
 		
 		}
 	}
-    //[Table(Name = "AccountContainer")]
+    [Table("AccountContainer")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountContainer: {ID}")]
 	public class AccountContainer : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9021,8 +9182,8 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[AccountModuleID] TEXT NULL, 
-[AccountSummaryID] TEXT NULL
+[AccountModuleID] TEXT DEFAULT '', 
+[AccountSummaryID] TEXT DEFAULT ''
 )";
         }
 
@@ -9051,11 +9212,13 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 		
 		}
 	}
-    //[Table(Name = "AccountModule")]
+    [Table("AccountModule")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountModule: {ID}")]
 	public class AccountModule : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9083,10 +9246,10 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ProfileID] TEXT NULL, 
-[SecurityID] TEXT NULL, 
-[RolesID] TEXT NULL, 
-[LocationCollectionID] TEXT NULL
+[ProfileID] TEXT DEFAULT '', 
+[SecurityID] TEXT DEFAULT '', 
+[RolesID] TEXT DEFAULT '', 
+[LocationCollectionID] TEXT DEFAULT ''
 )";
         }
 
@@ -9134,11 +9297,13 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 		
 		}
 	}
-    //[Table(Name = "LocationContainer")]
+    [Table("LocationContainer")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LocationContainer: {ID}")]
 	public class LocationContainer : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9166,7 +9331,7 @@ CREATE TABLE IF NOT EXISTS [LocationContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[LocationsID] TEXT NULL
+[LocationsID] TEXT DEFAULT ''
 )";
         }
 
@@ -9184,11 +9349,13 @@ CREATE TABLE IF NOT EXISTS [LocationContainer](
 		
 		}
 	}
-    //[Table(Name = "AddressAndLocation")]
+    [Table("AddressAndLocation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddressAndLocation: {ID}")]
 	public class AddressAndLocation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9216,9 +9383,9 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ReferenceToInformationID] TEXT NULL, 
-[AddressID] TEXT NULL, 
-[LocationID] TEXT NULL
+[ReferenceToInformationID] TEXT DEFAULT '', 
+[AddressID] TEXT DEFAULT '', 
+[LocationID] TEXT DEFAULT ''
 )";
         }
 
@@ -9257,11 +9424,13 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 		
 		}
 	}
-    //[Table(Name = "StreetAddress")]
+    [Table("StreetAddress")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("StreetAddress: {ID}")]
 	public class StreetAddress : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9289,10 +9458,10 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Street] TEXT NOT NULL, 
-[ZipCode] TEXT NOT NULL, 
-[Town] TEXT NOT NULL, 
-[Country] TEXT NOT NULL
+[Street] TEXT DEFAULT '', 
+[ZipCode] TEXT DEFAULT '', 
+[Town] TEXT DEFAULT '', 
+[Country] TEXT DEFAULT ''
 )";
         }
 
@@ -9329,11 +9498,13 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
 				Country = string.Empty;
 		}
 	}
-    //[Table(Name = "AccountProfile")]
+    [Table("AccountProfile")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountProfile: {ID}")]
 	public class AccountProfile : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9361,13 +9532,13 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ProfileImageID] TEXT NULL, 
-[FirstName] TEXT NOT NULL, 
-[LastName] TEXT NOT NULL, 
-[AddressID] TEXT NULL, 
+[ProfileImageID] TEXT DEFAULT '', 
+[FirstName] TEXT DEFAULT '', 
+[LastName] TEXT DEFAULT '', 
+[AddressID] TEXT DEFAULT '', 
 [IsSimplifiedAccount] INTEGER NOT NULL, 
-[SimplifiedAccountEmail] TEXT NOT NULL, 
-[SimplifiedAccountGroupID] TEXT NOT NULL
+[SimplifiedAccountEmail] TEXT DEFAULT '', 
+[SimplifiedAccountGroupID] TEXT DEFAULT ''
 )";
         }
 
@@ -9429,11 +9600,13 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 				SimplifiedAccountGroupID = string.Empty;
 		}
 	}
-    //[Table(Name = "AccountSecurity")]
+    [Table("AccountSecurity")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountSecurity: {ID}")]
 	public class AccountSecurity : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9461,8 +9634,8 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[LoginInfoCollectionID] TEXT NULL, 
-[EmailCollectionID] TEXT NULL
+[LoginInfoCollectionID] TEXT DEFAULT '', 
+[EmailCollectionID] TEXT DEFAULT ''
 )";
         }
 
@@ -9489,11 +9662,13 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
 		
 		}
 	}
-    //[Table(Name = "AccountRoles")]
+    [Table("AccountRoles")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountRoles: {ID}")]
 	public class AccountRoles : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9521,9 +9696,9 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ModeratorInGroupsID] TEXT NULL, 
-[MemberInGroupsID] TEXT NULL, 
-[OrganizationsImPartOf] TEXT NOT NULL
+[ModeratorInGroupsID] TEXT DEFAULT '', 
+[MemberInGroupsID] TEXT DEFAULT '', 
+[OrganizationsImPartOf] TEXT DEFAULT ''
 )";
         }
 
@@ -9557,11 +9732,13 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 				OrganizationsImPartOf = string.Empty;
 		}
 	}
-    //[Table(Name = "PersonalInfoVisibility")]
+    [Table("PersonalInfoVisibility")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PersonalInfoVisibility: {ID}")]
 	public class PersonalInfoVisibility : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9589,7 +9766,7 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[NoOne_Network_All] TEXT NOT NULL
+[NoOne_Network_All] TEXT DEFAULT ''
 )";
         }
 
@@ -9605,11 +9782,13 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 				NoOne_Network_All = string.Empty;
 		}
 	}
-    //[Table(Name = "ReferenceToInformation")]
+    [Table("ReferenceToInformation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ReferenceToInformation: {ID}")]
 	public class ReferenceToInformation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9637,8 +9816,8 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Title] TEXT NOT NULL, 
-[URL] TEXT NOT NULL
+[Title] TEXT DEFAULT '', 
+[URL] TEXT DEFAULT ''
 )";
         }
 
@@ -9661,11 +9840,13 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 				URL = string.Empty;
 		}
 	}
-    //[Table(Name = "NodeSummaryContainer")]
+    [Table("NodeSummaryContainer")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("NodeSummaryContainer: {ID}")]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9693,13 +9874,13 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[NodesID] TEXT NULL, 
-[NodeSourceTextContentID] TEXT NULL, 
-[NodeSourceLinkToContentID] TEXT NULL, 
-[NodeSourceEmbeddedContentID] TEXT NULL, 
-[NodeSourceImagesID] TEXT NULL, 
-[NodeSourceBinaryFilesID] TEXT NULL, 
-[NodeSourceCategoriesID] TEXT NULL
+[NodesID] TEXT DEFAULT '', 
+[NodeSourceTextContentID] TEXT DEFAULT '', 
+[NodeSourceLinkToContentID] TEXT DEFAULT '', 
+[NodeSourceEmbeddedContentID] TEXT DEFAULT '', 
+[NodeSourceImagesID] TEXT DEFAULT '', 
+[NodeSourceBinaryFilesID] TEXT DEFAULT '', 
+[NodeSourceCategoriesID] TEXT DEFAULT ''
 )";
         }
 
@@ -9771,11 +9952,13 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 		
 		}
 	}
-    //[Table(Name = "RenderedNode")]
+    [Table("RenderedNode")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("RenderedNode: {ID}")]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9803,23 +9986,23 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OriginalContentID] TEXT NOT NULL, 
-[TechnicalSource] TEXT NOT NULL, 
-[ImageBaseUrl] TEXT NOT NULL, 
-[ImageExt] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[OpenNodeTitle] TEXT NOT NULL, 
-[ActualContentUrl] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[TimestampText] TEXT NOT NULL, 
-[MainSortableText] TEXT NOT NULL, 
+[OriginalContentID] TEXT DEFAULT '', 
+[TechnicalSource] TEXT DEFAULT '', 
+[ImageBaseUrl] TEXT DEFAULT '', 
+[ImageExt] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[OpenNodeTitle] TEXT DEFAULT '', 
+[ActualContentUrl] TEXT DEFAULT '', 
+[Excerpt] TEXT DEFAULT '', 
+[TimestampText] TEXT DEFAULT '', 
+[MainSortableText] TEXT DEFAULT '', 
 [IsCategoryFilteringNode] INTEGER NOT NULL, 
-[CategoryFiltersID] TEXT NULL, 
-[CategoryNamesID] TEXT NULL, 
-[CategoriesID] TEXT NULL, 
-[CategoryIDList] TEXT NOT NULL, 
-[AuthorsID] TEXT NULL, 
-[LocationsID] TEXT NULL
+[CategoryFiltersID] TEXT DEFAULT '', 
+[CategoryNamesID] TEXT DEFAULT '', 
+[CategoriesID] TEXT DEFAULT '', 
+[CategoryIDList] TEXT DEFAULT '', 
+[AuthorsID] TEXT DEFAULT '', 
+[LocationsID] TEXT DEFAULT ''
 )";
         }
 
@@ -9955,11 +10138,13 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 				CategoryIDList = string.Empty;
 		}
 	}
-    //[Table(Name = "ShortTextObject")]
+    [Table("ShortTextObject")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ShortTextObject: {ID}")]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -9987,7 +10172,7 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Content] TEXT NOT NULL
+[Content] TEXT DEFAULT ''
 )";
         }
 
@@ -10003,11 +10188,13 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 				Content = string.Empty;
 		}
 	}
-    //[Table(Name = "LongTextObject")]
+    [Table("LongTextObject")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LongTextObject: {ID}")]
 	public class LongTextObject : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10035,7 +10222,7 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Content] TEXT NOT NULL
+[Content] TEXT DEFAULT ''
 )";
         }
 
@@ -10051,11 +10238,13 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
 				Content = string.Empty;
 		}
 	}
-    //[Table(Name = "MapMarker")]
+    [Table("MapMarker")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapMarker: {ID}")]
 	public class MapMarker : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10083,13 +10272,13 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[IconUrl] TEXT NOT NULL, 
-[MarkerSource] TEXT NOT NULL, 
-[CategoryName] TEXT NOT NULL, 
-[LocationText] TEXT NOT NULL, 
-[PopupTitle] TEXT NOT NULL, 
-[PopupContent] TEXT NOT NULL, 
-[LocationID] TEXT NULL
+[IconUrl] TEXT DEFAULT '', 
+[MarkerSource] TEXT DEFAULT '', 
+[CategoryName] TEXT DEFAULT '', 
+[LocationText] TEXT DEFAULT '', 
+[PopupTitle] TEXT DEFAULT '', 
+[PopupContent] TEXT DEFAULT '', 
+[LocationID] TEXT DEFAULT ''
 )";
         }
 
@@ -10150,11 +10339,13 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
 				PopupContent = string.Empty;
 		}
 	}
-    //[Table(Name = "Moderator")]
+    [Table("Moderator")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Moderator: {ID}")]
 	public class Moderator : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10182,8 +10373,8 @@ CREATE TABLE IF NOT EXISTS [Moderator](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ModeratorName] TEXT NOT NULL, 
-[ProfileUrl] TEXT NOT NULL
+[ModeratorName] TEXT DEFAULT '', 
+[ProfileUrl] TEXT DEFAULT ''
 )";
         }
 
@@ -10206,11 +10397,13 @@ CREATE TABLE IF NOT EXISTS [Moderator](
 				ProfileUrl = string.Empty;
 		}
 	}
-    //[Table(Name = "Collaborator")]
+    [Table("Collaborator")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Collaborator: {ID}")]
 	public class Collaborator : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10238,11 +10431,11 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[AccountID] TEXT NOT NULL, 
-[EmailAddress] TEXT NOT NULL, 
-[CollaboratorName] TEXT NOT NULL, 
-[Role] TEXT NOT NULL, 
-[ProfileUrl] TEXT NOT NULL
+[AccountID] TEXT DEFAULT '', 
+[EmailAddress] TEXT DEFAULT '', 
+[CollaboratorName] TEXT DEFAULT '', 
+[Role] TEXT DEFAULT '', 
+[ProfileUrl] TEXT DEFAULT ''
 )";
         }
 
@@ -10286,11 +10479,13 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
 				ProfileUrl = string.Empty;
 		}
 	}
-    //[Table(Name = "GroupSummaryContainer")]
+    [Table("GroupSummaryContainer")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupSummaryContainer: {ID}")]
 	public class GroupSummaryContainer : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10318,10 +10513,10 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[SummaryBody] TEXT NOT NULL, 
-[IntroductionID] TEXT NULL, 
-[GroupSummaryIndexID] TEXT NULL, 
-[GroupCollectionID] TEXT NULL
+[SummaryBody] TEXT DEFAULT '', 
+[IntroductionID] TEXT DEFAULT '', 
+[GroupSummaryIndexID] TEXT DEFAULT '', 
+[GroupCollectionID] TEXT DEFAULT ''
 )";
         }
 
@@ -10366,11 +10561,13 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 				SummaryBody = string.Empty;
 		}
 	}
-    //[Table(Name = "GroupContainer")]
+    [Table("GroupContainer")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupContainer: {ID}")]
 	public class GroupContainer : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10398,11 +10595,11 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupIndexID] TEXT NULL, 
-[GroupProfileID] TEXT NULL, 
-[CollaboratorsID] TEXT NULL, 
-[PendingCollaboratorsID] TEXT NULL, 
-[LocationCollectionID] TEXT NULL
+[GroupIndexID] TEXT DEFAULT '', 
+[GroupProfileID] TEXT DEFAULT '', 
+[CollaboratorsID] TEXT DEFAULT '', 
+[PendingCollaboratorsID] TEXT DEFAULT '', 
+[LocationCollectionID] TEXT DEFAULT ''
 )";
         }
 
@@ -10458,11 +10655,13 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 		
 		}
 	}
-    //[Table(Name = "GroupIndex")]
+    [Table("GroupIndex")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupIndex: {ID}")]
 	public class GroupIndex : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10490,10 +10689,10 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
+[IconID] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[Introduction] TEXT DEFAULT '', 
+[Summary] TEXT DEFAULT ''
 )";
         }
 
@@ -10533,11 +10732,13 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
 				Summary = string.Empty;
 		}
 	}
-    //[Table(Name = "AddAddressAndLocationInfo")]
+    [Table("AddAddressAndLocationInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddAddressAndLocationInfo: {ID}")]
 	public class AddAddressAndLocationInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10565,7 +10766,7 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[LocationName] TEXT NOT NULL
+[LocationName] TEXT DEFAULT ''
 )";
         }
 
@@ -10581,11 +10782,13 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 				LocationName = string.Empty;
 		}
 	}
-    //[Table(Name = "AddImageInfo")]
+    [Table("AddImageInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddImageInfo: {ID}")]
 	public class AddImageInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10613,7 +10816,7 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ImageTitle] TEXT NOT NULL
+[ImageTitle] TEXT DEFAULT ''
 )";
         }
 
@@ -10629,11 +10832,13 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
 				ImageTitle = string.Empty;
 		}
 	}
-    //[Table(Name = "AddImageGroupInfo")]
+    [Table("AddImageGroupInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddImageGroupInfo: {ID}")]
 	public class AddImageGroupInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10661,7 +10866,7 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ImageGroupTitle] TEXT NOT NULL
+[ImageGroupTitle] TEXT DEFAULT ''
 )";
         }
 
@@ -10677,11 +10882,13 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 				ImageGroupTitle = string.Empty;
 		}
 	}
-    //[Table(Name = "AddEmailAddressInfo")]
+    [Table("AddEmailAddressInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddEmailAddressInfo: {ID}")]
 	public class AddEmailAddressInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10709,7 +10916,7 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[EmailAddress] TEXT NOT NULL
+[EmailAddress] TEXT DEFAULT ''
 )";
         }
 
@@ -10725,11 +10932,13 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 				EmailAddress = string.Empty;
 		}
 	}
-    //[Table(Name = "CreateGroupInfo")]
+    [Table("CreateGroupInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CreateGroupInfo: {ID}")]
 	public class CreateGroupInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10757,7 +10966,7 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupName] TEXT NOT NULL
+[GroupName] TEXT DEFAULT ''
 )";
         }
 
@@ -10773,11 +10982,13 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 				GroupName = string.Empty;
 		}
 	}
-    //[Table(Name = "AddActivityInfo")]
+    [Table("AddActivityInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddActivityInfo: {ID}")]
 	public class AddActivityInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10805,7 +11016,7 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ActivityName] TEXT NOT NULL
+[ActivityName] TEXT DEFAULT ''
 )";
         }
 
@@ -10821,11 +11032,13 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 				ActivityName = string.Empty;
 		}
 	}
-    //[Table(Name = "AddBlogPostInfo")]
+    [Table("AddBlogPostInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddBlogPostInfo: {ID}")]
 	public class AddBlogPostInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10853,7 +11066,7 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Title] TEXT NOT NULL
+[Title] TEXT DEFAULT ''
 )";
         }
 
@@ -10869,11 +11082,13 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 				Title = string.Empty;
 		}
 	}
-    //[Table(Name = "AddCategoryInfo")]
+    [Table("AddCategoryInfo")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddCategoryInfo: {ID}")]
 	public class AddCategoryInfo : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10901,7 +11116,7 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[CategoryName] TEXT NOT NULL
+[CategoryName] TEXT DEFAULT ''
 )";
         }
 
@@ -10917,11 +11132,13 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 				CategoryName = string.Empty;
 		}
 	}
-    //[Table(Name = "Group")]
+    [Table("Group")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Group: {ID}")]
 	public class Group : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -10949,16 +11166,16 @@ CREATE TABLE IF NOT EXISTS [Group](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ReferenceToInformationID] TEXT NULL, 
-[ProfileImageID] TEXT NULL, 
-[IconImageID] TEXT NULL, 
-[GroupName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[OrganizationsAndGroupsLinkedToUs] TEXT NOT NULL, 
-[WwwSiteToPublishTo] TEXT NOT NULL, 
-[CustomUICollectionID] TEXT NULL, 
-[ModeratorsID] TEXT NULL, 
-[CategoryCollectionID] TEXT NULL
+[ReferenceToInformationID] TEXT DEFAULT '', 
+[ProfileImageID] TEXT DEFAULT '', 
+[IconImageID] TEXT DEFAULT '', 
+[GroupName] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[OrganizationsAndGroupsLinkedToUs] TEXT DEFAULT '', 
+[WwwSiteToPublishTo] TEXT DEFAULT '', 
+[CustomUICollectionID] TEXT DEFAULT '', 
+[ModeratorsID] TEXT DEFAULT '', 
+[CategoryCollectionID] TEXT DEFAULT ''
 )";
         }
 
@@ -11052,11 +11269,13 @@ CREATE TABLE IF NOT EXISTS [Group](
 				WwwSiteToPublishTo = string.Empty;
 		}
 	}
-    //[Table(Name = "Introduction")]
+    [Table("Introduction")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Introduction: {ID}")]
 	public class Introduction : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11084,8 +11303,8 @@ CREATE TABLE IF NOT EXISTS [Introduction](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Title] TEXT NOT NULL, 
-[Body] TEXT NOT NULL
+[Title] TEXT DEFAULT '', 
+[Body] TEXT DEFAULT ''
 )";
         }
 
@@ -11108,11 +11327,13 @@ CREATE TABLE IF NOT EXISTS [Introduction](
 				Body = string.Empty;
 		}
 	}
-    //[Table(Name = "ContentCategoryRank")]
+    [Table("ContentCategoryRank")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ContentCategoryRank: {ID}")]
 	public class ContentCategoryRank : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11140,11 +11361,11 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ContentID] TEXT NOT NULL, 
-[ContentSemanticType] TEXT NOT NULL, 
-[CategoryID] TEXT NOT NULL, 
-[RankName] TEXT NOT NULL, 
-[RankValue] TEXT NOT NULL
+[ContentID] TEXT DEFAULT '', 
+[ContentSemanticType] TEXT DEFAULT '', 
+[CategoryID] TEXT DEFAULT '', 
+[RankName] TEXT DEFAULT '', 
+[RankValue] TEXT DEFAULT ''
 )";
         }
 
@@ -11188,11 +11409,13 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 				RankValue = string.Empty;
 		}
 	}
-    //[Table(Name = "LinkToContent")]
+    [Table("LinkToContent")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LinkToContent: {ID}")]
 	public class LinkToContent : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11220,14 +11443,14 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[URL] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[Published] TEXT NOT NULL, 
-[Author] TEXT NOT NULL, 
-[ImageDataID] TEXT NULL, 
-[LocationsID] TEXT NULL, 
-[CategoriesID] TEXT NULL
+[URL] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[Published] TEXT DEFAULT '', 
+[Author] TEXT DEFAULT '', 
+[ImageDataID] TEXT DEFAULT '', 
+[LocationsID] TEXT DEFAULT '', 
+[CategoriesID] TEXT DEFAULT ''
 )";
         }
 
@@ -11289,11 +11512,13 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 				Author = string.Empty;
 		}
 	}
-    //[Table(Name = "EmbeddedContent")]
+    [Table("EmbeddedContent")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("EmbeddedContent: {ID}")]
 	public class EmbeddedContent : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11321,13 +11546,13 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[IFrameTagContents] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Published] TEXT NOT NULL, 
-[Author] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[LocationsID] TEXT NULL, 
-[CategoriesID] TEXT NULL
+[IFrameTagContents] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[Published] TEXT DEFAULT '', 
+[Author] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[LocationsID] TEXT DEFAULT '', 
+[CategoriesID] TEXT DEFAULT ''
 )";
         }
 
@@ -11387,11 +11612,13 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 				Description = string.Empty;
 		}
 	}
-    //[Table(Name = "DynamicContentGroup")]
+    [Table("DynamicContentGroup")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DynamicContentGroup: {ID}")]
 	public class DynamicContentGroup : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11419,11 +11646,11 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[HostName] TEXT NOT NULL, 
-[GroupHeader] TEXT NOT NULL, 
-[SortValue] TEXT NOT NULL, 
-[PageLocation] TEXT NOT NULL, 
-[ContentItemNames] TEXT NOT NULL
+[HostName] TEXT DEFAULT '', 
+[GroupHeader] TEXT DEFAULT '', 
+[SortValue] TEXT DEFAULT '', 
+[PageLocation] TEXT DEFAULT '', 
+[ContentItemNames] TEXT DEFAULT ''
 )";
         }
 
@@ -11467,11 +11694,13 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 				ContentItemNames = string.Empty;
 		}
 	}
-    //[Table(Name = "DynamicContent")]
+    [Table("DynamicContent")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DynamicContent: {ID}")]
 	public class DynamicContent : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11499,18 +11728,18 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[HostName] TEXT NOT NULL, 
-[ContentName] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[ElementQuery] TEXT NOT NULL, 
-[Content] TEXT NOT NULL, 
-[RawContent] TEXT NOT NULL, 
-[ImageDataID] TEXT NULL, 
+[HostName] TEXT DEFAULT '', 
+[ContentName] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[ElementQuery] TEXT DEFAULT '', 
+[Content] TEXT DEFAULT '', 
+[RawContent] TEXT DEFAULT '', 
+[ImageDataID] TEXT DEFAULT '', 
 [IsEnabled] INTEGER NOT NULL, 
 [ApplyActively] INTEGER NOT NULL, 
-[EditType] TEXT NOT NULL, 
-[PageLocation] TEXT NOT NULL
+[EditType] TEXT DEFAULT '', 
+[PageLocation] TEXT DEFAULT ''
 )";
         }
 
@@ -11594,11 +11823,13 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
 				PageLocation = string.Empty;
 		}
 	}
-    //[Table(Name = "AttachedToObject")]
+    [Table("AttachedToObject")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AttachedToObject: {ID}")]
 	public class AttachedToObject : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11626,12 +11857,12 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[SourceObjectID] TEXT NOT NULL, 
-[SourceObjectName] TEXT NOT NULL, 
-[SourceObjectDomain] TEXT NOT NULL, 
-[TargetObjectID] TEXT NOT NULL, 
-[TargetObjectName] TEXT NOT NULL, 
-[TargetObjectDomain] TEXT NOT NULL
+[SourceObjectID] TEXT DEFAULT '', 
+[SourceObjectName] TEXT DEFAULT '', 
+[SourceObjectDomain] TEXT DEFAULT '', 
+[TargetObjectID] TEXT DEFAULT '', 
+[TargetObjectName] TEXT DEFAULT '', 
+[TargetObjectDomain] TEXT DEFAULT ''
 )";
         }
 
@@ -11682,11 +11913,13 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
 				TargetObjectDomain = string.Empty;
 		}
 	}
-    //[Table(Name = "Comment")]
+    [Table("Comment")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Comment: {ID}")]
 	public class Comment : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11714,18 +11947,18 @@ CREATE TABLE IF NOT EXISTS [Comment](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[TargetObjectID] TEXT NOT NULL, 
-[TargetObjectName] TEXT NOT NULL, 
-[TargetObjectDomain] TEXT NOT NULL, 
-[CommentText] TEXT NOT NULL, 
-[Created] TEXT NOT NULL, 
-[OriginalAuthorName] TEXT NOT NULL, 
-[OriginalAuthorEmail] TEXT NOT NULL, 
-[OriginalAuthorAccountID] TEXT NOT NULL, 
-[LastModified] TEXT NOT NULL, 
-[LastAuthorName] TEXT NOT NULL, 
-[LastAuthorEmail] TEXT NOT NULL, 
-[LastAuthorAccountID] TEXT NOT NULL
+[TargetObjectID] TEXT DEFAULT '', 
+[TargetObjectName] TEXT DEFAULT '', 
+[TargetObjectDomain] TEXT DEFAULT '', 
+[CommentText] TEXT DEFAULT '', 
+[Created] TEXT DEFAULT '', 
+[OriginalAuthorName] TEXT DEFAULT '', 
+[OriginalAuthorEmail] TEXT DEFAULT '', 
+[OriginalAuthorAccountID] TEXT DEFAULT '', 
+[LastModified] TEXT DEFAULT '', 
+[LastAuthorName] TEXT DEFAULT '', 
+[LastAuthorEmail] TEXT DEFAULT '', 
+[LastAuthorAccountID] TEXT DEFAULT ''
 )";
         }
 
@@ -11814,11 +12047,13 @@ CREATE TABLE IF NOT EXISTS [Comment](
 				LastAuthorAccountID = string.Empty;
 		}
 	}
-    //[Table(Name = "Selection")]
+    [Table("Selection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Selection: {ID}")]
 	public class Selection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11846,11 +12081,11 @@ CREATE TABLE IF NOT EXISTS [Selection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[TargetObjectID] TEXT NOT NULL, 
-[TargetObjectName] TEXT NOT NULL, 
-[TargetObjectDomain] TEXT NOT NULL, 
-[SelectionCategory] TEXT NOT NULL, 
-[TextValue] TEXT NOT NULL, 
+[TargetObjectID] TEXT DEFAULT '', 
+[TargetObjectName] TEXT DEFAULT '', 
+[TargetObjectDomain] TEXT DEFAULT '', 
+[SelectionCategory] TEXT DEFAULT '', 
+[TextValue] TEXT DEFAULT '', 
 [BooleanValue] INTEGER NOT NULL, 
 [DoubleValue] REAL NOT NULL
 )";
@@ -11906,11 +12141,13 @@ CREATE TABLE IF NOT EXISTS [Selection](
 				TextValue = string.Empty;
 		}
 	}
-    //[Table(Name = "TextContent")]
+    [Table("TextContent")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TextContent: {ID}")]
 	public class TextContent : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -11938,20 +12175,20 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ImageDataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[OpenArticleTitle] TEXT NOT NULL, 
-[SubTitle] TEXT NOT NULL, 
-[Published] TEXT NOT NULL, 
-[Author] TEXT NOT NULL, 
-[ArticleImageDataID] TEXT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Body] TEXT NOT NULL, 
-[LocationsID] TEXT NULL, 
-[CategoriesID] TEXT NULL, 
+[ImageDataID] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[OpenArticleTitle] TEXT DEFAULT '', 
+[SubTitle] TEXT DEFAULT '', 
+[Published] TEXT DEFAULT '', 
+[Author] TEXT DEFAULT '', 
+[ArticleImageDataID] TEXT DEFAULT '', 
+[Excerpt] TEXT DEFAULT '', 
+[Body] TEXT DEFAULT '', 
+[LocationsID] TEXT DEFAULT '', 
+[CategoriesID] TEXT DEFAULT '', 
 [SortOrderNumber] REAL NOT NULL, 
-[IFrameSources] TEXT NOT NULL, 
-[RawHtmlContent] TEXT NOT NULL
+[IFrameSources] TEXT DEFAULT '', 
+[RawHtmlContent] TEXT DEFAULT ''
 )";
         }
 
@@ -12048,11 +12285,13 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 				RawHtmlContent = string.Empty;
 		}
 	}
-    //[Table(Name = "Map")]
+    [Table("Map")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Map: {ID}")]
 	public class Map : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12080,7 +12319,7 @@ CREATE TABLE IF NOT EXISTS [Map](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Title] TEXT NOT NULL
+[Title] TEXT DEFAULT ''
 )";
         }
 
@@ -12096,11 +12335,13 @@ CREATE TABLE IF NOT EXISTS [Map](
 				Title = string.Empty;
 		}
 	}
-    //[Table(Name = "MapResult")]
+    [Table("MapResult")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapResult: {ID}")]
 	public class MapResult : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12128,7 +12369,7 @@ CREATE TABLE IF NOT EXISTS [MapResult](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[LocationID] TEXT NULL
+[LocationID] TEXT DEFAULT ''
 )";
         }
 
@@ -12147,11 +12388,13 @@ CREATE TABLE IF NOT EXISTS [MapResult](
 		
 		}
 	}
-    //[Table(Name = "MapResultsCollection")]
+    [Table("MapResultsCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapResultsCollection: {ID}")]
 	public class MapResultsCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12179,9 +12422,9 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ResultByDateID] TEXT NULL, 
-[ResultByAuthorID] TEXT NULL, 
-[ResultByProximityID] TEXT NULL
+[ResultByDateID] TEXT DEFAULT '', 
+[ResultByAuthorID] TEXT DEFAULT '', 
+[ResultByProximityID] TEXT DEFAULT ''
 )";
         }
 
@@ -12217,11 +12460,13 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 		
 		}
 	}
-    //[Table(Name = "Video")]
+    [Table("Video")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Video: {ID}")]
 	public class Video : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12249,9 +12494,9 @@ CREATE TABLE IF NOT EXISTS [Video](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[VideoDataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Caption] TEXT NOT NULL
+[VideoDataID] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[Caption] TEXT DEFAULT ''
 )";
         }
 
@@ -12276,11 +12521,13 @@ CREATE TABLE IF NOT EXISTS [Video](
 				Caption = string.Empty;
 		}
 	}
-    //[Table(Name = "Image")]
+    [Table("Image")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Image: {ID}")]
 	public class Image : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12308,13 +12555,13 @@ CREATE TABLE IF NOT EXISTS [Image](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ReferenceToInformationID] TEXT NULL, 
-[ImageDataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Caption] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[LocationsID] TEXT NULL, 
-[CategoriesID] TEXT NULL
+[ReferenceToInformationID] TEXT DEFAULT '', 
+[ImageDataID] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[Caption] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[LocationsID] TEXT DEFAULT '', 
+[CategoriesID] TEXT DEFAULT ''
 )";
         }
 
@@ -12374,11 +12621,13 @@ CREATE TABLE IF NOT EXISTS [Image](
 				Description = string.Empty;
 		}
 	}
-    //[Table(Name = "BinaryFile")]
+    [Table("BinaryFile")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("BinaryFile: {ID}")]
 	public class BinaryFile : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12406,11 +12655,11 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OriginalFileName] TEXT NOT NULL, 
-[DataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[CategoriesID] TEXT NULL
+[OriginalFileName] TEXT DEFAULT '', 
+[DataID] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[CategoriesID] TEXT DEFAULT ''
 )";
         }
 
@@ -12451,11 +12700,13 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
 				Description = string.Empty;
 		}
 	}
-    //[Table(Name = "Longitude")]
+    [Table("Longitude")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Longitude: {ID}")]
 	public class Longitude : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12483,7 +12734,7 @@ CREATE TABLE IF NOT EXISTS [Longitude](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[TextValue] TEXT NOT NULL
+[TextValue] TEXT DEFAULT ''
 )";
         }
 
@@ -12499,11 +12750,13 @@ CREATE TABLE IF NOT EXISTS [Longitude](
 				TextValue = string.Empty;
 		}
 	}
-    //[Table(Name = "Latitude")]
+    [Table("Latitude")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Latitude: {ID}")]
 	public class Latitude : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12531,7 +12784,7 @@ CREATE TABLE IF NOT EXISTS [Latitude](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[TextValue] TEXT NOT NULL
+[TextValue] TEXT DEFAULT ''
 )";
         }
 
@@ -12547,11 +12800,13 @@ CREATE TABLE IF NOT EXISTS [Latitude](
 				TextValue = string.Empty;
 		}
 	}
-    //[Table(Name = "Location")]
+    [Table("Location")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Location: {ID}")]
 	public class Location : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12579,9 +12834,9 @@ CREATE TABLE IF NOT EXISTS [Location](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[LocationName] TEXT NOT NULL, 
-[LongitudeID] TEXT NULL, 
-[LatitudeID] TEXT NULL
+[LocationName] TEXT DEFAULT '', 
+[LongitudeID] TEXT DEFAULT '', 
+[LatitudeID] TEXT DEFAULT ''
 )";
         }
 
@@ -12617,11 +12872,13 @@ CREATE TABLE IF NOT EXISTS [Location](
 				LocationName = string.Empty;
 		}
 	}
-    //[Table(Name = "Date")]
+    [Table("Date")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Date: {ID}")]
 	public class Date : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12649,10 +12906,10 @@ CREATE TABLE IF NOT EXISTS [Date](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Day] TEXT NOT NULL, 
-[Week] TEXT NOT NULL, 
-[Month] TEXT NOT NULL, 
-[Year] TEXT NOT NULL
+[Day] TEXT DEFAULT '', 
+[Week] TEXT DEFAULT '', 
+[Month] TEXT DEFAULT '', 
+[Year] TEXT DEFAULT ''
 )";
         }
 
@@ -12681,11 +12938,13 @@ CREATE TABLE IF NOT EXISTS [Date](
 		
 		}
 	}
-    //[Table(Name = "CategoryContainer")]
+    [Table("CategoryContainer")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CategoryContainer: {ID}")]
 	public class CategoryContainer : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12713,7 +12972,7 @@ CREATE TABLE IF NOT EXISTS [CategoryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[CategoriesID] TEXT NULL
+[CategoriesID] TEXT DEFAULT ''
 )";
         }
 
@@ -12731,11 +12990,13 @@ CREATE TABLE IF NOT EXISTS [CategoryContainer](
 		
 		}
 	}
-    //[Table(Name = "Category")]
+    [Table("Category")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Category: {ID}")]
 	public class Category : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12763,12 +13024,12 @@ CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ReferenceToInformationID] TEXT NULL, 
-[CategoryName] TEXT NOT NULL, 
-[ImageDataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[ParentCategoryID] TEXT NULL
+[ReferenceToInformationID] TEXT DEFAULT '', 
+[CategoryName] TEXT DEFAULT '', 
+[ImageDataID] TEXT DEFAULT '', 
+[Title] TEXT DEFAULT '', 
+[Excerpt] TEXT DEFAULT '', 
+[ParentCategoryID] TEXT DEFAULT ''
 )";
         }
 
@@ -12820,11 +13081,13 @@ CREATE TABLE IF NOT EXISTS [Category](
 				Excerpt = string.Empty;
 		}
 	}
-    //[Table(Name = "UpdateWebContentOperation")]
+    [Table("UpdateWebContentOperation")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("UpdateWebContentOperation: {ID}")]
 	public class UpdateWebContentOperation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12852,12 +13115,12 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[SourceContainerName] TEXT NOT NULL, 
-[SourcePathRoot] TEXT NOT NULL, 
-[TargetContainerName] TEXT NOT NULL, 
-[TargetPathRoot] TEXT NOT NULL, 
+[SourceContainerName] TEXT DEFAULT '', 
+[SourcePathRoot] TEXT DEFAULT '', 
+[TargetContainerName] TEXT DEFAULT '', 
+[TargetPathRoot] TEXT DEFAULT '', 
 [RenderWhileSync] INTEGER NOT NULL, 
-[HandlersID] TEXT NULL
+[HandlersID] TEXT DEFAULT ''
 )";
         }
 
@@ -12908,11 +13171,13 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 				TargetPathRoot = string.Empty;
 		}
 	}
-    //[Table(Name = "UpdateWebContentHandlerItem")]
+    [Table("UpdateWebContentHandlerItem")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("UpdateWebContentHandlerItem: {ID}")]
 	public class UpdateWebContentHandlerItem : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -12940,8 +13205,8 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[InformationTypeName] TEXT NOT NULL, 
-[OptionName] TEXT NOT NULL
+[InformationTypeName] TEXT DEFAULT '', 
+[OptionName] TEXT DEFAULT ''
 )";
         }
 
@@ -12964,11 +13229,13 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 				OptionName = string.Empty;
 		}
 	}
-    //[Table(Name = "PublicationPackageCollection")]
+    [Table("PublicationPackageCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("PublicationPackageCollection: {ID}")]
 	public class PublicationPackageCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13007,11 +13274,13 @@ CREATE TABLE IF NOT EXISTS [PublicationPackageCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "TBAccountCollaborationGroupCollection")]
+    [Table("TBAccountCollaborationGroupCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBAccountCollaborationGroupCollection: {ID}")]
 	public class TBAccountCollaborationGroupCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13050,11 +13319,13 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroupCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "TBLoginInfoCollection")]
+    [Table("TBLoginInfoCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBLoginInfoCollection: {ID}")]
 	public class TBLoginInfoCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13093,11 +13364,13 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfoCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "TBEmailCollection")]
+    [Table("TBEmailCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBEmailCollection: {ID}")]
 	public class TBEmailCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13136,11 +13409,13 @@ CREATE TABLE IF NOT EXISTS [TBEmailCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "TBCollaboratorRoleCollection")]
+    [Table("TBCollaboratorRoleCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TBCollaboratorRoleCollection: {ID}")]
 	public class TBCollaboratorRoleCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13179,11 +13454,13 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRoleCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "LoginProviderCollection")]
+    [Table("LoginProviderCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LoginProviderCollection: {ID}")]
 	public class LoginProviderCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13222,11 +13499,13 @@ CREATE TABLE IF NOT EXISTS [LoginProviderCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "AddressAndLocationCollection")]
+    [Table("AddressAndLocationCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AddressAndLocationCollection: {ID}")]
 	public class AddressAndLocationCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13265,11 +13544,13 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocationCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "ReferenceCollection")]
+    [Table("ReferenceCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ReferenceCollection: {ID}")]
 	public class ReferenceCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13308,11 +13589,13 @@ CREATE TABLE IF NOT EXISTS [ReferenceCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "RenderedNodeCollection")]
+    [Table("RenderedNodeCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("RenderedNodeCollection: {ID}")]
 	public class RenderedNodeCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13351,11 +13634,13 @@ CREATE TABLE IF NOT EXISTS [RenderedNodeCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "ShortTextCollection")]
+    [Table("ShortTextCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ShortTextCollection: {ID}")]
 	public class ShortTextCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13394,11 +13679,13 @@ CREATE TABLE IF NOT EXISTS [ShortTextCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "LongTextCollection")]
+    [Table("LongTextCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LongTextCollection: {ID}")]
 	public class LongTextCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13437,11 +13724,13 @@ CREATE TABLE IF NOT EXISTS [LongTextCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "MapMarkerCollection")]
+    [Table("MapMarkerCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapMarkerCollection: {ID}")]
 	public class MapMarkerCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13480,11 +13769,13 @@ CREATE TABLE IF NOT EXISTS [MapMarkerCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "ModeratorCollection")]
+    [Table("ModeratorCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ModeratorCollection: {ID}")]
 	public class ModeratorCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13523,11 +13814,13 @@ CREATE TABLE IF NOT EXISTS [ModeratorCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "CollaboratorCollection")]
+    [Table("CollaboratorCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CollaboratorCollection: {ID}")]
 	public class CollaboratorCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13566,11 +13859,13 @@ CREATE TABLE IF NOT EXISTS [CollaboratorCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "GroupCollection")]
+    [Table("GroupCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupCollection: {ID}")]
 	public class GroupCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13609,11 +13904,13 @@ CREATE TABLE IF NOT EXISTS [GroupCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "ContentCategoryRankCollection")]
+    [Table("ContentCategoryRankCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ContentCategoryRankCollection: {ID}")]
 	public class ContentCategoryRankCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13652,11 +13949,13 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRankCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "LinkToContentCollection")]
+    [Table("LinkToContentCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LinkToContentCollection: {ID}")]
 	public class LinkToContentCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13695,11 +13994,13 @@ CREATE TABLE IF NOT EXISTS [LinkToContentCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "EmbeddedContentCollection")]
+    [Table("EmbeddedContentCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("EmbeddedContentCollection: {ID}")]
 	public class EmbeddedContentCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13738,11 +14039,13 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContentCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "DynamicContentGroupCollection")]
+    [Table("DynamicContentGroupCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DynamicContentGroupCollection: {ID}")]
 	public class DynamicContentGroupCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13781,11 +14084,13 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroupCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "DynamicContentCollection")]
+    [Table("DynamicContentCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("DynamicContentCollection: {ID}")]
 	public class DynamicContentCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13824,11 +14129,13 @@ CREATE TABLE IF NOT EXISTS [DynamicContentCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "AttachedToObjectCollection")]
+    [Table("AttachedToObjectCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("AttachedToObjectCollection: {ID}")]
 	public class AttachedToObjectCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13867,11 +14174,13 @@ CREATE TABLE IF NOT EXISTS [AttachedToObjectCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "CommentCollection")]
+    [Table("CommentCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CommentCollection: {ID}")]
 	public class CommentCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13910,11 +14219,13 @@ CREATE TABLE IF NOT EXISTS [CommentCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "SelectionCollection")]
+    [Table("SelectionCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SelectionCollection: {ID}")]
 	public class SelectionCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13953,11 +14264,13 @@ CREATE TABLE IF NOT EXISTS [SelectionCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "TextContentCollection")]
+    [Table("TextContentCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TextContentCollection: {ID}")]
 	public class TextContentCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -13996,11 +14309,13 @@ CREATE TABLE IF NOT EXISTS [TextContentCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "MapCollection")]
+    [Table("MapCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapCollection: {ID}")]
 	public class MapCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -14039,11 +14354,13 @@ CREATE TABLE IF NOT EXISTS [MapCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "MapResultCollection")]
+    [Table("MapResultCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("MapResultCollection: {ID}")]
 	public class MapResultCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -14082,11 +14399,13 @@ CREATE TABLE IF NOT EXISTS [MapResultCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "ImageCollection")]
+    [Table("ImageCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ImageCollection: {ID}")]
 	public class ImageCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -14125,11 +14444,13 @@ CREATE TABLE IF NOT EXISTS [ImageCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "BinaryFileCollection")]
+    [Table("BinaryFileCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("BinaryFileCollection: {ID}")]
 	public class BinaryFileCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -14168,11 +14489,13 @@ CREATE TABLE IF NOT EXISTS [BinaryFileCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "LocationCollection")]
+    [Table("LocationCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("LocationCollection: {ID}")]
 	public class LocationCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -14211,11 +14534,13 @@ CREATE TABLE IF NOT EXISTS [LocationCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "CategoryCollection")]
+    [Table("CategoryCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CategoryCollection: {ID}")]
 	public class CategoryCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -14254,11 +14579,13 @@ CREATE TABLE IF NOT EXISTS [CategoryCollection](
         //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    //[Table(Name = "UpdateWebContentHandlerCollection")]
+    [Table("UpdateWebContentHandlerCollection")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("UpdateWebContentHandlerCollection: {ID}")]
 	public class UpdateWebContentHandlerCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]

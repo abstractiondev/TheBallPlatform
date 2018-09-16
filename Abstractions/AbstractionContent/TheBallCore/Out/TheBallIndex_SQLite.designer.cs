@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations.Schema;
 using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
 //using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 //using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
@@ -32,6 +33,14 @@ namespace SQLite.TheBall.Index {
 
 		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+				IndexingRequest.EntityConfig(modelBuilder);
+				QueryRequest.EntityConfig(modelBuilder);
+				QueryResultItem.EntityConfig(modelBuilder);
+
+		    }
+
             // Track whether Dispose has been called. 
             private bool disposed = false;
 		    void IDisposable.Dispose()
@@ -449,11 +458,13 @@ namespace SQLite.TheBall.Index {
 			public DbSet<QueryResultItem> QueryResultItemTable { get; set; }
         }
 
-    //[Table(Name = "IndexingRequest")]
+    [Table("IndexingRequest")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("IndexingRequest: {ID}")]
 	public class IndexingRequest : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -481,8 +492,8 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[IndexName] TEXT NOT NULL, 
-[ObjectLocations] TEXT NOT NULL
+[IndexName] TEXT DEFAULT '', 
+[ObjectLocations] TEXT DEFAULT ''
 )";
         }
 
@@ -498,7 +509,8 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
         private bool _IsObjectLocationsRetrieved = false;
         private bool _IsObjectLocationsChanged = false;
         private ObservableCollection<string> _ObjectLocations = null;
-        public ObservableCollection<string> ObjectLocations
+        [NotMapped]
+		public ObservableCollection<string> ObjectLocations
         {
             get
             {
@@ -549,11 +561,13 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 
 		}
 	}
-    //[Table(Name = "QueryRequest")]
+    [Table("QueryRequest")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("QueryRequest: {ID}")]
 	public class QueryRequest : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -581,14 +595,14 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[QueryString] TEXT NOT NULL, 
-[DefaultFieldName] TEXT NOT NULL, 
-[IndexName] TEXT NOT NULL, 
+[QueryString] TEXT DEFAULT '', 
+[DefaultFieldName] TEXT DEFAULT '', 
+[IndexName] TEXT DEFAULT '', 
 [IsQueryCompleted] INTEGER NOT NULL, 
-[LastRequestTime] TEXT NOT NULL, 
-[LastCompletionTime] TEXT NOT NULL, 
+[LastRequestTime] TEXT DEFAULT '', 
+[LastCompletionTime] TEXT DEFAULT '', 
 [LastCompletionDurationMs] INTEGER NOT NULL, 
-[QueryResultObjectsID] TEXT NULL
+[QueryResultObjectsID] TEXT DEFAULT ''
 )";
         }
 
@@ -634,7 +648,8 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
         private bool _IsQueryResultObjectsRetrieved = false;
         private bool _IsQueryResultObjectsChanged = false;
         private ObservableCollection<SER.TheBall.Index.QueryResultItem> _QueryResultObjects = null;
-        public ObservableCollection<SER.TheBall.Index.QueryResultItem> QueryResultObjects
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Index.QueryResultItem> QueryResultObjects
         {
             get
             {
@@ -689,11 +704,13 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 
 		}
 	}
-    //[Table(Name = "QueryResultItem")]
+    [Table("QueryResultItem")]
 	//[ScaffoldTable(true)]
 	[DebuggerDisplay("QueryResultItem: {ID}")]
 	public class QueryResultItem : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
 		//[Column(IsPrimaryKey = true)]
         //[ScaffoldColumn(true)]
@@ -721,9 +738,9 @@ CREATE TABLE IF NOT EXISTS [QueryResultItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ObjectDomainName] TEXT NOT NULL, 
-[ObjectName] TEXT NOT NULL, 
-[ObjectID] TEXT NOT NULL, 
+[ObjectDomainName] TEXT DEFAULT '', 
+[ObjectName] TEXT DEFAULT '', 
+[ObjectID] TEXT DEFAULT '', 
 [Rank] REAL NOT NULL
 )";
         }
