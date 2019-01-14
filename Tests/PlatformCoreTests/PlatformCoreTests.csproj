@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\AzureSupport\AzureSupport.csproj" />
     <ProjectReference Include="..\..\Apps\SQLiteSupport\SQLiteSupport.csproj" />
+    <ProjectReference Include="..\..\Apps\WebCoreLayer\WebCoreLayer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

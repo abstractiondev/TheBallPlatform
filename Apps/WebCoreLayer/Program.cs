@@ -31,7 +31,7 @@ namespace WebCoreLayer
             if (!File.Exists(certPath) && Startup.PlatformCoreRootPath != null)
                 certPath = Path.Combine(Startup.PlatformCoreRootPath, "TheBallCerts", "wildcard_theball.me.pfx");
             bool useHttps = !String.IsNullOrEmpty(certPassword) && File.Exists(certPath);
-            useHttps = false;
+            //useHttps = false;
             var port = useHttps ? 10443 : 80;
 
             var result = WebHost.CreateDefaultBuilder(args)

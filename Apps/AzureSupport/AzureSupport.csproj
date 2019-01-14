@@ -29,6 +29,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments_SQLite.designer.cs" Link="TheBall.Payments\TheBallPayments_SQLite.designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\..\InformationAndProcessModels\FootvoterServices.xml" Link="Footvoter.Services\FootvoterServices.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
