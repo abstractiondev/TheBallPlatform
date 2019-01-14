@@ -29,6 +29,13 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments_SQLite.designer.cs" Link="TheBall.Payments\TheBallPayments_SQLite.designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\..\InformationAndProcessModels\TheBallIndex.xml" Link="TheBall.Index\TheBallIndex.xml" />
+    <EmbeddedResource Include="..\..\InformationAndProcessModels\TheBallInterface.xml" Link="TheBall.Interface\TheBallInterface.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\InformationAndProcessModels\TheBallPayments.xml" Link="TheBall.Payments\TheBallPayments.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="..\..\InformationAndProcessModels\FootvoterServices.xml" Link="Footvoter.Services\FootvoterServices.xml" />
   </ItemGroup>
   <ItemGroup>
