@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Threading.Tasks;
-using System.Web;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using Microsoft.AspNetCore.Http;

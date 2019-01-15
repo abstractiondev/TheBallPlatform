@@ -49,7 +49,7 @@
     <PackageReference Include="MimeKitLite" Version="1.18.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="protobuf-net" Version="2.3.2" />
-    <PackageReference Include="RestSharp" Version="105.2.3" />
+    <PackageReference Include="RestSharp" Version="106.6.6" />
     <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
     <PackageReference Include="Stripe.net" Version="10.4.0" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />

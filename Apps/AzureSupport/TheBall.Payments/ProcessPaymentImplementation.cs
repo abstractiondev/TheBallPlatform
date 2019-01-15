@@ -1,7 +1,6 @@
 using System;
 using System.Security;
 using System.Threading.Tasks;
-using System.Web;
 using AzureSupport;
 using Microsoft.AspNetCore.Http;
 using Stripe;

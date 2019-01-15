@@ -47,7 +47,6 @@ namespace PlatformCoreTests
                         return;
                     var theBallElement = xDoc.Descendants()
                         .FirstOrDefault(elem => elem.Name.LocalName == "InstanceOfTheBall");
-                    theBallElement = theBallElement ?? xDoc.Elements("InstanceOfTheBall").FirstOrDefault();
                     var semanticName = theBallElement?.Attribute("semanticDomainName")?.Value;
                     if (semanticName == null)
                         return;
