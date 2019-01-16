@@ -43,7 +43,7 @@ namespace WebCoreLayer
         public void ConfigureServices(IServiceCollection services)
         {
             initializePlatform();
-            services.AddMvcCore().AddAuthorization();
+            services.AddMvcCore().AddAuthorization().AddJsonFormatters();
             services.AddDataProtection().PersistKeysToAzureBlobStorage(new Uri(InfraSharedConfig.Current.SecurityKeyBlobSAS));
             var authBuilder = services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(cookieOptions =>

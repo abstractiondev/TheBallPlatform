@@ -1,19 +1,30 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebCoreLayer.Controllers
 {
+    [AllowAnonymous]
     public class APIController : Controller
     {
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> GetAPIXmlDefinition(string namespaceName)
         {
             var contentFileName = namespaceName.Replace(".", "") + ".xml";
             var resourceStream = GetAPIResourceStream(namespaceName, contentFileName);
             var result = File(resourceStream, "text/xml", contentFileName);
+            return result;
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetAPIList()
+        {
+            var apiNames = GetAPINames();
+            var apiNamesContainer = new { apiNames = apiNames };
+            JsonResult result = new JsonResult(apiNamesContainer);
             return result;
         }
 
@@ -26,6 +37,18 @@ namespace WebCoreLayer.Controllers
             if (resourceStream == null)
                 throw new InvalidDataException($"Requested API Content not available: {namespaceName}");
             return resourceStream;
+        }
+
+        public static string[] GetAPINames()
+        {
+            // TODO: Filter candidates with same ruling <AssemblyName.namespace.name.namespacename.xml> to be included only
+            var asm = typeof(AzureSupport.WebSupport).Assembly;
+            var names = asm.GetManifestResourceNames();
+            var apiNames = names
+                .Where(name => name.EndsWith(".xml"))
+                .Select(name => String.Join('.', name.Split('.').Skip(1).SkipLast(2)))
+                .ToArray();
+            return apiNames;
         }
     }
 }

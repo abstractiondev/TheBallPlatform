@@ -63,6 +63,14 @@ namespace PlatformCoreTests
         }
 
         [TestMethod]
+        public async Task GetAPINamesFromControllerTest()
+        {
+            var apiNames = APIController.GetAPINames();
+            Assert.IsTrue(apiNames?.Length > 3);
+        }
+
+
+        [TestMethod]
         public async Task GetAPIXmlFromControllerTest()
         {
             var resourceStream = APIController.GetAPIResourceStream("Footvoter.Services", "FootvoterServices.xml");
