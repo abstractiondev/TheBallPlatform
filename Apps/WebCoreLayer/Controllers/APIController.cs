@@ -41,7 +41,7 @@ namespace WebCoreLayer.Controllers
 
         public static string[] GetAPINames()
         {
-            // TODO: Filter candidates with same ruling <AssemblyName.namespace.name.namespacename.xml> to be included only
+            // TODO: Filter candidates with same ruling <AssemblyName.namespace.name.namespacename.xml> to be included only.
             var asm = typeof(AzureSupport.WebSupport).Assembly;
             var names = asm.GetManifestResourceNames();
             var apiNames = names
