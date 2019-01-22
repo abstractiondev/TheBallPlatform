@@ -8,6 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using NDesk.Options;
 using Nito.AsyncEx;
 using TheBall.CORE.InstanceSupport;
 using TheBall.CORE.Storage;
@@ -47,14 +48,15 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 string updateAccessInfoFile = null;
                 bool autoUpdate = false;
                 string clientHandle = null;
-                /*
+                string timeout = null;
             var optionSet = new OptionSet()
             {
                 {
 
                     "ac|applicationConfig=", "Application config full path",
-                    (key, ac) => applicationConfigFullPath = ac
+                    ac => applicationConfigFullPath = ac
                 },
+                /*
                 {
                     "o|owner=", "Dedicated to owner",
                     (key, owner) => dedicatedToOwner = owner
@@ -78,14 +80,17 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 {
                     "envcfg|useEnvConfig", //"Use environment variables as config instead of default CloudConfigurationManager",
                     (key, env) => UseEnvironmentVariablesAsConfig = env != null
+                },*/
+                {
+                    "timeout=",
+                    to => timeout = to
                 }
             };
                 var options = optionSet.Parse(args);
-            */
-                applicationConfigFullPath = args.Length > 0 ? args[0] : Environment.GetEnvironmentVariable(nameof(ApplicationConfigFullPath)) ?? ApplicationConfigFullPath;
+                applicationConfigFullPath = applicationConfigFullPath ?? Environment.GetEnvironmentVariable(nameof(ApplicationConfigFullPath)) ?? ApplicationConfigFullPath;
                 Console.WriteLine($"Using appconfig from: {applicationConfigFullPath}");
-                var options = args.ToList();
-                List<string> optionSet = new List<string>();
+                //var options = args.ToList();
+                //List<string> optionSet = new List<string>();
                 bool hasExtraOptions = options.Count > 0;
                 bool isMissingMandatory = applicationConfigFullPath == null && !isTestMode;
                 bool hasIdentifiedOptions = optionSet.Count > 0;

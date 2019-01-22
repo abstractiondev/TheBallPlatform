@@ -1,7 +1,8 @@
 {
   "profiles": {
     "TheBallWorkerConsole": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "--timeout=123"
     }
   }
 }
