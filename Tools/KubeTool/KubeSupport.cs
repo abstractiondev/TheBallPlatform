@@ -40,7 +40,15 @@ namespace KubeTool
 
         public static Kubernetes GetClient()
         {
-            var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
+            KubernetesClientConfiguration config;
+            try
+            {
+                config = KubernetesClientConfiguration.InClusterConfig();
+            }
+            catch (Exception)
+            {
+                config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
+            }
             var client = new Kubernetes(config);
             return client;
         }
