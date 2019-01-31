@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using KubeTool;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,14 @@ namespace WebCoreLayer.Controllers
     [AllowAnonymous]
     public class APIController : Controller
     {
+        [HttpGet]
+        public async Task<JsonResult> UpdateAPI()
+        {
+            await DiagnosticSupport.RunBaseDiagnostics();
+            JsonResult result = new JsonResult(new { OK = "ok"});
+            return result;
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAPIXmlDefinition(string namespaceName)
         {
@@ -50,5 +59,6 @@ namespace WebCoreLayer.Controllers
                 .ToArray();
             return apiNames;
         }
+
     }
 }

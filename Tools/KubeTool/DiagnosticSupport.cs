@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace KubeTool
@@ -7,7 +8,7 @@ namespace KubeTool
     {
         public static async Task RunBaseDiagnostics()
         {
-            return;
+            //return;
             string workerBaseName = @"abstractiondev/theballworker";
             var workerDeploymentName = "tbwrk-deployment";
             await UpdateDeployment(workerBaseName, workerDeploymentName);
@@ -22,13 +23,20 @@ namespace KubeTool
         {
             var latestImageTag = await DockerHubSupport.GetLatestTag(imageBaseName);
             var updateTag = specificTag ?? latestImageTag;
+            var imageName = $"{imageBaseName}:{updateTag}";
+            Console.WriteLine($"Verifying deployment {deploymentName} version to requested: {imageName}");
             var deployment = await KubeSupport.GetDeployment(deploymentName);
             var containers = deployment?.Spec.Template.Spec.Containers;
-            var imageName = $"{imageBaseName}:{updateTag}";
             var isRunningExpected = containers.Any(item => item.Image.StartsWith(imageName));
             if (!isRunningExpected)
             {
+                Console.WriteLine($"Updating deployment {deploymentName} to image {imageName}");
                 await KubeSupport.UpdateDeployment(deploymentName, imageName);
+                Console.WriteLine("Update submitted OK");
+            }
+            else
+            {
+                Console.WriteLine($"Deployment {deploymentName} up-to-date: {imageName}");
             }
         }
     }

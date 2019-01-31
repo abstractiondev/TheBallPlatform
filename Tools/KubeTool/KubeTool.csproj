@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.2;netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Docker.Registry.DotNet" Version="1.0.10" />
-    <PackageReference Include="KubernetesClient" Version="1.2.0" />
+    <PackageReference Include="KubernetesClient" Version="1.4.5-g588807fb44" />
     <PackageReference Include="NDesk.Options.Core" Version="1.2.4" />
   </ItemGroup>
 

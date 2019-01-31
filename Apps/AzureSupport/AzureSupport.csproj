@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromFootvoter.designer.cs" Link="Footvoter.Services\OperationAbstractionFromFootvoter.designer.cs" />
@@ -47,7 +47,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.1" />
     <PackageReference Include="MimeKitLite" Version="1.18.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="protobuf-net" Version="2.3.2" />
     <PackageReference Include="RestSharp" Version="106.6.6" />
     <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
@@ -56,6 +56,7 @@
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Tools\KubeTool\KubeTool.csproj" />
     <ProjectReference Include="..\SecuritySupport\SecuritySupport.csproj" />
     <ProjectReference Include="..\SQLiteSupport\SQLiteSupport.csproj" />
     <ProjectReference Include="..\VirtualStorage\VirtualStorage.csproj" />
