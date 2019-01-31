@@ -10,7 +10,7 @@ namespace KubeTool
         {
             Console.WriteLine("Hello World!");
             //await kubeTest();
-            await DiagnosticSupport.RunBaseDiagnostics();
+            await KubeSupport.UpdatePlatformToLatest();
         }
     }
 }

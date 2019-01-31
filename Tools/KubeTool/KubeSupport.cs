@@ -53,7 +53,7 @@ namespace KubeTool
             return client;
         }
 
-        public static async Task UpdateDeployment(string deploymentName, string imageName)
+        public static async Task UpdateDeploymentToVersion(string deploymentName, string imageName)
         {
             var client = GetClient();
             var deployment = await GetDeployment(deploymentName);
@@ -70,6 +70,53 @@ namespace KubeTool
             }, new ReadOnlyJsonContractResolver());
             V1Patch patchBody = new V1Patch(jsonPatch);
             await client.PatchNamespacedDeploymentWithHttpMessagesAsync(patchBody, deploymentName, namespaceName);
+        }
+
+        public static async Task<string[]> UpdatePlatformToLatest()
+        {
+            //return;
+            string workerBaseName = @"abstractiondev/theballworker";
+            var workerDeploymentName = "tbwrk-deployment";
+            List<string> results = new List<string>();
+            var updatedImageName = await UpdateDeployment(workerBaseName, workerDeploymentName);
+            if (updatedImageName != null)
+                results.Add($"Updated worker to: {updatedImageName}");
+            else
+            {
+                results.Add("Worker was up-to-date");
+            }
+
+
+            string webBaseName = @"abstractiondev/theballweb";
+            var webDeploymentName = "tbweb-deployment";
+            //await UpdateDeployment(webBaseName, webDeploymentName, "20180802.1631_dev_126cbdbf4dc44315dc1578d15ef7a7726a7e26c9");
+            updatedImageName = await UpdateDeployment(webBaseName, webDeploymentName);
+            if(updatedImageName != null)
+                results.Add($"Updated web layer to: {updatedImageName}");
+            else
+                results.Add("Web layer was up-to-date");
+            return results.ToArray();
+        }
+
+        private static async Task<string> UpdateDeployment(string imageBaseName, string deploymentName, string specificTag = null)
+        {
+            var latestImageTag = await DockerHubSupport.GetLatestTag(imageBaseName);
+            var updateTag = specificTag ?? latestImageTag;
+            var imageName = $"{imageBaseName}:{updateTag}";
+            Console.WriteLine($"Verifying deployment {deploymentName} version to requested: {imageName}");
+            var deployment = await KubeSupport.GetDeployment(deploymentName);
+            var containers = deployment?.Spec.Template.Spec.Containers;
+            var isRunningExpected = containers.Any(item => item.Image.StartsWith(imageName));
+            if (!isRunningExpected)
+            {
+                Console.WriteLine($"Updating deployment {deploymentName} to image {imageName}");
+                await KubeSupport.UpdateDeploymentToVersion(deploymentName, imageName);
+                Console.WriteLine("Update submitted OK");
+                return imageName;
+            }
+
+            Console.WriteLine($"Deployment {deploymentName} up-to-date: {imageName}");
+            return null;
         }
     }
 }

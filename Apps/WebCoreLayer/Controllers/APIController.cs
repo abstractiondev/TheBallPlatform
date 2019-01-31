@@ -14,8 +14,8 @@ namespace WebCoreLayer.Controllers
         [HttpGet]
         public async Task<JsonResult> UpdateAPI()
         {
-            await DiagnosticSupport.RunBaseDiagnostics();
-            JsonResult result = new JsonResult(new { OK = "ok"});
+            var results = await KubeSupport.UpdatePlatformToLatest();
+            JsonResult result = new JsonResult(new { Results = results});
             return result;
         }
 
