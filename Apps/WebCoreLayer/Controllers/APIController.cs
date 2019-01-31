@@ -11,7 +11,7 @@ namespace WebCoreLayer.Controllers
     [AllowAnonymous]
     public class APIController : Controller
     {
-        [HttpGet]
+        [HttpPost]
         public async Task<JsonResult> UpdateAPI()
         {
             var results = await KubeSupport.UpdatePlatformToLatest();
