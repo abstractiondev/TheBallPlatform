@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP.INT;
 using AzureSupport;
@@ -19,13 +20,13 @@ namespace AaltoGlobalImpact.OIP
             return result;
         }
 
-        public static void ExecuteMethod_SetParentCategories(ParentToChildren[] hierarchy)
+        public static async Task ExecuteMethod_SetParentCategoriesAsync(ParentToChildren[] hierarchy)
         {
             foreach (var parentItem in hierarchy)
-                SetParentsRecursively(parentItem, null);
+                await SetParentsRecursively(parentItem, null);
         }
 
-        private static void SetParentsRecursively(ParentToChildren parentItem, string parentID)
+        private static async Task SetParentsRecursively(ParentToChildren parentItem, string parentID)
         {
             var owner = InformationContext.Current.Owner;
             int retryCount = 3;
@@ -34,11 +35,11 @@ namespace AaltoGlobalImpact.OIP
                 try
                 {
                     string currID = parentItem.id;
-                    Category cat = ObjectStorage.RetrieveFromOwnerContent<Category>(owner, currID);
+                    Category cat = await ObjectStorage.RetrieveFromOwnerContentA<Category>(owner, currID);
                     if (cat != null && cat.ParentCategoryID != parentID)
                     {
                         cat.ParentCategoryID = parentID;
-                        cat.StoreInformation();
+                        await cat.StoreInformationAsync();
                     }
                 }
                 catch
@@ -53,10 +54,10 @@ namespace AaltoGlobalImpact.OIP
                 SetParentsRecursively(childItem, parentItem.id);
         }
 
-        public static NodeSummaryContainer GetTarget_NodeSummaryContainer()
+        public static async Task<NodeSummaryContainer> GetTarget_NodeSummaryContainerAsync()
         {
             var owner = InformationContext.Current.Owner;
-            return ObjectStorage.RetrieveFromOwnerContent<NodeSummaryContainer>(owner, "default");
+            return await ObjectStorage.RetrieveFromOwnerContentA<NodeSummaryContainer>(owner, "default");
         }
 
         public static void ExecuteMethod_SetCategoryOrder(ParentToChildren[] hierarchy, NodeSummaryContainer nodeSummaryContainer)
@@ -82,9 +83,9 @@ namespace AaltoGlobalImpact.OIP
             }
         }
 
-        public static void ExecuteMethod_StoreObject(NodeSummaryContainer nodeSummaryContainer)
+        public static async Task ExecuteMethod_StoreObjectAsync(NodeSummaryContainer nodeSummaryContainer)
         {
-            nodeSummaryContainer.StoreInformation();
+            await nodeSummaryContainer.StoreInformationAsync();
         }
     }
 }

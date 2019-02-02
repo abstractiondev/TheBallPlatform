@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -18,10 +17,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(FixGroupMastersAndCollectionsParameters parameters)
 		{
 					}
-				public static void Execute(FixGroupMastersAndCollectionsParameters parameters)
+				public static async Task ExecuteAsync(FixGroupMastersAndCollectionsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					FixGroupMastersAndCollectionsImplementation.ExecuteMethod_FixMastersAndCollections(parameters.GroupID);		
+					 await FixGroupMastersAndCollectionsImplementation.ExecuteMethod_FixMastersAndCollectionsAsync(parameters.GroupID);		
 				}
 				}
 		

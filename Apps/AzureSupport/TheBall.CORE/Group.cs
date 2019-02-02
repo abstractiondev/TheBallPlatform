@@ -15,5 +15,10 @@ namespace TheBall.CORE
         {
             return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
+
+        public static string[] GetAllGroupIDs()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -1,16 +1,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWorkerConsole", "Apps\TheBallWorkerConsole\TheBallWorkerConsole.csproj", "{C5D4D065-D884-4590-A3F5-BB2566C0A890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBallWorkerConsole", "Apps\TheBallWorkerConsole\TheBallWorkerConsole.csproj", "{C5D4D065-D884-4590-A3F5-BB2566C0A890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSupport", "Apps\AzureSupport\AzureSupport.csproj", "{33F04EB2-55DE-4539-8E67-152A6057F100}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureSupport", "Apps\AzureSupport\AzureSupport.csproj", "{33F04EB2-55DE-4539-8E67-152A6057F100}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuceneSupport", "Apps\LuceneSupport\LuceneSupport.csproj", "{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteSupport", "Apps\SQLiteSupport\SQLiteSupport.csproj", "{4944D743-F381-471E-980B-54D8387F5478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLiteSupport", "Apps\SQLiteSupport\SQLiteSupport.csproj", "{4944D743-F381-471E-980B-54D8387F5478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecuritySupport", "Apps\SecuritySupport\SecuritySupport.csproj", "{FE40FC1C-284E-4F91-B00F-5CCA71846208}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuritySupport", "Apps\SecuritySupport\SecuritySupport.csproj", "{FE40FC1C-284E-4F91-B00F-5CCA71846208}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
 EndProject
@@ -23,17 +23,38 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Build.testsettings = Build.testsettings
 	EndProjectSection
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "Apps\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "SharedProjects\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AppUpdater", "SharedProjects\AppUpdater\AppUpdater.shproj", "{1F05B685-1B9E-4413-AE6D-5301C7608654}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallDevWorker", "Apps\TheBallDevWorker\TheBallDevWorker.csproj", "{918EE1C8-289D-4939-BCFE-F90D0061CCEF}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "OperationSupport", "SharedProjects\OperationSupport\OperationSupport.shproj", "{27BB34B5-EDBD-4CB8-9D64-68C20825C073}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{4D0388B7-0C71-402D-B566-6BBD131F0799}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "JSONSupport", "SharedProjects\JSONSupport\JSONSupport.shproj", "{06F1C5EA-68AE-4A54-9EB9-26EEAEA96DD2}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FileStorageSupport", "SharedProjects\FileStorageSupport\FileStorageSupport.shproj", "{612AD476-16DC-4294-8E0A-1BB5B39BA4D2}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "InformationContext", "SharedProjects\InformationContext\InformationContext.shproj", "{B3A17477-0431-476E-8335-D45A2350A92B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedProjects\JSONSupport\JSONSupport.projitems*{06f1c5ea-68ae-4a54-9eb9-26eeaea96dd2}*SharedItemsImports = 13
 		SharedProjects\AppUpdater\AppUpdater.projitems*{1f05b685-1b9e-4413-ae6d-5301c7608654}*SharedItemsImports = 13
-		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
+		SharedProjects\OperationSupport\OperationSupport.projitems*{27bb34b5-edbd-4cb8-9d64-68c20825c073}*SharedItemsImports = 13
+		SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{3e4ea4b4-8b6d-4422-bc92-2d291e967aa0}*SharedItemsImports = 13
-		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
+		SharedProjects\FileStorageSupport\FileStorageSupport.projitems*{612ad476-16dc-4294-8e0a-1bb5b39ba4d2}*SharedItemsImports = 13
+		SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
+		SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems*{918ee1c8-289d-4939-bcfe-f90d0061ccef}*SharedItemsImports = 4
+		SharedProjects\FileStorageSupport\FileStorageSupport.projitems*{918ee1c8-289d-4939-bcfe-f90d0061ccef}*SharedItemsImports = 4
+		SharedProjects\InformationContext\InformationContext.projitems*{918ee1c8-289d-4939-bcfe-f90d0061ccef}*SharedItemsImports = 4
+		SharedProjects\JSONSupport\JSONSupport.projitems*{918ee1c8-289d-4939-bcfe-f90d0061ccef}*SharedItemsImports = 4
+		SharedProjects\OperationSupport\OperationSupport.projitems*{918ee1c8-289d-4939-bcfe-f90d0061ccef}*SharedItemsImports = 4
+		SharedProjects\InformationContext\InformationContext.projitems*{b3a17477-0431-476e-8335-d45a2350a92b}*SharedItemsImports = 13
 		SharedProjects\AppUpdater\AppUpdater.projitems*{c5d4d065-d884-4590-a3f5-bb2566c0a890}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,10 +130,10 @@ Global
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Debug|x86.Build.0 = Debug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.ActiveCfg = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.Build.0 = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|x86.ActiveCfg = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|x86.Build.0 = NuGetDebug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.Build.0 = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|x86.ActiveCfg = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|x86.Build.0 = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|x86.ActiveCfg = Release|Any CPU
@@ -129,8 +150,32 @@ Global
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.ActiveCfg = Release|x86
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.Build.0 = Release|x86
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|x86.Build.0 = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.NuGetDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.NuGetDebug|Any CPU.Build.0 = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.NuGetDebug|x86.ActiveCfg = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.NuGetDebug|x86.Build.0 = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Release|x86.ActiveCfg = Release|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E4EA4B4-8B6D-4422-BC92-2D291E967AA0} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
+		{7EE65749-80A3-42A1-A16E-A32EFE7C8633} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
+		{1F05B685-1B9E-4413-AE6D-5301C7608654} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
+		{27BB34B5-EDBD-4CB8-9D64-68C20825C073} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
+		{06F1C5EA-68AE-4A54-9EB9-26EEAEA96DD2} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
+		{612AD476-16DC-4294-8E0A-1BB5B39BA4D2} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
+		{B3A17477-0431-476E-8335-D45A2350A92B} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F67C2D2-0A9A-4C1F-9C69-A5368A1500F7}
 	EndGlobalSection
 EndGlobal

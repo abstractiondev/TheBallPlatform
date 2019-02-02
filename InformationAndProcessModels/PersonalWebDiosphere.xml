@@ -17,7 +17,7 @@
             <TargetDefinition name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Container owner; default group owner if RoomID given as parameter is null" state="implemented">
               <Parameter name="RoomID"/>
             </TargetDefinition>
-            <MethodExecute name="SaveJSONContentToBlob" designDesc="Save JSON content to blob" state="implemented">
+            <MethodExecute name="SaveJSONContentToBlob" designDesc="Save JSON content to blob" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="JSONData"/>
               <Target name="Owner"/>
               <Target name="OwnerRootRoomBlobName"/>

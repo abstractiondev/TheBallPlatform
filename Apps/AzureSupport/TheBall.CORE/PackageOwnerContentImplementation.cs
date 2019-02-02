@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using Ionic.Zip;
-using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.CORE
@@ -26,7 +24,8 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_StoreObject(ContentPackage contentPackageObject)
         {
-            contentPackageObject.StoreInformation();
+            throw new NotImplementedException();
+            //contentPackageObject.StoreInformation();
         }
 
         public static string[] ExecuteMethod_CreateZipPackageContent(string[] includedFolders, ContentPackage contentPackageObject, CloudBlockBlob[] archiveSourceBlobs, CloudBlockBlob archiveBlob)
@@ -60,7 +59,7 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_CommitArchiveBlob(CloudBlockBlob archiveBlob, string[] createZipPackageContentOutput)
         {
-            archiveBlob.PutBlockList(createZipPackageContentOutput);
+            //archiveBlob.PutBlockList(createZipPackageContentOutput);
         }
 
         public static CloudBlockBlob[] GetTarget_ArchiveSourceBlobs(IContainerOwner owner, string packageRootFolder, string[] includedFolders)
@@ -68,12 +67,12 @@ namespace TheBall.CORE
             var acceptableFolders =
                 includedFolders.Select(
                     folder => owner.PrefixWithOwnerLocation(packageRootFolder + "/" + includedFolders)).ToArray();
-            var blobList = owner.ListBlobsWithPrefix(packageRootFolder)
+            CloudBlockBlob[] blobList = null; /*owner.ListBlobsWithPrefix(packageRootFolder)
                                 .Cast<CloudBlockBlob>().Where(blob =>
                                     {
                                         bool accepted = acceptableFolders.Any(folder => blob.Name.StartsWith(folder));
                                         return accepted;
-                                    }).ToArray();
+                                    }).ToArray();*/
             return blobList;
         }
     }

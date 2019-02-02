@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Web.Administration;
-using Microsoft.Web.Deployment;
 
 namespace TheBall.Infra.WebServerManager
 {
@@ -326,21 +325,26 @@ namespace TheBall.Infra.WebServerManager
 
         public static void DeployAppSiteContent(string tempSitePath, string appLiveFolder)
         {
+            throw new NotImplementedException();
+            /*
             using (var depManager = DeploymentManager.CreateObject(DeploymentWellKnownProvider.DirPath, tempSitePath))
             {
                 depManager.SyncTo(DeploymentWellKnownProvider.DirPath, appLiveFolder, new DeploymentBaseOptions(),
                     new DeploymentSyncOptions());
             }
+            */
         }
 
         public static void DeployAppPackageContent(string appPackageZip, string appLiveFolder, string appName)
         {
+            throw new NotImplementedException();
+            /*
             using (var depObject = DeploymentManager.CreateObject(DeploymentWellKnownProvider.Package, appPackageZip))
             {
                 depObject.SyncParameters.Single(item => item.Name == "IIS Web Application Name").Value = appName;
                 depObject.SyncTo(DeploymentWellKnownProvider.Auto, appLiveFolder, new DeploymentBaseOptions(),
                     new DeploymentSyncOptions());
-            }
+            }*/
         }
 
         public static void SetImmediateFirstResponseOptions(string appName)

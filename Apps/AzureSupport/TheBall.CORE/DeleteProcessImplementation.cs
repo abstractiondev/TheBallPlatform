@@ -1,30 +1,32 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class DeleteProcessImplementation
     {
-        public static Process GetTarget_Process(string processId)
+        public static async Task<Process> GetTarget_ProcessAsync(string processId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Process>(InformationContext.CurrentOwner, processId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Process>(InformationContext.CurrentOwner, processId);
         }
 
-        public static ProcessContainer GetTarget_OwnerProcessContainer()
+        public static async Task<ProcessContainer> GetTarget_OwnerProcessContainerAsync()
         {
-            return ObjectStorage.RetrieveFromOwnerContent<ProcessContainer>(InformationContext.CurrentOwner, "default");
+            return await ObjectStorage.RetrieveFromOwnerContentA<ProcessContainer>(InformationContext.CurrentOwner, "default");
         }
 
-        public static void ExecuteMethod_ObtainLockRemoveFromContainerAndDeleteProcess(string processID, Process process, ProcessContainer ownerProcessContainer)
+        public static async Task ExecuteMethod_ObtainLockRemoveFromContainerAndDeleteProcessAsync(string processID, Process process, ProcessContainer ownerProcessContainer)
         {
             if (process == null)
             {
-                if (ownerProcessContainer != null && ownerProcessContainer.ProcessIDs != null)
+                if (ownerProcessContainer?.ProcessIDs != null)
                 {
                     ownerProcessContainer.ProcessIDs.Remove(processID);
-                    ownerProcessContainer.StoreInformation();
+                    await ownerProcessContainer.StoreInformationAsync();
                 }
             }
             else
             {
-                string lockEtag = process.ObtainLockOnObject();
+                string lockEtag = await process.ObtainLockOnObject();
                 if (lockEtag == null)
                     return;
                 try
@@ -32,13 +34,13 @@ namespace TheBall.CORE
                     if (ownerProcessContainer != null)
                     {
                         ownerProcessContainer.ProcessIDs.Remove(process.ID);
-                        ownerProcessContainer.StoreInformation();
+                        await ownerProcessContainer.StoreInformationAsync();
                     }
-                    process.DeleteInformationObject();
+                    await process.DeleteInformationObjectAsync();
                 }
                 finally
                 {
-                    process.ReleaseLockOnObject(lockEtag);
+                    await process.ReleaseLockOnObjectAsync(lockEtag);
                 }
             }
 

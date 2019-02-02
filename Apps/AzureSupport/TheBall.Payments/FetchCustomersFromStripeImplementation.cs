@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Stripe;
 using TheBall.CORE;
 
@@ -18,9 +19,9 @@ namespace TheBall.Payments
             return customers;
         }
 
-        public static CustomerAccountCollection GetTarget_CurrentCustomers(IContainerOwner owner)
+        public static async Task<CustomerAccountCollection> GetTarget_CurrentCustomersAsync(IContainerOwner owner)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<CustomerAccountCollection>(owner, "MasterCollection");
+            return await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccountCollection>(owner, "MasterCollection");
         }
 
         public static CustomerAccount[] GetTarget_NewCustomersToCreate(IContainerOwner owner, StripeCustomer[] stripeCustomers, CustomerAccountCollection currentCustomers)
@@ -40,10 +41,10 @@ namespace TheBall.Payments
             return newCustomers;
         }
 
-        public static void ExecuteMethod_StoreObjects(IContainerOwner owner, CustomerAccount[] newCustomersToCreate)
+        public static async Task ExecuteMethod_StoreObjectsAsync(IContainerOwner owner, CustomerAccount[] newCustomersToCreate)
         {
             foreach (var customer in newCustomersToCreate)
-                customer.StoreInformation(owner);
+                await customer.StoreInformationAsync(owner);
         }
     }
 }

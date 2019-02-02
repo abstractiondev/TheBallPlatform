@@ -35,6 +35,7 @@
             <InterfaceItem name="email" logicalDataType="Text_Short"/>
             <InterfaceItem name="isTestMode" logicalDataType="TrueOrFalse_Boolean"/>
             <ObjectInstance name="card" interfaceObjectName="BillingAddress"/>
+            <InterfaceItem name="couponId" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="BillingAddress" designDesc="Stripe billing address relevant fields">
@@ -112,7 +113,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="AllCustomerAccounts" dataType="CustomerAccount[]" designDesc="All customer accounts" state="implemented" />
+            <TargetDefinition name="AllCustomerAccounts" dataType="CustomerAccount[]" designDesc="All customer accounts" state="implemented" asyncSupportMode="AsyncOnly" />
             <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Stripe customer ID based account" state="implemented">
               <Parameter name="StripeCustomerID"/>
               <Parameter name="IsTestAccount"/>
@@ -392,7 +393,7 @@
               <Target name="CancelParams"/>
             </TargetDefinition>
             <TargetDefinition name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented" />
-            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based on account ID. Must be found" state="implemented">
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based on account ID. Must be found" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="AccountID"/>
             </TargetDefinition>
             <MethodExecute name="CancelSubscriptionPlan" designDesc="Cancel subscription plan on Stripe" state="implemented">
@@ -420,7 +421,7 @@
             <TargetDefinition name="IsTestMode" dataType="bool" designDesc="Is Stripe in test mode" state="implemented">
               <Target name="Account"/>
             </TargetDefinition>
-            <TargetDefinition name="CurrentPlansBeforeSync" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented">
+            <TargetDefinition name="CurrentPlansBeforeSync" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Account"/>
             </TargetDefinition>
             <TargetDefinition name="ActivePlanStatusesFromStripe" dataType="INT.PlanStatus[]" designDesc="Plan statuses of account - fetched from Stripe." state="implemented" asyncSupportMode="AsyncOnly">
@@ -508,7 +509,7 @@
             <MethodExecute name="ValidateMatchingEmail" designDesc="Validate that account active email matches payment token email" state="implemented">
               <Target name="PaymentToken"/>
             </MethodExecute>
-            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based on active account ID. Created if missing" state="implemented" />
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based on active account ID. Created if missing" state="implemented" asyncSupportMode="AsyncOnly" />
             <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented">
               <Target name="PaymentToken"/>
               <Target name="CustomerAccount"/>
@@ -529,7 +530,7 @@
               <Parameter name="GroupID"/>
             </TargetDefinition>
             <TargetDefinition name="StripeCustomers" dataType="Stripe.StripeCustomer[]" designDesc="Stripe customers from service call" state="implemented" />
-            <TargetDefinition name="CurrentCustomers" dataType="CustomerAccountCollection" designDesc="Current customer collection" state="implemented">
+            <TargetDefinition name="CurrentCustomers" dataType="CustomerAccountCollection" designDesc="Current customer collection" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Owner"/>
             </TargetDefinition>
             <TargetDefinition name="NewCustomersToCreate" dataType="CustomerAccount[]" designDesc="New customers to create" state="implemented">
@@ -537,7 +538,7 @@
               <Target name="StripeCustomers"/>
               <Target name="CurrentCustomers"/>
             </TargetDefinition>
-            <MethodExecute name="StoreObjects" designDesc="Store new customers" state="implemented">
+            <MethodExecute name="StoreObjects" designDesc="Store new customers" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Owner"/>
               <Target name="NewCustomersToCreate"/>
             </MethodExecute>

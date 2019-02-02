@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Security;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
@@ -13,10 +14,10 @@ namespace PersonalWeb.Diosphere
             return "room.json";
         }
 
-        public static void ExecuteMethod_SaveJSONContentToBlob(string jsonData, IContainerOwner owner, string ownerRootRoomBlobName)
+        public static async Task ExecuteMethod_SaveJSONContentToBlobAsync(string jsonData, IContainerOwner owner, string ownerRootRoomBlobName)
         {
             var ownerRootedBlob = StorageSupport.GetOwnerBlobReference(owner, ownerRootRoomBlobName);
-            ownerRootedBlob.UploadBlobText(jsonData);
+            await ownerRootedBlob.UploadBlobTextAsync(jsonData);
         }
 
         public static IContainerOwner GetTarget_Owner(string roomId)

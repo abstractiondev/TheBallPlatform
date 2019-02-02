@@ -85,7 +85,7 @@ namespace TheBall.Interface
                     // Attempt to acquire dedicated lock and return afterwards (regardless)
                     var dedicatedLockFile = String.Format(fullLockPathFormat, ownerprefix_id,
                         OperationSupport.DedicatedLockExtension);
-                    bool dedicatedAcquired =
+                    var dedicatedAcquired =
                         await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(dedicatedLockFile);
                     return null;
                 }
@@ -93,8 +93,8 @@ namespace TheBall.Interface
                 if (operationItems.Length == 0)
                     continue;
                 currLockFile = String.Format(fullLockPathFormat, ownerprefix_id, OperationSupport.LockExtension);
-                bool acquireLock = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(currLockFile);
-                if (!acquireLock)
+                var lockEtag = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(currLockFile);
+                if (lockEtag == null)
                     continue;
                 var ownerOperationBlobNames = operationItems;
                 var ownerOperationIDs = ownerOperationBlobNames.Select(blobName =>

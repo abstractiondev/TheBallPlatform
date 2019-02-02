@@ -47,7 +47,7 @@ namespace TheBall.Payments
                     string customerId = subscription.customer;
                     bool isTestMode = !eventData.LiveMode;
                     var output =
-                        GetAccountFromStripeCustomer.Execute(new GetAccountFromStripeCustomerParameters
+                        await GetAccountFromStripeCustomer.ExecuteAsync(new GetAccountFromStripeCustomerParameters
                         {
                             StripeCustomerID = customerId,
                             IsTestAccount = isTestMode

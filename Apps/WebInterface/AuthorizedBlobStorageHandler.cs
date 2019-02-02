@@ -161,7 +161,7 @@ namespace WebInterface
                 throw new InvalidOperationException("Device request must be either group or account request");
             string ivStr = authTokens[1];
             string trustID = authTokens[2];
-            DeviceMembership deviceMembership = ObjectStorage.RetrieveFromOwnerContent<DeviceMembership>(deviceOwner, trustID);
+            DeviceMembership deviceMembership = await ObjectStorage.RetrieveFromOwnerContentA<DeviceMembership>(deviceOwner, trustID);
             if(deviceMembership == null)
                 throw new InvalidDataException("Device membership not found");
             if(deviceMembership.IsValidatedAndActive == false)
@@ -293,10 +293,10 @@ namespace WebInterface
                 throw new NotSupportedException("Device request type not supported: " + request.RequestType);
         }
 
-        private static TBAccount getDeviceAccount(string accountEmail)
+        private static async Task<TBAccount> getDeviceAccountAsync(string accountEmail)
         {
             var emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
-            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+            TBREmailRoot emailRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBREmailRoot>(emailRootID);
             var ownerAccount = emailRoot.Account;
             return ownerAccount;
         }
@@ -326,8 +326,8 @@ namespace WebInterface
             GenericPrincipal principal = (GenericPrincipal)context.User;
             TheBallIdentity identity = (TheBallIdentity)principal.Identity;
             var accountID = identity.AccountID;
-            if (accountID == null)
-                accountID = await createMissingAccount(context, identity);
+            if (String.IsNullOrEmpty(accountID))
+                accountID = await createOrReconnectMissingAccount(context, identity);
             var accountOwner = VirtualOwner.FigureOwner("acc/" + accountID);
             InformationContext.AuthenticateContextOwner(accountOwner);
             var request = context.Request;
@@ -335,9 +335,10 @@ namespace WebInterface
             await HandleOwnerRequest(accountOwner, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
         }
 
-        private static async Task<string> createMissingAccount(HttpContext context, TheBallIdentity identity)
+        private static async Task<string> createOrReconnectMissingAccount(HttpContext context, TheBallIdentity identity)
         {
             string loginUrl = WebSupport.GetLoginUrl(context);
+            string emailAddress = identity.EmailAddress;
             var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(Login.GetLoginIDFromLoginURL(loginUrl));
             if (login == null)
             {
@@ -355,7 +356,6 @@ namespace WebInterface
                 }
                 else // Login info without account/login data
                 {
-                    string emailAddress = identity.EmailAddress;
                     var ensuredAccountResult = await EnsureAccount.ExecuteAsync(new EnsureAccountParameters
                     {
                         EmailAddress = emailAddress,
@@ -363,24 +363,27 @@ namespace WebInterface
                     });
                     var ensuredAccount = ensuredAccountResult.EnsuredAccount;
                     var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
-                    var accountID = ensuredAccount.ID;
+                    var ensuredAccountID = ensuredAccount.ID;
                     login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(loginID);
                     if (login == null)
                     {
                         var ensuredLoginResult = await EnsureLogin.ExecuteAsync(new EnsureLoginParameters
                         {
-                            AccountID = accountID,
+                            AccountID = ensuredAccountID,
                             LoginURL = loginUrl
                         });
                         login = ensuredLoginResult.EnsuredLogin;
-                        login.Account = accountID;
+                        login.Account = ensuredAccountID;
                         await login.StoreInformationAsync();
                     }
                 }
             }
             if (login == null)
                 throw new SecurityException("Unknown login: " + loginUrl);
+            var accountID = login.Account;
             var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(login.Account);
+            string base64ClientMetadata = account.GetClientMetadataAsBase64();
+            AuthenticationSupport.SetUserAuthentication(context, loginUrl, emailAddress, accountID, base64ClientMetadata);
             return account.ID;
         }
 

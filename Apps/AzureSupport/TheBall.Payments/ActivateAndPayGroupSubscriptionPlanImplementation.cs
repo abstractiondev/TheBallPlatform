@@ -17,7 +17,8 @@ namespace TheBall.Payments
     {
         public static PaymentToken GetTarget_PaymentToken()
         {
-            return JSONSupport.GetObjectFromStream<PaymentToken>(HttpContext.Current.Request.GetBufferedInputStream());
+            throw new NotImplementedException();
+            //return JSONSupport.GetObjectFromStream<PaymentToken>(HttpContext.Current.Request.GetBufferedInputStream());
         }
 
         public static void ExecuteMethod_ValidateMatchingEmail(PaymentToken paymentToken)
@@ -112,9 +113,9 @@ namespace TheBall.Payments
                 customerAccount.ActivePlans.Add(planName);
         }
 
-        public static void ExecuteMethod_StoreObjects(CustomerAccount customerAccount)
+        public static async Task ExecuteMethod_StoreObjects(CustomerAccount customerAccount)
         {
-            customerAccount.StoreInformation();
+            await customerAccount.StoreInformationAsync();
         }
 
         public static string[] GetTarget_CustomersActivePlanNames(StripeSubscription[] customersActiveSubscriptions)
@@ -137,18 +138,7 @@ namespace TheBall.Payments
                 var cardInfo = paymentToken.card;
                 var subscription = subscriptionService.Create(customerID, planName, new StripeSubscriptionCreateOptions
                 {
-                    Card = new StripeCreditCardOptions
-                    {
-                        AddressCity = cardInfo.address_city,
-                        AddressCountry = cardInfo.address_country,
-                        AddressLine1 = cardInfo.address_line1,
-                        Name = cardInfo.name,
-                        AddressZip = cardInfo.address_zip,
-                        Cvc = cardInfo.cvc_check,
-                        ExpirationMonth = cardInfo.exp_month,
-                        ExpirationYear = cardInfo.exp_year,
-                        TokenId = paymentToken.id
-                    },
+                    Source = paymentToken.id
                     /*
                     CardName = cardInfo.name,
                     CardAddressCity = cardInfo.address_city,
@@ -160,7 +150,7 @@ namespace TheBall.Payments
                     TokenId = paymentToken.id,*/
                 });
             }
-            HttpContext.Current.Response.Write("{}");
+            //HttpContext.Current.Response.Write("{}");
         }
 
         public static SyncEffectivePlanAccessesToAccountParameters GrantAccessToPaidPlan_GetParameters(string accountID)

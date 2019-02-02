@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using static System.Net.WebUtility;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -6,7 +6,7 @@ namespace AaltoGlobalImpact.OIP
     {
         public static string GetIDFromEmailAddress(string emailAddress)
         {
-            return HttpUtility.UrlEncode(emailAddress);
+            return UrlEncode(emailAddress);
         }
     }
 }

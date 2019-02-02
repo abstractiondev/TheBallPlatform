@@ -4,6 +4,7 @@ using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
 {
+#if never
     public class InitiateAccountMergeFromEmailImplementation
     {
         public static string GetTarget_AccountToMergeToID(string emailAddress)
@@ -58,4 +59,5 @@ namespace TheBall.CORE
                 throw new InvalidDataException("Account owning the email address to be merged is already the same account");
         }
     }
+#endif
 }

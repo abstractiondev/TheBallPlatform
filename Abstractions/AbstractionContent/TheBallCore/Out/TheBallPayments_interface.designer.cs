@@ -100,6 +100,9 @@ using System.Runtime.Serialization;
 			[DataMember]
 			public BillingAddress card;
 
+			[DataMember]
+			public string couponId;
+
 			
 			}
 			[DataContract]

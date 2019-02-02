@@ -5,9 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -17,11 +14,14 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
-using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
-using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.ComponentModel.DataAnnotations.Schema;
+using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
+//using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+//using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SQLite.TheBall.Index { 
@@ -31,15 +31,22 @@ namespace SQLite.TheBall.Index {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
+		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+				IndexingRequest.EntityConfig(modelBuilder);
+				QueryRequest.EntityConfig(modelBuilder);
+				QueryResultItem.EntityConfig(modelBuilder);
+
+		    }
+
             // Track whether Dispose has been called. 
             private bool disposed = false;
-		    protected override void Dispose(bool disposing)
+		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
 		            return;
-                base.Dispose(disposing);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
@@ -47,16 +54,24 @@ namespace SQLite.TheBall.Index {
 
             public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
+		    public TheBallDataContext() : base(new DbContextOptions<TheBallDataContext>())
 		    {
 		        
 		    }
 
+		    public readonly string SQLiteDBPath;
+		    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		    {
+		        optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
+		    }
+
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
-		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                var dataContext = new TheBallDataContext(connection);
-		        using (var transaction = connection.BeginTransaction())
+		        var sqliteConnectionString = $"{pathToDBFile}";
+                var dataContext = new TheBallDataContext(sqliteConnectionString);
+		        var db = dataContext.Database;
+                db.OpenConnection();
+		        using (var transaction = db.BeginTransaction())
 		        {
                     dataContext.CreateDomainDatabaseTablesIfNotExists();
                     transaction.Commit();
@@ -64,12 +79,19 @@ namespace SQLite.TheBall.Index {
                 return dataContext;
 		    }
 
-            public TheBallDataContext(SQLiteConnection connection) : base(connection)
+            public TheBallDataContext(string sqLiteDBPath) : base()
+            {
+                SQLiteDBPath = sqLiteDBPath;
+            }
+
+		    public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		    {
-                if(connection.State != ConnectionState.Open)
-                    connection.Open();
+                //if(connection.State != ConnectionState.Open)
+                //    connection.Open();
+		        return base.SaveChanges(acceptAllChangesOnSuccess);
 		    }
 
+			/*
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
@@ -86,6 +108,7 @@ namespace SQLite.TheBall.Index {
 		    {
 		        await Task.Run(() => SubmitChanges());
 		    }
+			*/
 
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
@@ -94,7 +117,9 @@ namespace SQLite.TheBall.Index {
 				tableCreationCommands.Add(IndexingRequest.GetCreateTableSQL());
 				tableCreationCommands.Add(QueryRequest.GetCreateTableSQL());
 				tableCreationCommands.Add(QueryResultItem.GetCreateTableSQL());
-			    var connection = this.Connection;
+			    //var connection = this.Connection;
+			    var db = this.Database;
+			    var connection = db.GetDbConnection();
 				foreach (string commandText in tableCreationCommands)
 			    {
 			        var command = connection.CreateCommand();
@@ -104,9 +129,9 @@ namespace SQLite.TheBall.Index {
 			    }
 			}
 
-			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
+			public DbSet<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
-					return this.GetTable<InformationObjectMetaData>();
+					return this.Set<InformationObjectMetaData>();
 				}
 			}
 
@@ -236,7 +261,7 @@ namespace SQLite.TheBall.Index {
 		    {
                 if (insertData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -250,7 +275,7 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.IndexName = serializedObject.IndexName;
 					if(serializedObject.ObjectLocations != null)
 						serializedObject.ObjectLocations.ForEach(item => objectToAdd.ObjectLocations.Add(item));
-					IndexingRequestTable.InsertOnSubmit(objectToAdd);
+					IndexingRequestTable.Add(objectToAdd);
                     break;
                 }
                 case "QueryRequest":
@@ -269,7 +294,7 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
 					if(serializedObject.QueryResultObjects != null)
 						serializedObject.QueryResultObjects.ForEach(item => objectToAdd.QueryResultObjects.Add(item));
-					QueryRequestTable.InsertOnSubmit(objectToAdd);
+					QueryRequestTable.Add(objectToAdd);
                     break;
                 }
                 case "QueryResultItem":
@@ -283,7 +308,7 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.ObjectName = serializedObject.ObjectName;
 		            objectToAdd.ObjectID = serializedObject.ObjectID;
 		            objectToAdd.Rank = serializedObject.Rank;
-					QueryResultItemTable.InsertOnSubmit(objectToAdd);
+					QueryResultItemTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -294,7 +319,7 @@ namespace SQLite.TheBall.Index {
 		    {
                 if (insertData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -308,7 +333,7 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.IndexName = serializedObject.IndexName;
 					if(serializedObject.ObjectLocations != null)
 						serializedObject.ObjectLocations.ForEach(item => objectToAdd.ObjectLocations.Add(item));
-					IndexingRequestTable.InsertOnSubmit(objectToAdd);
+					IndexingRequestTable.Add(objectToAdd);
                     break;
                 }
                 case "QueryRequest":
@@ -327,7 +352,7 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
 					if(serializedObject.QueryResultObjects != null)
 						serializedObject.QueryResultObjects.ForEach(item => objectToAdd.QueryResultObjects.Add(item));
-					QueryRequestTable.InsertOnSubmit(objectToAdd);
+					QueryRequestTable.Add(objectToAdd);
                     break;
                 }
                 case "QueryResultItem":
@@ -341,7 +366,7 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.ObjectName = serializedObject.ObjectName;
 		            objectToAdd.ObjectID = serializedObject.ObjectID;
 		            objectToAdd.Rank = serializedObject.Rank;
-					QueryResultItemTable.InsertOnSubmit(objectToAdd);
+					QueryResultItemTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -352,7 +377,7 @@ namespace SQLite.TheBall.Index {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -362,7 +387,7 @@ namespace SQLite.TheBall.Index {
 						//IndexingRequestTable.Attach(objectToDelete);
 						var objectToDelete = IndexingRequestTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							IndexingRequestTable.DeleteOnSubmit(objectToDelete);
+							IndexingRequestTable.Remove(objectToDelete);
 						break;
 					}
 					case "QueryRequest":
@@ -371,7 +396,7 @@ namespace SQLite.TheBall.Index {
 						//QueryRequestTable.Attach(objectToDelete);
 						var objectToDelete = QueryRequestTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							QueryRequestTable.DeleteOnSubmit(objectToDelete);
+							QueryRequestTable.Remove(objectToDelete);
 						break;
 					}
 					case "QueryResultItem":
@@ -380,7 +405,7 @@ namespace SQLite.TheBall.Index {
 						//QueryResultItemTable.Attach(objectToDelete);
 						var objectToDelete = QueryResultItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							QueryResultItemTable.DeleteOnSubmit(objectToDelete);
+							QueryResultItemTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -392,7 +417,7 @@ namespace SQLite.TheBall.Index {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -402,7 +427,7 @@ namespace SQLite.TheBall.Index {
 						//IndexingRequestTable.Attach(objectToDelete);
 						var objectToDelete = IndexingRequestTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							IndexingRequestTable.DeleteOnSubmit(objectToDelete);
+							IndexingRequestTable.Remove(objectToDelete);
 						break;
 					}
 					case "QueryRequest":
@@ -411,7 +436,7 @@ namespace SQLite.TheBall.Index {
 						//QueryRequestTable.Attach(objectToDelete);
 						var objectToDelete = QueryRequestTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							QueryRequestTable.DeleteOnSubmit(objectToDelete);
+							QueryRequestTable.Remove(objectToDelete);
 						break;
 					}
 					case "QueryResultItem":
@@ -420,7 +445,7 @@ namespace SQLite.TheBall.Index {
 						//QueryResultItemTable.Attach(objectToDelete);
 						var objectToDelete = QueryResultItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							QueryResultItemTable.DeleteOnSubmit(objectToDelete);
+							QueryResultItemTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -428,37 +453,28 @@ namespace SQLite.TheBall.Index {
 
 
 
-			public Table<IndexingRequest> IndexingRequestTable {
-				get {
-					return this.GetTable<IndexingRequest>();
-				}
-			}
-			public Table<QueryRequest> QueryRequestTable {
-				get {
-					return this.GetTable<QueryRequest>();
-				}
-			}
-			public Table<QueryResultItem> QueryResultItemTable {
-				get {
-					return this.GetTable<QueryResultItem>();
-				}
-			}
+			public DbSet<IndexingRequest> IndexingRequestTable { get; set; }
+			public DbSet<QueryRequest> QueryRequestTable { get; set; }
+			public DbSet<QueryResultItem> QueryResultItemTable { get; set; }
         }
 
-    [Table(Name = "IndexingRequest")]
-	[ScaffoldTable(true)]
+    [Table("IndexingRequest")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("IndexingRequest: {ID}")]
 	public class IndexingRequest : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -476,24 +492,25 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[IndexName] TEXT NOT NULL, 
-[ObjectLocations] TEXT NOT NULL
+[IndexName] TEXT DEFAULT '', 
+[ObjectLocations] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IndexName { get; set; }
 		// private string _unmodified_IndexName;
-        [Column(Name = "ObjectLocations")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "ObjectLocations")] 
+        //[ScaffoldColumn(true)]
 		public string ObjectLocationsData { get; set; }
 
         private bool _IsObjectLocationsRetrieved = false;
         private bool _IsObjectLocationsChanged = false;
         private ObservableCollection<string> _ObjectLocations = null;
-        public ObservableCollection<string> ObjectLocations
+        [NotMapped]
+		public ObservableCollection<string> ObjectLocations
         {
             get
             {
@@ -544,20 +561,23 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 
 		}
 	}
-    [Table(Name = "QueryRequest")]
-	[ScaffoldTable(true)]
+    [Table("QueryRequest")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("QueryRequest: {ID}")]
 	public class QueryRequest : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -575,60 +595,61 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[QueryString] TEXT NOT NULL, 
-[DefaultFieldName] TEXT NOT NULL, 
-[IndexName] TEXT NOT NULL, 
+[QueryString] TEXT DEFAULT '', 
+[DefaultFieldName] TEXT DEFAULT '', 
+[IndexName] TEXT DEFAULT '', 
 [IsQueryCompleted] INTEGER NOT NULL, 
-[LastRequestTime] TEXT NOT NULL, 
-[LastCompletionTime] TEXT NOT NULL, 
+[LastRequestTime] TEXT DEFAULT '', 
+[LastCompletionTime] TEXT DEFAULT '', 
 [LastCompletionDurationMs] INTEGER NOT NULL, 
-[QueryResultObjectsID] TEXT NULL
+[QueryResultObjectsID] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string QueryString { get; set; }
 		// private string _unmodified_QueryString;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string DefaultFieldName { get; set; }
 		// private string _unmodified_DefaultFieldName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IndexName { get; set; }
 		// private string _unmodified_IndexName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsQueryCompleted { get; set; }
 		// private bool _unmodified_IsQueryCompleted;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime LastRequestTime { get; set; }
 		// private DateTime _unmodified_LastRequestTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime LastCompletionTime { get; set; }
 		// private DateTime _unmodified_LastCompletionTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public long LastCompletionDurationMs { get; set; }
 		// private long _unmodified_LastCompletionDurationMs;
-        [Column(Name = "QueryResultObjects")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "QueryResultObjects")] 
+        //[ScaffoldColumn(true)]
 		public string QueryResultObjectsData { get; set; }
 
         private bool _IsQueryResultObjectsRetrieved = false;
         private bool _IsQueryResultObjectsChanged = false;
         private ObservableCollection<SER.TheBall.Index.QueryResultItem> _QueryResultObjects = null;
-        public ObservableCollection<SER.TheBall.Index.QueryResultItem> QueryResultObjects
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Index.QueryResultItem> QueryResultObjects
         {
             get
             {
@@ -683,20 +704,23 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 
 		}
 	}
-    [Table(Name = "QueryResultItem")]
-	[ScaffoldTable(true)]
+    [Table("QueryResultItem")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("QueryResultItem: {ID}")]
 	public class QueryResultItem : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -714,31 +738,31 @@ CREATE TABLE IF NOT EXISTS [QueryResultItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ObjectDomainName] TEXT NOT NULL, 
-[ObjectName] TEXT NOT NULL, 
-[ObjectID] TEXT NOT NULL, 
+[ObjectDomainName] TEXT DEFAULT '', 
+[ObjectName] TEXT DEFAULT '', 
+[ObjectID] TEXT DEFAULT '', 
 [Rank] REAL NOT NULL
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ObjectDomainName { get; set; }
 		// private string _unmodified_ObjectDomainName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ObjectName { get; set; }
 		// private string _unmodified_ObjectName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ObjectID { get; set; }
 		// private string _unmodified_ObjectID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double Rank { get; set; }
 		// private double _unmodified_Rank;
         public void PrepareForStoring(bool isInitialInsert)

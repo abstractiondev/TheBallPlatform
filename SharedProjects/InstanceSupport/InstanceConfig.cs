@@ -45,6 +45,7 @@ namespace TheBall.CORE.InstanceSupport
         public string[] PlatformDefaultGroupIDList;
         public string[] RestrictedEmailAddresses;
         public string[] PaymentTestEmails = new string[] {};
+        public string PaymentTestClientMetaAttribute;
         public bool HasEmailAddressRestriction => RestrictedEmailAddresses != null && RestrictedEmailAddresses.Length > 0;
         public bool SkipReferrerValidation = true;
         public bool AllowEmailSendFromGroup;
@@ -143,5 +144,6 @@ namespace TheBall.CORE.InstanceSupport
         }
 
         public static InstanceConfig Current => InformationContext.InstanceConfiguration.InstanceConfig;
+        public string InstanceName { get; set; }
     }
 }

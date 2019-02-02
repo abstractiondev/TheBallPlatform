@@ -1,0 +1,23 @@
+startup options =>:
+              "--report-node-internal-ip-address",
+
+
+              "--default-ssl-certificate=default/theballcert-secret"
+
+
+ports =>:
+
+            "ports": [
+              {
+                "name": "http",
+                "hostPort": 80,
+                "containerPort": 80,
+                "protocol": "TCP"
+              },
+              {
+                "name": "https",
+                "hostPort": 443,
+                "containerPort": 443,
+                "protocol": "TCP"
+              }
+            ],

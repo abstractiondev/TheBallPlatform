@@ -1,6 +1,9 @@
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using AzureSupport;
+using Microsoft.AspNetCore.Http;
 using Stripe;
 using TheBall.CORE.Storage;
 using TheBall.Payments.INT;
@@ -9,10 +12,10 @@ namespace TheBall.Payments
 {
     public class CancelGroupSubscriptionPlanImplementation
     {
-        public static CustomerAccount GetTarget_CustomerAccount(string accountId)
+        public static async Task<CustomerAccount> GetTarget_CustomerAccountAsync(string accountId)
         {
             var owner = InformationContext.CurrentOwner;
-            CustomerAccount customerAccount = ObjectStorage.RetrieveFromOwnerContent<CustomerAccount>(owner, accountId);
+            CustomerAccount customerAccount = await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccount>(owner, accountId);
             return customerAccount;
         }
 
@@ -20,7 +23,7 @@ namespace TheBall.Payments
         {
             StripeCustomerService stripeCustomerService = new StripeCustomerService();
             var stripeCustomer = stripeCustomerService.Get(customerAccount.StripeID);
-            var stripeSubscriptions = stripeCustomer.StripeSubscriptionList.Data;
+            var stripeSubscriptions = stripeCustomer.Subscriptions.Data;
             var planSubscriptions =
                 stripeSubscriptions.Where(subscription => subscription.StripePlan.Id == planName).ToArray();
             StripeSubscriptionService subscriptionService = new StripeSubscriptionService();
@@ -29,7 +32,7 @@ namespace TheBall.Payments
             {
                 subscriptionService.Cancel(customerID, subscription.Id);
             }
-            HttpContext.Current.Response.Write("{}");
+            //HttpContext.Current.Response.Write("{}");
         }
 
         public static SyncEffectivePlanAccessesToAccountParameters RevokeAccessFromCanceledPlan_GetParameters(string accountID)
@@ -39,7 +42,8 @@ namespace TheBall.Payments
 
         public static CancelSubscriptionParams GetTarget_CancelParams()
         {
-            return JSONSupport.GetObjectFromStream<CancelSubscriptionParams>(HttpContext.Current.Request.GetBufferedInputStream());
+            throw new NotImplementedException();
+            //return JSONSupport.GetObjectFromStream<CancelSubscriptionParams>(HttpContext.Current.Request.GetBufferedInputStream());
         }
 
         public static string GetTarget_PlanName(CancelSubscriptionParams cancelParams)

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace TheBall.CORE
 {
@@ -24,18 +25,18 @@ namespace TheBall.CORE
             return fileName;
         }
 
-        public static string ExecuteMethod_ObtainOwnerLevelLock(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        public static async Task<string> ExecuteMethod_ObtainOwnerLevelLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
         {
-            string claimedLockID = StorageSupport.TryClaimLockForOwner(owner, ownerLockFileName, lockFileContent);
+            string claimedLockID = await StorageSupport.TryClaimLockForOwnerAsync(owner, ownerLockFileName, lockFileContent);
             return claimedLockID;
         }
 
-        public static void ExecuteMethod_ReportSystemLockToMatchOwnerLock(string obtainOwnerLevelLockOutput, string systemOwnerLockFileName, string lockFileContent)
+        public static async Task ExecuteMethod_ReportSystemLockToMatchOwnerLockAsync(string obtainOwnerLevelLockOutput, string systemOwnerLockFileName, string lockFileContent)
         {
             if (obtainOwnerLevelLockOutput == null)
                 return;
             var systemOwner = SystemSupport.SystemOwner;
-            StorageSupport.ReplicateClaimedLock(systemOwner, systemOwnerLockFileName, lockFileContent);
+            await StorageSupport.ReplicateClaimedLockAsync(systemOwner, systemOwnerLockFileName, lockFileContent);
         }
 
         public static ObtainSystemProcessLockReturnValue Get_ReturnValue(string obtainOwnerLevelLockOutput)

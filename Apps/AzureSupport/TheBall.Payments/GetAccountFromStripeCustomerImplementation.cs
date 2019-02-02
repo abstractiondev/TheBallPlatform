@@ -1,13 +1,14 @@
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TheBall.Payments
 {
     public class GetAccountFromStripeCustomerImplementation
     {
-        public static CustomerAccount[] GetTarget_AllCustomerAccounts()
+        public static async Task<CustomerAccount[]> GetTarget_AllCustomerAccountsAsync()
         {
             var masterCollection =
-                ObjectStorage.RetrieveFromOwnerContent<CustomerAccountCollection>(InformationContext.CurrentOwner, "MasterCollection");
+                await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccountCollection>(InformationContext.CurrentOwner, "MasterCollection");
             return masterCollection.CollectionContent.ToArray();
         }
 

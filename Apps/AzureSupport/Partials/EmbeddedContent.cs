@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -14,7 +15,7 @@ namespace AaltoGlobalImpact.OIP
             return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
-        public void PerformBeforeStoreUpdate()
+        public async Task PerformBeforeStoreUpdate()
         {
             if (Published == default(DateTime))
                 Published = Published.ToUniversalTime();

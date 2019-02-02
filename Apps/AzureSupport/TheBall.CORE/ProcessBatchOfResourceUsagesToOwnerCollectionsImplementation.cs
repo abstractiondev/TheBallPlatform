@@ -6,13 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
+using TheBall.CORE.Storage;
 
 namespace TheBall.CORE
 {
     public class ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation
     {
         private const string LockLocation = SystemSupport.SystemOwnerRoot + "/TheBall.CORE/RequestResourceUsage/0.lock";
-        public static CloudBlockBlob[] GetTarget_BatchToProcess(int processBatchSize, bool processIfLess)
+        public static async Task<CloudBlockBlob[]> GetTarget_BatchToProcessAsync(int processBatchSize, bool processIfLess)
         {
             //options.
             //options.AccessCondition 
@@ -20,11 +21,11 @@ namespace TheBall.CORE
             //    ListBlobsWithPrefix("sys/AAA/TheBall.CORE/RequestResourceUsage")
             string prefix = "sys/AAA/TheBall.CORE/RequestResourceUsage/";
 
-            var blobList = StorageSupport.CurrActiveContainer.ListBlobxWithPrefixSegmented(prefix, processBatchSize);
+            var blobResultSegment = await StorageSupport.ListBlobsWithPrefixAsync(null, prefix);
+            var blobList = blobResultSegment.Results.Take(processBatchSize).Cast<CloudBlockBlob>().ToArray();
             List<CloudBlockBlob> result = new List<CloudBlockBlob>();
-            foreach (var blobListItem in blobList.Results)
+            foreach (var blob in blobList)
             {
-                CloudBlockBlob blob = (CloudBlockBlob) blobListItem;
                 if (blob.Name == LockLocation)
                     return null;
                 result.Add(blob);
@@ -32,14 +33,13 @@ namespace TheBall.CORE
             if (result.Count < processBatchSize && processIfLess == false)
                 return null;
             // Acquire Lock
-            string lockETag;
-            bool acquiredLock = StorageSupport.AcquireLogicalLockByCreatingBlob(LockLocation, out lockETag);
-            if (!acquiredLock)
+            string lockETag = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(LockLocation);
+            if (lockETag == null)
                 return null;
             return result.ToArray();
         }
 
-        public static void ExecuteMethod_ProcessBatch(CloudBlockBlob[] batchToProcess)
+        public static async Task ExecuteMethod_ProcessBatchAsync(CloudBlockBlob[] batchToProcess)
         {
             if (batchToProcess == null)
                 return;
@@ -50,13 +50,13 @@ namespace TheBall.CORE
             {
                 i++;
                 Debug.WriteLine("Reading resource " + i + ": " + blob.Name);
-                RequestResourceUsage resourceUsage = (RequestResourceUsage) StorageSupport.RetrieveInformation(blob.Name, type);
+                RequestResourceUsage resourceUsage = (RequestResourceUsage) await StorageSupport.RetrieveInformationA(blob.Name, type);
                 addResourceUsageToOwner(resourceUsage, ownerGroupedUsages);
             }
-            storeOwnerContentsAsCollections(ownerGroupedUsages);
+            await storeOwnerContentsAsCollections(ownerGroupedUsages);
         }
 
-        private static void storeOwnerContentsAsCollections(Dictionary<string, List<RequestResourceUsage>> ownerGroupedUsages)
+        private static async Task storeOwnerContentsAsCollections(Dictionary<string, List<RequestResourceUsage>> ownerGroupedUsages)
         {
             var allKeys = ownerGroupedUsages.Keys;
             foreach (var ownerKey in allKeys)
@@ -80,7 +80,7 @@ namespace TheBall.CORE
                 RequestResourceUsageCollection ownerCollection = new RequestResourceUsageCollection();
                 ownerCollection.SetLocationAsOwnerContent(owner, collName);
                 ownerCollection.CollectionContent = ownerContent;
-                ownerCollection.StoreInformation(null, true);
+                await ownerCollection.StoreInformationAsync(null, true);
             }
         }
 
@@ -100,33 +100,26 @@ namespace TheBall.CORE
             ownerContent.Add(resourceUsage);
         }
 
-        public static void ExecuteMethod_DeleteProcessedItems(CloudBlockBlob[] batchToProcess)
+        public static async Task ExecuteMethod_DeleteProcessedItemsAsync(CloudBlockBlob[] batchToProcess)
         {
             if (batchToProcess == null)
                 return;
-            //int i = 0;
-            //foreach (var blob in batchToProcess)
-            //{
-            //    i++;
-            //    Debug.WriteLine("Deleting blob " + i + ": " + blob.Name);
-            //    blob.DeleteBlob();
-            //}
             int i = 0;
-            ParallelOptions options = new ParallelOptions {MaxDegreeOfParallelism = 50};
-            Parallel.ForEach(batchToProcess, options, blob =>
+            var deleteTasks = batchToProcess.Select(blob =>
                 {
                     i++;
                     Debug.WriteLine("Deleting blob " + i + ": " + blob.Name);
-                    blob.DeleteIfExists(); // NOTE! Need to use direct delete so that the InformationContext is not bothered with Task usage
+                    return blob.DeleteIfExistsAsync(); 
                 });
+            await Task.WhenAll(deleteTasks);
         }
 
-        public static void ExecuteMethod_ReleaseLock(CloudBlockBlob[] batchToProcess)
+        public static async Task ExecuteMethod_ReleaseLockAsync(CloudBlockBlob[] batchToProcess)
         {
             if (batchToProcess == null)
                 return;
             // Release lock
-            StorageSupport.ReleaseLogicalLockByDeletingBlob(LockLocation, null);
+            await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(LockLocation, null);
         }
 
         public static ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue Get_ReturnValue(int processBatchSize, CloudBlockBlob[] batchToProcess)

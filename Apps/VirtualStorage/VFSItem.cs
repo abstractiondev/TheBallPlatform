@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ProtoBuf;
-using SQLite.Net.Attributes;
-using SQLiteNetExtensions.Attributes;
 
 namespace TheBall.Support.VirtualStorage
 {
@@ -22,19 +25,53 @@ namespace TheBall.Support.VirtualStorage
         //public DateTime LastModifiedTime;
     }
 
+
+    public class VFSContext : DbContext
+    {
+        public readonly string DbPath;
+        public static async Task<VFSContext> CreateContext(string sqliteDbPath)
+        {
+            bool createDatabase = !File.Exists(sqliteDbPath);
+            var ctx = new VFSContext(sqliteDbPath);
+            await ctx.Database.EnsureCreatedAsync();
+            return ctx;
+        }
+
+        public VFSContext(string dbPath, DbContextOptions<VFSContext> options = null) : base(options)
+        {
+            DbPath = dbPath;
+        }
+
+        public DbSet<FileNameData> FileNameDataTable { get; set; }
+        public DbSet<ContentStorageData> ContentStorageDataTable { get; set; }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var connStr = $"Data Source={DbPath}";
+            optionsBuilder.UseSqlite(connStr, options =>
+            {
+            });
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+
     [Table("FileNameData")]
     public class FileNameData
     {
-        [PrimaryKey]
+        [Key]
         public string FileName { get; set; }
 
-        [ForeignKey(typeof(ContentStorageData))]
+        [ForeignKey("ContentStorageData")]
         public string ContentMD5 { get; set; }
 
-        [Ignore]
+        [NotMapped]
         public string StorageFileName => ContentStorageData.getStorageFileName(ContentMD5);
 
-        [ManyToOne]
         public ContentStorageData ContentStorageData { get; set; }
     }
 
@@ -42,10 +79,10 @@ namespace TheBall.Support.VirtualStorage
     public class ContentStorageData
     {
         [MaxLength(24)]
-        [PrimaryKey]
+        [Key]
         public string ContentMD5 { get; set; }
 
-        [Ignore]
+        [NotMapped]
         public string StorageFileName => getStorageFileName(ContentMD5);
 
         [MaxLength(24)]
@@ -61,7 +98,7 @@ namespace TheBall.Support.VirtualStorage
             FileNames = new List<FileNameData>();
         }
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        [InverseProperty("ContentStorageData")]
         public List<FileNameData> FileNames { get; set; }
     }
 }

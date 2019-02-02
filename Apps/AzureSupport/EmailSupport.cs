@@ -86,7 +86,7 @@ namespace TheBall
                 {
                     String queueMessage = String.Format("From: {1}{0}To: {2}{0}Subject: {3}{0}Message:{0}{4}",
                                                         Environment.NewLine, From, To, Subject, Text ?? HTML);
-                    QueueSupport.CurrStatisticsQueue?.AddMessage(new CloudQueueMessage(queueMessage));
+                    await QueueSupport.CurrStatisticsQueue?.AddMessageAsync(new CloudQueueMessage(queueMessage));
                 }
             }
 
@@ -96,7 +96,7 @@ namespace TheBall
         }
 
 
-        public static Boolean SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
+        public static async Task<bool> SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
         {
             if (Text != null || HTML != null)
             {
@@ -105,7 +105,7 @@ namespace TheBall
                     var request = createEmailRequest(From, To, Subject, Text, HTML, emailReplyTo, returnPath);
 
                     var ses = createEmailClient();
-                    SendEmailResponse response = ses.SendEmail(request);
+                    SendEmailResponse response = await ses.SendEmailAsync(request);
                     return true;
                 }
                 catch (Exception ex)
@@ -118,7 +118,7 @@ namespace TheBall
                 {
                     String queueMessage = String.Format("From: {1}{0}To: {2}{0}Subject: {3}{0}Message:{0}{4}",
                                                         Environment.NewLine, From, To, Subject, Text ?? HTML);
-                    QueueSupport.CurrStatisticsQueue?.AddMessage(new CloudQueueMessage(queueMessage));
+                    await QueueSupport.CurrStatisticsQueue?.AddMessageAsync(new CloudQueueMessage(queueMessage));
                 }
             }
 
@@ -270,7 +270,7 @@ namespace TheBall
             }
         }
 
-        public static void SendInputJoinEmail(TBEmailValidation emailValidation, InformationInput informationInput, string[] ownerEmailAddresses)
+        public static async Task SendInputJoinEmail(TBEmailValidation emailValidation, InformationInput informationInput, string[] ownerEmailAddresses)
         {
             string urlLink = GetUrlLink(emailValidation.ID);
             bool isAccount = emailValidation.InformationInputConfirmation.AccountID != null;
@@ -283,7 +283,7 @@ namespace TheBall
             string subject = String.Format(InstanceConfig.Current.EmailInputJoinSubjectFormat, ownerID);
             foreach (string emailAddress in ownerEmailAddresses)
             {
-                SendEmail(InstanceConfig.Current.EmailFromAddress, emailAddress, subject, message);
+                await SendEmail(InstanceConfig.Current.EmailFromAddress, emailAddress, subject, message);
             }
         }
 

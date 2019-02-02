@@ -4,10 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AaltoGlobalImpact.OIP;
-using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 
@@ -994,14 +991,14 @@ namespace TheBall
 
         public static async Task RefreshAllGroupTemplatesA(string templateName)
         {
-            string[] groupIDs = TBRGroupRoot.GetAllGroupIDs();
+            string[] groupIDs = Group.GetAllGroupIDs();
             var refreshTasks = groupIDs.Select(groupID => RefreshGroupTemplateA(groupID, templateName)).ToArray();
             await Task.WhenAll(refreshTasks);
         }
 
         public static async Task RefreshAllAccountTemplatesA(string templateName)
         {
-            string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
+            string[] accountIDs = Account.GetAllAccountIDs();
             var refreshTasks = accountIDs.Select(acctID => RefreshAccountTemplateA(acctID, templateName)).ToArray();
             await Task.WhenAll(refreshTasks);
         }
