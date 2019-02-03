@@ -262,11 +262,23 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Active account ID
 		</div>
-		</p><h2>Target Definition: CustomerAccount ( AccountID )</h2>
+		</p><h2>Target Definition: IsTokenTestMode ( PaymentToken )</h2>
 		<p>		<div class="MsoNormal" >
-		Customer account object based accountID. Created if missing
+		Is Token test mode token
 		</div>
-		</p><h2>Method Call: UpdateStripeCustomerData ( CustomerAccount, PaymentToken )</h2>
+		</p><h2>Target Definition: IsTestAccount ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Retrieve account IsTestMode status, validated from list
+		</div>
+		</p><h2>Target Definition: IsTestMode ( IsTokenTestMode, IsTestAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate account and token matching testmode, return if agree, throw exception if not
+		</div>
+		</p><h2>Target Definition: CustomerAccount ( AccountID, IsTestMode )</h2>
+		<p>		<div class="MsoNormal" >
+		Customer account object based accountID. Created if missing. Validate that it matches istestmode
+		</div>
+		</p><h2>Method Call: UpdateStripeCustomerData ( CustomerAccount, IsTestMode, PaymentToken )</h2>
 		<p>		<div class="MsoNormal" >
 		Update Stripe customer data from payment info
 		</div>
@@ -278,15 +290,15 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Plan name from the payment token
 		</div>
-		</p><h2>Method Call: ValidateStripePlanName ( PlanName )</h2>
+		</p><h2>Method Call: ValidateStripePlanName ( PlanName, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Validate plan name from Stripe
 		</div>
-		</p><h2>Target Definition: CustomersActiveSubscriptions ( StripeCustomerID )</h2>
+		</p><h2>Target Definition: CustomersActiveSubscriptions ( StripeCustomerID, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Active Stripe subscriptions of customer
 		</div>
-		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActiveSubscriptions, PaymentToken )</h2>
+		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, IsTestMode, PlanName, CustomersActiveSubscriptions, PaymentToken )</h2>
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe, if lacking with current plan/subscription
 		</div>
@@ -452,7 +464,11 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Stripe customer ID
 		</div>
-		</p><h2>Method Call: RemoveCustomerPaymentSource ( StripeCustomerID )</h2>
+		</p><h2>Target Definition: IsTestMode ( CustomerAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Is Stripe in test mode
+		</div>
+		</p><h2>Method Call: RemoveCustomerPaymentSource ( StripeCustomerID, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Remove current card from Stripe customer
 		</div>
@@ -460,11 +476,11 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Plan name from the payment token
 		</div>
-		</p><h2>Target Definition: CustomersActiveSubscriptions ( StripeCustomerID )</h2>
+		</p><h2>Target Definition: CustomersActiveSubscriptions ( StripeCustomerID, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Active Stripe subscriptions of customer
 		</div>
-		</p><h2>Method Call: CancelSubscriptionAtPeriodEnd ( StripeCustomerID, PlanName, CustomersActiveSubscriptions )</h2>
+		</p><h2>Method Call: CancelSubscriptionAtPeriodEnd ( StripeCustomerID, IsTestMode, PlanName, CustomersActiveSubscriptions )</h2>
 		<p>		<div class="MsoNormal" >
 		Cancel current subscription at period end
 		</div>
@@ -547,7 +563,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store new customers
 		</div>
-		</p><h1>GetAccountFromStripeCustomer (StripeCustomerID)</h1>
+		</p><h1>GetAccountFromStripeCustomer (StripeCustomerID, IsTestAccount)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Get AccountID from Stripe ID
@@ -572,12 +588,29 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		IsTestAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Is Stripe test account
+		</div>
+				</td>
+				</tr>
 		</table>
 		</p><h2>Target Definition: AllCustomerAccounts</h2>
 		<p>		<div class="MsoNormal" >
 		All customer accounts
 		</div>
-		</p><h2>Target Definition: Account ( AllCustomerAccounts, StripeCustomerID )</h2>
+		</p><h2>Target Definition: Account ( AllCustomerAccounts, StripeCustomerID, IsTestAccount )</h2>
 		<p>		<div class="MsoNormal" >
 		Stripe customer ID based account
 		</div>
@@ -700,15 +733,19 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Stripe event id
 		</div>
-		</p><h2>Target Definition: EventData ( EventID )</h2>
+		</p><h2>Target Definition: IsTestMode ( JSONObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe test mode status
+		</div>
+		</p><h2>Target Definition: EventData ( EventID, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Stripe event object
 		</div>
-		</p><h2>Method Call: ProcessStripeEvent ( EventData )</h2>
+		</p><h2>Method Call: ProcessStripeEvent ( EventData, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Process Stripe event
 		</div>
-		</p><h1>PurchaseProduct (PaymentToken)</h1>
+		</p><h1>PurchaseProduct (PurchaseInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Purchase and pay product for account
@@ -719,17 +756,17 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		PaymentToken
+		PurchaseInfo
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		INT.PaymentToken
+		INT.ProductPurchaseInfo
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Payment token info
+		Product purchase info
 		</div>
 				</td>
 				</tr>
@@ -746,19 +783,27 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Stripe customer ID
 		</div>
-		</p><h2>Target Definition: ProductName ( PaymentToken )</h2>
+		</p><h2>Target Definition: IsTestMode ( CustomerAccount )</h2>
 		<p>		<div class="MsoNormal" >
-		Product name from the payment token
+		Is Stripe in test mode
 		</div>
-		</p><h2>Target Definition: ProductPrice ( PaymentToken )</h2>
+		</p><h2>Target Definition: ProductName ( PurchaseInfo )</h2>
 		<p>		<div class="MsoNormal" >
-		Product price from the payment token
+		Product name from the purchase info
 		</div>
-		</p><h2>Method Call: ValidateStripeProductAndPrice ( ProductName, ProductPrice )</h2>
+		</p><h2>Target Definition: ProductPrice ( PurchaseInfo )</h2>
+		<p>		<div class="MsoNormal" >
+		Product price from the purchase info
+		</div>
+		</p><h2>Target Definition: Currency ( PurchaseInfo )</h2>
+		<p>		<div class="MsoNormal" >
+		Product currency from the purchase info
+		</div>
+		</p><h2>Method Call: ValidateStripeProductAndPrice ( ProductName, ProductPrice, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Validate product info from Stripe
 		</div>
-		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, ProductName, PaymentToken )</h2>
+		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, IsTestMode, ProductName, ProductPrice, Currency, PurchaseInfo )</h2>
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe
 		</div>
@@ -839,11 +884,15 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Customer account
 		</div>
+		</p><h2>Target Definition: IsTestMode ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Is Stripe in test mode
+		</div>
 		</p><h2>Target Definition: CurrentPlansBeforeSync ( Account )</h2>
 		<p>		<div class="MsoNormal" >
 		Group subscription plans before syncing
 		</div>
-		</p><h2>Target Definition: ActivePlanStatusesFromStripe ( Account )</h2>
+		</p><h2>Target Definition: ActivePlanStatusesFromStripe ( Account, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Plan statuses of account - fetched from Stripe.
 		</div>

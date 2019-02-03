@@ -6,6 +6,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace AaltoGlobalImpact.OIP
@@ -55,9 +56,9 @@ namespace AaltoGlobalImpact.OIP
         }
 
         [DataMember]
-        public int ContentLength { get; set; }
+        public long ContentLength { get; set; }
 
-        public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+        public async Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
         {
             if(ID != contentObjectID)
                 return;
@@ -67,13 +68,12 @@ namespace AaltoGlobalImpact.OIP
                 throw new NotSupportedException("Not supported mediaContent object in SetMediaContent");
             if (mediaFileData.HttpFile != null)
             {
-                HttpPostedFile postedContent = mediaFileData.HttpFile;
+                var postedContent = mediaFileData.HttpFile;
                 FileExt = Path.GetExtension(postedContent.FileName).ToLower();
-                ContentLength = postedContent.ContentLength;
+                ContentLength = postedContent.Length;
                 string locationFileName = ID + FileExt;
                 SetLocationAsOwnerContent(containerOwner, locationFileName);
-                postedContent.InputStream.Seek(0, SeekOrigin.Begin);
-                StorageSupport.CurrActiveContainer.UploadBlobStream(RelativeLocation, postedContent.InputStream);
+                await StorageSupport.CurrActiveContainer.UploadBlobStreamAsync(RelativeLocation, postedContent.OpenReadStream());
             }
             else
             {
@@ -81,12 +81,12 @@ namespace AaltoGlobalImpact.OIP
                 ContentLength = mediaFileData.FileContent.Length;
                 string locationFileName = ID + FileExt;
                 SetLocationAsOwnerContent(containerOwner, locationFileName);
-                StorageSupport.CurrActiveContainer.UploadBlobBinary(RelativeLocation, mediaFileData.FileContent);
+                await StorageSupport.CurrActiveContainer.UploadBlobBinaryAsync(RelativeLocation, mediaFileData.FileContent);
             }
             UpdateAdditionalMediaFormats();
         }
 
-        public void SetMediaContent(string contentFileName, byte[] contentData)
+        public async Task SetMediaContent(string contentFileName, byte[] contentData)
         {
             var owner = InformationContext.CurrentOwner;
             ClearCurrentContent(owner);
@@ -94,41 +94,41 @@ namespace AaltoGlobalImpact.OIP
             ContentLength = contentData.Length;
             string locationFileName = ID + FileExt;
             SetLocationAsOwnerContent(owner, locationFileName);
-            StorageSupport.CurrActiveContainer.UploadBlobBinary(RelativeLocation, contentData);
-            UpdateAdditionalMediaFormats();
+            await StorageSupport.CurrActiveContainer.UploadBlobBinaryAsync(RelativeLocation, contentData);
+            await UpdateAdditionalMediaFormats();
         }
 
-        public void UpdateAdditionalMediaFormats()
+        public async Task UpdateAdditionalMediaFormats()
         {
-            RemoveAdditionalMediaFormats();
-            CreateAdditionalMediaFormats();
+            await RemoveAdditionalMediaFormats();
+            await CreateAdditionalMediaFormats();
         }
 
-        public void CreateAdditionalMediaFormats()
+        public async Task CreateAdditionalMediaFormats()
         {
             if (FileExt == ".jpg" || FileExt == ".jpeg" || FileExt == ".png" || FileExt == ".gif" || FileExt == ".bmp")
-                OIP.CreateAdditionalMediaFormats.Execute(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
+                await OIP.CreateAdditionalMediaFormats.ExecuteAsync(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 
-        public void RemoveAdditionalMediaFormats()
+        public async Task RemoveAdditionalMediaFormats()
         {
-            ClearAdditionalMediaFormats.Execute(new ClearAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
+            await ClearAdditionalMediaFormats.ExecuteAsync(new ClearAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 
-        public void ClearCurrentContent(IContainerOwner containerOwner)
+        public async Task ClearCurrentContent(IContainerOwner containerOwner)
         {
             CloudBlockBlob blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, containerOwner);
-            blob.DeleteBlob();
-            RemoveAdditionalMediaFormats();
+            await blob.DeleteAsync();
+            await RemoveAdditionalMediaFormats();
         }
 
-        public string GetMD5FromStorage()
+        public async Task<string> GetMD5FromStorage()
         {
             try
             {
                 var owner = InformationContext.CurrentOwner;
                 CloudBlob mainBlob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, owner);
-                mainBlob.FetchAttributes();
+                await mainBlob.FetchAttributesAsync();
                 return mainBlob.Properties.ContentMD5;
             }
             catch
@@ -147,13 +147,13 @@ namespace AaltoGlobalImpact.OIP
             return hashVal;
         }
 
-        public byte[] GetContentData()
+        public async Task<byte[]> GetContentData()
         {
             var owner = InformationContext.CurrentOwner;
             var blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, owner);
             try
             {
-                byte[] result = blob.DownloadByteArray();
+                byte[] result = await blob.DownloadByteArrayAsync();
                 return result;
             }
             catch

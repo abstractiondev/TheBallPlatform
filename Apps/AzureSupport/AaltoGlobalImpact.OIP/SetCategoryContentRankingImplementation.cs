@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP.INT;
 using AzureSupport;
@@ -23,9 +24,9 @@ namespace AaltoGlobalImpact.OIP
             return rankingData.CategoryID;
         }
 
-        public static ContentCategoryRankCollection GetTarget_ContentRankingCollection()
+        public static async Task<ContentCategoryRankCollection> GetTarget_ContentRankingCollectionAsync()
         {
-            return ObjectStorage.RetrieveFromOwnerContent<ContentCategoryRankCollection>(InformationContext.CurrentOwner,
+            return await ObjectStorage.RetrieveFromOwnerContentA<ContentCategoryRankCollection>(InformationContext.CurrentOwner,
                 "MasterCollection");
         }
 
@@ -34,7 +35,7 @@ namespace AaltoGlobalImpact.OIP
             return contentRankingCollection.CollectionContent.Where(item => item.CategoryID == categoryId && item.RankName == "MANUAL").ToArray();
         }
 
-        public static void ExecuteMethod_SyncRankingItemsToRankingData(CategoryChildRanking rankingData, ContentCategoryRank[] categoryRankingCollection)
+        public static async Task ExecuteMethod_SyncRankingItemsToRankingDataAsync(CategoryChildRanking rankingData, ContentCategoryRank[] categoryRankingCollection)
         {
             var owner = InformationContext.CurrentOwner;
             var toBeDeleted = categoryRankingCollection.Where(
@@ -57,8 +58,8 @@ namespace AaltoGlobalImpact.OIP
             {
                 try
                 {
-                    var iObj = ObjectStorage.RetrieveFromOwnerContent<ContentCategoryRank>(owner, itemToDelete.ID);
-                    iObj.DeleteInformationObject();
+                    var iObj = await ObjectStorage.RetrieveFromOwnerContentA<ContentCategoryRank>(owner, itemToDelete.ID);
+                    await iObj.DeleteInformationObjectAsync();
                 }
                 catch 
                 {
@@ -75,7 +76,7 @@ namespace AaltoGlobalImpact.OIP
                     iObj.ContentSemanticType = itemToAdd.ContentSemanticType;
                     iObj.RankName = itemToAdd.RankName;
                     iObj.RankValue = itemToAdd.RankValue;
-                    iObj.StoreInformation(owner);
+                    await iObj.StoreInformationAsync(owner);
                 }
                 catch
                 {
@@ -86,9 +87,9 @@ namespace AaltoGlobalImpact.OIP
             {
                 try
                 {
-                    var iObj = ObjectStorage.RetrieveFromOwnerContent<ContentCategoryRank>(owner, itemToModify.CurrentItem.ID);
+                    var iObj = await ObjectStorage.RetrieveFromOwnerContentA<ContentCategoryRank>(owner, itemToModify.CurrentItem.ID);
                     iObj.RankValue = itemToModify.ModifiedItem.RankValue;
-                    iObj.StoreInformation(owner);
+                    await iObj.StoreInformationAsync(owner);
                 }
                 catch
                 {

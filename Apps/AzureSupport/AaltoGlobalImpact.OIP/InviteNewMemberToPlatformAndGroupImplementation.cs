@@ -1,23 +1,24 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
     public class InviteNewMemberToPlatformAndGroupImplementation
     {
-        public static void ExecuteMethod_ValidateThatEmailAddressIsNew(string memberEmailAddress)
+        public static async Task ExecuteMethod_ValidateThatEmailAddressIsNewAsync(string memberEmailAddress)
         {
             var emailRootID = TBREmailRoot.GetIDFromEmailAddress(memberEmailAddress);
-            var emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+            var emailRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBREmailRoot>(emailRootID);
             if(emailRoot != null)
                 throw new InvalidDataException("Email is already registered in the platform");
         }
 
-        public static TBRGroupRoot GetTarget_GroupRoot(string groupId)
+        public static async Task<TBRGroupRoot> GetTarget_GroupRootAsync(string groupId)
         {
-            return ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupId);
+            return await ObjectStorage.RetrieveFromDefaultLocationA<TBRGroupRoot>(groupId);
         }
 
         public static TBEmailValidation GetTarget_EmailValidation(string memberEmailAddress, string groupId)
@@ -53,10 +54,10 @@ namespace AaltoGlobalImpact.OIP
             }
         }
 
-        public static void ExecuteMethod_StoreObjects(TBRGroupRoot groupRoot, TBEmailValidation emailValidation)
+        public static async Task ExecuteMethod_StoreObjectsAsync(TBRGroupRoot groupRoot, TBEmailValidation emailValidation)
         {
-            groupRoot.StoreInformation();
-            emailValidation.StoreInformation();
+            await groupRoot.StoreInformationAsync();
+            await emailValidation.StoreInformationAsync();
         }
 
         public static void ExecuteMethod_SendEmailConfirmation(TBEmailValidation emailValidation, TBRGroupRoot groupRoot)

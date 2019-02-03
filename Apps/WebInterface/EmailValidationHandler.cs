@@ -69,15 +69,15 @@ namespace WebInterface
                 }
                 else if (emailValidation.DeviceJoinConfirmation != null)
                 {
-                    HandleDeviceJoinConfirmation(context, account, emailValidation);
+                    await HandleDeviceJoinConfirmationAsync(context, account, emailValidation);
                 }
                 else if (emailValidation.InformationInputConfirmation != null)
                 {
-                    HandleInputJoinConfirmation(context, account, emailValidation);
+                    await HandleInputJoinConfirmationAsync(context, account, emailValidation);
                 }
                 else if (emailValidation.InformationOutputConfirmation != null)
                 {
-                    HandleOutputJoinConfirmation(context, account, emailValidation);
+                    await HandleOutputJoinConfirmationAsync(context, account, emailValidation);
                 }
                 else if (emailValidation.MergeAccountsConfirmation != null)
                 {
@@ -97,16 +97,10 @@ namespace WebInterface
 
         private void HandleAccountMergeConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
-            ConfirmAccountMergeFromEmail.Execute(new ConfirmAccountMergeFromEmailParameters
-                {
-                    CurrentAccountID = account.ID,
-                    EmailConfirmation = emailValidation
-                });
-            string redirectUrl = emailValidation.RedirectUrlAfterValidation ?? "/auth/account/";
-            context.Response.Redirect(redirectUrl, true);
+            throw new NotImplementedException();
         }
 
-        private void HandleOutputJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        private async Task HandleOutputJoinConfirmationAsync(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
             ValidateAccountsEmailAddress(account, emailValidation);
             IContainerOwner owner;
@@ -123,7 +117,7 @@ namespace WebInterface
                 owner = VirtualOwner.FigureOwner("grp/" + groupID);
                 redirectUrl = "/auth/grp/" + groupID + "/";
             }
-            SetInformationOutputValidationAndActiveStatus.Execute(
+            await SetInformationOutputValidationAndActiveStatus.ExecuteAsync(
                 new SetInformationOutputValidationAndActiveStatusParameters
                 {
                     Owner = owner,
@@ -133,7 +127,7 @@ namespace WebInterface
             context.Response.Redirect(redirectUrl, true);
         }
 
-        private void HandleInputJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        private async Task HandleInputJoinConfirmationAsync(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
             ValidateAccountsEmailAddress(account, emailValidation);
             IContainerOwner owner;
@@ -150,7 +144,7 @@ namespace WebInterface
                 owner = VirtualOwner.FigureOwner("grp/" + groupID);
                 redirectUrl = "/auth/grp/" + groupID + "/";
             }
-            SetInformationInputValidationAndActiveStatus.Execute(
+            await SetInformationInputValidationAndActiveStatus.ExecuteAsync(
                 new SetInformationInputValidationAndActiveStatusParameters
                     {
                         Owner = owner,
@@ -160,7 +154,7 @@ namespace WebInterface
             context.Response.Redirect(redirectUrl, true);
         }
 
-        private void HandleDeviceJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        private async Task HandleDeviceJoinConfirmationAsync(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
             ValidateAccountsEmailAddress(account, emailValidation);
             IContainerOwner owner;
@@ -177,7 +171,7 @@ namespace WebInterface
                 owner = VirtualOwner.FigureOwner("grp/" + groupID);
                 redirectUrl = "/auth/grp/" + groupID + "/";
             }
-            SetDeviceMembershipValidationAndActiveStatus.Execute(new SetDeviceMembershipValidationAndActiveStatusParameters
+            await SetDeviceMembershipValidationAndActiveStatus.ExecuteAsync(new SetDeviceMembershipValidationAndActiveStatusParameters
                 {
                     Owner = owner,
                     DeviceMembershipID = deviceJoinInfo.DeviceMembershipID,
@@ -188,31 +182,12 @@ namespace WebInterface
 
         private void HandleGroupJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
-            ValidateAccountsEmailAddress(account, emailValidation);
-            string groupID = emailValidation.GroupJoinConfirmation.GroupID;
-            ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
-                                                 {GroupID = groupID, MemberEmailAddress = emailValidation.Email});
-            context.Response.Redirect("/auth/grp/" + groupID + "/");
+            throw new NotImplementedException();
         }
 
         private async Task<bool> HandleGroupAndPlatformJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
-            ValidateAccountsEmailAddress(account, emailValidation);
-            string groupID = emailValidation.GroupJoinConfirmation.GroupID;
-            ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
-            {
-                GroupID = groupID,
-                MemberEmailAddress = emailValidation.Email
-            });
-            await InformationContext.ExecuteAsOwnerAsync(account, async () =>
-            {
-                SetGroupAsDefaultForAccount.Execute(new SetGroupAsDefaultForAccountParameters
-                {
-                    GroupID = groupID
-                });
-            });
-            context.Response.Redirect("/auth/account/");
-            return true;
+            throw new NotImplementedException();
         }
 
         private static void ValidateAccountsEmailAddress(TBAccount account, TBEmailValidation emailValidation)
@@ -225,40 +200,7 @@ namespace WebInterface
 
         private void HandleAccountEmailValidation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
-            if (account.Emails.CollectionContent.Find(candidate => candidate.EmailAddress.ToLower() == emailValidation.Email.ToLower()) == null)
-            {
-                TBEmail email = TBEmail.CreateDefault();
-                email.EmailAddress = emailValidation.Email;
-                email.ValidatedAt = DateTime.Now;
-                account.Emails.CollectionContent.Add(email);
-                account.StoreAccountToRoot();
-                // TODO: Move Emailroot storage to account root syncs
-                string emailRootID = TBREmailRoot.GetIDFromEmailAddress(email.EmailAddress);
-                TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
-                if (emailRoot == null)
-                {
-                    emailRoot = TBREmailRoot.CreateDefault();
-                    emailRoot.ID = emailRootID;
-                    emailRoot.UpdateRelativeLocationFromID();
-                }
-                emailRoot.Account = account;
-                StorageSupport.StoreInformation(emailRoot);
-
-                string accountID = account.ID;
-                UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters
-                                                          {
-                                                              AccountID = accountID
-                                                          });
-                UpdateAccountContainerFromAccountRoot.Execute(new UpdateAccountContainerFromAccountRootParameters
-                                                                  {
-                                                                      AccountID = accountID
-                                                                  });
-            }
-
-            if(String.IsNullOrEmpty(emailValidation.RedirectUrlAfterValidation) == false)
-                context.Response.Redirect(emailValidation.RedirectUrlAfterValidation, true);
-            else
-                context.Response.Redirect(InstanceConfig.Current.AccountDefaultRedirect, true);
+            throw new NotImplementedException();
         }
 
         private void RespondEmailValidationRecordNotExist(HttpContext context)

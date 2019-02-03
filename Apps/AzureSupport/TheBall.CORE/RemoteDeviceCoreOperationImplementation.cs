@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -23,21 +24,21 @@ namespace TheBall.CORE
             return InformationContext.CurrentExecutingForDevice;
         }
 
-        public static void ExecuteMethod_PerformOperation(DeviceMembership currentDevice, DeviceOperationData deviceOperationData)
+        public static async Task ExecuteMethod_PerformOperationAsync(DeviceMembership currentDevice, DeviceOperationData deviceOperationData)
         {
             switch (deviceOperationData.OperationRequestString)
             {
                 case "SYNCCOPYCONTENT":
-                    performSyncQueryForCopyContent(currentDevice, deviceOperationData);
+                    await performSyncQueryForCopyContent(currentDevice, deviceOperationData);
                     break;
                 case "DELETEREMOTEDEVICE":
-                    currentDevice.DeleteInformationObject();
+                    await currentDevice.DeleteInformationObjectAsync();
                     break;
                 case "GETCONTENTMD5LIST":
-                    getContentMD5List(deviceOperationData);
+                    await getContentMD5List(deviceOperationData);
                     break;
                 case "COPYSYNCEDCONTENTTOOWNER":
-                    copySyncedContentToOwner(deviceOperationData);
+                    await copySyncedContentToOwner(deviceOperationData);
                     break;
                 case "GETACCOUNTGROUPS":
                     getAccountGroups(currentDevice, deviceOperationData);
@@ -59,7 +60,7 @@ namespace TheBall.CORE
             deviceOperationData.OperationResult = true;
         }
 
-        private static void copySyncedContentToOwner(DeviceOperationData deviceOperationData)
+        private static async Task copySyncedContentToOwner(DeviceOperationData deviceOperationData)
         {
             string folderPrefix = deviceOperationData.OperationParameters[0];
             if (!isValidFolderName(folderPrefix))
@@ -68,13 +69,12 @@ namespace TheBall.CORE
             string deviceInputRoot = getDeviceInputRoot(currentDevice.ID);
             string syncSourceRootFolder = deviceInputRoot + folderPrefix;
             var owner = InformationContext.CurrentOwner;
-            ContentItemLocationWithMD5[] syncContentList = owner.GetOwnerBlobListing(syncSourceRootFolder, true)
-                                                                .Cast<CloudBlockBlob>()
+            ContentItemLocationWithMD5[] syncContentList = (await BlobStorage.GetBlobItemsA(owner, syncSourceRootFolder))
                                                                 .Select(blob => new ContentItemLocationWithMD5
                                                                     {
                                                                         ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(blob.Name)
                                                                             .Substring(syncSourceRootFolder.Length),
-                                                                        ContentMD5 = blob.Properties.ContentMD5
+                                                                        ContentMD5 = blob.ContentMD5
                                                                     }).ToArray();
             string syncTargetRootFolder = folderPrefix;
             SyncSupport.SynchronizeSourceListToTargetFolder(syncSourceRootFolder, syncContentList, syncTargetRootFolder);
@@ -85,7 +85,7 @@ namespace TheBall.CORE
             return folderName.StartsWith("DEV_") || folderName == "wwwsite/";
         }
 
-        private static void getContentMD5List(DeviceOperationData deviceOperationData)
+        private static async Task getContentMD5List(DeviceOperationData deviceOperationData)
         {
             var initialEntries = deviceOperationData.OperationParameters;
             var entries = initialEntries.Select(entry =>
@@ -108,17 +108,17 @@ namespace TheBall.CORE
             if(hasInvalidFolderNames)
                 throw new InvalidDataException("Invalid parameter for remote entry name");
             var owner = InformationContext.CurrentOwner;
-            var md5List = entries.SelectMany(entry =>
-                {
-                    var result = owner.GetOwnerBlobListing(entry, true)
-                                      .Cast<CloudBlockBlob>()
-                                      .Select(blob => new ContentItemLocationWithMD5
-                                          {
-                                              ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(blob.Name),
-                                              ContentMD5 = blob.Properties.ContentMD5
-                                          });
-                    return result;
-                }).ToArray();
+            var md5TaskList = entries.Select(entry =>
+            {
+                var result = BlobStorage.GetBlobItemsA(owner, entry);
+                return result;
+            }).ToArray();
+            await Task.WhenAll(md5TaskList);
+            var md5List = md5TaskList.SelectMany(task => task.Result).Select(blob => new ContentItemLocationWithMD5
+            {
+                ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(blob.Name),
+                ContentMD5 = blob.ContentMD5
+            }).ToArray();
             deviceOperationData.OperationSpecificContentData = md5List;
             deviceOperationData.OperationResult = true;
         }
@@ -128,31 +128,31 @@ namespace TheBall.CORE
             JSONSupport.SerializeToJSONStream(deviceOperationData, outputStream);
         }
 
-        private static void performSyncQueryForCopyContent(DeviceMembership currentDevice, DeviceOperationData deviceOperationData)
+        private static async Task performSyncQueryForCopyContent(DeviceMembership currentDevice, DeviceOperationData deviceOperationData)
         {
             string targetNamedFolder = deviceOperationData.OperationParameters != null && deviceOperationData.OperationParameters.Length > 0 ?
                 deviceOperationData.OperationParameters[0] : SyncSupport.RelativeRootFolderValue;
             List<ContentItemLocationWithMD5> itemsToCopy = new List<ContentItemLocationWithMD5>();
             List<ContentItemLocationWithMD5> itemsDeleted = new List<ContentItemLocationWithMD5>();
-            SyncSupport.CopySourceToTargetMethod copySourceToTarget = (location, blobLocation) => itemsToCopy.Add(new ContentItemLocationWithMD5
+            SyncSupport.CopySourceToTargetMethod copySourceToTarget = async (location, blobLocation) => itemsToCopy.Add(new ContentItemLocationWithMD5
                 {
                     ContentLocation = StorageSupport.RemoveOwnerPrefixIfExists(location),
                     ItemDatas = new ItemData[] {new ItemData {DataName = "OPTODO", ItemTextData = "COPY"}}
                 });
-            SyncSupport.DeleteObsoleteTargetMethod deleteObsoleteTarget = (location) =>
+            SyncSupport.DeleteObsoleteTargetMethod deleteObsoleteTarget = async (location) =>
                 {
                     itemsDeleted.Add(new ContentItemLocationWithMD5
                         {
                             ContentLocation = location,
                             ItemDatas = new ItemData[] { new ItemData { DataName = "OPDONE", ItemTextData = "DELETED"}}
                         });
-                    SyncSupport.DeleteObsoleteTarget(location);
+                    await SyncSupport.DeleteObsoleteTargetAsync(location);
                 };
 
             string syncTargetRootFolder = getDeviceInputRoot(currentDevice.ID) + targetNamedFolder;
             if (syncTargetRootFolder.EndsWith("/") == false)
                 syncTargetRootFolder += "/";
-            SyncSupport.SynchronizeSourceListToTargetFolder(SyncSupport.RelativeRootFolderValue, deviceOperationData.OperationSpecificContentData, syncTargetRootFolder,
+            await SyncSupport.SynchronizeSourceListToTargetFolder(SyncSupport.RelativeRootFolderValue, deviceOperationData.OperationSpecificContentData, syncTargetRootFolder,
                                                             copySourceToTarget, deleteObsoleteTarget);
             deviceOperationData.OperationSpecificContentData = itemsToCopy.Union(itemsDeleted).ToArray();
         }

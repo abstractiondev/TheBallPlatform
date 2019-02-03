@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Linq;
-using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLite.TheBall.Payments;
 using SQLiteSupport;

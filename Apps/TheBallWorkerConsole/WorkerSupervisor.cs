@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.VisualBasic.Devices;
+//using Microsoft.VisualBasic.Devices;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 using TheBall.Interface;
@@ -20,6 +21,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         private readonly string ConfigRootFolder;
         private readonly Stream HostPollingStream;
         private readonly WorkerConsoleConfig WorkerConfig;
+        private bool IsTestMode = false;
         internal TelemetryClient AppInsightsClient { get; private set; }
 
         private WorkerSupervisor(Stream hostPollingStream, WorkerConsoleConfig workerConfig, string configRootFolder)
@@ -29,13 +31,26 @@ namespace TheBall.Infra.TheBallWorkerConsole
             ConfigRootFolder = configRootFolder;
         }
 
-        internal static async Task<WorkerSupervisor> Create(Stream hostPollingStream, string workerConfigFullPath)
+        private WorkerSupervisor(Stream hostPollingStream)
         {
-            var workerConfig = await WorkerConsoleConfig.GetConfig(workerConfigFullPath);
-            string configRootFolder = Path.GetDirectoryName(workerConfigFullPath);
+            HostPollingStream = hostPollingStream;
+            IsTestMode = true;
+        }
 
-            var supervisor = new WorkerSupervisor(hostPollingStream, workerConfig, configRootFolder);
-            await supervisor.InitializeRuntime();
+        internal static async Task<WorkerSupervisor> Create(Stream hostPollingStream, string workerConfigFullPath, bool isTestMode)
+        {
+            WorkerSupervisor supervisor;
+            if (isTestMode)
+            {
+                supervisor = new WorkerSupervisor(hostPollingStream);
+            }
+            else
+            {
+                var workerConfig = await WorkerConsoleConfig.GetConfig(workerConfigFullPath);
+                string configRootFolder = Path.GetDirectoryName(workerConfigFullPath);
+                supervisor = new WorkerSupervisor(hostPollingStream, workerConfig, configRootFolder);
+                await supervisor.InitializeRuntime();
+            }
             return supervisor;
         }
 
@@ -50,7 +65,26 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 (exception, properties) => AppInsightsClient.TrackException(exception, properties);
         }
 
-        internal async Task RunWorkerLoop(string dedicatedToInstance = null, string dedicatedToOwnerPrefix = null)
+        internal async Task WaitHandleExitCommand(int timeoutSeconds)
+        {
+            var pipeStream = HostPollingStream;
+            var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
+            bool keepWorkerRunning = true;
+            var pipeMessageAwaitable = reader?.ReadToEndAsync();
+            while (keepWorkerRunning)
+            {
+                List<Task> awaitList = new List<Task>();
+                awaitList.Add(pipeMessageAwaitable);
+                awaitList.Add(Task.Delay(timeoutSeconds * 1000));
+                await Task.WhenAny(awaitList);
+                if (pipeMessageAwaitable.IsCompleted)
+                    keepWorkerRunning = false;
+                else
+                    throw new InvalidOperationException($"Test cancel not happened within {timeoutSeconds} second timeout");
+            }
+        }
+
+        internal async Task RunWorkerLoop(Task autoUpdateTask, string dedicatedToInstance, string dedicatedToOwnerPrefix)
         {
             var pipeStream = HostPollingStream;
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
@@ -90,12 +124,15 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     List<Task> awaitList = new List<Task>();
                     if (pipeMessageAwaitable != null)
                         awaitList.Add(pipeMessageAwaitable);
+                    if (autoUpdateTask != null)
+                        awaitList.Add(autoUpdateTask);
                     awaitList.AddRange(pollingTaskItems.Select(item => item.Task));
                     awaitList.AddRange(executingOperations);
                     await Task.WhenAny(awaitList);
 
                     bool isCanceling = pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted;
-                    if (!isCanceling)
+                    bool isUpdating = autoUpdateTask != null && autoUpdateTask.IsCompleted;
+                    if (!isCanceling && !isUpdating)
                     {
                         var completedPollingTaskItems = pollingTaskItems
                             .Where(item => item.Task.IsCompleted).ToArray();
@@ -107,22 +144,29 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         pollingTaskItems = refreshPollingTasks(pollingTaskItems,
                             completedPollingTaskItems.Select(item => item.Task).ToArray());
                     }
-                    else
+                    else // isCanceling or isUpdating
                     {
+                        //if(isUpdating)
+                        //    Debugger.Launch();
+                        // Cancel all polling
                         foreach (var taskItem in pollingTaskItems)
                             taskItem.CancellationTokenSource.Cancel();
 
-                        await Task.WhenAll(awaitList);
-                        var completedPollingTaskItems =
-                            pollingTaskItems.Where(item => !item.Task.IsCanceled).ToArray();
+                        // Remove uninteresting waits
+                        awaitList.Remove(pipeMessageAwaitable);
+                        awaitList.Remove(autoUpdateTask);
 
-                        await releaseLocks(completedPollingTaskItems);
+                        await Task.WhenAll(awaitList);
+                        var lockObtainedPollingTaskItems =
+                            pollingTaskItems.Where(item => getLockItemFromTask(item.Task) != null).ToArray();
+
+                        await releaseLocks(lockObtainedPollingTaskItems);
 
                         // Cancel & allow processing of all lock-obtained and thus completed
-                        var pipeMessage = pipeMessageAwaitable.Result;
+                        var pipeMessage = isCanceling ? pipeMessageAwaitable?.Result : null;
                         var shutdownLogPath = Path.Combine(Program.AssemblyDirectory, "ConsoleShutdownLog.txt");
                         File.WriteAllText(shutdownLogPath,
-                            "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());
+                            "Quitting for message (UTC): " + pipeMessage ?? "Updating" + " " + DateTime.UtcNow.ToString());
                         keepWorkerRunning = false;
                     }
                 }
@@ -144,9 +188,9 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
         private int getAutoConfiguredWorkerCount()
         {
-            ComputerInfo computerInfo = new ComputerInfo();
-            var totalMemory = computerInfo.TotalPhysicalMemory;
+            //ComputerInfo computerInfo = new ComputerInfo();
             ulong gigaByte = 1024*1024 * 1024;
+            var totalMemory = 2 * gigaByte;  //computerInfo.TotalPhysicalMemory;
             if (totalMemory < gigaByte) // Extra Small in Azure
                 return 3;
             if (totalMemory < 2*gigaByte) // Small
@@ -170,7 +214,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         var typedTask = (Task<LockInterfaceOperationsByOwnerReturnValue>) item.Task;
                         var lockItem = typedTask.Result;
                         var instanceName = item.InstancePollItem.InstanceHostName;
-                        InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instanceName);
+                        InformationContext.InitializeToLogicalContext(null, SystemOwner.CurrentSystem, instanceName, null, true);
                         var blobPath = lockItem.LockBlobFullPath;
                         var blob = StorageSupport.GetOwnerBlobReference(SystemOwner.CurrentSystem, blobPath);
                         return blob.DeleteIfExistsAsync();
@@ -199,14 +243,21 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var cancellationToken = cancellationTokenSource.Token;
             Task result = Task.Run(async () =>
             {
-                InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instancePollItem.InstanceHostName);
+                InformationContext.InitializeToLogicalContext(null, SystemOwner.CurrentSystem, instancePollItem.InstanceHostName, null, true);
                 try
                 {
                     bool keepRunning = !cancellationToken.IsCancellationRequested;
                     while (keepRunning)
                     {
                         Console.WriteLine("Polling..." + DateTime.Now.ToLongTimeString());
-                        await throttlingSemaphore.WaitAsync(cancellationToken);
+                        try
+                        {
+                            await throttlingSemaphore.WaitAsync(cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            
+                        }
                         keepRunning = !cancellationToken.IsCancellationRequested;
                         if (keepRunning)
                         {
@@ -222,7 +273,14 @@ namespace TheBall.Infra.TheBallWorkerConsole
                             }
                         }
                         throttlingSemaphore.Release();
-                        await Task.Delay(1000, cancellationToken);
+                        try
+                        {
+                            await Task.Delay(1000, cancellationToken);
+                        }
+                        catch (TaskCanceledException)
+                        {
+                            
+                        }
                         keepRunning = !cancellationToken.IsCancellationRequested;
                     }
                     return null;

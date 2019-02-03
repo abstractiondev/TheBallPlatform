@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -10546,4 +10547,603 @@ namespace INT {
 				
 			
 			}
+	#region Operation Calls
+	public partial class Server 
+	{
+	    public delegate Task ExecuteOperationFunc(string operationName, object parameters = null);
+
+	    public static ExecuteOperationFunc ExecuteOperation;
+
+	    public delegate Task<object> GetObjectFunc(Type type, string id);
+
+	    public static GetObjectFunc GetInformationObjectImplementation;
+	    public static GetObjectFunc GetInterfaceObjectImplementation;
+
+
+        private static async Task<T> GetInformationObject<T>(string id)
+	    {
+	        Type type = typeof(T);
+	        var objResult = await GetInformationObjectImplementation(type, id);
+	        return (T) objResult;
+	    }
+
+	    private static async Task<T> GetInterfaceObject<T>(string id)
+	    {
+	        Type type = typeof(T);
+	        var objResult = await GetInterfaceObjectImplementation(type, id);
+	        return (T)objResult;
+	    }
+
+
+		public static async Task SetCategoryContentRanking() 
+		{
+			await ExecuteOperation("AaltoGlobalImpact.OIP.SetCategoryContentRanking");
+		}
+
+		public static async Task SetCategoryHierarchyAndOrderInNodeSummary() 
+		{
+			await ExecuteOperation("AaltoGlobalImpact.OIP.SetCategoryHierarchyAndOrderInNodeSummary");
+		}
+
+		public static async Task ClearDefaultGroupFromAccount() 
+		{
+			await ExecuteOperation("AaltoGlobalImpact.OIP.ClearDefaultGroupFromAccount");
+		}
+		public static async Task<TBSystem> GetTBSystem(string id = null)
+		{
+			var result = await GetInformationObject<TBSystem>(id);
+			return result;
+		}
+		public static async Task<WebPublishInfo> GetWebPublishInfo(string id = null)
+		{
+			var result = await GetInformationObject<WebPublishInfo>(id);
+			return result;
+		}
+		public static async Task<PublicationPackageCollection> GetPublicationPackageCollection(string id = null)
+		{
+			var result = await GetInformationObject<PublicationPackageCollection>(id);
+			return result;
+		}
+		public static async Task<PublicationPackage> GetPublicationPackage(string id = null)
+		{
+			var result = await GetInformationObject<PublicationPackage>(id);
+			return result;
+		}
+		public static async Task<TBRLoginRoot> GetTBRLoginRoot(string id = null)
+		{
+			var result = await GetInformationObject<TBRLoginRoot>(id);
+			return result;
+		}
+		public static async Task<TBRAccountRoot> GetTBRAccountRoot(string id = null)
+		{
+			var result = await GetInformationObject<TBRAccountRoot>(id);
+			return result;
+		}
+		public static async Task<TBRGroupRoot> GetTBRGroupRoot(string id = null)
+		{
+			var result = await GetInformationObject<TBRGroupRoot>(id);
+			return result;
+		}
+		public static async Task<TBRLoginGroupRoot> GetTBRLoginGroupRoot(string id = null)
+		{
+			var result = await GetInformationObject<TBRLoginGroupRoot>(id);
+			return result;
+		}
+		public static async Task<TBREmailRoot> GetTBREmailRoot(string id = null)
+		{
+			var result = await GetInformationObject<TBREmailRoot>(id);
+			return result;
+		}
+		public static async Task<TBAccount> GetTBAccount(string id = null)
+		{
+			var result = await GetInformationObject<TBAccount>(id);
+			return result;
+		}
+		public static async Task<TBAccountCollaborationGroup> GetTBAccountCollaborationGroup(string id = null)
+		{
+			var result = await GetInformationObject<TBAccountCollaborationGroup>(id);
+			return result;
+		}
+		public static async Task<TBAccountCollaborationGroupCollection> GetTBAccountCollaborationGroupCollection(string id = null)
+		{
+			var result = await GetInformationObject<TBAccountCollaborationGroupCollection>(id);
+			return result;
+		}
+		public static async Task<TBLoginInfo> GetTBLoginInfo(string id = null)
+		{
+			var result = await GetInformationObject<TBLoginInfo>(id);
+			return result;
+		}
+		public static async Task<TBLoginInfoCollection> GetTBLoginInfoCollection(string id = null)
+		{
+			var result = await GetInformationObject<TBLoginInfoCollection>(id);
+			return result;
+		}
+		public static async Task<TBEmail> GetTBEmail(string id = null)
+		{
+			var result = await GetInformationObject<TBEmail>(id);
+			return result;
+		}
+		public static async Task<TBEmailCollection> GetTBEmailCollection(string id = null)
+		{
+			var result = await GetInformationObject<TBEmailCollection>(id);
+			return result;
+		}
+		public static async Task<TBCollaboratorRole> GetTBCollaboratorRole(string id = null)
+		{
+			var result = await GetInformationObject<TBCollaboratorRole>(id);
+			return result;
+		}
+		public static async Task<TBCollaboratorRoleCollection> GetTBCollaboratorRoleCollection(string id = null)
+		{
+			var result = await GetInformationObject<TBCollaboratorRoleCollection>(id);
+			return result;
+		}
+		public static async Task<TBCollaboratingGroup> GetTBCollaboratingGroup(string id = null)
+		{
+			var result = await GetInformationObject<TBCollaboratingGroup>(id);
+			return result;
+		}
+		public static async Task<TBEmailValidation> GetTBEmailValidation(string id = null)
+		{
+			var result = await GetInformationObject<TBEmailValidation>(id);
+			return result;
+		}
+		public static async Task<TBMergeAccountConfirmation> GetTBMergeAccountConfirmation(string id = null)
+		{
+			var result = await GetInformationObject<TBMergeAccountConfirmation>(id);
+			return result;
+		}
+		public static async Task<TBGroupJoinConfirmation> GetTBGroupJoinConfirmation(string id = null)
+		{
+			var result = await GetInformationObject<TBGroupJoinConfirmation>(id);
+			return result;
+		}
+		public static async Task<TBDeviceJoinConfirmation> GetTBDeviceJoinConfirmation(string id = null)
+		{
+			var result = await GetInformationObject<TBDeviceJoinConfirmation>(id);
+			return result;
+		}
+		public static async Task<TBInformationInputConfirmation> GetTBInformationInputConfirmation(string id = null)
+		{
+			var result = await GetInformationObject<TBInformationInputConfirmation>(id);
+			return result;
+		}
+		public static async Task<TBInformationOutputConfirmation> GetTBInformationOutputConfirmation(string id = null)
+		{
+			var result = await GetInformationObject<TBInformationOutputConfirmation>(id);
+			return result;
+		}
+		public static async Task<LoginProvider> GetLoginProvider(string id = null)
+		{
+			var result = await GetInformationObject<LoginProvider>(id);
+			return result;
+		}
+		public static async Task<LoginProviderCollection> GetLoginProviderCollection(string id = null)
+		{
+			var result = await GetInformationObject<LoginProviderCollection>(id);
+			return result;
+		}
+		public static async Task<TBPRegisterEmail> GetTBPRegisterEmail(string id = null)
+		{
+			var result = await GetInformationObject<TBPRegisterEmail>(id);
+			return result;
+		}
+		public static async Task<AccountSummary> GetAccountSummary(string id = null)
+		{
+			var result = await GetInformationObject<AccountSummary>(id);
+			return result;
+		}
+		public static async Task<AccountContainer> GetAccountContainer(string id = null)
+		{
+			var result = await GetInformationObject<AccountContainer>(id);
+			return result;
+		}
+		public static async Task<AccountModule> GetAccountModule(string id = null)
+		{
+			var result = await GetInformationObject<AccountModule>(id);
+			return result;
+		}
+		public static async Task<LocationContainer> GetLocationContainer(string id = null)
+		{
+			var result = await GetInformationObject<LocationContainer>(id);
+			return result;
+		}
+		public static async Task<AddressAndLocationCollection> GetAddressAndLocationCollection(string id = null)
+		{
+			var result = await GetInformationObject<AddressAndLocationCollection>(id);
+			return result;
+		}
+		public static async Task<AddressAndLocation> GetAddressAndLocation(string id = null)
+		{
+			var result = await GetInformationObject<AddressAndLocation>(id);
+			return result;
+		}
+		public static async Task<StreetAddress> GetStreetAddress(string id = null)
+		{
+			var result = await GetInformationObject<StreetAddress>(id);
+			return result;
+		}
+		public static async Task<AccountProfile> GetAccountProfile(string id = null)
+		{
+			var result = await GetInformationObject<AccountProfile>(id);
+			return result;
+		}
+		public static async Task<AccountSecurity> GetAccountSecurity(string id = null)
+		{
+			var result = await GetInformationObject<AccountSecurity>(id);
+			return result;
+		}
+		public static async Task<AccountRoles> GetAccountRoles(string id = null)
+		{
+			var result = await GetInformationObject<AccountRoles>(id);
+			return result;
+		}
+		public static async Task<PersonalInfoVisibility> GetPersonalInfoVisibility(string id = null)
+		{
+			var result = await GetInformationObject<PersonalInfoVisibility>(id);
+			return result;
+		}
+		public static async Task<ReferenceToInformation> GetReferenceToInformation(string id = null)
+		{
+			var result = await GetInformationObject<ReferenceToInformation>(id);
+			return result;
+		}
+		public static async Task<ReferenceCollection> GetReferenceCollection(string id = null)
+		{
+			var result = await GetInformationObject<ReferenceCollection>(id);
+			return result;
+		}
+		public static async Task<NodeSummaryContainer> GetNodeSummaryContainer(string id = null)
+		{
+			var result = await GetInformationObject<NodeSummaryContainer>(id);
+			return result;
+		}
+		public static async Task<RenderedNodeCollection> GetRenderedNodeCollection(string id = null)
+		{
+			var result = await GetInformationObject<RenderedNodeCollection>(id);
+			return result;
+		}
+		public static async Task<RenderedNode> GetRenderedNode(string id = null)
+		{
+			var result = await GetInformationObject<RenderedNode>(id);
+			return result;
+		}
+		public static async Task<ShortTextCollection> GetShortTextCollection(string id = null)
+		{
+			var result = await GetInformationObject<ShortTextCollection>(id);
+			return result;
+		}
+		public static async Task<ShortTextObject> GetShortTextObject(string id = null)
+		{
+			var result = await GetInformationObject<ShortTextObject>(id);
+			return result;
+		}
+		public static async Task<LongTextCollection> GetLongTextCollection(string id = null)
+		{
+			var result = await GetInformationObject<LongTextCollection>(id);
+			return result;
+		}
+		public static async Task<LongTextObject> GetLongTextObject(string id = null)
+		{
+			var result = await GetInformationObject<LongTextObject>(id);
+			return result;
+		}
+		public static async Task<MapMarker> GetMapMarker(string id = null)
+		{
+			var result = await GetInformationObject<MapMarker>(id);
+			return result;
+		}
+		public static async Task<MapMarkerCollection> GetMapMarkerCollection(string id = null)
+		{
+			var result = await GetInformationObject<MapMarkerCollection>(id);
+			return result;
+		}
+		public static async Task<ModeratorCollection> GetModeratorCollection(string id = null)
+		{
+			var result = await GetInformationObject<ModeratorCollection>(id);
+			return result;
+		}
+		public static async Task<Moderator> GetModerator(string id = null)
+		{
+			var result = await GetInformationObject<Moderator>(id);
+			return result;
+		}
+		public static async Task<CollaboratorCollection> GetCollaboratorCollection(string id = null)
+		{
+			var result = await GetInformationObject<CollaboratorCollection>(id);
+			return result;
+		}
+		public static async Task<Collaborator> GetCollaborator(string id = null)
+		{
+			var result = await GetInformationObject<Collaborator>(id);
+			return result;
+		}
+		public static async Task<GroupSummaryContainer> GetGroupSummaryContainer(string id = null)
+		{
+			var result = await GetInformationObject<GroupSummaryContainer>(id);
+			return result;
+		}
+		public static async Task<GroupContainer> GetGroupContainer(string id = null)
+		{
+			var result = await GetInformationObject<GroupContainer>(id);
+			return result;
+		}
+		public static async Task<GroupIndex> GetGroupIndex(string id = null)
+		{
+			var result = await GetInformationObject<GroupIndex>(id);
+			return result;
+		}
+		public static async Task<AddAddressAndLocationInfo> GetAddAddressAndLocationInfo(string id = null)
+		{
+			var result = await GetInformationObject<AddAddressAndLocationInfo>(id);
+			return result;
+		}
+		public static async Task<AddImageInfo> GetAddImageInfo(string id = null)
+		{
+			var result = await GetInformationObject<AddImageInfo>(id);
+			return result;
+		}
+		public static async Task<AddImageGroupInfo> GetAddImageGroupInfo(string id = null)
+		{
+			var result = await GetInformationObject<AddImageGroupInfo>(id);
+			return result;
+		}
+		public static async Task<AddEmailAddressInfo> GetAddEmailAddressInfo(string id = null)
+		{
+			var result = await GetInformationObject<AddEmailAddressInfo>(id);
+			return result;
+		}
+		public static async Task<CreateGroupInfo> GetCreateGroupInfo(string id = null)
+		{
+			var result = await GetInformationObject<CreateGroupInfo>(id);
+			return result;
+		}
+		public static async Task<AddActivityInfo> GetAddActivityInfo(string id = null)
+		{
+			var result = await GetInformationObject<AddActivityInfo>(id);
+			return result;
+		}
+		public static async Task<AddBlogPostInfo> GetAddBlogPostInfo(string id = null)
+		{
+			var result = await GetInformationObject<AddBlogPostInfo>(id);
+			return result;
+		}
+		public static async Task<AddCategoryInfo> GetAddCategoryInfo(string id = null)
+		{
+			var result = await GetInformationObject<AddCategoryInfo>(id);
+			return result;
+		}
+		public static async Task<GroupCollection> GetGroupCollection(string id = null)
+		{
+			var result = await GetInformationObject<GroupCollection>(id);
+			return result;
+		}
+		public static async Task<Group> GetGroup(string id = null)
+		{
+			var result = await GetInformationObject<Group>(id);
+			return result;
+		}
+		public static async Task<Introduction> GetIntroduction(string id = null)
+		{
+			var result = await GetInformationObject<Introduction>(id);
+			return result;
+		}
+		public static async Task<ContentCategoryRankCollection> GetContentCategoryRankCollection(string id = null)
+		{
+			var result = await GetInformationObject<ContentCategoryRankCollection>(id);
+			return result;
+		}
+		public static async Task<ContentCategoryRank> GetContentCategoryRank(string id = null)
+		{
+			var result = await GetInformationObject<ContentCategoryRank>(id);
+			return result;
+		}
+		public static async Task<LinkToContentCollection> GetLinkToContentCollection(string id = null)
+		{
+			var result = await GetInformationObject<LinkToContentCollection>(id);
+			return result;
+		}
+		public static async Task<LinkToContent> GetLinkToContent(string id = null)
+		{
+			var result = await GetInformationObject<LinkToContent>(id);
+			return result;
+		}
+		public static async Task<EmbeddedContentCollection> GetEmbeddedContentCollection(string id = null)
+		{
+			var result = await GetInformationObject<EmbeddedContentCollection>(id);
+			return result;
+		}
+		public static async Task<EmbeddedContent> GetEmbeddedContent(string id = null)
+		{
+			var result = await GetInformationObject<EmbeddedContent>(id);
+			return result;
+		}
+		public static async Task<DynamicContentGroupCollection> GetDynamicContentGroupCollection(string id = null)
+		{
+			var result = await GetInformationObject<DynamicContentGroupCollection>(id);
+			return result;
+		}
+		public static async Task<DynamicContentGroup> GetDynamicContentGroup(string id = null)
+		{
+			var result = await GetInformationObject<DynamicContentGroup>(id);
+			return result;
+		}
+		public static async Task<DynamicContentCollection> GetDynamicContentCollection(string id = null)
+		{
+			var result = await GetInformationObject<DynamicContentCollection>(id);
+			return result;
+		}
+		public static async Task<DynamicContent> GetDynamicContent(string id = null)
+		{
+			var result = await GetInformationObject<DynamicContent>(id);
+			return result;
+		}
+		public static async Task<AttachedToObjectCollection> GetAttachedToObjectCollection(string id = null)
+		{
+			var result = await GetInformationObject<AttachedToObjectCollection>(id);
+			return result;
+		}
+		public static async Task<AttachedToObject> GetAttachedToObject(string id = null)
+		{
+			var result = await GetInformationObject<AttachedToObject>(id);
+			return result;
+		}
+		public static async Task<CommentCollection> GetCommentCollection(string id = null)
+		{
+			var result = await GetInformationObject<CommentCollection>(id);
+			return result;
+		}
+		public static async Task<Comment> GetComment(string id = null)
+		{
+			var result = await GetInformationObject<Comment>(id);
+			return result;
+		}
+		public static async Task<SelectionCollection> GetSelectionCollection(string id = null)
+		{
+			var result = await GetInformationObject<SelectionCollection>(id);
+			return result;
+		}
+		public static async Task<Selection> GetSelection(string id = null)
+		{
+			var result = await GetInformationObject<Selection>(id);
+			return result;
+		}
+		public static async Task<TextContentCollection> GetTextContentCollection(string id = null)
+		{
+			var result = await GetInformationObject<TextContentCollection>(id);
+			return result;
+		}
+		public static async Task<TextContent> GetTextContent(string id = null)
+		{
+			var result = await GetInformationObject<TextContent>(id);
+			return result;
+		}
+		public static async Task<Map> GetMap(string id = null)
+		{
+			var result = await GetInformationObject<Map>(id);
+			return result;
+		}
+		public static async Task<MapCollection> GetMapCollection(string id = null)
+		{
+			var result = await GetInformationObject<MapCollection>(id);
+			return result;
+		}
+		public static async Task<MapResult> GetMapResult(string id = null)
+		{
+			var result = await GetInformationObject<MapResult>(id);
+			return result;
+		}
+		public static async Task<MapResultCollection> GetMapResultCollection(string id = null)
+		{
+			var result = await GetInformationObject<MapResultCollection>(id);
+			return result;
+		}
+		public static async Task<MapResultsCollection> GetMapResultsCollection(string id = null)
+		{
+			var result = await GetInformationObject<MapResultsCollection>(id);
+			return result;
+		}
+		public static async Task<Video> GetVideo(string id = null)
+		{
+			var result = await GetInformationObject<Video>(id);
+			return result;
+		}
+		public static async Task<ImageCollection> GetImageCollection(string id = null)
+		{
+			var result = await GetInformationObject<ImageCollection>(id);
+			return result;
+		}
+		public static async Task<Image> GetImage(string id = null)
+		{
+			var result = await GetInformationObject<Image>(id);
+			return result;
+		}
+		public static async Task<BinaryFileCollection> GetBinaryFileCollection(string id = null)
+		{
+			var result = await GetInformationObject<BinaryFileCollection>(id);
+			return result;
+		}
+		public static async Task<BinaryFile> GetBinaryFile(string id = null)
+		{
+			var result = await GetInformationObject<BinaryFile>(id);
+			return result;
+		}
+		public static async Task<MediaContent> GetMediaContent(string id = null)
+		{
+			var result = await GetInformationObject<MediaContent>(id);
+			return result;
+		}
+		public static async Task<Longitude> GetLongitude(string id = null)
+		{
+			var result = await GetInformationObject<Longitude>(id);
+			return result;
+		}
+		public static async Task<Latitude> GetLatitude(string id = null)
+		{
+			var result = await GetInformationObject<Latitude>(id);
+			return result;
+		}
+		public static async Task<Location> GetLocation(string id = null)
+		{
+			var result = await GetInformationObject<Location>(id);
+			return result;
+		}
+		public static async Task<LocationCollection> GetLocationCollection(string id = null)
+		{
+			var result = await GetInformationObject<LocationCollection>(id);
+			return result;
+		}
+		public static async Task<Date> GetDate(string id = null)
+		{
+			var result = await GetInformationObject<Date>(id);
+			return result;
+		}
+		public static async Task<CategoryContainer> GetCategoryContainer(string id = null)
+		{
+			var result = await GetInformationObject<CategoryContainer>(id);
+			return result;
+		}
+		public static async Task<Category> GetCategory(string id = null)
+		{
+			var result = await GetInformationObject<Category>(id);
+			return result;
+		}
+		public static async Task<CategoryCollection> GetCategoryCollection(string id = null)
+		{
+			var result = await GetInformationObject<CategoryCollection>(id);
+			return result;
+		}
+		public static async Task<UpdateWebContentOperation> GetUpdateWebContentOperation(string id = null)
+		{
+			var result = await GetInformationObject<UpdateWebContentOperation>(id);
+			return result;
+		}
+		public static async Task<UpdateWebContentHandlerItem> GetUpdateWebContentHandlerItem(string id = null)
+		{
+			var result = await GetInformationObject<UpdateWebContentHandlerItem>(id);
+			return result;
+		}
+		public static async Task<UpdateWebContentHandlerCollection> GetUpdateWebContentHandlerCollection(string id = null)
+		{
+			var result = await GetInformationObject<UpdateWebContentHandlerCollection>(id);
+			return result;
+		}
+		public static async Task<INT.CategoryChildRanking> GetCategoryChildRanking(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CategoryChildRanking>(id);
+			return result;
+		}
+		public static async Task<INT.RankingItem> GetRankingItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.RankingItem>(id);
+			return result;
+		}
+		public static async Task<INT.ParentToChildren> GetParentToChildren(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ParentToChildren>(id);
+			return result;
+		}
+	}
+#endregion
  } 

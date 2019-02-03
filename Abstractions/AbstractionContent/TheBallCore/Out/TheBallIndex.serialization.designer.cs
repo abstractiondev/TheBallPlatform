@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -288,4 +289,63 @@ namespace INT {
 			private double _unmodified_Rank;
 			
 			}
+	#region Operation Calls
+	public partial class Server 
+	{
+	    public delegate Task ExecuteOperationFunc(string operationName, object parameters = null);
+
+	    public static ExecuteOperationFunc ExecuteOperation;
+
+	    public delegate Task<object> GetObjectFunc(Type type, string id);
+
+	    public static GetObjectFunc GetInformationObjectImplementation;
+	    public static GetObjectFunc GetInterfaceObjectImplementation;
+
+
+        private static async Task<T> GetInformationObject<T>(string id)
+	    {
+	        Type type = typeof(T);
+	        var objResult = await GetInformationObjectImplementation(type, id);
+	        return (T) objResult;
+	    }
+
+	    private static async Task<T> GetInterfaceObject<T>(string id)
+	    {
+	        Type type = typeof(T);
+	        var objResult = await GetInterfaceObjectImplementation(type, id);
+	        return (T)objResult;
+	    }
+
+
+		public static async Task PerformUserQuery() 
+		{
+			await ExecuteOperation("TheBall.Index.PerformUserQuery");
+		}
+		public static async Task<IndexingRequest> GetIndexingRequest(string id = null)
+		{
+			var result = await GetInformationObject<IndexingRequest>(id);
+			return result;
+		}
+		public static async Task<QueryRequest> GetQueryRequest(string id = null)
+		{
+			var result = await GetInformationObject<QueryRequest>(id);
+			return result;
+		}
+		public static async Task<QueryResultItem> GetQueryResultItem(string id = null)
+		{
+			var result = await GetInformationObject<QueryResultItem>(id);
+			return result;
+		}
+		public static async Task<INT.UserQuery> GetUserQuery(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.UserQuery>(id);
+			return result;
+		}
+		public static async Task<INT.QueryToken> GetQueryToken(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.QueryToken>(id);
+			return result;
+		}
+	}
+#endregion
  } 

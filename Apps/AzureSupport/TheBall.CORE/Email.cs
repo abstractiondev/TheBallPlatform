@@ -1,6 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
+using static System.Net.WebUtility;
 
 namespace TheBall.CORE
 {
@@ -10,14 +12,14 @@ namespace TheBall.CORE
         {
             if (emailAddress == null)
                 return null;
-            return HttpUtility.UrlEncode(emailAddress.ToLower());
+            return UrlEncode(emailAddress.ToLower());
         }
 
         public static string GetEmailAddressFromID(string emailID)
         {
             if (emailID == null)
                 return null;
-            return HttpUtility.UrlDecode(emailID.ToLower());
+            return UrlDecode(emailID.ToLower());
         }
 
         AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
@@ -30,7 +32,7 @@ namespace TheBall.CORE
             return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
-        public void PerformBeforeStoreUpdate()
+        public async Task PerformBeforeStoreUpdate()
         {
             if (ValidationProcessExpiration == DateTime.MinValue)
                 ValidationProcessExpiration = DateTime.MinValue.ToUniversalTime();

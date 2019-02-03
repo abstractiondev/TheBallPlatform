@@ -113,7 +113,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="IndexingRequest" dataType="IndexingRequest" designDesc="Indexing request object for the ID" state="implemented">
+            <TargetDefinition name="IndexingRequest" dataType="IndexingRequest" designDesc="Indexing request object for the ID" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="Owner"/>
               <Parameter name="IndexingRequestID"/>
             </TargetDefinition>
@@ -127,7 +127,7 @@
               <Target name="IndexingRequest"/>
               <Target name="LuceneIndexFolder"/>
             </MethodExecute>
-            <MethodExecute name="DeleteIndexingRequest" designDesc="Delete associated indexing request" state="implemented">
+            <MethodExecute name="DeleteIndexingRequest" designDesc="Delete associated indexing request" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="IndexingRequest"/>
             </MethodExecute>
           </SequentialExecution>
@@ -145,7 +145,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="QueryRequest" dataType="QueryRequest" designDesc="Query request object for the ID" state="implemented">
+            <TargetDefinition name="QueryRequest" dataType="QueryRequest" designDesc="Query request object for the ID" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="Owner"/>
               <Parameter name="QueryRequestID"/>
             </TargetDefinition>
@@ -158,7 +158,7 @@
               <Target name="QueryRequest"/>
               <Target name="LuceneIndexFolder"/>
             </MethodExecute>
-            <MethodExecute name="SaveQueryRequest" designDesc="Save fullfilled query request" state="implemented">
+            <MethodExecute name="SaveQueryRequest" designDesc="Save fullfilled query request" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="QueryRequest"/>
             </MethodExecute>
           </SequentialExecution>

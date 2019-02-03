@@ -31,26 +31,30 @@ namespace TheBall.Payments
             return await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccount>(InformationContext.CurrentOwner, accountID);
         }
 
-        public static GroupSubscriptionPlan[] GetTarget_CurrentPlansBeforeSync(CustomerAccount account)
+        public static async Task<GroupSubscriptionPlan[]> GetTarget_CurrentPlansBeforeSyncAsync(CustomerAccount account)
         {
             var subscriptionPlanStatusIDs = account.ActivePlans;
+            var planStatusTasks = subscriptionPlanStatusIDs.Select(
+                planStatusID =>
+                    ObjectStorage.RetrieveFromOwnerContentA<SubscriptionPlanStatus>(InformationContext.CurrentOwner,
+                        planStatusID)).ToArray();
+            await Task.WhenAll(planStatusTasks);
+
             var planStatuses =
-                subscriptionPlanStatusIDs.Select(
-                    planStatusID =>
-                        ObjectStorage.RetrieveFromOwnerContent<SubscriptionPlanStatus>(InformationContext.CurrentOwner, planStatusID))
+                planStatusTasks.Select(task => task.Result)
                     .Where(status => status != null).ToArray();
             var plans = planStatuses.Select(planStatus => GetGroupSubscriptionPlan(planStatus.SubscriptionPlan)).ToArray();
             return plans;
         }
 
-        public static async Task<PlanStatus[]> GetTarget_ActivePlanStatusesFromStripeAsync(CustomerAccount account)
+        public static async Task<PlanStatus[]> GetTarget_ActivePlanStatusesFromStripeAsync(CustomerAccount account, bool isTestMode)
         {
-            StripeCustomerService customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
+            StripeCustomerService customerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
             StripeCustomer stripeCustomer = await customerService.GetAsync(account.StripeID);
             if (stripeCustomer == null)
                 return new PlanStatus[0];
             var stripeSubs =
-                stripeCustomer.StripeSubscriptionList.Data
+                stripeCustomer.Subscriptions.Data
                     .Select(stripeSub => new {Plan = stripeSub.StripePlan, Subscription = stripeSub})
                     .ToArray();
             var plans = stripeSubs.Select(stripeSub => new PlanStatus()
@@ -136,9 +140,14 @@ namespace TheBall.Payments
             var activePlanIDs = activePlansFromStripe.Select(plan => plan.PlanName).ToArray();
 
             var currentStatusIDs = account.ActivePlans;
+            var statusTasks = currentStatusIDs.Select(statusID =>
+                ObjectStorage.RetrieveFromOwnerContentA<SubscriptionPlanStatus>(InformationContext.CurrentOwner,
+                    statusID)).ToArray();
+
+            await Task.WhenAll(statusTasks);
+
             var currentStatuses =
-                currentStatusIDs.Select(
-                    statusID => ObjectStorage.RetrieveFromOwnerContent<SubscriptionPlanStatus>(InformationContext.CurrentOwner, statusID))
+                statusTasks.Select(task => task.Result)
                     .Where(status => status != null).ToArray();
             var statusesToRemove =
                 currentStatuses.Where(status => activePlanIDs.All(planID => planID != status.SubscriptionPlan))
@@ -147,7 +156,7 @@ namespace TheBall.Payments
                 activePlanIDs.Where(planID => currentStatuses.All(status => status.SubscriptionPlan != planID))
                     .ToArray();
             foreach (var status in statusesToRemove)
-                status.DeleteInformationObject(InformationContext.CurrentOwner);
+                await status.DeleteInformationObjectA(InformationContext.CurrentOwner);
             List<string> addedStatusIDs = new List<string>();
             foreach (var planToAddStatus in plansToAddStatusesFor)
             {
@@ -166,7 +175,7 @@ namespace TheBall.Payments
             return currentStatuses;
         }
 
-        public async static Task ExecuteMethod_UpdateStatusesOnAccountAsync(string accountID, PlanStatus[] activePlanStatusesFromStripe)
+        public static async Task ExecuteMethod_UpdateStatusesOnAccountAsync(string accountID, PlanStatus[] activePlanStatusesFromStripe)
         {
             // TODO: Sync to account InterfaceData
             string objectName = "TheBall.Interface/InterfaceData/CustomerActivePlans.json";
@@ -183,5 +192,9 @@ namespace TheBall.Payments
             }
         }
 
+        public static bool GetTarget_IsTestMode(CustomerAccount account)
+        {
+            return account.IsTestAccount;
+        }
     }
 }

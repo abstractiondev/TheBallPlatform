@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Operations codeNamespace="Footvoter.Services">
+    <Operation name="UpdateUserProfile">
+      <OperationSpec>
+        <Description>Updates user profile data</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="ProfileData" dataType="INT.UserProfile" designDesc="User profile data" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="UserProfile" asyncSupportMode="AsyncOnly" dataType="INT.UserProfile" designDesc="User profile" state="implemented" />
+          <MethodExecute name="SetUserProfileFields" designDesc="Set user profile fields" state="implemented">
+            <Parameter name="ProfileData" />
+            <Target name="UserProfile" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store processed object(s)" state="implemented">
+            <Target name="UserProfile" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="DoVote">
+      <OperationSpec>
+        <Description>Cancel account default plan at current period end</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="VoteData" dataType="INT.VoteData" designDesc="Vote data" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="UserVotedSummary" asyncSupportMode="AsyncOnly" dataType="INT.VotingSummary" designDesc="User voting data" state="implemented" />
+          <MethodExecute name="PerformVoting" designDesc="Perform voting with votedata applied to user voting data" state="implemented">
+            <Parameter name="VoteData" />
+            <Target name="UserVotedSummary" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store processed object(s)" state="implemented">
+            <Target name="UserVotedSummary" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="SetCompanyFollow">
+      <OperationSpec>
+        <Description>Set company following data</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="FollowDataInput" dataType="INT.CompanyFollowData" designDesc="Company follow data" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="FollowData" asyncSupportMode="AsyncOnly" dataType="INT.CompanyFollowData" designDesc="Company follow data" state="implemented" />
+          <MethodExecute name="SetCompanyFollowData" designDesc="Set company follow data from input" state="implemented">
+            <Parameter name="FollowDataInput" />
+            <Target name="FollowData" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store processed object(s)" state="implemented">
+            <Target name="FollowData" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="GetCompanies">
+      <OperationSpec>
+        <Description>Get companies by seach terms</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="CompanySearchCriteria" dataType="INT.CompanySearchCriteria" designDesc="Company search criteria" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="PerformSearch" asyncSupportMode="AsyncOnly" designDesc="Perform search for companies based on criteria" state="implemented">
+            <Parameter name="CompanySearchCriteria" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+  </Operations>
+</OperationAbstraction>

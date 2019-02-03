@@ -2,14 +2,15 @@
 
 
 using DOM=TheBall.Interface;
+using System.Threading.Tasks;
 
 namespace TheBall.CORE {
 	public static partial class OwnerInitializer
 	{
-		private static void DOMAININIT_TheBall_Interface(IContainerOwner owner)
+		private static async Task DOMAININIT_TheBall_Interface(IContainerOwner owner)
 		{
-			DOM.DomainInformationSupport.EnsureMasterCollections(owner);
-			DOM.DomainInformationSupport.RefreshMasterCollections(owner);
+			await DOM.DomainInformationSupport.EnsureMasterCollections(owner);
+			await DOM.DomainInformationSupport.RefreshMasterCollections(owner);
 		}
 	}
 }
@@ -27,8 +28,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
 using TheBall.CORE;
-
-
+using TheBall.CORE.Storage;
 
 namespace INT { 
 					[DataContract]
@@ -236,47 +236,47 @@ namespace INT {
 
  } 		public static class DomainInformationSupport
 		{
-            public static void EnsureMasterCollections(IContainerOwner owner)
+            public static async Task EnsureMasterCollections(IContainerOwner owner)
             {
                 {
-                    var masterCollection = ConnectionCollection.GetMasterCollectionInstance(owner);
+                    var masterCollection = await ConnectionCollection.GetMasterCollectionInstanceAsync(owner);
                     if(masterCollection == null)
                     {
                         masterCollection = ConnectionCollection.CreateDefault();
                         masterCollection.RelativeLocation =
                             ConnectionCollection.GetMasterCollectionLocation(owner);
-                        StorageSupport.StoreInformation(masterCollection, owner);
+                        await StorageSupport.StoreInformationAsync(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
                 }
                 {
-                    var masterCollection = GenericObjectCollection.GetMasterCollectionInstance(owner);
+                    var masterCollection = await GenericObjectCollection.GetMasterCollectionInstanceAsync(owner);
                     if(masterCollection == null)
                     {
                         masterCollection = GenericObjectCollection.CreateDefault();
                         masterCollection.RelativeLocation =
                             GenericObjectCollection.GetMasterCollectionLocation(owner);
-                        StorageSupport.StoreInformation(masterCollection, owner);
+                        await StorageSupport.StoreInformationAsync(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
                 }
             }
 
-            public static void RefreshMasterCollections(IContainerOwner owner)
+            public static async Task RefreshMasterCollections(IContainerOwner owner)
             {
                 {
-                    IInformationCollection masterCollection = ConnectionCollection.GetMasterCollectionInstance(owner);
+                    IInformationCollection masterCollection = await ConnectionCollection.GetMasterCollectionInstanceAsync(owner);
                     if (masterCollection == null)
                         throw new InvalidDataException("Master collection ConnectionCollection missing for owner");
-                    masterCollection.RefreshContent();
-                    StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
+                    await masterCollection.RefreshContentAsync();
+                    await StorageSupport.StoreInformationAsync((IInformationObject) masterCollection, owner);
                 }
                 {
-                    IInformationCollection masterCollection = GenericObjectCollection.GetMasterCollectionInstance(owner);
+                    IInformationCollection masterCollection = await GenericObjectCollection.GetMasterCollectionInstanceAsync(owner);
                     if (masterCollection == null)
                         throw new InvalidDataException("Master collection GenericObjectCollection missing for owner");
-                    masterCollection.RefreshContent();
-                    StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
+                    await masterCollection.RefreshContentAsync();
+                    await StorageSupport.StoreInformationAsync((IInformationObject) masterCollection, owner);
                 }
             }
 		}
@@ -299,17 +299,17 @@ namespace INT {
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/InterfaceOperation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InterfaceOperation), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(InterfaceOperation), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -321,30 +321,31 @@ namespace INT {
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InterfaceOperation>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InterfaceOperation");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InterfaceOperation), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InterfaceOperation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -352,18 +353,24 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/InterfaceOperation/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -389,8 +396,9 @@ namespace INT {
                             continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
+						throw new NotSupportedException("Fix dynamic call");
+                        //dynamic dyn = targetObject;
+                        //dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
 
@@ -542,14 +550,14 @@ InterfaceOperation.ErrorMessage
 					//string typeName = collType.Name;
 				}
 
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                public async Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
 					if(targetObject == this)
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                    await targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
 
@@ -731,17 +739,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/ConnectionCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(ConnectionCollection), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(ConnectionCollection), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -753,30 +761,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ConnectionCollection>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ConnectionCollection");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ConnectionCollection), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ConnectionCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -784,18 +793,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/ConnectionCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -821,8 +836,9 @@ InterfaceOperation.ErrorMessage
                             continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
+						throw new NotSupportedException("Fix dynamic call");
+                        //dynamic dyn = targetObject;
+                        //dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
 
@@ -959,10 +975,10 @@ InterfaceOperation.ErrorMessage
 					
 				}
 
-				IInformationCollection IInformationCollection.GetMasterInstance()
+				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
 					var owner = VirtualOwner.FigureOwner(this);
-					return GetMasterCollectionInstance(owner);
+					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
 
@@ -976,11 +992,11 @@ InterfaceOperation.ErrorMessage
 					return ownerDirectoryLocation;
 				}
 
-				public void RefreshContent()
+				public async Task RefreshContentAsync()
 				{
 					// DirectoryToMaster
 					string itemDirectory = GetItemDirectory();
-					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
+					IInformationObject[] informationObjects = await StorageSupport.RetrieveInformationObjectsAsync(itemDirectory,
 																								 typeof(Connection));
                     Array.ForEach(informationObjects, io => io.MasterETag = io.ETag);
 					CollectionContent.Clear();
@@ -988,9 +1004,9 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				public static ConnectionCollection GetMasterCollectionInstance(IContainerOwner owner)
+				public static async Task<ConnectionCollection> GetMasterCollectionInstanceAsync(IContainerOwner owner)
 				{
-					return ObjectStorage.RetrieveFromOwnerContent<ConnectionCollection>(owner, "MasterCollection");
+					return await ObjectStorage.RetrieveFromOwnerContentA<ConnectionCollection>(owner, "MasterCollection");
 				}
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
@@ -999,14 +1015,14 @@ InterfaceOperation.ErrorMessage
 
 
 
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                public async Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
 					if(targetObject == this)
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                    await targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
 				
@@ -1214,17 +1230,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/Connection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Connection), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(Connection), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -1236,30 +1252,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Connection>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Connection");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Connection), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Connection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -1267,18 +1284,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/Connection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1401,7 +1424,7 @@ InterfaceOperation.ErrorMessage
 				}
 
 			
-                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                Task IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
 					// Remove exception if some basic functionality is broken due to it
 					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
@@ -1538,17 +1561,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/TransferPackage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(TransferPackage), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(TransferPackage), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -1560,30 +1583,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TransferPackage>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TransferPackage");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TransferPackage), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TransferPackage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -1591,18 +1615,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/TransferPackage/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1725,7 +1755,7 @@ InterfaceOperation.ErrorMessage
 				}
 
 			
-                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                Task IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
 					// Remove exception if some basic functionality is broken due to it
 					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
@@ -1815,17 +1845,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/CategoryLink/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CategoryLink), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(CategoryLink), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -1837,30 +1867,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CategoryLink>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryLink");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CategoryLink), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CategoryLink), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -1868,18 +1899,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/CategoryLink/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1905,8 +1942,9 @@ InterfaceOperation.ErrorMessage
                             continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
+						throw new NotSupportedException("Fix dynamic call");
+                        //dynamic dyn = targetObject;
+                        //dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
 
@@ -2049,14 +2087,14 @@ InterfaceOperation.ErrorMessage
 					//string typeName = collType.Name;
 				}
 
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                public async Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
 					if(targetObject == this)
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                    await targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
 
@@ -2178,17 +2216,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/Category/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Category), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(Category), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -2200,30 +2238,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Category>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Category");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Category), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Category), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -2231,18 +2270,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/Category/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -2268,8 +2313,9 @@ InterfaceOperation.ErrorMessage
                             continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
+						throw new NotSupportedException("Fix dynamic call");
+                        //dynamic dyn = targetObject;
+                        //dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
 
@@ -2418,14 +2464,14 @@ InterfaceOperation.ErrorMessage
 					//string typeName = collType.Name;
 				}
 
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                public async Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
 					if(targetObject == this)
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                    await targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
 
@@ -2577,17 +2623,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/StatusSummary/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(StatusSummary), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(StatusSummary), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -2599,30 +2645,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<StatusSummary>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StatusSummary");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(StatusSummary), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(StatusSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -2630,18 +2677,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/StatusSummary/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -2764,7 +2817,7 @@ InterfaceOperation.ErrorMessage
 				}
 
 			
-                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                Task IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
 					// Remove exception if some basic functionality is broken due to it
 					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
@@ -2836,17 +2889,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/InformationChangeItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InformationChangeItem), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(InformationChangeItem), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -2858,30 +2911,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationChangeItem>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationChangeItem");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationChangeItem), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InformationChangeItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -2889,18 +2943,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/InformationChangeItem/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -3023,7 +3083,7 @@ InterfaceOperation.ErrorMessage
 				}
 
 			
-                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                Task IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
 					// Remove exception if some basic functionality is broken due to it
 					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
@@ -3101,17 +3161,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/OperationExecutionItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(OperationExecutionItem), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(OperationExecutionItem), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -3123,30 +3183,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<OperationExecutionItem>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: OperationExecutionItem");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OperationExecutionItem), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(OperationExecutionItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -3154,18 +3215,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/OperationExecutionItem/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -3191,8 +3258,9 @@ InterfaceOperation.ErrorMessage
                             continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
+						throw new NotSupportedException("Fix dynamic call");
+                        //dynamic dyn = targetObject;
+                        //dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
 
@@ -3339,14 +3407,14 @@ InterfaceOperation.ErrorMessage
 					//string typeName = collType.Name;
 				}
 
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                public async Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
 					if(targetObject == this)
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                    await targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
 
@@ -3518,17 +3586,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/GenericObjectCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(GenericObjectCollection), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(GenericObjectCollection), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -3540,30 +3608,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GenericObjectCollection>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GenericObjectCollection");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GenericObjectCollection), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GenericObjectCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -3571,18 +3640,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/GenericObjectCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -3608,8 +3683,9 @@ InterfaceOperation.ErrorMessage
                             continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
+						throw new NotSupportedException("Fix dynamic call");
+                        //dynamic dyn = targetObject;
+                        //dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
 
@@ -3746,10 +3822,10 @@ InterfaceOperation.ErrorMessage
 					
 				}
 
-				IInformationCollection IInformationCollection.GetMasterInstance()
+				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
 					var owner = VirtualOwner.FigureOwner(this);
-					return GetMasterCollectionInstance(owner);
+					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
 
@@ -3763,11 +3839,11 @@ InterfaceOperation.ErrorMessage
 					return ownerDirectoryLocation;
 				}
 
-				public void RefreshContent()
+				public async Task RefreshContentAsync()
 				{
 					// DirectoryToMaster
 					string itemDirectory = GetItemDirectory();
-					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
+					IInformationObject[] informationObjects = await StorageSupport.RetrieveInformationObjectsAsync(itemDirectory,
 																								 typeof(GenericCollectionableObject));
                     Array.ForEach(informationObjects, io => io.MasterETag = io.ETag);
 					CollectionContent.Clear();
@@ -3775,9 +3851,9 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				public static GenericObjectCollection GetMasterCollectionInstance(IContainerOwner owner)
+				public static async Task<GenericObjectCollection> GetMasterCollectionInstanceAsync(IContainerOwner owner)
 				{
-					return ObjectStorage.RetrieveFromOwnerContent<GenericObjectCollection>(owner, "MasterCollection");
+					return await ObjectStorage.RetrieveFromOwnerContentA<GenericObjectCollection>(owner, "MasterCollection");
 				}
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
@@ -3786,14 +3862,14 @@ InterfaceOperation.ErrorMessage
 
 
 
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                public async Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
 					if(targetObject == this)
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                    await targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
 				
@@ -4001,17 +4077,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/GenericCollectionableObject/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(GenericCollectionableObject), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(GenericCollectionableObject), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -4023,30 +4099,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GenericCollectionableObject>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GenericCollectionableObject");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GenericCollectionableObject), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GenericCollectionableObject), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -4054,18 +4131,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/GenericCollectionableObject/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -4091,8 +4174,9 @@ InterfaceOperation.ErrorMessage
                             continue;
                         string propertyName = key.Substring(indexOfUnderscore + 1);
                         string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
+						throw new NotSupportedException("Fix dynamic call");
+                        //dynamic dyn = targetObject;
+                        //dyn.ParsePropertyValue(propertyName, propertyValue);
                     }
 			    }
 
@@ -4215,14 +4299,14 @@ InterfaceOperation.ErrorMessage
 
 				}
 
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                public async Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
                     IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
                     if (targetObject == null)
                         return;
 					if(targetObject == this)
 						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                    await targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
                 }
 
 
@@ -4363,17 +4447,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/GenericObject/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(GenericObject), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(GenericObject), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -4385,30 +4469,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GenericObject>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GenericObject");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GenericObject), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GenericObject), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -4416,18 +4501,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/GenericObject/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -4550,7 +4641,7 @@ InterfaceOperation.ErrorMessage
 				}
 
 			
-                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                Task IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
 					// Remove exception if some basic functionality is broken due to it
 					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
@@ -4625,17 +4716,17 @@ InterfaceOperation.ErrorMessage
 					UpdateRelativeLocationFromID();
 				}
 
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/GenericValue/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(GenericValue), null, owner);
+						IInformationObject informationObject = await StorageSupport.RetrieveInformationA(blob.Name, typeof(GenericValue), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -4647,30 +4738,31 @@ InterfaceOperation.ErrorMessage
 					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GenericValue>(ID);
 				}
 
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
+					bool initiated = false;
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GenericValue");
 					initiated = false;
 					var owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GenericValue), null, owner);
+					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GenericValue), null, owner);
 					if(master == null && initiateIfMissing)
 					{
-						StorageSupport.StoreInformation(this, owner);
+						await StorageSupport.StoreInformationAsync(this, owner);
 						master = this;
 						initiated = true;
 					}
 					return master;
 				}
 
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				/*
+				async Task<IInformationObject> IInformationObject.RetrieveMasterAsync(bool initiateIfMissing)
 				{
 					bool initiated;
 					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
+					return await iObject.RetrieveMasterAsync(initiateIfMissing, out initiated);
+				}*/
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
@@ -4678,18 +4770,24 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/GenericValue/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -4812,7 +4910,7 @@ InterfaceOperation.ErrorMessage
 				}
 
 			
-                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                Task IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
                 {
 					// Remove exception if some basic functionality is broken due to it
 					throw new NotImplementedException("Collection items do not support instance tree queries as of now");

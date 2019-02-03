@@ -19,8 +19,9 @@ namespace TheBall.CORE
 
         public static CloudBlockBlob[] GetTarget_CurrentMonitoringItems(IContainerOwner owner)
         {
-            var cloudBlockBlobs =
-                owner.ListBlobsWithPrefix("TheBall.CORE/UsageMonitorItem/").Cast<CloudBlockBlob>().ToArray();
+            throw new NotImplementedException();
+            CloudBlockBlob[] cloudBlockBlobs = null;
+                //owner.ListBlobsWithPrefix("TheBall.CORE/UsageMonitorItem/").Cast<CloudBlockBlob>().ToArray();
             return cloudBlockBlobs;
         }
 
@@ -59,7 +60,9 @@ namespace TheBall.CORE
                 getTimeRangeFromBlobName(blob.Name, out startTime, out endTime);
                 if (startTime >= endingTimeOfNewItems)
                     break;
-                RequestResourceUsageCollection resourceCollection = (RequestResourceUsageCollection)StorageSupport.RetrieveInformation(blob.Name, type);
+                RequestResourceUsageCollection resourceCollection = null;
+                throw new NotImplementedException();
+                    //(RequestResourceUsageCollection)StorageSupport.RetrieveInformation(blob.Name, type);
                 includedItems.Add(resourceCollection);
             }
             return includedItems.ToArray();
@@ -153,8 +156,9 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_StoreObjects(UsageMonitorItem[] newMonitoringItems)
         {
-            foreach (var monitoringItem in newMonitoringItems)
-                monitoringItem.StoreInformation();
+            throw new NotImplementedException();
+            //foreach (var monitoringItem in newMonitoringItems)
+            //    monitoringItem.StoreInformation();
         }
 
         public static DateTime GetTarget_EndingTimeOfCurrentItems(CloudBlockBlob[] currentMonitoringItems)
@@ -170,6 +174,8 @@ namespace TheBall.CORE
 
         public static CloudBlockBlob[] GetTarget_NewResourceUsageBlobs(IContainerOwner owner, DateTime endingTimeOfCurrentItems)
         {
+            throw new NotImplementedException();
+            /*
             var newBlobs = owner.ListBlobsWithPrefix("TheBall.CORE/RequestResourceUsageCollection/").Cast<CloudBlockBlob>()
                                 .Where(blob =>
                                     {
@@ -179,7 +185,7 @@ namespace TheBall.CORE
                                         return startTime > endingTimeOfCurrentItems;
                                     }).ToArray();
             return newBlobs;
-
+            */
         }
 
         public static DateTime GetTarget_StartingTimeOfNewItems(int monitoringItemTimeSpanInMinutes, DateTime endingTimeOfCurrentItems, CloudBlockBlob[] newResourceUsageBlobs)

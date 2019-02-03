@@ -384,7 +384,7 @@ namespace TheBall.Support.DeviceClient
         }
 
 
-        public static async Task StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount, bool useVirtualFS, object sqlitePlatform = null)
+        public static async Task StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount, bool useVirtualFS, string fsRoot = null)
         {
             if(useVirtualFS && !getFullAccount)
                 throw new NotSupportedException("VirtualFS is only supported on getFA option");
@@ -407,7 +407,7 @@ namespace TheBall.Support.DeviceClient
                 {
                     if (useVirtualFS)
                     {
-                        await SQLiteFS.InitializeSQLiteFS(sqlitePlatform, connectionName);
+                        await SQLiteFS.InitializeSQLiteFS(fsRoot, connectionName);
                         LocalTargetContentWriteFinalizer = VirtualTargetContentWriteFinalizer;
                         LocalContentItemRetriever = VirtualContentItemRetriever;
                         LocalTargetRemover = VirtualTargetRemover;

@@ -17,6 +17,7 @@ using AzureSupport;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.File;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 using TheBall.CORE;
@@ -62,11 +63,11 @@ namespace TheBall
             }
         }
 
-        public static byte[] DownloadByteArray(this CloudBlockBlob blob)
+        public static async Task<byte[]> DownloadByteArrayAsync(this CloudFile file)
         {
             using (var memStream = new MemoryStream())
             {
-                blob.DownloadToStream(memStream);
+                await file.DownloadToStreamAsync(memStream);
                 return memStream.ToArray();
             }
         }
@@ -78,11 +79,6 @@ namespace TheBall
                 await blob.DownloadToStreamAsync(memStream);
                 return memStream.ToArray();
             }
-        }
-
-        public static void UploadByteArray(this CloudBlockBlob blob, byte[] data)
-        {
-            blob.UploadFromByteArray(data, 0, data.Length);
         }
 
         public static CloudBlobContainer CurrActiveContainer
@@ -130,27 +126,22 @@ namespace TheBall
             //return blob.Attributes.Metadata[InformationTypeKey];
         }
 
+        public static string GetBlobInformationType(this BlobStorageItem blob)
+        {
+            //FetchMetadataIfMissing(blob);
+            if (Path.HasExtension(blob.Name) && !blob.Name.EndsWith(".pending"))
+                return InformationType_GenericContentValue;
+            if (blob.Name.Contains("/AaltoGlobalImpact.OIP/MediaContent/"))
+                return InformationType_GenericContentValue;
+            return InformationType_InformationObjectValue;
+            //return blob.Attributes.Metadata[InformationTypeKey];
+        }
+
         public static string GetBlobInformationObjectType(this CloudBlockBlob blob)
         {
             return InformationObjectSupport.GetInformationObjectType(blob.Name);
         }
 
-
-        public static string DownloadBlobText(this CloudBlobContainer container,
-            string blobPath, bool returnNullIfMissing = false)
-        {
-            try
-            {
-                var blob = container.GetBlockBlobReference(blobPath);
-                return blob.DownloadText();
-            }
-            catch (StorageException stEx)
-            {
-                if (returnNullIfMissing && stEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
-                    return null;
-                throw;
-            }
-        }
 
         public static async Task<byte[]> DownloadBlobByteArrayAsync(string blobPath, bool returnNullIfMissing = false, IContainerOwner dedicatedOwner = null)
         {
@@ -173,35 +164,11 @@ namespace TheBall
             }
         }
 
-        public static byte[] DownloadBlobBinary(this CloudBlobContainer container, string blobPath, bool returnNullIfMissing = false)
-        {
-            try
-            {
-                var blob = container.GetBlockBlobReference(blobPath);
-                return blob.DownloadByteArray();
-            }
-            catch (StorageException stEx)
-            {
-                if (returnNullIfMissing && stEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
-                    return null;
-                throw;
-            }
-        }
-
-
         public static async Task<CloudBlockBlob> UploadBlobTextAsync(this CloudBlobContainer container,
             string blobPath, string textContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
             await UploadBlobTextAsync(blob, textContent);
-            return blob;
-        }
-
-        public static CloudBlockBlob UploadBlobText(this CloudBlobContainer container,
-            string blobPath, string textContent)
-        {
-            var blob = container.GetBlockBlobReference(blobPath);
-            UploadBlobText(blob, textContent);
             return blob;
         }
 
@@ -215,33 +182,6 @@ namespace TheBall
         }
 
 
-        public static void UploadBlobText(this CloudBlockBlob blob, string textContent, bool requireNonExistentBlob = false)
-        {
-            blob.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
-            BlobRequestOptions options = new BlobRequestOptions();
-            options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10);
-            var accessCondition = requireNonExistentBlob ? AccessCondition.GenerateIfNoneMatchCondition("*") : null;
-            blob.UploadText(textContent, Encoding.UTF8, accessCondition, options);
-        }
-
-        public static void DeleteBlob(this CloudBlockBlob blob, string requiredETag = null)
-        {
-            BlobRequestOptions options = new BlobRequestOptions
-            {
-                RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10)
-            };
-            var accessCondition = requiredETag != null ? AccessCondition.GenerateIfMatchCondition(requiredETag) : null;
-            blob.DeleteIfExists(DeleteSnapshotsOption.None, accessCondition, options);
-        }
-
-        public static void UploadBlobBinary(this CloudBlobContainer container, string blobPath, byte[] binaryContent)
-        {
-            var blob = container.GetBlockBlobReference(blobPath);
-            blob.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
-            blob.UploadByteArray(binaryContent);
-            InformationContext.AddStorageTransactionToCurrent();
-        }
-
         public static async Task<CloudBlockBlob> UploadBlobBinaryAsync(this CloudBlobContainer container, string blobPath, byte[] binaryContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
@@ -251,12 +191,12 @@ namespace TheBall
             return blob;
         }
 
-        public static void UploadBlobStream(this CloudBlobContainer container,
+        public static async Task UploadBlobStreamAsync(this CloudBlobContainer container,
     string blobPath, Stream streamContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
             blob.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
-            blob.UploadFromStream(streamContent);
+            await blob.UploadFromStreamAsync(streamContent);
             InformationContext.AddStorageTransactionToCurrent();
         }
 
@@ -857,7 +797,7 @@ namespace TheBall
             }
         }
 
-        public static void ReconnectMastersAndCollections(this IInformationObject informationObject, bool updateContents)
+        public static async Task ReconnectMastersAndCollectionsAsync(this IInformationObject informationObject, bool updateContents)
         {
             var owner = VirtualOwner.FigureOwner(informationObject);
             if (updateContents)
@@ -882,7 +822,7 @@ namespace TheBall
                 if (referenceMaster == informationObject)
                     continue;
                 FixOwnerLocation(referenceMaster, owner);
-                var realMaster = referenceMaster.RetrieveMaster(true);
+                var realMaster = await referenceMaster.RetrieveMasterAsync(true);
                 if (updateContents)
                 {
                     if (referenceMaster.MasterETag != realMaster.ETag)
@@ -904,65 +844,18 @@ namespace TheBall
                     continue;
                 if(updateContents)
                 {
-                    var masterInstance = referringCollection.GetMasterInstance();
+                    var masterInstance = await referringCollection.GetMasterInstanceAsync();
                     informationObject.UpdateCollections(masterInstance: masterInstance);
                 }
             }
             if (updateContents)
-                StoreInformation(informationObject);
+                await StoreInformationAsync(informationObject);
         }
 
         public static void FixOwnerLocation(IInformationObject informationObject, IContainerOwner owner)
         {
             string ownerLocation = GetOwnerContentLocation(owner, informationObject.RelativeLocation);
             informationObject.RelativeLocation = ownerLocation;
-        }
-
-        [Obsolete("Not relevant", true)]
-        public static CloudBlockBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndCollections, bool overwriteIfExists = false)
-        {
-            IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
-            if(beforeStoreHandler != null)
-                beforeStoreHandler.PerformBeforeStoreUpdate();
-            Dictionary<string, List<IInformationObject>> modifiedMasters =
-                informationObject.CollectMasterObjects(candidate => candidate.IsInstanceTreeModified);
-            foreach (var key in modifiedMasters.Keys)
-            {
-                var masters = modifiedMasters[key];
-                bool masterSaving = masters.Contains(informationObject);
-                if (masterSaving)
-                    continue;
-                var referenceInstance = modifiedMasters[key].First(); // We take first changed, even though there would be several
-                if (referenceInstance == informationObject) // Don't master-manage the currently being saved object
-                    continue;
-                FixOwnerLocation(referenceInstance, owner);
-                // TODO: 
-                bool masterDidNotExist;
-                var realMaster = referenceInstance.RetrieveMaster(true, out masterDidNotExist);
-                // Compare MasterEtag for reference vs master - throw Exception on mismatch
-                if(masterDidNotExist == false)
-                {
-                    if (referenceInstance.MasterETag != realMaster.ETag)
-                    {
-                        WorkerSupport.UpdateContainerFromMaster(informationObject.RelativeLocation, informationObject.GetType().FullName,
-                            realMaster.RelativeLocation, realMaster.GetType().FullName);
-                        throw new ReferenceOutdatedException(containerObject: informationObject, referenceInstance: referenceInstance, masterInstance: realMaster);
-                    }
-                    IBeforeStoreHandler referenceStoreHandler = referenceInstance as IBeforeStoreHandler;
-                    if(referenceStoreHandler != null)
-                        referenceStoreHandler.PerformBeforeStoreUpdate();
-                    // Update and store real master, get the up-to-date ETag for reference
-                    realMaster.UpdateMasterValueTreeFromOtherInstance(referenceInstance);
-                    StorageSupport.StoreInformation(realMaster, owner);
-                }
-                referenceInstance.MasterETag = realMaster.ETag;
-            }
-            CloudBlockBlob storedResult = StoreInformation(informationObject, owner, overwriteIfExists);
-            if(reconnectMastersAndCollections)
-            {
-                informationObject.ReconnectMastersAndCollections(true);
-            }
-            return storedResult;
         }
 
         public static async Task<CloudBlockBlob> StoreInformationAsync(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
@@ -1008,60 +901,6 @@ namespace TheBall
         }
 
 
-        public static CloudBlockBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
-        {
-            string location = owner != null
-                                  ? GetOwnerContentLocation(owner, informationObject.RelativeLocation)
-                                  : informationObject.RelativeLocation;
-            // Updating the relative location just in case - as there shouldn't be a mismatch - critical for master objects
-            informationObject.RelativeLocation = location;
-            var beforeStoreHandler = informationObject as IBeforeStoreHandler;
-            beforeStoreHandler?.PerformBeforeStoreUpdate();
-
-            var dataContent = SerializeInformationObjectToBuffer(informationObject);
-            //memoryStream.Seek(0, SeekOrigin.Begin);
-            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(location);
-            string etag = informationObject.ETag;
-            bool isNewBlob = etag == null;
-            AccessCondition accessCondition = null;
-            if (!overwriteIfExists)
-            {
-                
-                if (etag != null)
-                    accessCondition = AccessCondition.GenerateIfMatchCondition(etag);
-                else
-                    accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
-            }
-            //blob.SetBlobInformationObjectType(informationObjectType.FullName);
-            blob.UploadFromByteArray(dataContent, 0, dataContent.Length, accessCondition);
-            InformationContext.AddStorageTransactionToCurrent();
-            informationObject.ETag = blob.Properties.ETag;
-            IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
-            if(additionalFormatProvider != null)
-            {
-                var additionalContentToStore = additionalFormatProvider.GetAdditionalContentToStore(informationObject.ETag);
-                foreach(var additionalContent in additionalContentToStore)
-                {
-                    string contentLocation = blob.Name + "." + additionalContent.Extension;
-                    CurrActiveContainer.UploadBlobBinary(contentLocation, additionalContent.Content);
-                    InformationContext.AddStorageTransactionToCurrent();
-                }
-            }
-            informationObject.PostStoringExecute(owner);
-            Debug.WriteLine(String.Format("Wrote: {0} ID {1}", informationObject.GetType().Name,
-                informationObject.ID));
-            InformationContext.Current.ObjectStoredNotification(informationObject, 
-                isNewBlob ? InformationContext.ObjectChangeType.N_New : InformationContext.ObjectChangeType.M_Modified);
-            return blob;
-        }
-
-
-        public static IInformationObject RetrieveInformation(string relativeLocation, string eTag, IContainerOwner owner)
-        {
-            string typeName = resolveTypeNameFromRelativeLocation(relativeLocation);
-            return RetrieveInformation(relativeLocation, typeName, eTag, owner);
-        }
-
         private static string resolveTypeNameFromRelativeLocation(string relativeLocation)
         {
             string[] partsOfLocation = relativeLocation.Split('/');
@@ -1069,33 +908,10 @@ namespace TheBall
             return partsOfLocation[2] + "." + partsOfLocation[3];
         }
 
-        public static IInformationObject RetrieveInformation(string relativeLocation, string typeName, string eTag = null, IContainerOwner owner = null)
-        {
-            Type type = Assembly.GetExecutingAssembly().GetType(typeName);
-            if(type == null)
-                throw new InvalidDataException("Type not found: " + typeName);
-            return RetrieveInformation(relativeLocation, type, eTag, owner);
-        }
-
-        public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, string typeName, out CloudBlockBlob blob, string eTag = null, IContainerOwner owner = null)
-        {
-            Type type = Assembly.GetExecutingAssembly().GetType(typeName);
-            if (type == null)
-                throw new InvalidDataException("Type not found: " + typeName);
-            return RetrieveInformationWithBlob(relativeLocation, type, out blob, eTag, owner);
-        }
-
-
         public static async Task<IInformationObject> RetrieveInformationA(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
         {
             var result = await RetrieveInformationWithBlobA(relativeLocation, typeToRetrieve, eTag, owner);
             return result?.Item1;
-        }
-
-        public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
-        {
-            CloudBlockBlob blob;
-            return RetrieveInformationWithBlob(relativeLocation, typeToRetrieve, out blob, eTag, owner);
         }
 
         public static async Task<Tuple<IInformationObject, CloudBlockBlob>> RetrieveInformationWithBlobA(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
@@ -1131,16 +947,16 @@ namespace TheBall
         }
 
 
-        public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, Type typeToRetrieve, out CloudBlockBlob blob, string eTag = null, IContainerOwner owner = null)
+        public static async Task<Tuple<IInformationObject, CloudBlockBlob>> RetrieveInformationWithBlobAsync(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
         {
             if (owner != null)
                 relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
-            blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
+            var blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
             MemoryStream memoryStream = new MemoryStream();
             string blobEtag = null;
             try
             {
-                blob.DownloadToStream(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null);
+                await blob.DownloadToStreamAsync(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, null, null);
                 InformationContext.AddStorageTransactionToCurrent();
                 blobEtag = blob.Properties.ETag;
             }
@@ -1160,7 +976,7 @@ namespace TheBall
             informationObject.SetInstanceTreeValuesAsUnmodified();
             Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
                 informationObject.ID));
-            return informationObject;
+            return new Tuple<IInformationObject, CloudBlockBlob>(informationObject, blob);
         }
 
         private static IInformationObject DeserializeInformationObjectFromStream(Type typeToRetrieve, MemoryStream memoryStream)
@@ -1250,28 +1066,9 @@ namespace TheBall
             return (StorageSerializationType) propValue;
         }
 
-        public static IInformationObject[] RetrieveInformationObjects(string itemDirectory, Type type)
-        {
-            var result =
-                CurrActiveContainer.GetInformationObjects(itemDirectory, null,  iObj => iObj.GetType() == type).ToArray();
-            return result;
-        }
-
         public static string GetOwnerContentLocation(IContainerOwner owner, string blobAddress)
         {
             return BlobStorage.GetOwnerContentLocation(owner, blobAddress);
-        }
-
-        public static string DownloadOwnerBlobText(IContainerOwner owner, string blobAddress, bool returnNullIfMissing = false)
-        {
-            string downloadAddress = GetOwnerContentLocation(owner, blobAddress);
-            return CurrActiveContainer.DownloadBlobText(downloadAddress, returnNullIfMissing);
-        }
-
-        public static CloudBlockBlob UploadOwnerBlobText(IContainerOwner owner, string blobAddress, string content, string blobInformationType)
-        {
-            string uploadAddress = GetOwnerContentLocation(owner, blobAddress);
-            return CurrActiveContainer.UploadBlobText(uploadAddress, content);
         }
 
         public static async Task<CloudBlockBlob> UploadOwnerBlobTextAsync(IContainerOwner owner, string blobAddress, string content)
@@ -1331,13 +1128,13 @@ namespace TheBall
         }
 
 
-        public static void DeleteInformationObject(this IInformationObject informationObject, IContainerOwner owner = null)
+        public static async Task DeleteInformationObjectA(this IInformationObject informationObject, IContainerOwner owner = null)
         {
             string relativeLocation = informationObject.RelativeLocation;
             if (owner != null)
                 relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
-            blob.Delete();
+            await blob.DeleteAsync();
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
             if(additionalFormatProvider != null)
             {
@@ -1345,7 +1142,7 @@ namespace TheBall
                 {
                     string contentLocation = blob.Name + "." + contentExtension;
                     CloudBlockBlob contentBlob = CurrActiveContainer.GetBlockBlobReference(contentLocation);
-                    contentBlob.DeleteIfExists();
+                    await contentBlob.DeleteIfExistsAsync();
                 }
 
             }
@@ -1396,31 +1193,20 @@ namespace TheBall
             return contentRoot;
         }
 
-        public static int DeleteContentsFromOwner(IContainerOwner owner)
+        public static async Task<int> DeleteContentsFromOwnerAsync(IContainerOwner owner)
         {
             string referenceLocation = GetOwnerContentLocation(owner, ".");
-            return DeleteContentsFromOwner(referenceLocation);
+            return await DeleteContentsFromOwnerAsync(referenceLocation);
         }
 
-        public static int DeleteContentsFromOwner(string referenceLocation)
+        public static async Task<int> DeleteContentsFromOwnerAsync(string referenceLocation)
         {
             string contentRootLocation = GetContentRootLocation(referenceLocation);
             string searchRoot = CurrActiveContainer.Name + "/" + contentRootLocation;
-            var blobList = CurrBlobClient.ListBlobs(searchRoot, true);
-            int deleteCount = 0;
-            foreach(CloudBlockBlob blob in blobList)
-            {
-                blob.DeleteBlob();
-                deleteCount++;
-            }
-            return deleteCount;
-        }
-
-        public static BlobResultSegment ListBlobxWithPrefixSegmented(this CloudBlobContainer container,
-                                                                              string prefix, int maxresults)
-        {
-            string searchRoot = container.Name + "/" + prefix;
-            return CurrBlobClient.ListBlobsSegmented(searchRoot, true, BlobListingDetails.Metadata, maxresults, null, null, null);
+            var blobList = await GetBlobsWithMetadataA(null, searchRoot, true);
+            var deleteTasks = blobList.Select(blob => blob.DeleteAsync()).ToArray();
+            await Task.WhenAll(deleteTasks);
+            return deleteTasks.Length;
         }
 
         public static async Task<string[]> ListOwnerFoldersA(string rootFolder)
@@ -1443,7 +1229,6 @@ namespace TheBall
             return result.ToArray();
         }
 
-
         public static async Task<BlobResultSegment> ListBlobsWithPrefixAsync(this IContainerOwner owner, string prefix, 
             bool useFlatBlobListing = true, BlobContinuationToken continuationToken = null, bool withMetadata = false, bool allowNoOwner = false)
         {
@@ -1456,62 +1241,32 @@ namespace TheBall
 
 
 
-        public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this IContainerOwner owner, string prefix, bool useFlatBlobListing = true)
-        {
-            string searchRoot = CurrActiveContainer.Name + "/" + owner.ContainerName + "/" + owner.LocationPrefix + "/" + prefix;
-            return CurrBlobClient.ListBlobs(searchRoot, useFlatBlobListing);
-        }
-
-        public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this CloudBlobContainer container, string prefix)
-        {
-            string searchRoot = container.Name + "/" + prefix;
-            return CurrBlobClient.ListBlobs(searchRoot, true);
-        }
-
         public static string GetOwnerRootAddress(IContainerOwner owner)
         {
             string ownerRootAddress = GetOwnerContentLocation(owner, "");
             return ownerRootAddress;
         }
 
-        public static int DeleteEntireOwner(IContainerOwner owner)
+        public static async Task<int> DeleteEntireOwnerAsync(IContainerOwner owner)
         {
             if(owner == null)
                 throw new ArgumentNullException("owner");
             string ownerRootAddress = GetOwnerRootAddress(owner);
             string storageLevelOwnerRootAddress = CurrActiveContainer.Name + "/" + ownerRootAddress;
-            var blobs = CurrBlobClient.ListBlobs(storageLevelOwnerRootAddress, true, BlobListingDetails.Metadata);
-            int deletedCount = 0;
-            foreach(CloudBlockBlob blob in blobs)
-            {
-                blob.DeleteBlob();
-                deletedCount++;
-            }
-            return deletedCount;
-        }
-
-        public static int DeleteBlobsFromOwnerTarget(IContainerOwner owner, string targetLocation)
-        {
-            string rootAddress = CurrActiveContainer.Name + "/" + GetOwnerContentLocation(owner, targetLocation);
-            var blobs = CurrBlobClient.ListBlobs(rootAddress, true, BlobListingDetails.Metadata);
-            int deletedCount = 0;
-            foreach (CloudBlockBlob blob in blobs)
-            {
-                blob.DeleteBlob();
-                deletedCount++;
-            }
-            return deletedCount;
+            var blobs = await GetBlobItemsA(null, storageLevelOwnerRootAddress, true);
+            var deleteTasks = blobs.Select(blob => BlobStorage.DeleteBlobA(blob.Name)).ToArray();
+            await Task.WhenAll(deleteTasks);
+            return deleteTasks.Length;
         }
 
         public static async Task<int> DeleteBlobsFromOwnerTargetA(IContainerOwner owner, string targetLocation)
         {
-            string rootAddress = CurrActiveContainer.Name + "/" + GetOwnerContentLocation(owner, targetLocation);
-            var blobs = CurrBlobClient.ListBlobs(rootAddress, true, BlobListingDetails.Metadata);
-            int deletedCount = 0;
+            var blobs = await GetBlobItemsA(owner, targetLocation);
             var deleteTasks = new List<Task>();
-            foreach (CloudBlockBlob blob in blobs)
+            int deletedCount = 0;
+            foreach (var blob in blobs)
             {
-                var deleteTask = blob.DeleteIfExistsAsync();
+                var deleteTask = BlobStorage.DeleteBlobA(blob.Name);
                 deleteTasks.Add(deleteTask);
                 deletedCount++;
             }
@@ -1533,19 +1288,6 @@ namespace TheBall
         public static bool IsStoredInActiveContainer(this CloudBlockBlob blob)
         {
             return blob.Container.Name == CurrActiveContainer.Name;
-        }
-
-        public static void DeleteBlob(this CloudBlockBlob blob)
-        {
-            blob.DeleteIfExists();
-            InformationContext.AddStorageTransactionToCurrent();
-        }
-
-        public static void DeleteBlob(string blobPath)
-        {
-            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobPath);
-            blob.DeleteIfExists();
-            InformationContext.AddStorageTransactionToCurrent();
         }
 
         public static async Task DeleteBlobAsync(string blobPath)
@@ -1572,10 +1314,10 @@ namespace TheBall
             return location.Substring(0, lastPositionToInclude);
         }
 
-        public static CloudBlockBlob GetInformationObjectBlobWithProperties(IInformationObject informationObject)
+        public static async Task<CloudBlockBlob> GetInformationObjectBlobWithProperties(IInformationObject informationObject)
         {
             CloudBlockBlob blob = CurrActiveContainer.GetBlob(informationObject.RelativeLocation);
-            blob.FetchAttributes();
+            await blob.FetchAttributesAsync();
             InformationContext.AddStorageTransactionToCurrent();
             return blob;
         }
@@ -1595,25 +1337,18 @@ namespace TheBall
             return storageItems.ToArray();
         }
 
-        public static async Task<CloudBlockBlob[]> GetBlobsWithMetadataA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
+        public static async Task<CloudBlockBlob[]> GetBlobsWithMetadataA(IContainerOwner owner, string prefix, bool allowNoOwner = false)
         {
             BlobContinuationToken continuationToken = null;
             List<CloudBlockBlob> cloudBlockBlobs = new List<CloudBlockBlob>();
             do
             {
-                var blobListItems = await ListBlobsWithPrefixAsync(owner, directoryLocation, true, continuationToken, true, allowNoOwner);
+                var blobListItems = await ListBlobsWithPrefixAsync(owner, prefix, true, continuationToken, true, allowNoOwner);
                 var cloudBlobsToAdd = blobListItems.Results.Cast<CloudBlockBlob>();
                 cloudBlockBlobs.AddRange(cloudBlobsToAdd);
                 continuationToken = blobListItems.ContinuationToken;
             } while (continuationToken != null);
             return cloudBlockBlobs.ToArray();
-        }
-
-
-        public static IEnumerable<IListBlobItem> GetOwnerBlobListing(this IContainerOwner owner, string directoryLocation, bool withMetaData = false)
-        {
-            string storageListingPrefix = GetOwnerContentLocation(owner, directoryLocation);
-            return StorageSupport.CurrActiveContainer.GetBlobListing(storageListingPrefix, withMetaData);
         }
 
         public static void FixCurrentOwnerLocation(this IInformationObject informationObject)
@@ -1624,131 +1359,36 @@ namespace TheBall
             informationObject.RelativeLocation = fixedLocation;
         }
 
-        public static IEnumerable<IListBlobItem> GetBlobListing(this CloudBlobContainer container, string directoryLocation, bool withMetaData = false)
-        {
-            string storageListingPrefix = container.Name + "/" + directoryLocation;
-            InformationContext.AddStorageTransactionToCurrent();
-            return CurrBlobClient.ListBlobs(storageListingPrefix, true, withMetaData ? BlobListingDetails.Metadata : BlobListingDetails.None);
-        }
-
-        public static IEnumerable<CloudBlockBlob> GetFilteredBlobListing(this CloudBlobContainer container, string directoryLocation, Predicate<CloudBlockBlob> filterIfFalse)
-        {
-            var blobListing = container.GetBlobListing(directoryLocation, true);
-            return blobListing.Cast<CloudBlockBlob>().Where(blob => filterIfFalse(blob));
-        }
-
-        public static IEnumerable<IInformationObject> GetInformationObjects(this CloudBlobContainer container, IContainerOwner owner, string directoryLocation, Predicate<string> filterByFullName = null, Predicate<IInformationObject> filterIfFalse = null)
-        {
-            string ownerLocation = GetOwnerContentLocation(owner, directoryLocation);
-            return GetInformationObjects(container, ownerLocation, filterByFullName, filterIfFalse);
-        }
-
-        public static IEnumerable<IInformationObject> GetInformationObjects(this CloudBlobContainer container, string directoryLocation, Predicate<string> filterByFullName = null, Predicate<IInformationObject> filterIfFalse = null)
-        {
-            var informationObjectBlobs =
-                GetFilteredBlobListing(container, directoryLocation,
-                                       blob =>
-                                           {
-                                               bool passFilterByName = false;
-                                               if (filterByFullName != null)
-                                                   passFilterByName =
-                                                       filterByFullName(blob.Name);
-                                               else
-                                                   passFilterByName = true;
-                                               if (passFilterByName == false)
-                                                   return false;
-                                               return blob.GetBlobInformationType() ==
-                                                      StorageSupport.InformationType_InformationObjectValue;
-                                           });
-            if (filterByFullName != null)
-                informationObjectBlobs = informationObjectBlobs.Where(blob => filterByFullName(blob.Name));
-            var result = informationObjectBlobs.Select(blob =>
-                                                           {
-                                                               string informationObjectLocation = blob.Name;
-                                                               string informationObjectType =
-                                                                   blob.GetBlobInformationObjectType();
-                                                               IInformationObject iObj = null;
-                                                               try
-                                                               {
-                                                                   Debug.WriteLine("Loading type: " +
-                                                                                   informationObjectType + " from " +
-                                                                                   informationObjectLocation);
-                                                                   iObj = RetrieveInformation(
-                                                                       informationObjectLocation, informationObjectType);
-                                                               }
-                                                               catch (InvalidDataException dataException)
-                                                               {
-                                                                   Debug.WriteLine("Failed due to invalid data");
-                                                                   // Old types and such cause this, ignore and allow returning null.
-                                                               }
-                                                               return iObj;
-                                                           }).Where(iObj => iObj != null);
-            if (filterIfFalse != null)
-                result = result.Where(iObj => filterIfFalse(iObj));
-            return result;
-        }
-
-        public static IEnumerable<IListBlobItem> GetContentBlobListing(IContainerOwner owner, string contentType)
-        {
-            string contentListingPrefix = GetOwnerContentLocation(owner, contentType);
-            string storageListingPrefix = CurrActiveContainer.Name + "/" + contentListingPrefix;
-            InformationContext.AddStorageTransactionToCurrent();
-            return CurrBlobClient.ListBlobs(storageListingPrefix, true, BlobListingDetails.Metadata);
-        }
-
-        public static async Task<bool> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
+        public static async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
         {
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
             DateTime created = DateTime.UtcNow;
             blob.Metadata.Add("LockCreated", created.ToString("s"));
             string blobContent = "LockCreated: " + created.ToString("s");
             var accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
+            string lockETag = null;
             try
             {
                 Debug.WriteLine("Trying to aqruire lock: " + lockLocation);
-                await blob.UploadTextAsync(blobContent, Encoding.UTF8, accessCondition, null, null);
+                await blob.UploadTextAsync(blobContent, Encoding.UTF8, accessCondition,null, null);
                 InformationContext.AddStorageTransactionToCurrent();
                 Debug.WriteLine("Success!");
+                lockETag = blob.Properties.ETag;
             }
             catch
             {
                 Debug.WriteLine("FAILED!");
-                return false;
             }
-            return true;
+            return lockETag;
         }
 
-        public static bool AcquireLogicalLockByCreatingBlob(string lockLocation, out string lockEtag)
-        {
-            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
-            DateTime created = DateTime.UtcNow;
-            blob.Metadata.Add("LockCreated", created.ToString("s"));
-            string blobContent = "LockCreated: " + created.ToString("s");
-            var accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
-            try
-            {
-                Debug.WriteLine("Trying to aqruire lock: " + lockLocation);
-                blob.UploadText(blobContent, Encoding.UTF8, accessCondition);
-                InformationContext.AddStorageTransactionToCurrent();
-                Debug.WriteLine("Success!");
-            }
-            catch
-            {
-                Debug.WriteLine("FAILED!");
-                lockEtag = null;
-                return false;
-            }
-            lockEtag = blob.Properties.ETag;
-            return true;
-        }
-
-        public static async Task<bool> ReleaseLogicalLockByDeletingBlobAsync(string lockBlobFullPath)
+        public static async Task<bool> ReleaseLogicalLockByDeletingBlobAsync(string lockBlobFullPath, string eTag)
         {
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockBlobFullPath);
             try
             {
                 Debug.WriteLine("Trying to release lock: " + lockBlobFullPath);
-                await blob.DeleteIfExistsAsync();
+                await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.None, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, null, null);
                 InformationContext.AddStorageTransactionToCurrent();
                 Debug.WriteLine("Success!");
             }
@@ -1761,7 +1401,7 @@ namespace TheBall
 
         }
 
-        public static bool ReleaseLogicalLockByDeletingBlob(string lockLocation, string lockEtag)
+        public static async Task<bool> ReleaseLogicalLockByDeletingBlob(string lockLocation, string lockEtag)
         {
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
             BlobRequestOptions options = new BlobRequestOptions
@@ -1772,7 +1412,7 @@ namespace TheBall
             try
             {
                 Debug.WriteLine("Trying to release lock: " + lockLocation);
-                blob.Delete(DeleteSnapshotsOption.None, accessCondition, options);
+                await blob.DeleteAsync(DeleteSnapshotsOption.None, accessCondition, options, null);
                 InformationContext.AddStorageTransactionToCurrent();
                 Debug.WriteLine("Success!");
             }
@@ -1782,26 +1422,6 @@ namespace TheBall
                 return false;
             }
             return true;
-        }
-
-        public static IInformationObject RetrieveInformationObjectFromDefaultLocation(string contentDomain, string contentTypeName, string contentObjectId, IContainerOwner owner)
-        {
-            string contentFullTypeName = contentDomain + "." + contentTypeName;
-            string contentLocation = contentDomain + "/" + contentTypeName + "/" + contentObjectId;
-            return RetrieveInformation(contentLocation, contentFullTypeName, null, owner);
-        }
-
-        public static string[] GetLogicalDirectories(IContainerOwner owner, string rootLocation)
-        {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-            var blobListing =
-                ListBlobsWithPrefix(owner, rootLocation, false).ToArray();
-            string[] directories = blobListing.Where(item => item is CloudBlobDirectory)
-                                              .Select(
-                                                  item => item.Uri.LocalPath.Substring(item.Parent.Uri.LocalPath.Length))
-                                              .ToArray();
-            return directories;
         }
 
         public static string RemoveOwnerPrefixIfExists(string contentLocation)
@@ -1813,26 +1433,26 @@ namespace TheBall
 
         private const string LockPath = "TheBall.CORE/Locks/";
 
-        public static string TryClaimLockForOwner(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        public static async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
         {
             string lockFileName = LockPath + ownerLockFileName;
-            var lockETag = createLockFileWithContent(owner, lockFileName, lockFileContent, true);
+            var lockETag = await createLockFileWithContentAsync(owner, lockFileName, lockFileContent, true);
             return lockETag;
         }
 
-        private static void deleteLockFile(IContainerOwner owner, string lockFileName, string lockID)
+        private static async Task deleteLockFileAsync(IContainerOwner owner, string lockFileName, string lockID)
         {
             var blob = GetOwnerBlobReference(owner, lockFileName);
-            blob.DeleteBlob(lockID);
+            await blob.DeleteAsync(DeleteSnapshotsOption.None, AccessCondition.GenerateIfMatchCondition(lockID), null, null);
             InformationContext.AddStorageTransactionToCurrent();
         }
 
-        private static string createLockFileWithContent(IContainerOwner owner, string lockFileName, string lockFileContent, bool requireUnclaimedLock)
+        private static async Task<string> createLockFileWithContentAsync(IContainerOwner owner, string lockFileName, string lockFileContent, bool requireUnclaimedLock)
         {
             var blob = GetOwnerBlobReference(owner, lockFileName);
             try
             {
-                blob.UploadBlobText(lockFileContent, requireUnclaimedLock);
+                await blob.UploadBlobTextAsync(lockFileContent, requireUnclaimedLock);
             }
             catch (StorageException exception)
             {
@@ -1844,14 +1464,14 @@ namespace TheBall
             return lockETag;
         }
 
-        public static void ReplicateClaimedLock(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        public static async Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
         {
-            createLockFileWithContent(owner, ownerLockFileName, lockFileContent, false);
+            await createLockFileWithContentAsync(owner, ownerLockFileName, lockFileContent, false);
         }
 
-        public static void ReleaseLockForOwner(IContainerOwner owner, string ownerLockFileName, string lockID = null)
+        public static async Task ReleaseLockForOwner(IContainerOwner owner, string ownerLockFileName, string lockID = null)
         {
-            deleteLockFile(owner, ownerLockFileName, lockID);
+            await deleteLockFileAsync(owner, ownerLockFileName, lockID);
         }
 
         public static async Task<BlobStorageItem> GetBlobStorageItem(string sourceFullPath, IContainerOwner owner = null)
@@ -1872,6 +1492,11 @@ namespace TheBall
             var storageItem = new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length,
                 blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
             return storageItem;
+        }
+
+        internal static Task<IInformationObject[]> RetrieveInformationObjectsAsync(string itemDirectory, Type type)
+        {
+            throw new NotImplementedException();
         }
 
         public static async Task CopyBlobBetweenOwnersA(IContainerOwner sourceOwner, string sourceItemName, IContainerOwner targetOwner, string targetItemName)

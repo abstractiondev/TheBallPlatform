@@ -28,17 +28,7 @@ namespace TheBall.Payments
                 throw new SecurityException("Cannot get customer account without valid email");
             CustomerAccount customerAccount = await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccount>(owner, accountId);
             if (customerAccount == null)
-            {
-                customerAccount = new CustomerAccount {ID = accountId};
-                customerAccount.SetLocationAsOwnerContent(owner, customerAccount.ID);
-                StripeCustomerService stripeCustomerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
-                var stripeCustomer = stripeCustomerService.Create(new StripeCustomerCreateOptions
-                {
-                    Email = accountEmail
-                });
-                customerAccount.StripeID = stripeCustomer.Id;
-                await customerAccount.StoreInformationAsync();
-            }
+                throw new InvalidOperationException("Cannot cancel plan for account, where no CustomerAccount is not found");
             return customerAccount;
         }
 
@@ -47,13 +37,13 @@ namespace TheBall.Payments
             return customerAccount.StripeID;
         }
 
-        public static async Task ExecuteMethod_RemoveCustomerPaymentSourceAsync(string stripeCustomerID)
+        public static async Task ExecuteMethod_RemoveCustomerPaymentSourceAsync(string stripeCustomerID, bool isTestMode)
         {
-            StripeCustomerService customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
+            StripeCustomerService customerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
             var customer = await customerService.GetAsync(stripeCustomerID);
             if(customer.DefaultSourceId != null)
             {
-                StripeCardService cardService = new StripeCardService(SecureConfig.Current.StripeSecretKey);
+                StripeCardService cardService = new StripeCardService(StripeSupport.GetStripeApiKey(isTestMode));
                 await cardService.DeleteAsync(stripeCustomerID, customer.DefaultSourceId);
             }
         }
@@ -63,14 +53,14 @@ namespace TheBall.Payments
             return cancelParameters.PlanName;
         }
 
-        public static async Task<StripeSubscription[]> GetTarget_CustomersActiveSubscriptionsAsync(string stripeCustomerID)
+        public static async Task<StripeSubscription[]> GetTarget_CustomersActiveSubscriptionsAsync(string stripeCustomerID, bool isTestMode)
         {
-            StripeSubscriptionService subscriptionService = new StripeSubscriptionService(SecureConfig.Current.StripeSecretKey);
+            StripeSubscriptionService subscriptionService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
             var stripeList = await subscriptionService.ListAsync(stripeCustomerID);
             return stripeList.ToArray();
         }
 
-        public static async Task ExecuteMethod_CancelSubscriptionAtPeriodEndAsync(string stripeCustomerId, string planName, StripeSubscription[] customersActiveSubscriptions)
+        public static async Task ExecuteMethod_CancelSubscriptionAtPeriodEndAsync(string stripeCustomerId, bool isTestMode, string planName, StripeSubscription[] customersActiveSubscriptions)
         {
             var existingSubscription = customersActiveSubscriptions.FirstOrDefault(sub => sub.StripePlan.Id == planName);
             bool hasExistingToCancel = existingSubscription != null && !existingSubscription.CancelAtPeriodEnd;
@@ -78,7 +68,7 @@ namespace TheBall.Payments
             {
                 if (existingSubscription.CancelAtPeriodEnd)
                 {
-                    var subService = new StripeSubscriptionService(SecureConfig.Current.StripeSecretKey);
+                    var subService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                     await
                         subService.CancelAsync(stripeCustomerId, existingSubscription.Id, true);
                 }
@@ -90,5 +80,9 @@ namespace TheBall.Payments
             await customerAccount.StoreInformationAsync();
         }
 
+        public static bool GetTarget_IsTestMode(CustomerAccount customerAccount)
+        {
+            return customerAccount.IsTestAccount;
+        }
     }
 }

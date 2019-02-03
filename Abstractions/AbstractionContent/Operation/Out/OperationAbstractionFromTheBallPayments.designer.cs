@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 				public class GetAccountFromStripeCustomerParameters 
 		{
 				public string StripeCustomerID ;
+				public bool IsTestAccount ;
 				}
 		
 		public class GetAccountFromStripeCustomer 
@@ -18,11 +18,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(GetAccountFromStripeCustomerParameters parameters)
 		{
 					}
-				public static GetAccountFromStripeCustomerReturnValue Execute(GetAccountFromStripeCustomerParameters parameters)
+				public static async Task<GetAccountFromStripeCustomerReturnValue> ExecuteAsync(GetAccountFromStripeCustomerParameters parameters)
 		{
 						PrepareParameters(parameters);
-					CustomerAccount[] AllCustomerAccounts = GetAccountFromStripeCustomerImplementation.GetTarget_AllCustomerAccounts();	
-				CustomerAccount Account = GetAccountFromStripeCustomerImplementation.GetTarget_Account(parameters.StripeCustomerID, AllCustomerAccounts);	
+					CustomerAccount[] AllCustomerAccounts =  await GetAccountFromStripeCustomerImplementation.GetTarget_AllCustomerAccountsAsync();	
+				CustomerAccount Account = GetAccountFromStripeCustomerImplementation.GetTarget_Account(parameters.StripeCustomerID, parameters.IsTestAccount, AllCustomerAccounts);	
 				GetAccountFromStripeCustomerReturnValue returnValue = GetAccountFromStripeCustomerImplementation.Get_ReturnValue(Account);
 		return returnValue;
 				}
@@ -45,8 +45,9 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					string EventID = ProcessStripeWebhookImplementation.GetTarget_EventID(parameters.JSONObject);	
-				Stripe.StripeEvent EventData = ProcessStripeWebhookImplementation.GetTarget_EventData(EventID);	
-				 await ProcessStripeWebhookImplementation.ExecuteMethod_ProcessStripeEventAsync(EventData);		
+				bool IsTestMode = ProcessStripeWebhookImplementation.GetTarget_IsTestMode(parameters.JSONObject);	
+				Stripe.StripeEvent EventData = ProcessStripeWebhookImplementation.GetTarget_EventData(EventID, IsTestMode);	
+				 await ProcessStripeWebhookImplementation.ExecuteMethod_ProcessStripeEventAsync(EventData, IsTestMode);		
 				}
 				}
 				public class ValidatePlanContainingGroupsParameters 
@@ -82,16 +83,17 @@ using System.Threading.Tasks;
 					string AccountID = CancelAccountPlanImplementation.GetTarget_AccountID();	
 				CustomerAccount CustomerAccount =  await CancelAccountPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
 				string StripeCustomerID = CancelAccountPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
-				 await CancelAccountPlanImplementation.ExecuteMethod_RemoveCustomerPaymentSourceAsync(StripeCustomerID);		
+				bool IsTestMode = CancelAccountPlanImplementation.GetTarget_IsTestMode(CustomerAccount);	
+				 await CancelAccountPlanImplementation.ExecuteMethod_RemoveCustomerPaymentSourceAsync(StripeCustomerID, IsTestMode);		
 				string PlanName = CancelAccountPlanImplementation.GetTarget_PlanName(parameters.CancelParameters);	
-				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await CancelAccountPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID);	
-				 await CancelAccountPlanImplementation.ExecuteMethod_CancelSubscriptionAtPeriodEndAsync(StripeCustomerID, PlanName, CustomersActiveSubscriptions);		
+				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await CancelAccountPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID, IsTestMode);	
+				 await CancelAccountPlanImplementation.ExecuteMethod_CancelSubscriptionAtPeriodEndAsync(StripeCustomerID, IsTestMode, PlanName, CustomersActiveSubscriptions);		
 				 await CancelAccountPlanImplementation.ExecuteMethod_StoreObjectsAsync(CustomerAccount);		
 				}
 				}
 				public class PurchaseProductParameters 
 		{
-				public INT.PaymentToken PaymentToken ;
+				public INT.ProductPurchaseInfo PurchaseInfo ;
 				}
 		
 		public class PurchaseProduct 
@@ -105,10 +107,12 @@ using System.Threading.Tasks;
 					string AccountID = PurchaseProductImplementation.GetTarget_AccountID();	
 				CustomerAccount CustomerAccount =  await PurchaseProductImplementation.GetTarget_CustomerAccountAsync(AccountID);	
 				string StripeCustomerID = PurchaseProductImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
-				string ProductName = PurchaseProductImplementation.GetTarget_ProductName(parameters.PaymentToken);	
-				double ProductPrice = PurchaseProductImplementation.GetTarget_ProductPrice(parameters.PaymentToken);	
-				 await PurchaseProductImplementation.ExecuteMethod_ValidateStripeProductAndPriceAsync(ProductName, ProductPrice);		
-				 await PurchaseProductImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, ProductName);		
+				bool IsTestMode = PurchaseProductImplementation.GetTarget_IsTestMode(CustomerAccount);	
+				string ProductName = PurchaseProductImplementation.GetTarget_ProductName(parameters.PurchaseInfo);	
+				double ProductPrice = PurchaseProductImplementation.GetTarget_ProductPrice(parameters.PurchaseInfo);	
+				string Currency = PurchaseProductImplementation.GetTarget_Currency(parameters.PurchaseInfo);	
+				 await PurchaseProductImplementation.ExecuteMethod_ValidateStripeProductAndPriceAsync(ProductName, ProductPrice, IsTestMode);		
+				 await PurchaseProductImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PurchaseInfo, StripeCustomerID, IsTestMode, ProductName, ProductPrice, Currency);		
 				}
 				}
 				public class ActivateAccountPlanParameters 
@@ -126,13 +130,16 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					ActivateAccountPlanImplementation.ExecuteMethod_ValidateMatchingEmail(parameters.PaymentToken);		
 				string AccountID = ActivateAccountPlanImplementation.GetTarget_AccountID();	
-				CustomerAccount CustomerAccount =  await ActivateAccountPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
-				 await ActivateAccountPlanImplementation.ExecuteMethod_UpdateStripeCustomerDataAsync(parameters.PaymentToken, CustomerAccount);		
+				bool IsTokenTestMode = ActivateAccountPlanImplementation.GetTarget_IsTokenTestMode(parameters.PaymentToken);	
+				bool IsTestAccount =  await ActivateAccountPlanImplementation.GetTarget_IsTestAccountAsync(AccountID);	
+				bool IsTestMode = ActivateAccountPlanImplementation.GetTarget_IsTestMode(IsTokenTestMode, IsTestAccount);	
+				CustomerAccount CustomerAccount =  await ActivateAccountPlanImplementation.GetTarget_CustomerAccountAsync(AccountID, IsTestMode);	
+				 await ActivateAccountPlanImplementation.ExecuteMethod_UpdateStripeCustomerDataAsync(parameters.PaymentToken, CustomerAccount, IsTestMode);		
 				string StripeCustomerID = ActivateAccountPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
 				string PlanName = ActivateAccountPlanImplementation.GetTarget_PlanName(parameters.PaymentToken);	
-				 await ActivateAccountPlanImplementation.ExecuteMethod_ValidateStripePlanNameAsync(PlanName);		
-				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await ActivateAccountPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID);	
-				 await ActivateAccountPlanImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, PlanName, CustomersActiveSubscriptions);		
+				 await ActivateAccountPlanImplementation.ExecuteMethod_ValidateStripePlanNameAsync(PlanName, IsTestMode);		
+				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await ActivateAccountPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID, IsTestMode);	
+				 await ActivateAccountPlanImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, IsTestMode, PlanName, CustomersActiveSubscriptions);		
 				 await ActivateAccountPlanImplementation.ExecuteMethod_StoreObjectsAsync(CustomerAccount);		
 				
 		{ // Local block to allow local naming
@@ -185,7 +192,7 @@ using System.Threading.Tasks;
 					INT.CancelSubscriptionParams CancelParams = CancelGroupSubscriptionPlanImplementation.GetTarget_CancelParams();	
 				string PlanName = CancelGroupSubscriptionPlanImplementation.GetTarget_PlanName(CancelParams);	
 				string AccountID = CancelGroupSubscriptionPlanImplementation.GetTarget_AccountID();	
-				CustomerAccount CustomerAccount = CancelGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(AccountID);	
+				CustomerAccount CustomerAccount =  await CancelGroupSubscriptionPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
 				CancelGroupSubscriptionPlanImplementation.ExecuteMethod_CancelSubscriptionPlan(PlanName, CustomerAccount);		
 				
 		{ // Local block to allow local naming
@@ -209,8 +216,9 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					CustomerAccount Account =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_AccountAsync(parameters.AccountID);	
-				GroupSubscriptionPlan[] CurrentPlansBeforeSync = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentPlansBeforeSync(Account);	
-				INT.PlanStatus[] ActivePlanStatusesFromStripe =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlanStatusesFromStripeAsync(Account);	
+				bool IsTestMode = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_IsTestMode(Account);	
+				GroupSubscriptionPlan[] CurrentPlansBeforeSync =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentPlansBeforeSyncAsync(Account);	
+				INT.PlanStatus[] ActivePlanStatusesFromStripe =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlanStatusesFromStripeAsync(Account, IsTestMode);	
 				GroupSubscriptionPlan[] ActivePlansFromStripe = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlansFromStripe(ActivePlanStatusesFromStripe);	
 				string[] GroupsToHaveAccessTo = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToHaveAccessTo(ActivePlansFromStripe);	
 				string[] CurrentGroupAccesses = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentGroupAccesses(CurrentPlansBeforeSync);	
@@ -259,12 +267,12 @@ using System.Threading.Tasks;
 		
 		public class ProcessPayment 
 		{
-				public static void Execute()
+				public static async Task ExecuteAsync()
 		{
 						
 					INT.PaymentToken PaymentToken = ProcessPaymentImplementation.GetTarget_PaymentToken();	
 				ProcessPaymentImplementation.ExecuteMethod_ValidateMatchingEmail(PaymentToken);		
-				CustomerAccount CustomerAccount = ProcessPaymentImplementation.GetTarget_CustomerAccount();	
+				CustomerAccount CustomerAccount =  await ProcessPaymentImplementation.GetTarget_CustomerAccountAsync();	
 				ProcessPaymentImplementation.ExecuteMethod_ProcessPayment(PaymentToken, CustomerAccount);		
 				}
 				}
@@ -278,14 +286,14 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(FetchCustomersFromStripeParameters parameters)
 		{
 					}
-				public static void Execute(FetchCustomersFromStripeParameters parameters)
+				public static async Task ExecuteAsync(FetchCustomersFromStripeParameters parameters)
 		{
 						PrepareParameters(parameters);
 					TheBall.CORE.IContainerOwner Owner = FetchCustomersFromStripeImplementation.GetTarget_Owner(parameters.GroupID);	
 				Stripe.StripeCustomer[] StripeCustomers = FetchCustomersFromStripeImplementation.GetTarget_StripeCustomers();	
-				CustomerAccountCollection CurrentCustomers = FetchCustomersFromStripeImplementation.GetTarget_CurrentCustomers(Owner);	
+				CustomerAccountCollection CurrentCustomers =  await FetchCustomersFromStripeImplementation.GetTarget_CurrentCustomersAsync(Owner);	
 				CustomerAccount[] NewCustomersToCreate = FetchCustomersFromStripeImplementation.GetTarget_NewCustomersToCreate(Owner, StripeCustomers, CurrentCustomers);	
-				FetchCustomersFromStripeImplementation.ExecuteMethod_StoreObjects(Owner, NewCustomersToCreate);		
+				 await FetchCustomersFromStripeImplementation.ExecuteMethod_StoreObjectsAsync(Owner, NewCustomersToCreate);		
 				}
 				}
 				public class AssociatePaymentToGroupParameters 

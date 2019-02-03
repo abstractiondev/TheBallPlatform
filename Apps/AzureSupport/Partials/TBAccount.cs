@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TheBall;
 using TheBall.CORE;
 
@@ -41,17 +42,10 @@ namespace AaltoGlobalImpact.OIP
                                                                });
         }
 
-        public void StoreAccountToRoot()
-        {
-            TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(this.ID);
-            accountRoot.Account = this;
-            StorageSupport.StoreInformation(accountRoot);
-        }
-
-        public static TBAccount GetAccountFromEmail(string emailAddress)
+        public static async Task<TBAccount> GetAccountFromEmail(string emailAddress)
         {
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+            TBREmailRoot emailRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBREmailRoot>(emailRootID);
             TBAccount account = emailRoot.Account;
             return account;
         }

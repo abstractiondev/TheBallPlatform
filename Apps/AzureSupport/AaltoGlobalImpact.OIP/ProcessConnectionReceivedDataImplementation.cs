@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TheBall;
 using TheBall.CORE;
 using TheBall.Interface;
@@ -9,10 +10,10 @@ namespace AaltoGlobalImpact.OIP
 {
     public class ProcessConnectionReceivedDataImplementation
     {
-        public static Connection GetTarget_Connection(Process process)
+        public static async Task<Connection> GetTarget_ConnectionAsync(Process process)
         {
             string connectionID = process.InitialArguments.First(ia => ia.ItemFullType == "ConnectionID").ItemValue;
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner, connectionID);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(InformationContext.CurrentOwner, connectionID);
         }
 
         public static string GetTarget_SourceContentRoot(Connection connection)

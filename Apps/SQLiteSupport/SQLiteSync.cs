@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.Linq;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using SQLite.TheBall.Payments;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace SQLiteSupport
 {
     public interface IStorageSyncableDataContext : IDisposable
     {
-        Table<InformationObjectMetaData> InformationObjectMetaDataTable { get; }
+        DbSet<InformationObjectMetaData> InformationObjectMetaDataTable { get; }
         void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData);
         void PerformInsert(string storageRootPath, InformationObjectMetaData insertData);
         void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData);
         Task PerformUpdateAsync(string storageRootPath, InformationObjectMetaData updateData);
         Task PerformInsertAsync(string storageRootPath, InformationObjectMetaData insertData);
         Task PerformDeleteAsync(string storageRootPath, InformationObjectMetaData deleteData);
-        DbConnection Connection { get; }
-        void SubmitChanges();
-        Task SubmitChangesAsync();
+        DatabaseFacade Database { get; }
+        int SaveChanges();
+        Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken);
     }
 
     public static class SQLiteSync
@@ -36,7 +37,8 @@ namespace SQLiteSupport
                 async insertItem => await dataContext.PerformInsertAsync(storageRootPath, insertItem),
                 async updateItem => await dataContext.PerformUpdateAsync(storageRootPath, updateItem),
                 async deleteItem => await dataContext.PerformDeleteAsync(storageRootPath, deleteItem));
-            await dataContext.SubmitChangesAsync();
+            CancellationToken cancellationToken = new CancellationToken();
+            await dataContext.SaveChangesAsync(true, cancellationToken);
             return anyChanges;
         }
 
@@ -51,7 +53,7 @@ namespace SQLiteSupport
                 insertItem => dataContext.PerformInsert(storageRootPath, insertItem),
                 updateItem => dataContext.PerformUpdate(storageRootPath, updateItem),
                 deleteItem => dataContext.PerformDelete(storageRootPath, deleteItem));
-            dataContext.SubmitChanges();
+            dataContext.SaveChanges();
             return anyChanges;
         }
     }

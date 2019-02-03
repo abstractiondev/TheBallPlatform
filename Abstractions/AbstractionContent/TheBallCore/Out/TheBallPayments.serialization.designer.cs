@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -31,6 +32,19 @@ namespace INT {
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
+			public partial class ProductPurchaseInfo
+			{
+				[DataMember]
+				public string currentproduct { get; set; }
+				[DataMember]
+				public double expectedprice { get; set; }
+				[DataMember]
+				public string currency { get; set; }
+				[DataMember]
+				public bool isTestMode { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
 			public partial class PaymentToken
 			{
 				[DataMember]
@@ -40,9 +54,15 @@ namespace INT {
 				[DataMember]
 				public double expectedprice { get; set; }
 				[DataMember]
+				public string currency { get; set; }
+				[DataMember]
 				public string email { get; set; }
 				[DataMember]
+				public bool isTestMode { get; set; }
+				[DataMember]
 				public BillingAddress card { get; set; }
+				[DataMember]
+				public string couponId { get; set; }
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
@@ -558,6 +578,9 @@ namespace INT {
 			public string StripeID { get; set; }
 			private string _unmodified_StripeID;
 			[DataMember] 
+			public bool IsTestAccount { get; set; }
+			private bool _unmodified_IsTestAccount;
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
 			[DataMember] 
@@ -567,4 +590,128 @@ namespace INT {
 			public List< string > ActivePlans = new List< string >();
 			
 			}
+	#region Operation Calls
+	public partial class Server 
+	{
+	    public delegate Task ExecuteOperationFunc(string operationName, object parameters = null);
+
+	    public static ExecuteOperationFunc ExecuteOperation;
+
+	    public delegate Task<object> GetObjectFunc(Type type, string id);
+
+	    public static GetObjectFunc GetInformationObjectImplementation;
+	    public static GetObjectFunc GetInterfaceObjectImplementation;
+
+
+        private static async Task<T> GetInformationObject<T>(string id)
+	    {
+	        Type type = typeof(T);
+	        var objResult = await GetInformationObjectImplementation(type, id);
+	        return (T) objResult;
+	    }
+
+	    private static async Task<T> GetInterfaceObject<T>(string id)
+	    {
+	        Type type = typeof(T);
+	        var objResult = await GetInterfaceObjectImplementation(type, id);
+	        return (T)objResult;
+	    }
+
+
+		public static async Task ProcessStripeWebhook(INT.StripeWebhookData param) 
+		{
+			await ExecuteOperation("TheBall.Payments.ProcessStripeWebhook", param);
+		}
+
+		public static async Task CancelAccountPlan(INT.CancelSubscriptionParams param) 
+		{
+			await ExecuteOperation("TheBall.Payments.CancelAccountPlan", param);
+		}
+
+		public static async Task PurchaseProduct(INT.ProductPurchaseInfo param) 
+		{
+			await ExecuteOperation("TheBall.Payments.PurchaseProduct", param);
+		}
+
+		public static async Task ActivateAccountPlan(INT.PaymentToken param) 
+		{
+			await ExecuteOperation("TheBall.Payments.ActivateAccountPlan", param);
+		}
+
+		public static async Task ActivateAndPayGroupSubscriptionPlan() 
+		{
+			await ExecuteOperation("TheBall.Payments.ActivateAndPayGroupSubscriptionPlan");
+		}
+
+		public static async Task CancelGroupSubscriptionPlan() 
+		{
+			await ExecuteOperation("TheBall.Payments.CancelGroupSubscriptionPlan");
+		}
+
+		public static async Task ProcessPayment() 
+		{
+			await ExecuteOperation("TheBall.Payments.ProcessPayment");
+		}
+		public static async Task<GroupSubscriptionPlanCollection> GetGroupSubscriptionPlanCollection(string id = null)
+		{
+			var result = await GetInformationObject<GroupSubscriptionPlanCollection>(id);
+			return result;
+		}
+		public static async Task<GroupSubscriptionPlan> GetGroupSubscriptionPlan(string id = null)
+		{
+			var result = await GetInformationObject<GroupSubscriptionPlan>(id);
+			return result;
+		}
+		public static async Task<SubscriptionPlanStatus> GetSubscriptionPlanStatus(string id = null)
+		{
+			var result = await GetInformationObject<SubscriptionPlanStatus>(id);
+			return result;
+		}
+		public static async Task<CustomerAccountCollection> GetCustomerAccountCollection(string id = null)
+		{
+			var result = await GetInformationObject<CustomerAccountCollection>(id);
+			return result;
+		}
+		public static async Task<CustomerAccount> GetCustomerAccount(string id = null)
+		{
+			var result = await GetInformationObject<CustomerAccount>(id);
+			return result;
+		}
+		public static async Task<INT.CancelSubscriptionParams> GetCancelSubscriptionParams(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CancelSubscriptionParams>(id);
+			return result;
+		}
+		public static async Task<INT.StripeWebhookData> GetStripeWebhookData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.StripeWebhookData>(id);
+			return result;
+		}
+		public static async Task<INT.ProductPurchaseInfo> GetProductPurchaseInfo(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ProductPurchaseInfo>(id);
+			return result;
+		}
+		public static async Task<INT.PaymentToken> GetPaymentToken(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.PaymentToken>(id);
+			return result;
+		}
+		public static async Task<INT.BillingAddress> GetBillingAddress(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.BillingAddress>(id);
+			return result;
+		}
+		public static async Task<INT.CustomerActivePlans> GetCustomerActivePlans(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CustomerActivePlans>(id);
+			return result;
+		}
+		public static async Task<INT.PlanStatus> GetPlanStatus(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.PlanStatus>(id);
+			return result;
+		}
+	}
+#endregion
  } 

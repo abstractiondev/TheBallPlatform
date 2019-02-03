@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.Linq;
 using System.Text;
+using Microsoft.WindowsAzure.Storage.File;
 using Newtonsoft.Json;
 
 namespace TheBall.CORE.Storage
@@ -109,11 +110,17 @@ namespace TheBall.CORE.Storage
         internal static CloudBlobClient CloudClient;
         internal static CloudStorageAccount CloudAccount;
         internal static CloudBlobContainer CloudContainer;
+        internal static CloudFileClient CloudFileClient;
         public static void InitializeStorage(string storageConnectionString, string containerName)
         {
             CloudAccount = CloudStorageAccount.Parse(storageConnectionString);
             CloudClient = CloudAccount.CreateCloudBlobClient();
             CloudContainer = CloudClient.GetContainerReference(containerName);
+        }
+
+        public static void InitializeFileStorage(string baseUri, string sasToken)
+        {
+            CloudFileClient = new CloudFileClient(new Uri(baseUri), new StorageCredentials(sasToken));
         }
 
         public static async Task<BlobStorageItem> GetBlobStorageItem(string name, IContainerOwner owner)

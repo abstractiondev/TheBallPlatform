@@ -78,4 +78,8 @@
   <Target Name="CopyAppConfigurationIntoPackage" BeforeTargets="AfterPackageComputeService">
     <Copy SourceFiles="$(ProjectDir)..\$(WebProjectName)\App.config" DestinationFiles="$(ProjectDir)obj\$(Configuration)\$(WebProjectName)\bin\$(WebProjectName).dll.config" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>

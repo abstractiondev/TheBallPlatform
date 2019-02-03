@@ -8,11 +8,14 @@ namespace TheBall.CORE
         public static readonly string[] ReservedDomainNames = new string[] {"TheBall.CORE", "TheBall.Payments", "TheBall.Interface"};
         public const string SystemOwnerRoot = "sys/AAA";
         public static readonly IContainerOwner SystemOwner;
+        public static readonly IContainerOwner AnonymousOwner;
 
         static SystemSupport()
         {
             SystemOwner = new VirtualOwner("sys", "AAA");
+            AnonymousOwner = new VirtualOwner("anon", "public" );
         }
+
 
         public static string[] FilterAwayReservedFolders(string[] directories)
         {
