@@ -1,10 +1,12 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class SetDeviceMembershipValidationAndActiveStatusImplementation
     {
-        public static DeviceMembership GetTarget_DeviceMembership(IContainerOwner owner, string deviceMembershipId)
+        public static async Task<DeviceMembership> GetTarget_DeviceMembershipAsync(IContainerOwner owner, string deviceMembershipId)
         {
-            return ObjectStorage.RetrieveFromDefaultLocation<DeviceMembership>(deviceMembershipId, owner);
+            return await ObjectStorage.RetrieveFromDefaultLocationA<DeviceMembership>(deviceMembershipId, owner);
         }
 
         public static void ExecuteMethod_SetDeviceValidAndActiveValue(bool isValidAndActive, DeviceMembership deviceMembership)
@@ -12,9 +14,9 @@ namespace TheBall.CORE
             deviceMembership.IsValidatedAndActive = isValidAndActive;
         }
 
-        public static void ExecuteMethod_StoreObject(DeviceMembership deviceMembership)
+        public static async Task ExecuteMethod_StoreObjectAsync(DeviceMembership deviceMembership)
         {
-            deviceMembership.StoreInformation();
+            await deviceMembership.StoreInformationAsync();
         }
     }
 }

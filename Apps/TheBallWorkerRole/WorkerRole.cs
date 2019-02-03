@@ -22,10 +22,10 @@ namespace TheBallWorkerRole
 {
     public class WorkerRole : AcceleratorRole
     {
-        protected override string ComponentName => "TheBallWorkerConsole";
-        protected override AzureRoleType RoleType => AzureRoleType.WorkerRole;
-        protected override string AppRootFolder => RoleEnvironment.GetLocalResource("WorkerFolder").RootPath;
-        protected override string AppConfigPath => @"X:\Configs\WorkerConsole.json";
-        protected override string RoleSpecificManagerArgs => null;
+        protected override RoleAppInfo[] RoleApplications { get; } = new[]
+        {
+            TheBall.Infra.AzureRoleSupport.AppRoleManager.GetWorkerConsoleAppInfo(RoleEnvironment.GetLocalResource("WorkerFolder").RootPath)
+        };
+
     }
 }

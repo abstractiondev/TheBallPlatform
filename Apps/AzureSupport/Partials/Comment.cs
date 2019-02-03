@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web;
-using LuceneSupport;
+//using LuceneSupport;
 using TheBall;
 using TheBall.Index;
 
@@ -18,7 +19,7 @@ namespace AaltoGlobalImpact.OIP
             return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
-        void IBeforeStoreHandler.PerformBeforeStoreUpdate()
+        async Task IBeforeStoreHandler.PerformBeforeStoreUpdate()
         {
             string currentAccountID = "";
             string currentAccountEmail = "";

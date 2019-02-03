@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -109,19 +110,19 @@ namespace TheBall
             return plainText;
         }
 
-        private static void RetrieveOrCreateEncDataToDefaultBlob()
+        private static async Task RetrieveOrCreateEncDataToDefaultBlob()
         {
             CloudBlockBlob keyBlob = StorageSupport.CurrActiveContainer.GetBlob(KeyBlobName);
             try
             {
-                CurrProvider.Key = keyBlob.DownloadByteArray();
+                CurrProvider.Key = await keyBlob.DownloadByteArrayAsync();
             } catch(StorageException storageException)
             {
                 if(storageException.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
                 {
                     CurrProvider.KeySize = 128;
                     CurrProvider.GenerateKey();
-                    keyBlob.UploadByteArray(CurrProvider.Key);
+                    await keyBlob.UploadFromByteArrayAsync(CurrProvider.Key, 0, CurrProvider.Key.Length);
                 }
                 else
                 {
@@ -131,13 +132,13 @@ namespace TheBall
             CloudBlockBlob ivBlob = StorageSupport.CurrActiveContainer.GetBlob(IVBlobName);
             try
             {
-                CurrProvider.IV = ivBlob.DownloadByteArray();
+                CurrProvider.IV = await ivBlob.DownloadByteArrayAsync();
             } catch(StorageException storageException)
             {
                 if (storageException.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
                 {
                     CurrProvider.GenerateIV();
-                    ivBlob.UploadByteArray(CurrProvider.IV);
+                    await ivBlob.UploadFromByteArrayAsync(CurrProvider.IV, 0, CurrProvider.IV.Length);
                 }
                 else
                 {

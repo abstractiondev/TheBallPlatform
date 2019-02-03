@@ -83,7 +83,7 @@ namespace OperationRunnerTool
 
             await RuntimeConfiguration.InitializeRuntimeConfigs(infraConfigPath);
 
-            var iCtx = InformationContext.InitializeToLogicalContext(operationOwner, instanceName);
+            var iCtx = InformationContext.InitializeToLogicalContext(null, operationOwner, instanceName, null, true);
 
             var httpOperationData = new HttpOperationData()
             {
@@ -127,7 +127,30 @@ namespace OperationRunnerTool
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -owner:grp/62e85ac7-b314-433f-87e6-1559078bc741 -op:TheBall.Admin.UpdateUsersData -remoteExecute:true
 
     -cr:X:\Configs -i:members.ikwondo.com -owner:grp/f6a9652b-4065-404e-9749-01d40ba5f26a -op:TheBall.Infrastructure.UpdateInfraDataInterfaceObjects
+
+    -cr:X:\Configs -i:business.theball.me -op:TheBall.CORE.CreateGroup -p:GroupID:9230bfbe-cbae-4da3-8140-5782b7824c14
+    -cr:X:\Configs -i:business.theball.me -op:TheBall.CORE.SetGroupMembership -p:GroupID:9230bfbe-cbae-4da3-8140-5782b7824c14,AccountID:1021da4a-17f5-4c3a-8082-497c8b62b76a,Role:Initiator
+
+    -cr:X:\Configs -i:home.theball.me -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:false -p:"{AccountID: \"4cae6185-8dc5-4a50-8756-28c5a5103b8a\",  Data: { isTestAccount: true }}"
+    -cr:X:\Configs -i:members.ikwondo.com -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:true -p:"{AccountID: \"a2e4f1bd-5c87-4ef7-a9f2-9fd6f73e8097\", Data: { isTestAccount: true }}"
     
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.CreateGroup -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0
+
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0,AccountID:e1ba5a1d-5360-48ef-816e-825239720b2b,Role:Collaborator
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0,AccountID:f114202a-5572-487a-a584-e12611538f72,Role:Collaborator
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0,AccountID:4c6ec5f7-061f-456e-8a54-771b9b6bd031,Role:Initiator
+
+    -cr:P:\Configs -i:dev.agens.fi -owner:grp/41bec5c5-5692-4e08-8153-6145b5f251c0 -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Agens Www\"}"
+
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.CreateGroup -p:GroupID:fdd25427-7159-4764-99c6-968265b63027
+
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:fdd25427-7159-4764-99c6-968265b63027,AccountID:e1ba5a1d-5360-48ef-816e-825239720b2b,Role:Collaborator
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:fdd25427-7159-4764-99c6-968265b63027,AccountID:f114202a-5572-487a-a584-e12611538f72,Role:Collaborator
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:fdd25427-7159-4764-99c6-968265b63027,AccountID:4c6ec5f7-061f-456e-8a54-771b9b6bd031,Role:Initiator
+
+    -cr:P:\Configs -i:dev.agens.fi -owner:grp/fdd25427-7159-4764-99c6-968265b63027 -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Withsnet\"}"
+
+
 #endif
 
 }

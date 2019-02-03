@@ -1,15 +1,16 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using SecuritySupport;
 
 namespace TheBall.CORE
 {
     public class PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation
     {
-        public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(IContainerOwner owner, string authenticatedAsActiveDeviceId)
+        public static async Task<AuthenticatedAsActiveDevice> GetTarget_AuthenticatedAsActiveDeviceAsync(IContainerOwner owner, string authenticatedAsActiveDeviceId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(owner, authenticatedAsActiveDeviceId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<AuthenticatedAsActiveDevice>(owner, authenticatedAsActiveDeviceId);
         }
 
         public static string GetTarget_RemoteBallSecretRequestUrl(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
@@ -56,9 +57,9 @@ namespace TheBall.CORE
             authenticatedAsActiveDevice.IsValidatedAndActive = true;
         }
 
-        public static void ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
+        public static async Task ExecuteMethod_StoreObjectAsync(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
         {
-            authenticatedAsActiveDevice.StoreInformation();
+            await authenticatedAsActiveDevice.StoreInformationAsync();
         }
     }
 }

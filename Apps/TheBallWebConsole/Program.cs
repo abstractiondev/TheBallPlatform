@@ -8,10 +8,9 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure;
+using CommandLine.Options;
 using Microsoft.WindowsAzure.Storage.File;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
-using NDesk.Options;
 using Nito.AsyncEx;
 using TheBall.CORE.Storage;
 using TheBall.Infra.AppUpdater;
@@ -54,31 +53,35 @@ namespace TheBall.Infra.TheBallWebConsole
                 {
                     {
                         "ac|applicationConfig=", "Application config full path",
-                        ac => applicationConfigFullPath = ac
+                        (key, ac) => applicationConfigFullPath = ac
                     },
                     {
                         "au|autoupdate", "Auto update worker",
-                        au => autoUpdate = au != null
+                        (key, au) => autoUpdate = au != null
                     },
                     {
                         "upacc|updateAccessFile=", "Update access info file",
-                        upacc => updateAccessInfoFile = upacc
+                        (key, upacc) => updateAccessInfoFile = upacc
                     },
                     {
                         "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
-                        ch => clientHandle = ch
+                        (key, ch) => clientHandle = ch
                     },
                     {
                         "t|test", "Test handle communication and update, but don't activate the real worker process",
-                        t => isTestMode = t != null
+                        (key, t) => isTestMode = t != null
                     },
                     {
                         "tempsiterootdir=", "TempSite root dir location for preparing site update packages",
-                        tsrd => tempSiteRootDir = tsrd
+                        (key, tsrd) => tempSiteRootDir = tsrd
                     },
                     {
                         "appsiterootdir=", "AppSite root dir location for deploying site update packages",
-                        asrd => appSiteRootDir = asrd
+                        (key, asrd) => appSiteRootDir = asrd
+                    },
+                    {
+                        "envcfg|useEnvConfig", "Use environment variables as config instead of default CloudConfigurationManager",
+                        (key, env) => UseEnvironmentVariablesAsConfig = env != null
                     }
                 };
                 var options = optionSet.Parse(args);
@@ -100,9 +103,9 @@ namespace TheBall.Infra.TheBallWebConsole
                 {
                     if (String.IsNullOrEmpty(updateAccessInfoFile))
                     {
-                        string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
-                        string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");
-                        string sasToken = CloudConfigurationManager.GetSetting("ConfigSASToken");
+                        string accountName = GetConfig("ConfigAccountName");
+                        string shareName = GetConfig("ConfigShareName");
+                        string sasToken = GetConfig("ConfigSASToken");
                         updateAccessInfo = new AccessInfo
                         {
                             AccountName = accountName,
@@ -190,8 +193,8 @@ namespace TheBall.Infra.TheBallWebConsole
             bool hasDriveX = DriveInfo.GetDrives().Any(item => item.Name.ToLower().StartsWith("x"));
             if (!hasDriveX)
             {
-                var infraAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
-                var infraAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
+                var infraAccountName = GetConfig("CoreFileShareAccountName");
+                var infraAccountKey = GetConfig("CoreFileShareAccountKey");
                 bool isCloud = infraAccountName != null && infraAccountKey != null;
                 if (isCloud)
                 {
@@ -204,6 +207,17 @@ namespace TheBall.Infra.TheBallWebConsole
                 }
             }
         }
+
+        private static string GetConfig(string configItem)
+        {
+            string configValue = UseEnvironmentVariablesAsConfig
+                ? Environment.GetEnvironmentVariable(configItem)
+                : throw new NotSupportedException();
+            return configValue;
+        }
+
+        public static bool UseEnvironmentVariablesAsConfig { get; set; }
+
 
     }
 }

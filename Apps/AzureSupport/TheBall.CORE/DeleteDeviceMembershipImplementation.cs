@@ -1,15 +1,17 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class DeleteDeviceMembershipImplementation
     {
-        public static DeviceMembership GetTarget_DeviceMembership(IContainerOwner owner, string deviceMembershipId)
+        public static async Task<DeviceMembership> GetTarget_DeviceMembershipAsync(IContainerOwner owner, string deviceMembershipId)
         {
-            return ObjectStorage.RetrieveFromDefaultLocation<DeviceMembership>(deviceMembershipId, owner);
+            return await ObjectStorage.RetrieveFromDefaultLocationA<DeviceMembership>(deviceMembershipId, owner);
         }
 
-        public static void ExecuteMethod_DeleteDeviceMembership(DeviceMembership deviceMembership)
+        public static async Task ExecuteMethod_DeleteDeviceMembershipAsync(DeviceMembership deviceMembership)
         {
-            deviceMembership.DeleteInformationObject();
+            await deviceMembership.DeleteInformationObjectAsync();
         }
     }
 }

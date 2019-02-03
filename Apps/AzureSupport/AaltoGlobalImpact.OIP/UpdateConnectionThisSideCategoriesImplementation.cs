@@ -3,6 +3,7 @@ using TheBall;
 using TheBall.CORE;
 using TheBall.Interface;
 using System.Linq;
+using System.Threading.Tasks;
 using Process = TheBall.CORE.Process;
 
 namespace AaltoGlobalImpact.OIP
@@ -14,9 +15,9 @@ namespace AaltoGlobalImpact.OIP
             get { return InformationContext.CurrentOwner; }
         }
         
-        public static NodeSummaryContainer GetTarget_CurrentCategoryContainer()
+        public static async Task<NodeSummaryContainer> GetTarget_CurrentCategoryContainerAsync()
         {
-            NodeSummaryContainer nodeSummaryContainer = ObjectStorage.RetrieveFromOwnerContent<NodeSummaryContainer>(Owner, "default");
+            NodeSummaryContainer nodeSummaryContainer = await ObjectStorage.RetrieveFromOwnerContentA<NodeSummaryContainer>(Owner, "default");
             return nodeSummaryContainer;
         }
 
@@ -25,10 +26,10 @@ namespace AaltoGlobalImpact.OIP
             return currentCategoryContainer.NodeSourceCategories.GetIDSelectedArray();
         }
 
-        public static Connection GetTarget_Connection(Process process)
+        public static async Task<Connection> GetTarget_ConnectionAsync(Process process)
         {
             string connectionID = process.InitialArguments.First(arg => arg.ItemFullType == "ConnectionID").ItemValue;
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionID);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(Owner, connectionID);
         }
 
         public static void ExecuteMethod_UpdateThisSideCategories(Connection connection, Category[] activeCategories)
@@ -72,9 +73,9 @@ namespace AaltoGlobalImpact.OIP
                 };
         }
 
-        public static void ExecuteMethod_StoreObject(Connection connection)
+        public static async Task ExecuteMethod_StoreObjectAsync(Connection connection)
         {
-            connection.StoreInformation();
+            await connection.StoreInformationAsync();
         }
     }
 }

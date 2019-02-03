@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -65,13 +64,13 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(IndexInformationParameters parameters)
 		{
 					}
-				public static void Execute(IndexInformationParameters parameters)
+				public static async Task ExecuteAsync(IndexInformationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					IndexingRequest IndexingRequest = IndexInformationImplementation.GetTarget_IndexingRequest(parameters.Owner, parameters.IndexingRequestID);	
+					IndexingRequest IndexingRequest =  await IndexInformationImplementation.GetTarget_IndexingRequestAsync(parameters.Owner, parameters.IndexingRequestID);	
 				string LuceneIndexFolder = IndexInformationImplementation.GetTarget_LuceneIndexFolder(parameters.Owner, parameters.IndexName, parameters.IndexStorageRootPath);	
 				IndexInformationImplementation.ExecuteMethod_PerformIndexing(parameters.Owner, IndexingRequest, LuceneIndexFolder);		
-				IndexInformationImplementation.ExecuteMethod_DeleteIndexingRequest(IndexingRequest);		
+				 await IndexInformationImplementation.ExecuteMethod_DeleteIndexingRequestAsync(IndexingRequest);		
 				}
 				}
 				public class QueryIndexedInformationParameters 
@@ -87,13 +86,13 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(QueryIndexedInformationParameters parameters)
 		{
 					}
-				public static void Execute(QueryIndexedInformationParameters parameters)
+				public static async Task ExecuteAsync(QueryIndexedInformationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					QueryRequest QueryRequest = QueryIndexedInformationImplementation.GetTarget_QueryRequest(parameters.Owner, parameters.QueryRequestID);	
+					QueryRequest QueryRequest =  await QueryIndexedInformationImplementation.GetTarget_QueryRequestAsync(parameters.Owner, parameters.QueryRequestID);	
 				string LuceneIndexFolder = QueryIndexedInformationImplementation.GetTarget_LuceneIndexFolder(parameters.Owner, parameters.IndexName, parameters.IndexStorageRootPath);	
 				QueryIndexedInformationImplementation.ExecuteMethod_PerformQueryRequest(QueryRequest, LuceneIndexFolder);		
-				QueryIndexedInformationImplementation.ExecuteMethod_SaveQueryRequest(QueryRequest);		
+				 await QueryIndexedInformationImplementation.ExecuteMethod_SaveQueryRequestAsync(QueryRequest);		
 				}
 				}
 		

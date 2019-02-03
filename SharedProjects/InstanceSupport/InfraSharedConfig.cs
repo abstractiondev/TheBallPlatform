@@ -14,6 +14,7 @@ namespace TheBall.CORE.InstanceSupport
         public string AppInsightInstrumentationKey;
         public string VersionString;
         public string RedirectFromFolderFileName;
+        public string SecurityKeyBlobSAS;
         public string[] InstanceNames;
 
         public bool IsDeveloperMachine;

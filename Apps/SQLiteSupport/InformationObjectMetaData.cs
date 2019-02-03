@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace SQLite
 {
@@ -21,9 +21,9 @@ namespace SQLiteSupport
         XML_AND_JSON = XML | JSON
     }
 
-    [Table]
     [ReadOnly(true)]
     [DebuggerDisplay("Metadata: {SemanticDomain}.{ObjectType}.{ObjectID}")]
+    [Table("InformationObjectMetaData")]
     public class InformationObjectMetaData
     {
         public InformationObjectMetaData()
@@ -33,9 +33,10 @@ namespace SQLiteSupport
             ETag = String.Empty;
         }
 
-        [Column(IsPrimaryKey = true)]
+        [Column()]
         [ScaffoldColumn(true)]
         [Editable(false)]
+        [Key]
         public string ID { get; set; }
 
         [Column]
@@ -79,7 +80,9 @@ namespace SQLiteSupport
         [Editable(false)]
         public SerializationType SerializationType { get; set; }
 
+        [NotMapped]
         public ChangeAction CurrentChangeAction { get; set; }
+        [NotMapped]
         public string CurrentStoragePath { get; set; }
 
         public static string[] GetMetaDataTableCreateSQLs()

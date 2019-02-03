@@ -12,7 +12,7 @@ namespace TheBall.CORE.InstanceSupport
 
     public class InstanceConfig
     {
-        public ExpandoObject[] environments;
+        public ExpandoObject[] environments = new ExpandoObject[0];
 
         public class OverrideReplacement
         {
@@ -44,6 +44,8 @@ namespace TheBall.CORE.InstanceSupport
         public string GroupDefaultRedirect;
         public string[] PlatformDefaultGroupIDList;
         public string[] RestrictedEmailAddresses;
+        public string[] PaymentTestEmails = new string[] {};
+        public string PaymentTestClientMetaAttribute;
         public bool HasEmailAddressRestriction => RestrictedEmailAddresses != null && RestrictedEmailAddresses.Length > 0;
         public bool SkipReferrerValidation = true;
         public bool AllowEmailSendFromGroup;
@@ -142,5 +144,6 @@ namespace TheBall.CORE.InstanceSupport
         }
 
         public static InstanceConfig Current => InformationContext.InstanceConfiguration.InstanceConfig;
+        public string InstanceName { get; set; }
     }
 }

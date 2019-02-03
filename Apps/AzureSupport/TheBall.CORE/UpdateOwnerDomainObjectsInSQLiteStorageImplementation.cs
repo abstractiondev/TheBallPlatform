@@ -22,8 +22,9 @@ namespace TheBall.CORE
 
         public static CloudBlockBlob[] GetTarget_BlobsToSync(IContainerOwner owner, string semanticDomain)
         {
-            var blobListing = owner.GetOwnerBlobListing(semanticDomain, true);
-            return blobListing.Cast<CloudBlockBlob>().ToArray();
+            throw new NotImplementedException();
+            //var blobListing = owner.GetOwnerBlobListing(semanticDomain, true);
+            //return blobListing.Cast<CloudBlockBlob>().ToArray();
         }
 
         public static async Task<CloudBlockBlob[]> GetTarget_BlobsToSyncAsync(IContainerOwner owner, string semanticDomain)
@@ -117,8 +118,9 @@ namespace TheBall.CORE
             ContentStorage.GetContentAsStringFunc =
                 blobPath =>
                 {
-                    var xmlResponse =
-                        Encoding.UTF8.GetString(StorageSupport.GetOwnerBlobReference(blobPath).DownloadByteArray());
+                    throw new NotImplementedException();
+                    var xmlResponse = "";
+                        //Encoding.UTF8.GetString(StorageSupport.GetOwnerBlobReference(blobPath).DownloadByteArray());
                     int index = xmlResponse.IndexOf('<');
                     if (index > 0)
                     {

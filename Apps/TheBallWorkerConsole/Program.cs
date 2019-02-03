@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using NDesk.Options;
-using Microsoft.Azure;
 using Nito.AsyncEx;
 using TheBall.CORE.InstanceSupport;
 using TheBall.CORE.Storage;
@@ -22,6 +21,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         const int UpdatePollingIntervalMs = 20000;
         public static AppUpdateManager UpdateManager;
         private static int ExitCode = 0;
+        const string ApplicationConfigFullPath = @"X:\Configs\WorkerConsole.json";
 
         const string ComponentName = "TheBallWorkerConsole";
 
@@ -48,34 +48,49 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 string updateAccessInfoFile = null;
                 bool autoUpdate = false;
                 string clientHandle = null;
-                var optionSet = new OptionSet()
+                string timeout = null;
+            var optionSet = new OptionSet()
+            {
                 {
-                    {
-                        "ac|applicationConfig=", "Application config full path",
-                        ac => applicationConfigFullPath = ac
-                    },
-                    {
-                        "au|autoupdate", "Auto update worker",
-                        au => autoUpdate = au != null
-                    },
-                    {
-                        "upacc|updateAccessFile=", "Update access info file",
-                        upacc => updateAccessInfoFile = upacc
-                    },
-                    {
-                        "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
-                        ch => clientHandle = ch
-                    },
-                    {
-                        "t|test", "Test handle communication and update, but don't activate the real worker process",
-                        t => isTestMode = t != null
-                    },
-                    {
-                        "o|owner=", "Dedicated to owner",
-                        owner => dedicatedToOwner = owner
-                    },
-                };
+
+                    "ac|applicationConfig=", "Application config full path",
+                    ac => applicationConfigFullPath = ac
+                },
+                /*
+                {
+                    "o|owner=", "Dedicated to owner",
+                    (key, owner) => dedicatedToOwner = owner
+                },
+                {
+                    "au|autoupdate", "Auto update worker",
+                    (key, au) => autoUpdate = au != null
+                },
+                {
+                    "upacc|updateAccessFile=", "Update access info file",
+                    (key, upacc) => updateAccessInfoFile = upacc
+                },
+                {
+                    "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
+                    (key, ch) => clientHandle = ch
+                },
+                {
+                    "t|test", "Test handle communication and update, but don't activate the real worker process",
+                    (key, t) => isTestMode = t != null
+                },
+                {
+                    "envcfg|useEnvConfig", //"Use environment variables as config instead of default CloudConfigurationManager",
+                    (key, env) => UseEnvironmentVariablesAsConfig = env != null
+                },*/
+                {
+                    "timeout=",
+                    to => timeout = to
+                }
+            };
                 var options = optionSet.Parse(args);
+                applicationConfigFullPath = applicationConfigFullPath ?? Environment.GetEnvironmentVariable(nameof(ApplicationConfigFullPath)) ?? ApplicationConfigFullPath;
+                Console.WriteLine($"Using appconfig from: {applicationConfigFullPath}");
+                //var options = args.ToList();
+                //List<string> optionSet = new List<string>();
                 bool hasExtraOptions = options.Count > 0;
                 bool isMissingMandatory = applicationConfigFullPath == null && !isTestMode;
                 bool hasIdentifiedOptions = optionSet.Count > 0;
@@ -84,7 +99,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     Console.WriteLine($"Usage: {ComponentName}.exe");
                     Console.WriteLine();
                     Console.WriteLine("Options:");
-                    optionSet.WriteOptionDescriptions(Console.Out);
+                    //optionSet.WriteOptionDescriptions(Console.Out);
                     return -1;
                 }
                 AccessInfo updateAccessInfo = null;
@@ -92,9 +107,9 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 {
                     if (String.IsNullOrEmpty(updateAccessInfoFile))
                     {
-                        string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
-                        string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");
-                        string sasToken = CloudConfigurationManager.GetSetting("ConfigSASToken");
+                        string accountName = GetConfig("ConfigAccountName");
+                        string shareName = GetConfig("ConfigShareName");
+                        string sasToken = GetConfig("ConfigSASToken");
                         updateAccessInfo = new AccessInfo
                         {
                             AccountName = accountName,
@@ -127,6 +142,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.DefaultConnectionLimit = 500;
             ServicePointManager.Expect100Continue = false;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
             bool autoUpdate = updateAccessInfo != null;
             bool isDebugging = Debugger.IsAttached;
@@ -149,7 +165,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             if(workerConfigFullPath == null && isTestMode == false)
                 throw new NotSupportedException("Either WorkerConfigFullPath or isTestMode must be given");
 
-            ensureXDrive();
+            //ensureXDrive();
             string dedicatedToInstance;
             string dedicatedToOwnerPrefix;
             parseDedicatedParts(dedicatedToOwner, out dedicatedToInstance, out dedicatedToOwnerPrefix);
@@ -199,8 +215,8 @@ namespace TheBall.Infra.TheBallWorkerConsole
             bool hasDriveX = DriveInfo.GetDrives().Any(item => item.Name.ToLower().StartsWith("x"));
             if (!hasDriveX)
             {
-                var infraAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
-                var infraAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
+                var infraAccountName = GetConfig("CoreFileShareAccountName");
+                var infraAccountKey = GetConfig("CoreFileShareAccountKey");
                 bool isCloud = infraAccountName != null && infraAccountKey != null;
                 if (isCloud)
                 {
@@ -213,5 +229,16 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 }
             }
         }
+
+        private static string GetConfig(string configItem)
+        {
+            string configValue = UseEnvironmentVariablesAsConfig
+                ? Environment.GetEnvironmentVariable(configItem)
+                : throw new NotSupportedException();
+            return configValue;
+        }
+
+        public static bool UseEnvironmentVariablesAsConfig { get; set; }
+
     }
 }

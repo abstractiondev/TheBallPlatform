@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TheBall.CORE;
 using TheBall.Interface.INT;
 
@@ -5,13 +6,13 @@ namespace TheBall.Interface
 {
     public class PublishCollaborationContentOverConnectionImplementation
     {
-        public static Connection GetTarget_Connection(string connectionId)
+        public static async Task<Connection> GetTarget_ConnectionAsync(string connectionId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner, connectionId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(InformationContext.CurrentOwner, connectionId);
         }
 
 
-        public static void ExecuteMethod_CallOtherSideProcessingForCopiedContent(Connection connection, bool callDeviceSyncToSendContentOutput)
+        public static async Task ExecuteMethod_CallOtherSideProcessingForCopiedContentAsync(Connection connection, bool callDeviceSyncToSendContentOutput)
         {
             if (callDeviceSyncToSendContentOutput == false)
                 return;
@@ -21,7 +22,7 @@ namespace TheBall.Interface
                 ProcessRequest = "PROCESSPUSHEDCONTENT",
                 ReceivingSideConnectionID = connection.OtherSideConnectionID
             };
-            DeviceSupport.ExecuteRemoteOperationVoid(connection.DeviceID,
+            await DeviceSupport.ExecuteRemoteOperationVoid(connection.DeviceID,
                                                      "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", 
                                                      connectionCommunication);
         }
@@ -31,9 +32,9 @@ namespace TheBall.Interface
             return new SyncConnectionContentToDeviceToSendParameters {Connection = connection};
         }
 
-        public static bool ExecuteMethod_CallDeviceSyncToSendContent(Connection connection)
+        public static async Task<bool> ExecuteMethod_CallDeviceSyncToSendContentAsync(Connection connection)
         {
-            var result = SyncCopyContentToDeviceTarget.Execute(
+            var result = await SyncCopyContentToDeviceTarget.ExecuteAsync(
                 new SyncCopyContentToDeviceTargetParameters { AuthenticatedAsActiveDeviceID = connection.DeviceID});
             return result.CopiedItems.Length > 0 || result.DeletedItems.Length > 0;
         }

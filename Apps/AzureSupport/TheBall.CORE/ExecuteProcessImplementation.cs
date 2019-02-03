@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using AzureSupport;
 
 namespace TheBall.CORE
@@ -9,9 +10,9 @@ namespace TheBall.CORE
     {
         static IContainerOwner Owner { get { return InformationContext.CurrentOwner; }}
 
-        public static Process GetTarget_Process(string processId)
+        public static async Task<Process> GetTarget_ProcessAsync(string processId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Process>(Owner, processId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Process>(Owner, processId);
         }
 
         public static string GetTarget_ProcessLockLocation(Process process)
@@ -19,21 +20,20 @@ namespace TheBall.CORE
             return process.RelativeLocation + ".lock";
         }
 
-        public static void ExecuteMethod_ExecuteAndStoreProcessWithLock(string processLockLocation, Process process)
+        public static async Task ExecuteMethod_ExecuteAndStoreProcessWithLockAsync(string processLockLocation, Process process)
         {
-            string lockEtag;
-            bool obtainLock = StorageSupport.AcquireLogicalLockByCreatingBlob(processLockLocation, out lockEtag);
-            if (obtainLock == false)
+            string lockEtag = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(processLockLocation);
+            if (lockEtag == null)
                 return;
             try
             {
                 string operationTypeName = process.ExecutingOperation.ItemFullType;
                 OperationSupport.ExecuteOperation(operationTypeName, new Tuple<string, object>("Process", process));
-                process.StoreInformation();
+                await process.StoreInformationAsync();
             }
             finally
             {
-                StorageSupport.ReleaseLogicalLockByDeletingBlob(processLockLocation, lockEtag);
+                await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(processLockLocation, lockEtag);
             }
         }
     }

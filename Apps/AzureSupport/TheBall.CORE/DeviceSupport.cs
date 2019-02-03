@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using AzureSupport;
 using SecuritySupport;
 using TheBall.CORE.Storage;
@@ -11,18 +12,18 @@ namespace TheBall.CORE
     {
         public const string OperationPrefixStr = "op/";
 
-        public static TReturnType ExecuteRemoteOperation<TReturnType>(string deviceID, string operationName, object operationParameters)
+        public static async Task<TReturnType> ExecuteRemoteOperation<TReturnType>(string deviceID, string operationName, object operationParameters)
         {
-            return (TReturnType) executeRemoteOperation<TReturnType>(deviceID, operationName, operationParameters);
+            return (TReturnType) await executeRemoteOperation<TReturnType>(deviceID, operationName, operationParameters);
         }        
-        public static void ExecuteRemoteOperationVoid(string deviceID, string operationName, object operationParameters)
+        public static async Task ExecuteRemoteOperationVoid(string deviceID, string operationName, object operationParameters)
         {
-            executeRemoteOperation<object>(deviceID, operationName, operationParameters);
+            await executeRemoteOperation<object>(deviceID, operationName, operationParameters);
         }
 
-        private static object executeRemoteOperation<TReturnType>(string deviceID, string operationName, object operationParameters)
+        private static async Task<object> executeRemoteOperation<TReturnType>(string deviceID, string operationName, object operationParameters)
         {
-            AuthenticatedAsActiveDevice device = ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(InformationContext.CurrentOwner, deviceID);
+            AuthenticatedAsActiveDevice device = await ObjectStorage.RetrieveFromOwnerContentA<AuthenticatedAsActiveDevice>(InformationContext.CurrentOwner, deviceID);
             string operationUrl = String.Format("{0}{1}", OperationPrefixStr, operationName);
             string url = device.ConnectionURL.Replace("/DEV", "/" + operationUrl);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -73,7 +74,7 @@ namespace TheBall.CORE
             }
         }
 
-        public static void PushContentToDevice(AuthenticatedAsActiveDevice authenticatedAsActiveDevice, string localContentUrl, string destinationContentName)
+        public static async Task PushContentToDevice(AuthenticatedAsActiveDevice authenticatedAsActiveDevice, string localContentUrl, string destinationContentName)
         {
             var owner = InformationContext.CurrentOwner;
             var blob = StorageSupport.GetOwnerBlobReference(owner, localContentUrl);
@@ -92,7 +93,7 @@ namespace TheBall.CORE
             var requestStream = request.GetRequestStream();
             var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
             var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write);
-            blob.DownloadToStream(cryptoStream);
+            await blob.DownloadToStreamAsync(cryptoStream);
             cryptoStream.Close();
             var response = (HttpWebResponse)request.GetResponse();
             if (response.StatusCode != HttpStatusCode.OK)

@@ -52,8 +52,11 @@ namespace TheBall.CORE.InstanceSupport
         public string FacebookOAuthClientSecret;
 
 
-        public string StripePublicKey;
-        public string StripeSecretKey;
+        public string StripeLivePublicKey;
+        public string StripeLiveSecretKey;
+
+        public string StripeTestPublicKey;
+        public string StripeTestSecretKey;
         public environment[] environments;
 
         public static SecureConfig Current => InformationContext.InstanceConfiguration.SecureConfig;

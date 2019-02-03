@@ -50,14 +50,35 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: CustomerAccount ( AccountID )" level="2">
+            <Header text="Target Definition: IsTokenTestMode ( PaymentToken )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Customer account object based accountID. Created if missing</TextContent>
+                  <TextContent>Is Token test mode token</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: UpdateStripeCustomerData ( CustomerAccount, PaymentToken )" level="2">
+            <Header text="Target Definition: IsTestAccount ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Retrieve account IsTestMode status, validated from list</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: IsTestMode ( IsTokenTestMode, IsTestAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate account and token matching testmode, return if agree, throw exception if not</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CustomerAccount ( AccountID, IsTestMode )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Customer account object based accountID. Created if missing. Validate that it matches istestmode</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateStripeCustomerData ( CustomerAccount, IsTestMode, PaymentToken )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Update Stripe customer data from payment info</TextContent>
@@ -78,21 +99,21 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ValidateStripePlanName ( PlanName )" level="2">
+            <Header text="Method Call: ValidateStripePlanName ( PlanName, IsTestMode )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Validate plan name from Stripe</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: CustomersActiveSubscriptions ( StripeCustomerID )" level="2">
+            <Header text="Target Definition: CustomersActiveSubscriptions ( StripeCustomerID, IsTestMode )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Active Stripe subscriptions of customer</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActiveSubscriptions, PaymentToken )" level="2">
+            <Header text="Method Call: ProcessPayment ( StripeCustomerID, IsTestMode, PlanName, CustomersActiveSubscriptions, PaymentToken )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Process payment to Stripe, if lacking with current plan/subscription</TextContent>
@@ -339,7 +360,14 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: RemoveCustomerPaymentSource ( StripeCustomerID )" level="2">
+            <Header text="Target Definition: IsTestMode ( CustomerAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Is Stripe in test mode</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveCustomerPaymentSource ( StripeCustomerID, IsTestMode )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Remove current card from Stripe customer</TextContent>
@@ -353,14 +381,14 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: CustomersActiveSubscriptions ( StripeCustomerID )" level="2">
+            <Header text="Target Definition: CustomersActiveSubscriptions ( StripeCustomerID, IsTestMode )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Active Stripe subscriptions of customer</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: CancelSubscriptionAtPeriodEnd ( StripeCustomerID, PlanName, CustomersActiveSubscriptions )" level="2">
+            <Header text="Method Call: CancelSubscriptionAtPeriodEnd ( StripeCustomerID, IsTestMode, PlanName, CustomersActiveSubscriptions )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Cancel current subscription at period end</TextContent>
@@ -494,7 +522,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="GetAccountFromStripeCustomer (StripeCustomerID)" level="1">
+          <Header text="GetAccountFromStripeCustomer (StripeCustomerID, IsTestAccount)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -522,6 +550,17 @@
                         <TextContent>Stripe Customer ID</TextContent>
                       </ColumnData>
                     </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>IsTestAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Is Stripe test account</TextContent>
+                      </ColumnData>
+                    </Row>
                   </Rows>
                 </Table>
               </Paragraph>
@@ -533,7 +572,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: Account ( AllCustomerAccounts, StripeCustomerID )" level="2">
+            <Header text="Target Definition: Account ( AllCustomerAccounts, StripeCustomerID, IsTestAccount )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Stripe customer ID based account</TextContent>
@@ -692,14 +731,21 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: EventData ( EventID )" level="2">
+            <Header text="Target Definition: IsTestMode ( JSONObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe test mode status</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EventData ( EventID, IsTestMode )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Stripe event object</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ProcessStripeEvent ( EventData )" level="2">
+            <Header text="Method Call: ProcessStripeEvent ( EventData, IsTestMode )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Process Stripe event</TextContent>
@@ -707,7 +753,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="PurchaseProduct (PaymentToken)" level="1">
+          <Header text="PurchaseProduct (PurchaseInfo)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -726,13 +772,13 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>PaymentToken</TextContent>
+                        <TextContent>PurchaseInfo</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>INT.PaymentToken</TextContent>
+                        <TextContent>INT.ProductPurchaseInfo</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Payment token info</TextContent>
+                        <TextContent>Product purchase info</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -760,28 +806,42 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: ProductName ( PaymentToken )" level="2">
+            <Header text="Target Definition: IsTestMode ( CustomerAccount )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Product name from the payment token</TextContent>
+                  <TextContent>Is Stripe in test mode</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: ProductPrice ( PaymentToken )" level="2">
+            <Header text="Target Definition: ProductName ( PurchaseInfo )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Product price from the payment token</TextContent>
+                  <TextContent>Product name from the purchase info</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ValidateStripeProductAndPrice ( ProductName, ProductPrice )" level="2">
+            <Header text="Target Definition: ProductPrice ( PurchaseInfo )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Product price from the purchase info</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Currency ( PurchaseInfo )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Product currency from the purchase info</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateStripeProductAndPrice ( ProductName, ProductPrice, IsTestMode )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Validate product info from Stripe</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ProcessPayment ( StripeCustomerID, ProductName, PaymentToken )" level="2">
+            <Header text="Method Call: ProcessPayment ( StripeCustomerID, IsTestMode, ProductName, ProductPrice, Currency, PurchaseInfo )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Process payment to Stripe</TextContent>
@@ -879,6 +939,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Target Definition: IsTestMode ( Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Is Stripe in test mode</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Target Definition: CurrentPlansBeforeSync ( Account )" level="2">
               <Paragraph>
                 <Text>
@@ -886,7 +953,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: ActivePlanStatusesFromStripe ( Account )" level="2">
+            <Header text="Target Definition: ActivePlanStatusesFromStripe ( Account, IsTestMode )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Plan statuses of account - fetched from Stripe.</TextContent>

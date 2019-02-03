@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -132,6 +131,44 @@ using System.Threading.Tasks;
 				public class EnsureAccountReturnValue 
 		{
 				public Account EnsuredAccount ;
+				}
+				public class SetAccountClientMetadataParameters 
+		{
+				public INT.AccountMetadata MetadataInfo ;
+				}
+		
+		public class SetAccountClientMetadata 
+		{
+				private static void PrepareParameters(SetAccountClientMetadataParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SetAccountClientMetadataParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await SetAccountClientMetadataImplementation.GetTarget_AccountAsync(parameters.MetadataInfo);	
+				string MetadataAsJSONString = SetAccountClientMetadataImplementation.GetTarget_MetadataAsJSONString(parameters.MetadataInfo);	
+				SetAccountClientMetadataImplementation.ExecuteMethod_SetAccountClientMetadata(Account, MetadataAsJSONString);		
+				 await SetAccountClientMetadataImplementation.ExecuteMethod_StoreObjectAsync(Account);		
+				}
+				}
+				public class SetAccountServerMetadataParameters 
+		{
+				public INT.AccountMetadata MetadataInfo ;
+				}
+		
+		public class SetAccountServerMetadata 
+		{
+				private static void PrepareParameters(SetAccountServerMetadataParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SetAccountServerMetadataParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await SetAccountServerMetadataImplementation.GetTarget_AccountAsync(parameters.MetadataInfo);	
+				string MetadataAsJSONString = SetAccountServerMetadataImplementation.GetTarget_MetadataAsJSONString(parameters.MetadataInfo);	
+				SetAccountServerMetadataImplementation.ExecuteMethod_SetAccountServerMetadata(Account, MetadataAsJSONString);		
+				 await SetAccountServerMetadataImplementation.ExecuteMethod_StoreObjectAsync(Account);		
+				}
 				}
 				public class CreateAccountParameters 
 		{
@@ -385,14 +422,14 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ObtainSystemProcessLockParameters parameters)
 		{
 					}
-				public static ObtainSystemProcessLockReturnValue Execute(ObtainSystemProcessLockParameters parameters)
+				public static async Task<ObtainSystemProcessLockReturnValue> ExecuteAsync(ObtainSystemProcessLockParameters parameters)
 		{
 						PrepareParameters(parameters);
 					string LockFileContent = ObtainSystemProcessLockImplementation.GetTarget_LockFileContent(parameters.LatestEntryTime, parameters.AmountOfEntries);	
 				string OwnerLockFileName = ObtainSystemProcessLockImplementation.GetTarget_OwnerLockFileName();	
 				string SystemOwnerLockFileName = ObtainSystemProcessLockImplementation.GetTarget_SystemOwnerLockFileName(parameters.Owner, parameters.LatestEntryTime);	
-				string ObtainOwnerLevelLockOutput = ObtainSystemProcessLockImplementation.ExecuteMethod_ObtainOwnerLevelLock(parameters.Owner, OwnerLockFileName, LockFileContent);		
-				ObtainSystemProcessLockImplementation.ExecuteMethod_ReportSystemLockToMatchOwnerLock(ObtainOwnerLevelLockOutput, SystemOwnerLockFileName, LockFileContent);		
+				string ObtainOwnerLevelLockOutput =  await ObtainSystemProcessLockImplementation.ExecuteMethod_ObtainOwnerLevelLockAsync(parameters.Owner, OwnerLockFileName, LockFileContent);		
+				 await ObtainSystemProcessLockImplementation.ExecuteMethod_ReportSystemLockToMatchOwnerLockAsync(ObtainOwnerLevelLockOutput, SystemOwnerLockFileName, LockFileContent);		
 				ObtainSystemProcessLockReturnValue returnValue = ObtainSystemProcessLockImplementation.Get_ReturnValue(ObtainOwnerLevelLockOutput);
 		return returnValue;
 				}
@@ -434,12 +471,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateProcessParameters parameters)
 		{
 					}
-				public static CreateProcessReturnValue Execute(CreateProcessParameters parameters)
+				public static async Task<CreateProcessReturnValue> ExecuteAsync(CreateProcessParameters parameters)
 		{
 						PrepareParameters(parameters);
 					Process Process = CreateProcessImplementation.GetTarget_Process(parameters.ProcessDescription, parameters.ExecutingOperationName, parameters.InitialArguments);	
-				ProcessContainer OwnerProcessContainer = CreateProcessImplementation.GetTarget_OwnerProcessContainer();	
-				CreateProcessImplementation.ExecuteMethod_AddProcessObjectToContainerAndStoreBoth(OwnerProcessContainer, Process);		
+				ProcessContainer OwnerProcessContainer =  await CreateProcessImplementation.GetTarget_OwnerProcessContainerAsync();	
+				 await CreateProcessImplementation.ExecuteMethod_AddProcessObjectToContainerAndStoreBothAsync(OwnerProcessContainer, Process);		
 				CreateProcessReturnValue returnValue = CreateProcessImplementation.Get_ReturnValue(Process);
 		return returnValue;
 				}
@@ -458,12 +495,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteProcessParameters parameters)
 		{
 					}
-				public static void Execute(DeleteProcessParameters parameters)
+				public static async Task ExecuteAsync(DeleteProcessParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Process Process = DeleteProcessImplementation.GetTarget_Process(parameters.ProcessID);	
-				ProcessContainer OwnerProcessContainer = DeleteProcessImplementation.GetTarget_OwnerProcessContainer();	
-				DeleteProcessImplementation.ExecuteMethod_ObtainLockRemoveFromContainerAndDeleteProcess(parameters.ProcessID, Process, OwnerProcessContainer);		
+					Process Process =  await DeleteProcessImplementation.GetTarget_ProcessAsync(parameters.ProcessID);	
+				ProcessContainer OwnerProcessContainer =  await DeleteProcessImplementation.GetTarget_OwnerProcessContainerAsync();	
+				 await DeleteProcessImplementation.ExecuteMethod_ObtainLockRemoveFromContainerAndDeleteProcessAsync(parameters.ProcessID, Process, OwnerProcessContainer);		
 				}
 				}
 				public class ExecuteProcessParameters 
@@ -476,19 +513,19 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ExecuteProcessParameters parameters)
 		{
 					}
-				public static void Execute(ExecuteProcessParameters parameters)
+				public static async Task ExecuteAsync(ExecuteProcessParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.Process Process = ExecuteProcessImplementation.GetTarget_Process(parameters.ProcessID);	
+					TheBall.CORE.Process Process =  await ExecuteProcessImplementation.GetTarget_ProcessAsync(parameters.ProcessID);	
 				string ProcessLockLocation = ExecuteProcessImplementation.GetTarget_ProcessLockLocation(Process);	
-				ExecuteProcessImplementation.ExecuteMethod_ExecuteAndStoreProcessWithLock(ProcessLockLocation, Process);		
+				 await ExecuteProcessImplementation.ExecuteMethod_ExecuteAndStoreProcessWithLockAsync(ProcessLockLocation, Process);		
 				}
 				}
 				public class SetObjectTreeValuesParameters 
 		{
 				public IInformationObject RootObject ;
 				public NameValueCollection HttpFormData ;
-				public System.Web.HttpFileCollection HttpFileData ;
+				public Microsoft.AspNetCore.Http.IFormFileCollection HttpFileData ;
 				}
 		
 		public class SetObjectTreeValues 
@@ -496,7 +533,7 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SetObjectTreeValuesParameters parameters)
 		{
 					}
-				public static void Execute(SetObjectTreeValuesParameters parameters)
+				public static async Task ExecuteAsync(SetObjectTreeValuesParameters parameters)
 		{
 						PrepareParameters(parameters);
 					SetObjectTreeValuesImplementation.ExecuteMethod_CreateInternalObjects(parameters.RootObject, parameters.HttpFormData);		
@@ -508,7 +545,7 @@ using System.Threading.Tasks;
 				SetObjectTreeValuesImplementation.ExecuteMethod_SetFieldValues(parameters.RootObject, FieldValues);		
 				SetObjectTreeValuesImplementation.ExecuteMethod_SetObjectLinks(parameters.RootObject, ObjectLinkValues);		
 				SetObjectTreeValuesImplementation.ExecuteMethod_SetBinaryContent(parameters.RootObject, BinaryContentFiles);		
-				SetObjectTreeValuesImplementation.ExecuteMethod_StoreCompleteObject(parameters.RootObject);		
+				 await SetObjectTreeValuesImplementation.ExecuteMethod_StoreCompleteObjectAsync(parameters.RootObject);		
 				}
 				}
 				public class CreateSpecifiedInformationObjectWithValuesParameters 
@@ -517,7 +554,7 @@ using System.Threading.Tasks;
 				public string ObjectDomainName ;
 				public string ObjectName ;
 				public NameValueCollection HttpFormData ;
-				public System.Web.HttpFileCollection HttpFileData ;
+				public Microsoft.AspNetCore.Http.IFormFileCollection HttpFileData ;
 				}
 		
 		public class CreateSpecifiedInformationObjectWithValues 
@@ -525,7 +562,7 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateSpecifiedInformationObjectWithValuesParameters parameters)
 		{
 					}
-				public static CreateSpecifiedInformationObjectWithValuesReturnValue Execute(CreateSpecifiedInformationObjectWithValuesParameters parameters)
+				public static async Task<CreateSpecifiedInformationObjectWithValuesReturnValue> ExecuteAsync(CreateSpecifiedInformationObjectWithValuesParameters parameters)
 		{
 						PrepareParameters(parameters);
 					CreateSpecifiedInformationObjectWithValuesImplementation.ExecuteMethod_CatchInvalidDomains(parameters.ObjectDomainName);		
@@ -534,7 +571,7 @@ using System.Threading.Tasks;
 				
 		{ // Local block to allow local naming
 			SetObjectTreeValuesParameters operationParameters = CreateSpecifiedInformationObjectWithValuesImplementation.SetObjectValues_GetParameters(parameters.HttpFormData, parameters.HttpFileData, CreatedObject);
-			SetObjectTreeValues.Execute(operationParameters);
+			 await SetObjectTreeValues.ExecuteAsync(operationParameters);
 									
 		} // Local block closing
 				CreateSpecifiedInformationObjectWithValuesReturnValue returnValue = CreateSpecifiedInformationObjectWithValuesImplementation.Get_ReturnValue(CreatedObject);
@@ -558,12 +595,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteSpecifiedInformationObjectParameters parameters)
 		{
 					}
-				public static void Execute(DeleteSpecifiedInformationObjectParameters parameters)
+				public static async Task ExecuteAsync(DeleteSpecifiedInformationObjectParameters parameters)
 		{
 						PrepareParameters(parameters);
 					DeleteSpecifiedInformationObjectImplementation.ExecuteMethod_CatchInvalidDomains(parameters.ObjectDomainName);		
-				IInformationObject ObjectToDelete = DeleteSpecifiedInformationObjectImplementation.GetTarget_ObjectToDelete(parameters.Owner, parameters.ObjectDomainName, parameters.ObjectName, parameters.ObjectID);	
-				DeleteSpecifiedInformationObjectImplementation.ExecuteMethod_DeleteObject(ObjectToDelete);		
+				IInformationObject ObjectToDelete =  await DeleteSpecifiedInformationObjectImplementation.GetTarget_ObjectToDeleteAsync(parameters.Owner, parameters.ObjectDomainName, parameters.ObjectName, parameters.ObjectID);	
+				 await DeleteSpecifiedInformationObjectImplementation.ExecuteMethod_DeleteObjectAsync(ObjectToDelete);		
 				}
 				}
 				public class CreateDeviceMembershipParameters 
@@ -578,11 +615,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateDeviceMembershipParameters parameters)
 		{
 					}
-				public static CreateDeviceMembershipReturnValue Execute(CreateDeviceMembershipParameters parameters)
+				public static async Task<CreateDeviceMembershipReturnValue> ExecuteAsync(CreateDeviceMembershipParameters parameters)
 		{
 						PrepareParameters(parameters);
 					DeviceMembership CreatedDeviceMembership = CreateDeviceMembershipImplementation.GetTarget_CreatedDeviceMembership(parameters.Owner, parameters.DeviceDescription, parameters.ActiveSymmetricAESKey);	
-				CreateDeviceMembershipImplementation.ExecuteMethod_StoreObject(CreatedDeviceMembership);		
+				 await CreateDeviceMembershipImplementation.ExecuteMethod_StoreObjectAsync(CreatedDeviceMembership);		
 				CreateDeviceMembershipReturnValue returnValue = CreateDeviceMembershipImplementation.Get_ReturnValue(CreatedDeviceMembership);
 		return returnValue;
 				}
@@ -603,12 +640,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SetDeviceMembershipValidationAndActiveStatusParameters parameters)
 		{
 					}
-				public static void Execute(SetDeviceMembershipValidationAndActiveStatusParameters parameters)
+				public static async Task ExecuteAsync(SetDeviceMembershipValidationAndActiveStatusParameters parameters)
 		{
 						PrepareParameters(parameters);
-					DeviceMembership DeviceMembership = SetDeviceMembershipValidationAndActiveStatusImplementation.GetTarget_DeviceMembership(parameters.Owner, parameters.DeviceMembershipID);	
+					DeviceMembership DeviceMembership =  await SetDeviceMembershipValidationAndActiveStatusImplementation.GetTarget_DeviceMembershipAsync(parameters.Owner, parameters.DeviceMembershipID);	
 				SetDeviceMembershipValidationAndActiveStatusImplementation.ExecuteMethod_SetDeviceValidAndActiveValue(parameters.IsValidAndActive, DeviceMembership);		
-				SetDeviceMembershipValidationAndActiveStatusImplementation.ExecuteMethod_StoreObject(DeviceMembership);		
+				 await SetDeviceMembershipValidationAndActiveStatusImplementation.ExecuteMethod_StoreObjectAsync(DeviceMembership);		
 				}
 				}
 				public class DeleteDeviceMembershipParameters 
@@ -622,11 +659,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteDeviceMembershipParameters parameters)
 		{
 					}
-				public static void Execute(DeleteDeviceMembershipParameters parameters)
+				public static async Task ExecuteAsync(DeleteDeviceMembershipParameters parameters)
 		{
 						PrepareParameters(parameters);
-					DeviceMembership DeviceMembership = DeleteDeviceMembershipImplementation.GetTarget_DeviceMembership(parameters.Owner, parameters.DeviceMembershipID);	
-				DeleteDeviceMembershipImplementation.ExecuteMethod_DeleteDeviceMembership(DeviceMembership);		
+					DeviceMembership DeviceMembership =  await DeleteDeviceMembershipImplementation.GetTarget_DeviceMembershipAsync(parameters.Owner, parameters.DeviceMembershipID);	
+				 await DeleteDeviceMembershipImplementation.ExecuteMethod_DeleteDeviceMembershipAsync(DeviceMembership);		
 				}
 				}
 				public class CreateAndSendEmailValidationForDeviceJoinConfirmationParameters 
@@ -641,12 +678,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateAndSendEmailValidationForDeviceJoinConfirmationParameters parameters)
 		{
 					}
-				public static void Execute(CreateAndSendEmailValidationForDeviceJoinConfirmationParameters parameters)
+				public static async Task ExecuteAsync(CreateAndSendEmailValidationForDeviceJoinConfirmationParameters parameters)
 		{
 						PrepareParameters(parameters);
 					string[] OwnerEmailAddresses = CreateAndSendEmailValidationForDeviceJoinConfirmationImplementation.GetTarget_OwnerEmailAddresses(parameters.OwningAccount, parameters.OwningGroup);	
 				AaltoGlobalImpact.OIP.TBEmailValidation EmailValidation = CreateAndSendEmailValidationForDeviceJoinConfirmationImplementation.GetTarget_EmailValidation(parameters.OwningAccount, parameters.OwningGroup, parameters.DeviceMembership, OwnerEmailAddresses);	
-				CreateAndSendEmailValidationForDeviceJoinConfirmationImplementation.ExecuteMethod_StoreObject(EmailValidation);		
+				 await CreateAndSendEmailValidationForDeviceJoinConfirmationImplementation.ExecuteMethod_StoreObjectAsync(EmailValidation);		
 				CreateAndSendEmailValidationForDeviceJoinConfirmationImplementation.ExecuteMethod_SendEmailConfirmation(parameters.DeviceMembership, EmailValidation, OwnerEmailAddresses);		
 				}
 				}
@@ -663,13 +700,13 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateAuthenticatedAsActiveDeviceParameters parameters)
 		{
 					}
-				public static CreateAuthenticatedAsActiveDeviceReturnValue Execute(CreateAuthenticatedAsActiveDeviceParameters parameters)
+				public static async Task<CreateAuthenticatedAsActiveDeviceReturnValue> ExecuteAsync(CreateAuthenticatedAsActiveDeviceParameters parameters)
 		{
 						PrepareParameters(parameters);
 					string NegotiationURL = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_NegotiationURL(parameters.TargetBallHostName, parameters.TargetGroupID);	
 				string ConnectionURL = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_ConnectionURL(parameters.TargetBallHostName, parameters.TargetGroupID);	
 				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = CreateAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticationDeviceDescription, NegotiationURL, ConnectionURL);	
-				CreateAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice);		
+				 await CreateAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_StoreObjectAsync(AuthenticatedAsActiveDevice);		
 				CreateAuthenticatedAsActiveDeviceReturnValue returnValue = CreateAuthenticatedAsActiveDeviceImplementation.Get_ReturnValue(AuthenticatedAsActiveDevice);
 		return returnValue;
 				}
@@ -689,16 +726,16 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters parameters)
 		{
 					}
-				public static void Execute(PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters parameters)
+				public static async Task ExecuteAsync(PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters parameters)
 		{
 						PrepareParameters(parameters);
-					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticatedAsActiveDeviceID);	
+					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice =  await PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDeviceAsync(parameters.Owner, parameters.AuthenticatedAsActiveDeviceID);	
 				string RemoteBallSecretRequestUrl = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_RemoteBallSecretRequestUrl(AuthenticatedAsActiveDevice);	
 				byte[] SharedSecretFullPayload = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_SharedSecretFullPayload(RemoteBallSecretRequestUrl);	
 				byte[] SharedSecretData = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_SharedSecretData(SharedSecretFullPayload);	
 				byte[] SharedSecretPayload = PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.GetTarget_SharedSecretPayload(SharedSecretFullPayload);	
 				PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.ExecuteMethod_NegotiateWithTarget(AuthenticatedAsActiveDevice, SharedSecretData, SharedSecretPayload);		
-				PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice);		
+				 await PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation.ExecuteMethod_StoreObjectAsync(AuthenticatedAsActiveDevice);		
 				}
 				}
 				public class DeleteAuthenticatedAsActiveDeviceParameters 
@@ -712,12 +749,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteAuthenticatedAsActiveDeviceParameters parameters)
 		{
 					}
-				public static void Execute(DeleteAuthenticatedAsActiveDeviceParameters parameters)
+				public static async Task ExecuteAsync(DeleteAuthenticatedAsActiveDeviceParameters parameters)
 		{
 						PrepareParameters(parameters);
-					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = DeleteAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.Owner, parameters.AuthenticatedAsActiveDeviceID);	
+					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice =  await DeleteAuthenticatedAsActiveDeviceImplementation.GetTarget_AuthenticatedAsActiveDeviceAsync(parameters.Owner, parameters.AuthenticatedAsActiveDeviceID);	
 				DeleteAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_CallDeleteDeviceOnRemoteSide(AuthenticatedAsActiveDevice);		
-				DeleteAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_DeleteAuthenticatedAsActiveDevice(AuthenticatedAsActiveDevice);		
+				 await DeleteAuthenticatedAsActiveDeviceImplementation.ExecuteMethod_DeleteAuthenticatedAsActiveDeviceAsync(AuthenticatedAsActiveDevice);		
 				}
 				}
 				public class CreateInformationOutputParameters 
@@ -735,11 +772,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateInformationOutputParameters parameters)
 		{
 					}
-				public static CreateInformationOutputReturnValue Execute(CreateInformationOutputParameters parameters)
+				public static async Task<CreateInformationOutputReturnValue> ExecuteAsync(CreateInformationOutputParameters parameters)
 		{
 						PrepareParameters(parameters);
 					InformationOutput CreatedInformationOutput = CreateInformationOutputImplementation.GetTarget_CreatedInformationOutput(parameters.Owner, parameters.OutputDescription, parameters.DestinationURL, parameters.DestinationContentName, parameters.LocalContentURL, parameters.AuthenticatedDeviceID);	
-				CreateInformationOutputImplementation.ExecuteMethod_StoreObject(CreatedInformationOutput);		
+				 await CreateInformationOutputImplementation.ExecuteMethod_StoreObjectAsync(CreatedInformationOutput);		
 				CreateInformationOutputReturnValue returnValue = CreateInformationOutputImplementation.Get_ReturnValue(CreatedInformationOutput);
 		return returnValue;
 				}
@@ -760,12 +797,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SetInformationOutputValidationAndActiveStatusParameters parameters)
 		{
 					}
-				public static void Execute(SetInformationOutputValidationAndActiveStatusParameters parameters)
+				public static async Task ExecuteAsync(SetInformationOutputValidationAndActiveStatusParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationOutput InformationOutput = SetInformationOutputValidationAndActiveStatusImplementation.GetTarget_InformationOutput(parameters.Owner, parameters.InformationOutputID);	
+					InformationOutput InformationOutput =  await SetInformationOutputValidationAndActiveStatusImplementation.GetTarget_InformationOutputAsync(parameters.Owner, parameters.InformationOutputID);	
 				SetInformationOutputValidationAndActiveStatusImplementation.ExecuteMethod_SetInputValidAndActiveValue(parameters.IsValidAndActive, InformationOutput);		
-				SetInformationOutputValidationAndActiveStatusImplementation.ExecuteMethod_StoreObject(InformationOutput);		
+				 await SetInformationOutputValidationAndActiveStatusImplementation.ExecuteMethod_StoreObjectAsync(InformationOutput);		
 				}
 				}
 				public class DeleteInformationOutputParameters 
@@ -779,11 +816,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteInformationOutputParameters parameters)
 		{
 					}
-				public static void Execute(DeleteInformationOutputParameters parameters)
+				public static async Task ExecuteAsync(DeleteInformationOutputParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationOutput InformationOutput = DeleteInformationOutputImplementation.GetTarget_InformationOutput(parameters.Owner, parameters.InformationOutputID);	
-				DeleteInformationOutputImplementation.ExecuteMethod_DeleteInformationOutput(InformationOutput);		
+					InformationOutput InformationOutput =  await DeleteInformationOutputImplementation.GetTarget_InformationOutputAsync(parameters.Owner, parameters.InformationOutputID);	
+				 await DeleteInformationOutputImplementation.ExecuteMethod_DeleteInformationOutputAsync(InformationOutput);		
 				}
 				}
 				public class CreateAndSendEmailValidationForInformationOutputConfirmationParameters 
@@ -820,16 +857,16 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(PushToInformationOutputParameters parameters)
 		{
 					}
-				public static void Execute(PushToInformationOutputParameters parameters)
+				public static async Task ExecuteAsync(PushToInformationOutputParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationOutput InformationOutput = PushToInformationOutputImplementation.GetTarget_InformationOutput(parameters.Owner, parameters.InformationOutputID);	
+					InformationOutput InformationOutput =  await PushToInformationOutputImplementation.GetTarget_InformationOutputAsync(parameters.Owner, parameters.InformationOutputID);	
 				PushToInformationOutputImplementation.ExecuteMethod_VerifyValidOutput(InformationOutput);		
 				string DestinationURL = PushToInformationOutputImplementation.GetTarget_DestinationURL(InformationOutput);	
 				string DestinationContentName = PushToInformationOutputImplementation.GetTarget_DestinationContentName(parameters.SpecificDestinationContentName, InformationOutput);	
 				string LocalContentURL = PushToInformationOutputImplementation.GetTarget_LocalContentURL(parameters.LocalContentName, InformationOutput);	
-				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = PushToInformationOutputImplementation.GetTarget_AuthenticatedAsActiveDevice(InformationOutput);	
-				PushToInformationOutputImplementation.ExecuteMethod_PushToInformationOutput(parameters.Owner, InformationOutput, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedAsActiveDevice);		
+				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice =  await PushToInformationOutputImplementation.GetTarget_AuthenticatedAsActiveDeviceAsync(InformationOutput);	
+				 await PushToInformationOutputImplementation.ExecuteMethod_PushToInformationOutputAsync(parameters.Owner, InformationOutput, DestinationURL, DestinationContentName, LocalContentURL, AuthenticatedAsActiveDevice);		
 				}
 				}
 				public class CreateInformationInputParameters 
@@ -846,11 +883,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateInformationInputParameters parameters)
 		{
 					}
-				public static CreateInformationInputReturnValue Execute(CreateInformationInputParameters parameters)
+				public static async Task<CreateInformationInputReturnValue> ExecuteAsync(CreateInformationInputParameters parameters)
 		{
 						PrepareParameters(parameters);
 					InformationInput CreatedInformationInput = CreateInformationInputImplementation.GetTarget_CreatedInformationInput(parameters.Owner, parameters.InputDescription, parameters.LocationURL, parameters.LocalContentName, parameters.AuthenticatedDeviceID);	
-				CreateInformationInputImplementation.ExecuteMethod_StoreObject(CreatedInformationInput);		
+				 await CreateInformationInputImplementation.ExecuteMethod_StoreObjectAsync(CreatedInformationInput);		
 				CreateInformationInputReturnValue returnValue = CreateInformationInputImplementation.Get_ReturnValue(CreatedInformationInput);
 		return returnValue;
 				}
@@ -871,12 +908,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SetInformationInputValidationAndActiveStatusParameters parameters)
 		{
 					}
-				public static void Execute(SetInformationInputValidationAndActiveStatusParameters parameters)
+				public static async Task ExecuteAsync(SetInformationInputValidationAndActiveStatusParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationInput InformationInput = SetInformationInputValidationAndActiveStatusImplementation.GetTarget_InformationInput(parameters.Owner, parameters.InformationInputID);	
+					InformationInput InformationInput =  await SetInformationInputValidationAndActiveStatusImplementation.GetTarget_InformationInputAsync(parameters.Owner, parameters.InformationInputID);	
 				SetInformationInputValidationAndActiveStatusImplementation.ExecuteMethod_SetInputValidAndActiveValue(parameters.IsValidAndActive, InformationInput);		
-				SetInformationInputValidationAndActiveStatusImplementation.ExecuteMethod_StoreObject(InformationInput);		
+				 await SetInformationInputValidationAndActiveStatusImplementation.ExecuteMethod_StoreObjectAsync(InformationInput);		
 				}
 				}
 				public class DeleteInformationInputParameters 
@@ -890,11 +927,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteInformationInputParameters parameters)
 		{
 					}
-				public static void Execute(DeleteInformationInputParameters parameters)
+				public static async Task ExecuteAsync(DeleteInformationInputParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationInput InformationInput = DeleteInformationInputImplementation.GetTarget_InformationInput(parameters.Owner, parameters.InformationInputID);	
-				DeleteInformationInputImplementation.ExecuteMethod_DeleteInformationInput(InformationInput);		
+					InformationInput InformationInput =  await DeleteInformationInputImplementation.GetTarget_InformationInputAsync(parameters.Owner, parameters.InformationInputID);	
+				 await DeleteInformationInputImplementation.ExecuteMethod_DeleteInformationInputAsync(InformationInput);		
 				}
 				}
 				public class CreateAndSendEmailValidationForInformationInputConfirmationParameters 
@@ -909,13 +946,13 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateAndSendEmailValidationForInformationInputConfirmationParameters parameters)
 		{
 					}
-				public static void Execute(CreateAndSendEmailValidationForInformationInputConfirmationParameters parameters)
+				public static async Task ExecuteAsync(CreateAndSendEmailValidationForInformationInputConfirmationParameters parameters)
 		{
 						PrepareParameters(parameters);
 					string[] OwnerEmailAddresses = CreateAndSendEmailValidationForInformationInputConfirmationImplementation.GetTarget_OwnerEmailAddresses(parameters.OwningAccount, parameters.OwningGroup);	
 				AaltoGlobalImpact.OIP.TBEmailValidation EmailValidation = CreateAndSendEmailValidationForInformationInputConfirmationImplementation.GetTarget_EmailValidation(parameters.OwningAccount, parameters.OwningGroup, parameters.InformationInput, OwnerEmailAddresses);	
-				CreateAndSendEmailValidationForInformationInputConfirmationImplementation.ExecuteMethod_StoreObject(EmailValidation);		
-				CreateAndSendEmailValidationForInformationInputConfirmationImplementation.ExecuteMethod_SendEmailConfirmation(parameters.InformationInput, EmailValidation, OwnerEmailAddresses);		
+				 await CreateAndSendEmailValidationForInformationInputConfirmationImplementation.ExecuteMethod_StoreObjectAsync(EmailValidation);		
+				 await CreateAndSendEmailValidationForInformationInputConfirmationImplementation.ExecuteMethod_SendEmailConfirmationAsync(parameters.InformationInput, EmailValidation, OwnerEmailAddresses);		
 				}
 				}
 				public class JoinAccountToGroupParameters 
@@ -966,15 +1003,15 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(FetchInputInformationParameters parameters)
 		{
 					}
-				public static void Execute(FetchInputInformationParameters parameters)
+				public static async Task ExecuteAsync(FetchInputInformationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationInput InformationInput = FetchInputInformationImplementation.GetTarget_InformationInput(parameters.Owner, parameters.InformationInputID);	
+					InformationInput InformationInput =  await FetchInputInformationImplementation.GetTarget_InformationInputAsync(parameters.Owner, parameters.InformationInputID);	
 				FetchInputInformationImplementation.ExecuteMethod_VerifyValidInput(InformationInput);		
 				string InputFetchLocation = FetchInputInformationImplementation.GetTarget_InputFetchLocation(InformationInput);	
 				string InputFetchName = FetchInputInformationImplementation.GetTarget_InputFetchName(InformationInput);	
-				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = FetchInputInformationImplementation.GetTarget_AuthenticatedAsActiveDevice(InformationInput);	
-				FetchInputInformationImplementation.ExecuteMethod_FetchInputToStorage(parameters.Owner, parameters.QueryParameters, InformationInput, InputFetchLocation, InputFetchName, AuthenticatedAsActiveDevice);		
+				AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice =  await FetchInputInformationImplementation.GetTarget_AuthenticatedAsActiveDeviceAsync(InformationInput);	
+				 await FetchInputInformationImplementation.ExecuteMethod_FetchInputToStorageAsync(parameters.Owner, parameters.QueryParameters, InformationInput, InputFetchLocation, InputFetchName, AuthenticatedAsActiveDevice);		
 				}
 				}
 				public class ProcessFetchedInputsParameters 
@@ -994,15 +1031,15 @@ using System.Threading.Tasks;
 				public IInformationObject[] ProcessingResultsToStore ;
 				public IInformationObject[] ProcessingResultsToDelete ;
 				}
-				public static void Execute(ProcessFetchedInputsParameters parameters)
+				public static async Task ExecuteAsync(ProcessFetchedInputsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InformationInput InformationInput = ProcessFetchedInputsImplementation.GetTarget_InformationInput(parameters.Owner, parameters.InformationInputID);	
+					InformationInput InformationInput =  await ProcessFetchedInputsImplementation.GetTarget_InformationInputAsync(parameters.Owner, parameters.InformationInputID);	
 				ProcessFetchedInputsImplementation.ExecuteMethod_VerifyValidInput(InformationInput);		
 				string InputFetchLocation = ProcessFetchedInputsImplementation.GetTarget_InputFetchLocation(InformationInput);	
 				ProcessInputFromStorageReturnValue ProcessInputFromStorageOutput = ProcessFetchedInputsImplementation.ExecuteMethod_ProcessInputFromStorage(parameters.ProcessingOperationName, InformationInput, InputFetchLocation);		
-				ProcessFetchedInputsImplementation.ExecuteMethod_StoreObjects(ProcessInputFromStorageOutput.ProcessingResultsToStore);		
-				ProcessFetchedInputsImplementation.ExecuteMethod_DeleteObjects(ProcessInputFromStorageOutput.ProcessingResultsToDelete);		
+				 await ProcessFetchedInputsImplementation.ExecuteMethod_StoreObjectsAsync(ProcessInputFromStorageOutput.ProcessingResultsToStore);		
+				 await ProcessFetchedInputsImplementation.ExecuteMethod_DeleteObjectsAsync(ProcessInputFromStorageOutput.ProcessingResultsToDelete);		
 				}
 				}
 				public class BeginAccountEmailAddressRegistrationParameters 
@@ -1017,12 +1054,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(BeginAccountEmailAddressRegistrationParameters parameters)
 		{
 					}
-				public static void Execute(BeginAccountEmailAddressRegistrationParameters parameters)
+				public static async Task ExecuteAsync(BeginAccountEmailAddressRegistrationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_ValidateUnexistingEmail(parameters.EmailAddress);		
+					 await BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_ValidateUnexistingEmailAsync(parameters.EmailAddress);		
 				AaltoGlobalImpact.OIP.TBEmailValidation EmailValidation = BeginAccountEmailAddressRegistrationImplementation.GetTarget_EmailValidation(parameters.AccountID, parameters.EmailAddress, parameters.RedirectUrlAfterValidation);	
-				BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_StoreObject(EmailValidation);		
+				 await BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_StoreObjectAsync(EmailValidation);		
 				BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_SendEmailConfirmation(EmailValidation);		
 				}
 				}
@@ -1050,25 +1087,6 @@ using System.Threading.Tasks;
 				RegisterEmailAddressImplementation.ExecuteMethod_UpdateAccountRootAndContainerWithChanges(parameters.AccountID);		
 				}
 				}
-				public class UnregisterEmailAddressParameters 
-		{
-				public string AccountID ;
-				public string EmailAddress ;
-				}
-		
-		public class UnregisterEmailAddress 
-		{
-				private static void PrepareParameters(UnregisterEmailAddressParameters parameters)
-		{
-					}
-				public static void Execute(UnregisterEmailAddressParameters parameters)
-		{
-						PrepareParameters(parameters);
-					AaltoGlobalImpact.OIP.AccountContainer AccountContainerBeforeGroupRemoval = UnregisterEmailAddressImplementation.GetTarget_AccountContainerBeforeGroupRemoval(parameters.AccountID);	
-				string EmailAddressID = UnregisterEmailAddressImplementation.GetTarget_EmailAddressID(parameters.EmailAddress, AccountContainerBeforeGroupRemoval);	
-				UnregisterEmailAddressImplementation.ExecuteMethod_ExecuteUnlinkEmailAddress(parameters.AccountID, AccountContainerBeforeGroupRemoval, EmailAddressID);		
-				}
-				}
 				public class InitiateImportedGroupWithUnchangedIDParameters 
 		{
 				public string GroupID ;
@@ -1081,14 +1099,14 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(InitiateImportedGroupWithUnchangedIDParameters parameters)
 		{
 					}
-				public static void Execute(InitiateImportedGroupWithUnchangedIDParameters parameters)
+				public static async Task ExecuteAsync(InitiateImportedGroupWithUnchangedIDParameters parameters)
 		{
 						PrepareParameters(parameters);
 					TheBall.CORE.IContainerOwner GroupAsOwner = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupAsOwner(parameters.GroupID);	
-				AaltoGlobalImpact.OIP.GroupContainer GroupContainer = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupContainer(GroupAsOwner);	
+				AaltoGlobalImpact.OIP.GroupContainer GroupContainer =  await InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupContainerAsync(GroupAsOwner);	
 				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_ValidateGroupContainerID(parameters.GroupID, GroupContainer);		
 				AaltoGlobalImpact.OIP.TBRGroupRoot GroupRoot = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupRoot(parameters.GroupID);	
-				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_StoreObjects(GroupRoot, GroupContainer);		
+				 await InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_StoreObjectsAsync(GroupRoot, GroupContainer);		
 				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_SetGroupInitiatorAccess(GroupRoot, GroupContainer);		
 				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_FixContentTypesAndMetadataOfBlobs(GroupAsOwner);		
 				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_FixRelativeLocationsOfInformationObjects(GroupAsOwner);		
@@ -1162,10 +1180,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SetOwnerWebRedirectParameters parameters)
 		{
 					}
-				public static void Execute(SetOwnerWebRedirectParameters parameters)
+				public static async Task ExecuteAsync(SetOwnerWebRedirectParameters parameters)
 		{
 						PrepareParameters(parameters);
-					SetOwnerWebRedirectImplementation.ExecuteMethod_SetRedirection(parameters.Owner, parameters.RedirectPath);		
+					 await SetOwnerWebRedirectImplementation.ExecuteMethod_SetRedirectionAsync(parameters.Owner, parameters.RedirectPath);		
 				}
 				}
 				public class ProcessAllResourceUsagesToOwnerCollectionsParameters 
@@ -1178,10 +1196,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ProcessAllResourceUsagesToOwnerCollectionsParameters parameters)
 		{
 					}
-				public static void Execute(ProcessAllResourceUsagesToOwnerCollectionsParameters parameters)
+				public static async Task ExecuteAsync(ProcessAllResourceUsagesToOwnerCollectionsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					ProcessAllResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ExecuteBatchProcessor(parameters.ProcessBatchSize);		
+					 await ProcessAllResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ExecuteBatchProcessorAsync(parameters.ProcessBatchSize);		
 				}
 				}
 				public class ProcessBatchOfResourceUsagesToOwnerCollectionsParameters 
@@ -1195,13 +1213,13 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ProcessBatchOfResourceUsagesToOwnerCollectionsParameters parameters)
 		{
 					}
-				public static ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue Execute(ProcessBatchOfResourceUsagesToOwnerCollectionsParameters parameters)
+				public static async Task<ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue> ExecuteAsync(ProcessBatchOfResourceUsagesToOwnerCollectionsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] BatchToProcess = ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.GetTarget_BatchToProcess(parameters.ProcessBatchSize, parameters.ProcessIfLess);	
-				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ProcessBatch(BatchToProcess);		
-				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_DeleteProcessedItems(BatchToProcess);		
-				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ReleaseLock(BatchToProcess);		
+					Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] BatchToProcess =  await ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.GetTarget_BatchToProcessAsync(parameters.ProcessBatchSize, parameters.ProcessIfLess);	
+				 await ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ProcessBatchAsync(BatchToProcess);		
+				 await ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_DeleteProcessedItemsAsync(BatchToProcess);		
+				 await ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ReleaseLockAsync(BatchToProcess);		
 				ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue returnValue = ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.Get_ReturnValue(parameters.ProcessBatchSize, BatchToProcess);
 		return returnValue;
 				}
@@ -1222,11 +1240,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(UpdateUsageMonitoringSummariesParameters parameters)
 		{
 					}
-				public static void Execute(UpdateUsageMonitoringSummariesParameters parameters)
+				public static async Task ExecuteAsync(UpdateUsageMonitoringSummariesParameters parameters)
 		{
 						PrepareParameters(parameters);
-					UsageMonitorItem[] SourceItems = UpdateUsageMonitoringSummariesImplementation.GetTarget_SourceItems(parameters.Owner, parameters.AmountOfDays);	
-				UpdateUsageMonitoringSummariesImplementation.ExecuteMethod_CreateUsageMonitoringSummaries(parameters.Owner, parameters.AmountOfDays, SourceItems);		
+					UsageMonitorItem[] SourceItems =  await UpdateUsageMonitoringSummariesImplementation.GetTarget_SourceItemsAsync(parameters.Owner, parameters.AmountOfDays);	
+				 await UpdateUsageMonitoringSummariesImplementation.ExecuteMethod_CreateUsageMonitoringSummariesAsync(parameters.Owner, parameters.AmountOfDays, SourceItems);		
 				}
 				}
 				public class UpdateUsageMonitoringItemsParameters 
@@ -1266,12 +1284,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(PublishGroupToWwwParameters parameters)
 		{
 					}
-				public static void Execute(PublishGroupToWwwParameters parameters)
+				public static async Task ExecuteAsync(PublishGroupToWwwParameters parameters)
 		{
 						PrepareParameters(parameters);
-					AaltoGlobalImpact.OIP.GroupContainer GroupContainer = PublishGroupToWwwImplementation.GetTarget_GroupContainer(parameters.Owner);	
+					AaltoGlobalImpact.OIP.GroupContainer GroupContainer =  await PublishGroupToWwwImplementation.GetTarget_GroupContainerAsync(parameters.Owner);	
 				string TargetContainerName = PublishGroupToWwwImplementation.GetTarget_TargetContainerName(GroupContainer);	
-				string TargetContainerOwnerString = PublishGroupToWwwImplementation.GetTarget_TargetContainerOwnerString(TargetContainerName);	
+				string TargetContainerOwnerString =  await PublishGroupToWwwImplementation.GetTarget_TargetContainerOwnerStringAsync(TargetContainerName);	
 				PublishGroupToWwwImplementation.ExecuteMethod_ValidatePublishParameters(parameters.Owner, TargetContainerOwnerString);		
 				PublishGroupToWwwImplementation.ExecuteMethod_PublishWithWorker(parameters.Owner, TargetContainerName, TargetContainerOwnerString);		
 				}
@@ -1288,15 +1306,15 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateOrUpdateCustomUIParameters parameters)
 		{
 					}
-				public static void Execute(CreateOrUpdateCustomUIParameters parameters)
+				public static async Task ExecuteAsync(CreateOrUpdateCustomUIParameters parameters)
 		{
 						PrepareParameters(parameters);
-					AaltoGlobalImpact.OIP.GroupContainer GroupContainer = CreateOrUpdateCustomUIImplementation.GetTarget_GroupContainer(parameters.Owner);	
+					AaltoGlobalImpact.OIP.GroupContainer GroupContainer =  await CreateOrUpdateCustomUIImplementation.GetTarget_GroupContainerAsync(parameters.Owner);	
 				CreateOrUpdateCustomUIImplementation.ExecuteMethod_ValidateCustomUIName(parameters.CustomUIName);		
 				string CustomUIFolder = CreateOrUpdateCustomUIImplementation.GetTarget_CustomUIFolder(parameters.Owner, parameters.CustomUIName);	
 				CreateOrUpdateCustomUIImplementation.ExecuteMethod_SetCustomUIName(parameters.CustomUIName, GroupContainer);		
-				CreateOrUpdateCustomUIImplementation.ExecuteMethod_CopyUIContentsFromZipArchive(parameters.ZipArchiveStream, CustomUIFolder);		
-				CreateOrUpdateCustomUIImplementation.ExecuteMethod_StoreObject(GroupContainer);		
+				 await CreateOrUpdateCustomUIImplementation.ExecuteMethod_CopyUIContentsFromZipArchiveAsync(parameters.ZipArchiveStream, CustomUIFolder);		
+				 await CreateOrUpdateCustomUIImplementation.ExecuteMethod_StoreObjectAsync(GroupContainer);		
 				}
 				}
 				public class DeleteCustomUIParameters 
@@ -1310,10 +1328,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteCustomUIParameters parameters)
 		{
 					}
-				public static void Execute(DeleteCustomUIParameters parameters)
+				public static async Task ExecuteAsync(DeleteCustomUIParameters parameters)
 		{
 						PrepareParameters(parameters);
-					AaltoGlobalImpact.OIP.GroupContainer GroupContainer = DeleteCustomUIImplementation.GetTarget_GroupContainer(parameters.Owner);	
+					AaltoGlobalImpact.OIP.GroupContainer GroupContainer =  await DeleteCustomUIImplementation.GetTarget_GroupContainerAsync(parameters.Owner);	
 				string CustomUIFolder = DeleteCustomUIImplementation.GetTarget_CustomUIFolder(parameters.Owner, parameters.CustomUIName);	
 				DeleteCustomUIImplementation.ExecuteMethod_RemoveCustomUIName(parameters.CustomUIName, GroupContainer);		
 				DeleteCustomUIImplementation.ExecuteMethod_RemoveCustomUIContents(CustomUIFolder);		
@@ -1331,10 +1349,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ExportOwnerContentToZipParameters parameters)
 		{
 					}
-				public static ExportOwnerContentToZipReturnValue Execute(ExportOwnerContentToZipParameters parameters)
+				public static async Task<ExportOwnerContentToZipReturnValue> ExecuteAsync(ExportOwnerContentToZipParameters parameters)
 		{
 						PrepareParameters(parameters);
-					string[] IncludedFolders = ExportOwnerContentToZipImplementation.GetTarget_IncludedFolders(parameters.Owner, parameters.PackageRootFolder);	
+					string[] IncludedFolders =  await ExportOwnerContentToZipImplementation.GetTarget_IncludedFoldersAsync(parameters.Owner, parameters.PackageRootFolder);	
 				ContentPackage PackageOwnerContentToZipOutput;
 		{ // Local block to allow local naming
 			PackageOwnerContentParameters operationParameters = ExportOwnerContentToZipImplementation.PackageOwnerContentToZip_GetParameters(parameters.Owner, parameters.PackageRootFolder, IncludedFolders);
@@ -1392,14 +1410,14 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeviceSyncFullAccountOperationParameters parameters)
 		{
 					}
-				public static void Execute(DeviceSyncFullAccountOperationParameters parameters)
+				public static async Task ExecuteAsync(DeviceSyncFullAccountOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
 					TheBall.Support.VirtualStorage.ContentSyncRequest SyncRequest = DeviceSyncFullAccountOperationImplementation.GetTarget_SyncRequest(parameters.InputStream);	
 				AaltoGlobalImpact.OIP.TBAccount AccountOwner = DeviceSyncFullAccountOperationImplementation.GetTarget_AccountOwner();	
 				IContainerOwner[] GroupOwners = DeviceSyncFullAccountOperationImplementation.GetTarget_GroupOwners(AccountOwner);	
-				TheBall.Support.VirtualStorage.ContentSyncResponse SyncResponse = DeviceSyncFullAccountOperationImplementation.GetTarget_SyncResponse(SyncRequest, AccountOwner, GroupOwners);	
-				DeviceSyncFullAccountOperationImplementation.ExecuteMethod_WriteResponseToStream(parameters.OutputStream, SyncResponse);		
+				TheBall.Support.VirtualStorage.ContentSyncResponse SyncResponse =  await DeviceSyncFullAccountOperationImplementation.GetTarget_SyncResponseAsync(SyncRequest, AccountOwner, GroupOwners);	
+				 await DeviceSyncFullAccountOperationImplementation.ExecuteMethod_WriteResponseToStreamAsync(parameters.OutputStream, SyncResponse);		
 				}
 				}
 				public class RemoteDeviceCoreOperationParameters 
@@ -1413,12 +1431,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(RemoteDeviceCoreOperationParameters parameters)
 		{
 					}
-				public static void Execute(RemoteDeviceCoreOperationParameters parameters)
+				public static async Task ExecuteAsync(RemoteDeviceCoreOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
 					INT.DeviceOperationData DeviceOperationData = RemoteDeviceCoreOperationImplementation.GetTarget_DeviceOperationData(parameters.InputStream);	
 				DeviceMembership CurrentDevice = RemoteDeviceCoreOperationImplementation.GetTarget_CurrentDevice();	
-				RemoteDeviceCoreOperationImplementation.ExecuteMethod_PerformOperation(CurrentDevice, DeviceOperationData);		
+				 await RemoteDeviceCoreOperationImplementation.ExecuteMethod_PerformOperationAsync(CurrentDevice, DeviceOperationData);		
 				RemoteDeviceCoreOperationImplementation.ExecuteMethod_SerializeDeviceOperationDataToOutput(parameters.OutputStream, DeviceOperationData);		
 				}
 				}
@@ -1437,14 +1455,14 @@ using System.Threading.Tasks;
 				public INT.ContentItemLocationWithMD5[] ItemsToCopy ;
 				public INT.ContentItemLocationWithMD5[] ItemsDeleted ;
 				}
-				public static SyncCopyContentToDeviceTargetReturnValue Execute(SyncCopyContentToDeviceTargetParameters parameters)
+				public static async Task<SyncCopyContentToDeviceTargetReturnValue> ExecuteAsync(SyncCopyContentToDeviceTargetParameters parameters)
 		{
 						PrepareParameters(parameters);
-					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice = SyncCopyContentToDeviceTargetImplementation.GetTarget_AuthenticatedAsActiveDevice(parameters.AuthenticatedAsActiveDeviceID);	
+					AuthenticatedAsActiveDevice AuthenticatedAsActiveDevice =  await SyncCopyContentToDeviceTargetImplementation.GetTarget_AuthenticatedAsActiveDeviceAsync(parameters.AuthenticatedAsActiveDeviceID);	
 				string ContentRootLocation = SyncCopyContentToDeviceTargetImplementation.GetTarget_ContentRootLocation(AuthenticatedAsActiveDevice);	
-				INT.ContentItemLocationWithMD5[] ThisSideContentMD5List = SyncCopyContentToDeviceTargetImplementation.GetTarget_ThisSideContentMD5List(ContentRootLocation);	
-				CallPrepareTargetAndListItemsToCopyReturnValue CallPrepareTargetAndListItemsToCopyOutput = SyncCopyContentToDeviceTargetImplementation.ExecuteMethod_CallPrepareTargetAndListItemsToCopy(AuthenticatedAsActiveDevice, ThisSideContentMD5List);		
-				SyncCopyContentToDeviceTargetImplementation.ExecuteMethod_CopyItemsToCopyToTargetDevice(AuthenticatedAsActiveDevice, CallPrepareTargetAndListItemsToCopyOutput);		
+				INT.ContentItemLocationWithMD5[] ThisSideContentMD5List =  await SyncCopyContentToDeviceTargetImplementation.GetTarget_ThisSideContentMD5ListAsync(ContentRootLocation);	
+				CallPrepareTargetAndListItemsToCopyReturnValue CallPrepareTargetAndListItemsToCopyOutput =  await SyncCopyContentToDeviceTargetImplementation.ExecuteMethod_CallPrepareTargetAndListItemsToCopyAsync(AuthenticatedAsActiveDevice, ThisSideContentMD5List);		
+				 await SyncCopyContentToDeviceTargetImplementation.ExecuteMethod_CopyItemsToCopyToTargetDeviceAsync(AuthenticatedAsActiveDevice, CallPrepareTargetAndListItemsToCopyOutput);		
 				SyncCopyContentToDeviceTargetReturnValue returnValue = SyncCopyContentToDeviceTargetImplementation.Get_ReturnValue(CallPrepareTargetAndListItemsToCopyOutput);
 		return returnValue;
 				}
@@ -1453,100 +1471,6 @@ using System.Threading.Tasks;
 		{
 				public INT.ContentItemLocationWithMD5[] CopiedItems ;
 				public INT.ContentItemLocationWithMD5[] DeletedItems ;
-				}
-				public class MergeAccountsDestructivelyParameters 
-		{
-				public string PrimaryAccountToStayID ;
-				public string AccountToBeMergedAndDestroyedID ;
-				}
-		
-		public class MergeAccountsDestructively 
-		{
-				private static void PrepareParameters(MergeAccountsDestructivelyParameters parameters)
-		{
-					}
-				public static void Execute(MergeAccountsDestructivelyParameters parameters)
-		{
-						PrepareParameters(parameters);
-					AaltoGlobalImpact.OIP.TBRAccountRoot PrimaryAccountToStay = MergeAccountsDestructivelyImplementation.GetTarget_PrimaryAccountToStay(parameters.PrimaryAccountToStayID);	
-				AaltoGlobalImpact.OIP.TBRAccountRoot AccountToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_AccountToBeMerged(parameters.AccountToBeMergedAndDestroyedID);	
-				AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[] GroupAccessToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_GroupAccessToBeMerged(AccountToBeMerged);	
-				AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[] GroupInitiatorAccessToBeTransfered = MergeAccountsDestructivelyImplementation.GetTarget_GroupInitiatorAccessToBeTransfered(AccountToBeMerged);	
-				AaltoGlobalImpact.OIP.TBEmail[] EmailAddressesToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_EmailAddressesToBeMerged(AccountToBeMerged);	
-				AaltoGlobalImpact.OIP.TBLoginInfo[] LoginAccessToBeMerged = MergeAccountsDestructivelyImplementation.GetTarget_LoginAccessToBeMerged(AccountToBeMerged);	
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_ValidateAccountToBeMerged(GroupAccessToBeMerged, GroupInitiatorAccessToBeTransfered, EmailAddressesToBeMerged);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveAccountToBeMergedFromAllGroups(AccountToBeMerged, GroupAccessToBeMerged);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveEmailAddressesFromAccountToBeMerged(AccountToBeMerged);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_RemoveLoginsFromAccountToBeMerged(AccountToBeMerged);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_AddLoginsToPrimaryAccount(PrimaryAccountToStay, LoginAccessToBeMerged);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_AddEmailAddressesToPrimaryAccount(PrimaryAccountToStay, EmailAddressesToBeMerged);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_StorePrimaryAccount(PrimaryAccountToStay);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_CallRefreshAccountRootToReferences(parameters.PrimaryAccountToStayID);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_AddPrimaryAccountToAllGroupsWhereItsMissing(PrimaryAccountToStay, GroupAccessToBeMerged);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_TransferGroupInitiatorRights(parameters.PrimaryAccountToStayID, parameters.AccountToBeMergedAndDestroyedID, GroupInitiatorAccessToBeTransfered);		
-				MergeAccountsDestructivelyImplementation.ExecuteMethod_UpdateAccountGroupLogins(parameters.PrimaryAccountToStayID);		
-				}
-				}
-				public class TransferGroupInitiatorParameters 
-		{
-				public string GroupID ;
-				public string OldInitiatorAccountID ;
-				public string NewInitiatorAccountID ;
-				}
-		
-		public class TransferGroupInitiator 
-		{
-				private static void PrepareParameters(TransferGroupInitiatorParameters parameters)
-		{
-					}
-				public static void Execute(TransferGroupInitiatorParameters parameters)
-		{
-						PrepareParameters(parameters);
-					TransferGroupInitiatorImplementation.ExecuteMethod_AddNewInitiatorToGroup(parameters.GroupID, parameters.NewInitiatorAccountID);		
-				TransferGroupInitiatorImplementation.ExecuteMethod_RemoveOldInitiatorFromGroup(parameters.GroupID, parameters.OldInitiatorAccountID);		
-				}
-				}
-				public class InitiateAccountMergeFromEmailParameters 
-		{
-				public string EmailAddress ;
-				public string CurrentAccountID ;
-				public string RedirectUrlAfterValidation ;
-				}
-		
-		public class InitiateAccountMergeFromEmail 
-		{
-				private static void PrepareParameters(InitiateAccountMergeFromEmailParameters parameters)
-		{
-					}
-				public static void Execute(InitiateAccountMergeFromEmailParameters parameters)
-		{
-						PrepareParameters(parameters);
-					InitiateAccountMergeFromEmailImplementation.ExecuteMethod_ValidateExistingEmail(parameters.EmailAddress);		
-				string AccountToMergeToID = InitiateAccountMergeFromEmailImplementation.GetTarget_AccountToMergeToID(parameters.EmailAddress);	
-				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_ValidateAccountNotTheSame(parameters.CurrentAccountID, AccountToMergeToID);		
-				AaltoGlobalImpact.OIP.TBEmailValidation MergeAccountEmailConfirmation = InitiateAccountMergeFromEmailImplementation.GetTarget_MergeAccountEmailConfirmation(parameters.CurrentAccountID, parameters.EmailAddress, parameters.RedirectUrlAfterValidation, AccountToMergeToID);	
-				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_StoreObject(MergeAccountEmailConfirmation);		
-				InitiateAccountMergeFromEmailImplementation.ExecuteMethod_SendConfirmationEmail(MergeAccountEmailConfirmation);		
-				}
-				}
-				public class ConfirmAccountMergeFromEmailParameters 
-		{
-				public string CurrentAccountID ;
-				public AaltoGlobalImpact.OIP.TBEmailValidation EmailConfirmation ;
-				}
-		
-		public class ConfirmAccountMergeFromEmail 
-		{
-				private static void PrepareParameters(ConfirmAccountMergeFromEmailParameters parameters)
-		{
-					}
-				public static void Execute(ConfirmAccountMergeFromEmailParameters parameters)
-		{
-						PrepareParameters(parameters);
-					AaltoGlobalImpact.OIP.TBMergeAccountConfirmation MergeAccountConfirmation = ConfirmAccountMergeFromEmailImplementation.GetTarget_MergeAccountConfirmation(parameters.EmailConfirmation);	
-				ConfirmAccountMergeFromEmailImplementation.ExecuteMethod_ValidateCurrentAccountAsMergingActor(parameters.CurrentAccountID, MergeAccountConfirmation);		
-				ConfirmAccountMergeFromEmailImplementation.ExecuteMethod_PerformAccountMerge(MergeAccountConfirmation);		
-				}
 				}
 				public class GetOwnerSemanticDomainsParameters 
 		{

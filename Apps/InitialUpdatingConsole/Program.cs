@@ -2,8 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Microsoft.Azure;
-using NDesk.Options;
+using CommandLine.Options;
 using Nito.AsyncEx;
 using TheBall.Infra.AppUpdater;
 
@@ -39,19 +38,23 @@ namespace TheBall.Infra.InitialUpdatingConsole
                 {
                     {
                         "ac|applicationConfig=", "Application config full path",
-                        ac => applicationConfigFullPath = ac
+                        (key, ac) => applicationConfigFullPath = ac
                     },
                     {
                         "au|autoupdate", "Auto update worker",
-                        au => autoUpdate = au != null
+                        (key, au) => autoUpdate = au != null
                     },
                     {
                         "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
-                        ch => clientHandle = ch
+                        (key, ch) => clientHandle = ch
                     },
                     {
                         "t|test", "Test handle communication and update, but don't activate the real application process",
-                        t => isTestMode = t != null
+                        (key, t) => isTestMode = t != null
+                    },
+                    {
+                        "envcfg|useEnvConfig", "Use environment variables as config instead of default CloudConfigurationManager",
+                        (key, env) => UseEnvironmentVariablesAsConfig = env != null
                     }
                 };
                 var options = optionSet.Parse(args);
@@ -79,17 +82,16 @@ namespace TheBall.Infra.InitialUpdatingConsole
             return ExitCode;
         }
 
-        static async void MainAsync(string clientHandle, string applicationConfigFullPath, 
-            bool isTestMode, bool autoUpdate)
+        static async void MainAsync(string clientHandle, string applicationConfigFullPath, bool isTestMode, bool autoUpdate)
         {
             if (autoUpdate)
             {
                 var processFullFilename = Process.GetCurrentProcess().MainModule.FileName;
                 string componentName = Path.GetFileNameWithoutExtension(processFullFilename);
                 string workingRootFolder = AssemblyDirectory;
-                string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
-                string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");
-                string sasToken = CloudConfigurationManager.GetSetting("ConfigSASToken");
+                string accountName = GetConfig("ConfigAccountName");
+                string shareName = GetConfig("ConfigShareName");
+                string sasToken = GetConfig("ConfigSASToken");
                 UpdateManager = await AppUpdateManager.Initialize(componentName, workingRootFolder, new AccessInfo
                 {
                     AccountName = accountName,
@@ -104,5 +106,15 @@ namespace TheBall.Infra.InitialUpdatingConsole
             }
 
         }
+
+        private static string GetConfig(string configItem)
+        {
+            string configValue = UseEnvironmentVariablesAsConfig
+                ? Environment.GetEnvironmentVariable(configItem)
+                : throw new NotSupportedException();
+            return configValue;
+        }
+
+        public static bool UseEnvironmentVariablesAsConfig { get; set; }
     }
 }

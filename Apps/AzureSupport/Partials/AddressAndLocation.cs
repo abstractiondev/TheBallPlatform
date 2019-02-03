@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace AaltoGlobalImpact.OIP
 {
     partial class AddressAndLocation : IBeforeStoreHandler
     {
-        public void PerformBeforeStoreUpdate()
+        public async Task PerformBeforeStoreUpdate()
         {
             if (ReferenceToInformation == null)
                 ReferenceToInformation = ReferenceToInformation.CreateDefault();

@@ -27,7 +27,8 @@ namespace ProBroz.OnlineTraining
 
         public static Tuple<MembershipPlan[], PaymentOption[]> GetTarget_StripeFetchedPlansAndPaymentOptions()
         {
-            var planService = new Stripe.StripePlanService(SecureConfig.Current.StripeSecretKey);
+            throw new NotSupportedException("Stripe test/live conditionals need to be implemented");
+            var planService = new Stripe.StripePlanService(SecureConfig.Current.StripeTestSecretKey);
             var allStripePlans =
                 planService.List(new StripeListOptions {Limit = 100}).ToArray();
             var plans = allStripePlans

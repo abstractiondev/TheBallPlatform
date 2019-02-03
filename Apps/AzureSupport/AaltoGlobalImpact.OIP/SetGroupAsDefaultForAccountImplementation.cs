@@ -1,13 +1,14 @@
 using System;
+using System.Threading.Tasks;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
     public class SetGroupAsDefaultForAccountImplementation
     {
-        public static AccountContainer GetTarget_AccountContainer()
+        public static async Task<AccountContainer> GetTarget_AccountContainerAsync()
         {
-            return ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(InformationContext.CurrentOwner, "default");
+            return await ObjectStorage.RetrieveFromOwnerContentA<AccountContainer>(InformationContext.CurrentOwner, "default");
         }
 
         public static string GetTarget_RedirectFromFolderBlobName()
@@ -21,15 +22,15 @@ namespace AaltoGlobalImpact.OIP
             accountContainer.AccountModule.Profile.SimplifiedAccountGroupID = groupId;
         }
 
-        public static void ExecuteMethod_StoreObject(AccountContainer accountContainer)
+        public static async Task ExecuteMethod_StoreObjectAsync(AccountContainer accountContainer)
         {
-            accountContainer.StoreInformation(InformationContext.CurrentOwner);
+            await accountContainer.StoreInformationAsync(InformationContext.CurrentOwner);
         }
 
-        public static void ExecuteMethod_SetAccountRedirectFileToGroup(string groupId, string redirectFromFolderBlobName)
+        public static async Task ExecuteMethod_SetAccountRedirectFileToGroupAsync(string groupId, string redirectFromFolderBlobName)
         {
             var blob = StorageSupport.GetOwnerBlobReference(redirectFromFolderBlobName);
-            blob.UploadBlobText(String.Format("/auth/grp/{0}/", groupId));
+            await blob.UploadBlobTextAsync(String.Format("/auth/grp/{0}/", groupId));
         }
     }
 }

@@ -137,13 +137,15 @@ namespace WebInterface
 
             var loginUrl = Login.GetLoginUrlFromEmailAddress(emailAddress);
             var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
-            var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemSupport.SystemOwner, loginID);
+            var login = await ObjectStorage.RetrieveFromSystemOwner<Login>(loginID);
             var salt = login.PasswordSalt;
             var accountID = login.Account;
             bool validLogin = BCrypt.Net.BCrypt.Verify(password, login.PasswordHash);
             if (validLogin)
             {
-                AuthenticationSupport.SetUserAuthentication(context, loginUrl, emailAddress, accountID);
+                var account = await ObjectStorage.RetrieveFromSystemOwner<Account>(accountID);
+                string base64ClientMetadata = account.GetClientMetadataAsBase64();
+                AuthenticationSupport.SetUserAuthentication(context, loginUrl, emailAddress, accountID, base64ClientMetadata);
             } else
                 throw new SecurityException("Invalid login or password");
         }

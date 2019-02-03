@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TheBall.CORE;
 
 namespace TheBall.Interface
@@ -9,12 +10,12 @@ namespace TheBall.Interface
             get { return InformationContext.CurrentOwner; }
         }
 
-        public static Connection GetTarget_Connection(string connectionId)
+        public static async Task<Connection> GetTarget_ConnectionAsync(string connectionId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(Owner, connectionId);
         }
 
-        public static Process GetTarget_ProcessToListPackageContents(Connection connection)
+        public static async Task<Process> GetTarget_ProcessToListPackageContentsAsync(Connection connection)
         {
             CreateProcessParameters processParameters = new CreateProcessParameters
                 {
@@ -22,11 +23,11 @@ namespace TheBall.Interface
                     InitialArguments = new SemanticInformationItem[] {new SemanticInformationItem("ConnectionID", connection.ID)},
                     ProcessDescription = "Process to list package contents"
                 };
-            var result = CreateProcess.Execute(processParameters);
+            var result = await CreateProcess.ExecuteAsync(processParameters);
             return result.CreatedProcess;
         }
 
-        public static Process GetTarget_ProcessToProcessReceivedData(Connection connection)
+        public static async Task<Process> GetTarget_ProcessToProcessReceivedDataAsync(Connection connection)
         {
             CreateProcessParameters processParameters = new CreateProcessParameters
             {
@@ -34,11 +35,11 @@ namespace TheBall.Interface
                 InitialArguments = new SemanticInformationItem[] { new SemanticInformationItem("ConnectionID", connection.ID) },
                 ProcessDescription = "Process to list package contents"
             };
-            var result = CreateProcess.Execute(processParameters);
+            var result = await CreateProcess.ExecuteAsync(processParameters);
             return result.CreatedProcess;
         }
 
-        public static Process GetTarget_ProcessToUpdateThisSideCategories(Connection connection)
+        public static async Task<Process> GetTarget_ProcessToUpdateThisSideCategoriesAsync(Connection connection)
         {
             CreateProcessParameters processParameters = new CreateProcessParameters
             {
@@ -46,7 +47,7 @@ namespace TheBall.Interface
                 InitialArguments = new SemanticInformationItem[] { new SemanticInformationItem("ConnectionID", connection.ID) },
                 ProcessDescription = "Process to list package contents"
             };
-            var result = CreateProcess.Execute(processParameters);
+            var result = await CreateProcess.ExecuteAsync(processParameters);
             return result.CreatedProcess;
         }
 
@@ -57,9 +58,9 @@ namespace TheBall.Interface
             connection.ProcessIDToUpdateThisSideCategories = processToUpdateThisSideCategories.ID;
         }
 
-        public static void ExecuteMethod_StoreObject(Connection connection)
+        public static async Task ExecuteMethod_StoreObjectAsync(Connection connection)
         {
-            connection.StoreInformation();
+            await connection.StoreInformationAsync();
         }
 
         public static CreateConnectionStructuresReturnValue Get_ReturnValue(Connection connection)

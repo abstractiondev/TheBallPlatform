@@ -11,7 +11,8 @@ namespace TheBall.Index
         {
             string queryRequestID = IndexSupport.GetRequestID(indexName, queryString, defaultFieldName);
             var owner = InformationContext.CurrentOwner;
-            QueryRequest queryRequest = ObjectStorage.RetrieveFromOwnerContent<QueryRequest>(owner, queryRequestID);
+            throw new NotImplementedException();
+            QueryRequest queryRequest = null; // ObjectStorage.RetrieveFromOwnerContent<QueryRequest>(owner, queryRequestID);
             if (queryRequest == null)
             {
                 queryRequest = new QueryRequest();
@@ -30,7 +31,8 @@ namespace TheBall.Index
 
         public static void ExecuteMethod_StoreObject(QueryRequest requestObject)
         {
-            requestObject.StoreInformation();
+            throw new NotImplementedException();
+            requestObject.StoreInformationAsync();
         }
 
         public static void ExecuteMethod_PutQueryRequestToQueryQueue(string indexName, QueryRequest requestObject)

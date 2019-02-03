@@ -11,15 +11,17 @@ namespace TheBall.CORE
             if (String.IsNullOrWhiteSpace(emailAddress))
                 throw new InvalidDataException("Email address is required");
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
-            if (emailRoot != null)
-                throw new InvalidDataException("Email address '" + emailAddress + "' is already registered to the system.");
+            throw new NotImplementedException();
+            //TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+            //if (emailRoot != null)
+            //    throw new InvalidDataException("Email address '" + emailAddress + "' is already registered to the system.");
         }
 
         public static TBRAccountRoot GetTarget_AccountRoot(string accountId)
         {
-            TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountId);
-            return accountRoot;
+            throw new NotImplementedException();
+            //TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountId);
+            //return accountRoot;
         }
 
         public static TBREmailRoot GetTarget_EmailRoot(string emailAddress)
@@ -46,16 +48,19 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_StoreEmailRoot(TBREmailRoot emailRoot)
         {
-            emailRoot.StoreInformation();
+            throw new NotImplementedException();
+            //emailRoot.StoreInformation();
         }
 
         public static void ExecuteMethod_StoreAccountRoot(TBRAccountRoot accountRoot)
         {
-            accountRoot.StoreInformation();
+            throw new NotImplementedException();
+            //accountRoot.StoreInformation();
         }
 
         public static void ExecuteMethod_UpdateAccountRootAndContainerWithChanges(string accountID)
         {
+            /*
             UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters
             {
                 AccountID = accountID
@@ -64,6 +69,8 @@ namespace TheBall.CORE
             {
                 AccountID = accountID
             });
+            */
+            throw new NotImplementedException();
         }
     }
 }

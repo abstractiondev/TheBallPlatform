@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 using System.Reflection;
@@ -111,6 +110,7 @@ namespace WebsiteThumbnail
 
             private void _GenerateWebSiteThumbnailImage()
             {
+                /*
                 WebBrowser m_WebBrowser = new WebBrowser();
                 m_WebBrowser.ScrollBarsEnabled = false;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
@@ -132,8 +132,11 @@ namespace WebsiteThumbnail
                 //Thread.Sleep(20000);
                 GenerateThumbnailFromCompletedPage(m_WebBrowser);
                 m_WebBrowser.Dispose();
+                */
             }
 
+
+            /*
             private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
             {
                 WebBrowser m_WebBrowser = (WebBrowser)sender;
@@ -149,6 +152,7 @@ namespace WebsiteThumbnail
                 m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
                 m_Bitmap = (Bitmap) m_Bitmap.GetThumbnailImage(m_ThumbnailWidth, m_ThumbnailHeight, null, IntPtr.Zero);
             }
+            */
         }
     }
 }

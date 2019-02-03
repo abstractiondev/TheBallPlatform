@@ -237,10 +237,6 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Being implemented 6, Implemented 4
 		</div>
-		</p><h2>UnregisterEmailAddress (40 %)</h2>
-		<p>		<div class="MsoNormal" >
-		Being implemented 3, Implemented 2
-		</div>
 		</p><h2>SetObjectTreeValues (46 %)</h2>
 		<p>		<div class="MsoNormal" >
 		Being implemented 7, Implemented 6
@@ -763,95 +759,6 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Stores the created object - with all set values.
-		</div>
-				</td>
-				</tr>
-		</table>
-		</p><h1>UnregisterEmailAddress (40 %)</h1>
-		<p><table border="1">
-				<tr><th><div class=MsoNormal>Item</div></th><th><div class=MsoNormal>Status</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		VariableType: AccountID
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		AccountID whose email is to be registered
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		VariableType: EmailAddress
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Email address to add to account
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		TargetDefinitionType: AccountContainerBeforeGroupRemoval
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		AccountContainer of account
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		TargetDefinitionType: EmailAddressID
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Email Address ID within AccountContainer
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		MethodExecuteType: ExecuteUnlinkEmailAddress
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Perform unlink
 		</div>
 				</td>
 				</tr>

@@ -3,67 +3,53 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using PCLStorage;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using ProtoBuf;
-using SQLite.Net;
-using SQLite.Net.Async;
-using SQLite.Net.Interop;
-using SQLiteNetExtensions.Extensions;
-using SQLiteNetExtensionsAsync.Extensions;
 
 namespace TheBall.Support.VirtualStorage
 {
 
     public class SQLiteFS
     {
+        private const string SQLFSDIR = "_SQLFS";
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
 
         public static SQLiteFS Current { get; private set; }
+        public static string FSRootFolder { get; private set; }
 
-        public static async Task InitializeSQLiteFS(object sqlitePlatformObject, string connectionSubFolderName)
+        public static async Task InitializeSQLiteFS(string rootFolder, string connectionSubFolderName = null)
         {
-            ISQLitePlatform sqlitePlatform = (ISQLitePlatform) sqlitePlatformObject;
-            //var localPersonalPath = FileSystem.Current.LocalStorage.Path;
-            //var virtualFSPath = Path.Combine(localPersonalPath, "VFS");
-            var fsFolder = Path.Combine("_SQLFS", connectionSubFolderName);
-            await InitializeSQLiteFS(fsFolder, sqlitePlatform);
+            if(!Path.IsPathRooted(rootFolder))
+                throw new ArgumentException("Filesystem root path must be rooted", nameof(rootFolder));
+            var fsFolder = connectionSubFolderName != null ? Path.Combine(rootFolder, SQLFSDIR, connectionSubFolderName) : Path.Combine(rootFolder, SQLFSDIR);
+            Current = new SQLiteFS(fsFolder);
+            Directory.CreateDirectory(Current.FileSystemFolder);
+            Directory.CreateDirectory(Current.ContentDataFolder);
+            await Current.InitDB();
         }
 
         public string FileSystemFolder { get; }
         public string ContentDataFolder { get; }
-        private SQLiteAsyncConnection SQLConnection;
-        private ISQLitePlatform SQLitePlatform;
+        private SqliteConnection SQLConnection;
+        private VFSContext CurrentDB;
 
         private string DBFileName
         {
             get { return Path.Combine(FileSystemFolder, "FSMetaData.sqlite"); }
         }
 
-        private static async Task InitializeSQLiteFS(string fsFolder, ISQLitePlatform sqlitePlatform)
-        {
-            Current = new SQLiteFS(fsFolder, sqlitePlatform);
-            await FileSystem.Current.LocalStorage.CreateFolderAsync(Current.FileSystemFolder, CreationCollisionOption.OpenIfExists);
-            await FileSystem.Current.LocalStorage.CreateFolderAsync(Current.ContentDataFolder, CreationCollisionOption.OpenIfExists);
-            Current.SQLitePlatform = sqlitePlatform;
-            await Current.InitDB();
-        }
-
         private async Task InitDB()
         {
-            var dbPath = getFilesystemAbsolutePath(DBFileName);
-            var sqlitePlatform = SQLitePlatform;
-            var connectionFactory = new Func<SQLiteConnectionWithLock>(
-                  () => new SQLiteConnectionWithLock(sqlitePlatform,
-                    new SQLiteConnectionString(dbPath, storeDateTimeAsTicks: false)));
-            SQLConnection = new SQLiteAsyncConnection(connectionFactory);
-
-            await SQLConnection.CreateTablesAsync(typeof (FileNameData), typeof (ContentStorageData));
+            var dbPath = DBFileName;
+            CurrentDB = await VFSContext.CreateContext(dbPath);
             await SyncContentWithMetadata();
         }
 
-        private SQLiteFS(string fsFolder, ISQLitePlatform sqlitePlatform)
+        private SQLiteFS(string fsFolder)
         {
             FileSystemFolder = fsFolder;
             ContentDataFolder = Path.Combine(FileSystemFolder, "Data");
@@ -74,7 +60,7 @@ namespace TheBall.Support.VirtualStorage
             await _semaphore.WaitAsync();
             try
             {
-                var fileNameTable = SQLConnection.Table<FileNameData>();
+                var fileNameTable = CurrentDB.FileNameDataTable;
                 var fileNameDatas = await fileNameTable.Where(item => item.FileName.StartsWith(rootLocation)).ToListAsync();
                 string[] allFileNames = fileNameDatas.Select(item => item.FileName).ToArray();
                 var filesBelongingToRootLQ = allFileNames.Where(fileName => fileName.StartsWith(rootLocation));
@@ -101,12 +87,14 @@ namespace TheBall.Support.VirtualStorage
             await _semaphore.WaitAsync();
             try
             {
-                var contentData = await SQLConnection.GetAsync<ContentStorageData>(contentMd5);
-                await SQLConnection.DeleteAsync(contentData, recursive: true);
+                var contentData =
+                    await CurrentDB.ContentStorageDataTable.SingleAsync(item => item.ContentMD5 == contentMd5);
+                CurrentDB.Remove(contentData);
+                await CurrentDB.SaveChangesAsync();
                 var storageFile = ContentStorageData.getStorageFileName(contentMd5);
                 var storageFullName = getStorageFullPath(storageFile);
-                var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFullName);
-                await file.DeleteAsync();
+                var file = new FileInfo(storageFullName);
+                file.Delete();
             }
             finally
             {
@@ -119,7 +107,8 @@ namespace TheBall.Support.VirtualStorage
             await _semaphore.WaitAsync();
             try
             {
-                var fileData = await SQLConnection.GetWithChildrenAsync<FileNameData>(targetFullName, recursive: true);
+                var fileData =
+                    await CurrentDB.FileNameDataTable.Include(item => item.ContentStorageData).SingleOrDefaultAsync(item => item.FileName == targetFullName);
                 if (fileData == null)
                 {
                     if(ignoreMissing)                    
@@ -129,7 +118,10 @@ namespace TheBall.Support.VirtualStorage
                 if (fileData.ContentStorageData.FileNames.Count == 1)
                     await RemoveLocalContentByMD5(fileData.ContentMD5);
                 else
-                    await SQLConnection.DeleteAsync(fileData);
+                {
+                    CurrentDB.FileNameDataTable.Remove(fileData);
+                    await CurrentDB.SaveChangesAsync();
+                }
             }
             finally
             {
@@ -152,11 +144,11 @@ namespace TheBall.Support.VirtualStorage
             await _semaphore.WaitAsync();
             try
             {
-                var fileData = await SQLConnection.GetAsync<FileNameData>(targetFullName);
+                var fileData = await CurrentDB.FileNameDataTable.SingleAsync(item => item.FileName == targetFullName);
                 string storageFileName = fileData.StorageFileName;
                 var storageFullName = getStorageFullPath(storageFileName);
-                var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFullName);
-                return await file.OpenAsync(FileAccess.Read);
+                var file = new FileInfo(storageFullName);
+                return file.OpenRead();
             }
             catch (Exception exception)
             {
@@ -178,14 +170,14 @@ namespace TheBall.Support.VirtualStorage
                     ContentMD5 = contentMD5,
                     ContentLength = -1
                 };
-                await SQLConnection.InsertAsync(storageData);
+                await CurrentDB.ContentStorageDataTable.AddAsync(storageData);
+                await CurrentDB.SaveChangesAsync();
                 var storageFileName = toFileNameSafeMD5(contentMD5);
                 var storageFullName = getStorageFullPath(storageFileName);
-                var file =
-                    await
-                        FileSystem.Current.LocalStorage.CreateFileAsync(storageFullName,
-                            CreationCollisionOption.ReplaceExisting);
-                return await file.OpenAsync(FileAccess.ReadAndWrite);
+                var file = new FileInfo(storageFullName);
+                if(file.Exists)
+                    file.Delete();
+                return file.OpenWrite();
             }
             finally
             {
@@ -207,11 +199,11 @@ namespace TheBall.Support.VirtualStorage
                     ContentMD5 = contentMD5
                 };
 
-                var storageData = await SQLConnection.GetAsync<ContentStorageData>(contentMD5);
+                var storageData = await CurrentDB.ContentStorageDataTable.SingleAsync(item => item.ContentMD5 == targetLocationItem.ContentMD5);
                 if (storageData != null)
                 {
                     fileNameData.ContentStorageData = storageData;
-                    await SQLConnection.InsertAsync(fileNameData);
+                    await CurrentDB.AddAsync(fileNameData);
                     return null;
                 }
 
@@ -221,23 +213,19 @@ namespace TheBall.Support.VirtualStorage
                     ContentLength = -1,
                 };
                 contentDataItem.FileNames.Add(fileNameData);
-                await SQLConnection.InsertWithChildrenAsync(contentDataItem, recursive: true);
-
+                await CurrentDB.AddAsync(contentDataItem);
+                await CurrentDB.SaveChangesAsync();
                 var storageFullPath = getStorageFullPath(contentDataItem.StorageFileName);
-                var file = await FileSystem.Current.LocalStorage.CreateFileAsync(storageFullPath,
-                    CreationCollisionOption.ReplaceExisting);
-                return await file.OpenAsync(FileAccess.ReadAndWrite);
+                var file = new FileInfo(storageFullPath);
+                if(file.Exists)
+                    file.Delete();
+                return file.OpenWrite();
             }
             finally
             {
                 _semaphore.Release();
             }
 
-        }
-
-        private string getFilesystemAbsolutePath(string filePath)
-        {
-            return Path.Combine(FileSystem.Current.LocalStorage.Path, filePath);
         }
 
         private string getStorageFullPath(string storageFileName)
@@ -247,16 +235,16 @@ namespace TheBall.Support.VirtualStorage
 
         private async Task SyncContentWithMetadata()
         {
-            var contentFolder = await FileSystem.Current.LocalStorage.GetFolderAsync(ContentDataFolder);
-            var actualContent = await contentFolder.GetFilesAsync();
+            var contentFolder = new DirectoryInfo(ContentDataFolder);
+            var actualContent = contentFolder.GetFiles();
             var fileContent = actualContent.ToList();
             fileContent.Sort((a, b) => String.CompareOrdinal(a.Name, b.Name));
 
-            var contentMetadataTable = SQLConnection.Table<ContentStorageData>();
+            var contentMetadataTable = CurrentDB.ContentStorageDataTable;
             var storageMetadata = await contentMetadataTable.ToListAsync();
             storageMetadata.Sort((a, b) => String.CompareOrdinal(a.StorageFileName, b.StorageFileName));
 
-            var fileNameMetadataTable = SQLConnection.Table<FileNameData>();
+            var fileNameMetadataTable = CurrentDB.FileNameDataTable;
             var fileNameMetaItems = await fileNameMetadataTable.ToListAsync();
             fileNameMetaItems.Sort((a, b) => String.CompareOrdinal(a.StorageFileName, b.StorageFileName));
             var fileNameMetadata = fileNameMetaItems.GroupBy(item => item.StorageFileName).ToList();
@@ -288,16 +276,15 @@ namespace TheBall.Support.VirtualStorage
             var fileNameMetaToDelete = fileNameMetadata.Where(item => item != null).SelectMany(item => item).ToArray();
 
             foreach (var file in filesToDelete)
-                await file.DeleteAsync();
+                file.Delete();
 
-            await SQLConnection.RunInTransactionAsync((SQLiteConnection conn) =>
-            {
-                conn.DeleteAll(fileNameMetaToDelete);
-                conn.DeleteAll(storageMetaToDelete);
-            });
+
+            CurrentDB.RemoveRange(fileNameMetaToDelete);
+            CurrentDB.RemoveRange(storageMetaToDelete);
+            await CurrentDB.SaveChangesAsync();
         }
 
-        private bool getMatchingOrAdvanceSmallest(IFile file, ref int fileIx, ContentStorageData storageMeta, ref int storageMetaIx, IGrouping<string, FileNameData> fileNameMeta, ref int fileNameMetaIx)
+        private bool getMatchingOrAdvanceSmallest(FileInfo file, ref int fileIx, ContentStorageData storageMeta, ref int storageMetaIx, IGrouping<string, FileNameData> fileNameMeta, ref int fileNameMetaIx)
         {
             string fileName = file.Name;
             string storageName = storageMeta.StorageFileName;
@@ -321,7 +308,7 @@ namespace TheBall.Support.VirtualStorage
             await _semaphore.WaitAsync();
             try
             {
-                var fileDataTable = SQLConnection.Table<FileNameData>();
+                var fileDataTable = CurrentDB.FileNameDataTable;
                 var fileDatas = await fileDataTable.Where(item => item.FileName.StartsWith(stagingRoot)).ToListAsync();
                 var allFileItems = fileDatas.Select(item => new { item.FileName, item.ContentMD5 }).ToArray();
                 Uri rootUri;
@@ -410,12 +397,13 @@ namespace TheBall.Support.VirtualStorage
             await _semaphore.WaitAsync();
             try
             {
-                var storageData = await SQLConnection.GetWithChildrenAsync<ContentStorageData>(contentMd5, recursive:true);
+                var storageData =
+                    await CurrentDB.ContentStorageDataTable.SingleAsync(item => item.ContentMD5 == contentMd5);
                 if (initialAdd)
                     storageData.ContentLength = initialAddContentLength;
                 var existingNameData = storageData.FileNames;
                 var namesToDelete = existingNameData.Where(item => fullNames.Contains(item.FileName) == false);
-                var nameDataTable = SQLConnection.Table<FileNameData>();
+                var nameDataTable = CurrentDB.FileNameDataTable;
                 var namesToUpdate = await nameDataTable.Where(item => fullNames.Contains(item.FileName)).ToListAsync();
                 var namesToAdd =
                     fullNames.Where(name => existingNameData.All(item => item.FileName != name) && namesToUpdate.All(item => item.FileName != name)).ToArray();
@@ -429,12 +417,10 @@ namespace TheBall.Support.VirtualStorage
                 foreach (var name in namesToUpdate)
                     name.ContentMD5 = storageData.ContentMD5;
 
-                await SQLConnection.RunInTransactionAsync((SQLiteConnection conn) =>
-                {
-                    conn.DeleteAll(namesToDelete);
-                    conn.InsertAll(nameDataToAdd);
-                    conn.UpdateAll(namesToUpdate);
-                });
+                CurrentDB.RemoveRange(namesToDelete);
+                await CurrentDB.AddRangeAsync(nameDataToAdd);
+                CurrentDB.UpdateRange(namesToUpdate);
+                await CurrentDB.SaveChangesAsync();
             }
             finally
             {

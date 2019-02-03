@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
-  <WorkerRole name="TheBallWorkerRole" vmsize="Small">
+  <WorkerRole name="TheBallWorkerRole" vmsize="Standard_A1_v2">
     <Startup>
       <Task commandLine="WorkerStartupTasks.cmd" executionContext="limited" taskType="simple">
         <Environment>
@@ -16,10 +16,6 @@
         </Environment>
       </Task>
     </Startup>
-    <Imports>
-      <Import moduleName="RemoteAccess" />
-      <Import moduleName="RemoteForwarder" />
-    </Imports>
     <ConfigurationSettings>
       <Setting name="ConfigAccountName"/>
       <Setting name="ConfigShareName"/>
@@ -30,12 +26,12 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <LocalResources>
-      <LocalStorage name="WorkerFolder" cleanOnRoleRecycle="false" sizeInMB="2500" />
+      <LocalStorage name="WorkerFolder" cleanOnRoleRecycle="false" sizeInMB="500" />
     </LocalResources>
     <Certificates>
     </Certificates>
     <Runtime executionContext="elevated" />
-  </WorkerRole>  <WebRole name="TheBallWebRole" vmsize="Small">
+  </WorkerRole>  <WebRole name="TheBallWebRole" vmsize="Standard_A1_v2">
     <Startup>
       <Task commandLine="WebStartupTasks.cmd" executionContext="elevated" taskType="simple">
         <Environment>
@@ -87,16 +83,15 @@
       <!-- unused, just there so instance discovery works -->
       <InternalEndpoint name="UnusedInternal" protocol="http" port="88" />
     </Endpoints>
-    <Imports>
-      <Import moduleName="RemoteAccess" />
-    </Imports>
     <LocalResources>
-      <LocalStorage name="Sites" cleanOnRoleRecycle="false" sizeInMB="2500" />
-      <LocalStorage name="TempSites" cleanOnRoleRecycle="false" sizeInMB="2500" />
-      <LocalStorage name="Execution" cleanOnRoleRecycle="false" sizeInMB="2500" />
+      <LocalStorage name="Sites" cleanOnRoleRecycle="false" sizeInMB="1000" />
+      <LocalStorage name="TempSites" cleanOnRoleRecycle="false" sizeInMB="1000" />
+      <LocalStorage name="Execution" cleanOnRoleRecycle="false" sizeInMB="500" />
       <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
+      <LocalStorage name="WorkerFolder" cleanOnRoleRecycle="false" sizeInMB="500" />
     </LocalResources>
     <ConfigurationSettings>
+      <Setting name="IsHybridWebRole" />
       <Setting name="ConfigAccountName"/>
       <Setting name="ConfigShareName"/>
       <Setting name="ConfigSASToken"/>

@@ -3,17 +3,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using DiagnosticsUtils;
-using LuceneSupport;
+//using LuceneSupport;
 using TheBall.CORE;
 
 namespace TheBall.Index
 {
     public class QueryIndexedInformationImplementation
     {
-        public static QueryRequest GetTarget_QueryRequest(IContainerOwner owner, string queryRequestId)
+        public static async Task<QueryRequest> GetTarget_QueryRequestAsync(IContainerOwner owner, string queryRequestId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<QueryRequest>(owner, queryRequestId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<QueryRequest>(owner, queryRequestId);
         }
 
         public static string GetTarget_LuceneIndexFolder(IContainerOwner owner, string indexName, string indexStorageRootPath)
@@ -53,9 +54,9 @@ namespace TheBall.Index
             queryRequest.IsQueryCompleted = true;*/
         }
 
-        public static void ExecuteMethod_SaveQueryRequest(QueryRequest queryRequest)
+        public static async Task ExecuteMethod_SaveQueryRequestAsync(QueryRequest queryRequest)
         {
-            queryRequest.StoreInformation();
+            await queryRequest.StoreInformationAsync();
         }
     }
 }

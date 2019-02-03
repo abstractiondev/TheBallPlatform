@@ -10,25 +10,18 @@ namespace TheBall
 {
     public static class ObjectStorage
     {
-        public static T RetrieveFromDefaultLocation<T>(string id,
-            IContainerOwner owner = null)
-        {
-            string relativeLocation = GetRelativeLocationFromID<T>(id);
-            return RetrieveObject<T>(relativeLocation, owner);
-        }
-
         public static async Task<T> RetrieveFromDefaultLocationA<T>(string id, IContainerOwner owner = null)
         {
             string relativeLocation = GetRelativeLocationFromID<T>(id);
             return await RetrieveObjectA<T>(relativeLocation, owner);
         }
 
-
-        public static T RetrieveObject<T>(string relativeLocation, IContainerOwner owner = null)
+        internal static async Task<IInformationObject> RetrieveFromDefaultLocationA(string contentDomain, string contentTypeName, string contentObjectID, IContainerOwner owner)
         {
-            var result = (T)StorageSupport.RetrieveInformation(relativeLocation, typeof(T), null, owner);
-            return result;
+            string relativeLocation = GetRelativeLocationFromID(contentDomain, contentTypeName, contentObjectID);
+            return await RetrieveObjectA<IInformationObject>(relativeLocation, owner);
         }
+
 
         public static async Task<string[]> ListOwnerObjectIDs<T>(IContainerOwner containerOwner)
         {
@@ -42,16 +35,12 @@ namespace TheBall
         {
             string namespaceName = typeof (T).Namespace;
             string className = typeof (T).Name;
-            return Path.Combine(namespaceName, className, id).Replace("\\", "/");
+            return GetRelativeLocationFromID(namespaceName, className, id);
         }
 
-        public static T RetrieveFromOwnerContent<T>(IContainerOwner containerOwner, string contentName)
+        public static string GetRelativeLocationFromID(string namespaceName, string className, string id)
         {
-            string namespaceName = typeof (T).Namespace;
-            string className = typeof (T).Name;
-            string locationPath = String.Format("{0}/{1}/{2}", namespaceName, className, contentName);
-            var result = RetrieveObject<T>(locationPath, containerOwner);
-            return result;
+            return Path.Combine(namespaceName, className, id).Replace("\\", "/");
         }
 
 
@@ -139,7 +128,6 @@ namespace TheBall
             var result = (T) await StorageSupport.RetrieveInformationA(relativeLocation, typeof (T), eTag, owner);
             return result;
         }
-
 
     }
 }

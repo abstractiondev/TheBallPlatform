@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
+//using System.Runtime.Remoting.Messaging;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using AaltoGlobalImpact.OIP;
 using AzureSupport.TheBall.CORE;
 using DiagnosticsUtils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -42,24 +41,16 @@ namespace TheBall
             InstanceName = instanceName;
         }
 
-        public static DeviceMembership CurrentExecutingForDevice
-        {
-            get { return Current.ExecutingForDevice; }
-        }
+        public static DeviceMembership CurrentExecutingForDevice => Current.ExecutingForDevice;
 
-        public static IContainerOwner CurrentOwner
-        {
-            get { return Current.Owner; }
-        }
+        public static IContainerOwner CurrentOwner => Current.Owner;
 
-        public static IAccountInfo CurrentAccount
-        {
-            get { return Current.Account; }
-        }
+        public static IAccountInfo CurrentAccount => Current.Account;
 
-        public static InformationContext InitializeToLogicalContext(IContainerOwner contextRootOwner, string instanceName, FinalizingDependencyAction[] operationFinalizingActions = null)
+        public static InformationContext InitializeToLogicalContext(HttpContext httpContext, IContainerOwner contextRootOwner, string instanceName, FinalizingDependencyAction[] operationFinalizingActions = null,
+            bool isPreinitializedAsSystem = false)
         {
-            if (HttpContext.Current != null)
+            if (httpContext != null)
                 throw new NotSupportedException("InitializeToLogicalContext not supported when HttpContext is available");
             var logicalContext = CallContext.LogicalGetData(KEYNAME);
             if(logicalContext != null)
@@ -67,6 +58,7 @@ namespace TheBall
             var ctx = new InformationContext(contextRootOwner, instanceName);
             ctx.OperationFinalizingActions = operationFinalizingActions;
             CallContext.LogicalSetData(KEYNAME, ctx);
+            ctx.isPreInitializedAsSystem = isPreinitializedAsSystem;
             return ctx;
         }
 
@@ -82,9 +74,9 @@ namespace TheBall
 
 
         private bool isPreInitializedAsSystem = false;
-        public static InformationContext InitializeToHttpContextPreAuthentication(SystemOwner currSystem)
+        public static InformationContext InitializeToHttpContextPreAuthentication(HttpContext httpContext, SystemOwner currSystem)
         {
-            var ctx = InitializeToHttpContext(currSystem);
+            var ctx = InitializeToHttpContext(httpContext, currSystem);
             ctx.isPreInitializedAsSystem = true;
             return ctx;
         }
@@ -100,14 +92,13 @@ namespace TheBall
         }
 
 
-        public static InformationContext InitializeToHttpContext(IContainerOwner contextOwner)
+        public static InformationContext InitializeToHttpContext(HttpContext httpContext, IContainerOwner contextOwner)
         {
-            var httpContext = HttpContext.Current;
             if(httpContext == null)
                 throw new NotSupportedException("InitializeToHttpContext requires HttpContext to be available");
-            if(httpContext.Items.Contains(KEYNAME))
+            if(httpContext.Items.ContainsKey(KEYNAME))
                 throw new InvalidOperationException("HttpContext already initialized");
-            var hostName = httpContext.Request.Url.DnsSafeHost;
+            var hostName = httpContext.Request.Host.Value;
             InformationContext ctx = new InformationContext(contextOwner, hostName);
             httpContext.Items.Add(KEYNAME, ctx);
             return ctx;
@@ -122,26 +113,24 @@ namespace TheBall
             return previousContext;
         }
 
-        public static void RemoveFromHttpContext()
+        public static void RemoveFromHttpContext(HttpContext httpContext)
         {
-            var httpContext = HttpContext.Current;
-            bool containsCurrent = httpContext.Items.Contains(KEYNAME);
+            bool containsCurrent = httpContext.Items.ContainsKey(KEYNAME);
             if (!containsCurrent)
                 throw new InvalidOperationException("LogicalContext is expected to be initialized");
             httpContext.Items.Remove(KEYNAME);
         }
 
 
-        public static bool IsAvailable => getCurrent(true) != null;
+        public static bool IsAvailable => getCurrent(null, true) != null;
 
-        public static InformationContext Current => getCurrent(false);
+        public static InformationContext Current => getCurrent(null, false);
 
-        private static InformationContext getCurrent(bool allowNotInitialized)
+        private static InformationContext getCurrent(HttpContext httpContext, bool allowNotInitialized)
         {
-            var httpContext = HttpContext.Current;
             if (httpContext != null)
             {
-                if (httpContext.Items.Contains(KEYNAME))
+                if (httpContext.Items.ContainsKey(KEYNAME))
                     return (InformationContext) httpContext.Items[KEYNAME];
                 if(!allowNotInitialized)
                     throw new InvalidOperationException("InitializeToHttpContext is required before use");
@@ -195,12 +184,11 @@ namespace TheBall
             await PerformFinalizingActionsAsync();
         }
 
-        public static void ClearCurrent()
+        public static void ClearCurrent(HttpContext httpContext = null)
         {
-            var httpContext = HttpContext.Current;
             if (httpContext != null)
             {
-                if (httpContext.Items.Contains(KEYNAME))
+                if (httpContext.Items.ContainsKey(KEYNAME))
                 {
                     httpContext.Items.Remove(KEYNAME);
                     return;

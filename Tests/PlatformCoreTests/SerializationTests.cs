@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SER.TheBall.Payments;
+//using SER.TheBall.Payments;
+using TheBall.Payments;
 
 namespace PlatformCoreTests
 {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallMobileApp", "Apps\XamarinApps\TheBallMobileApp\TheBallMobileApp.csproj", "{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}"
 EndProject
@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallDeviceClient", "Apps\TheBallDeviceClient\TheBallDeviceClient.csproj", "{19F4DEB2-249D-450E-B5C7-BB2D977CF00A}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Apps\MobileSupport\MobileSupport.projitems*{e0352f51-15bb-4235-b1bc-b8dbf4502aef}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
 		Ad-Hoc|iPhone = Ad-Hoc|iPhone

@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE.INT;
+using TheBall.CORE.Storage;
 
 namespace TheBall.CORE
 {
     public class SyncCopyContentToDeviceTargetImplementation
     {
-        public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(string authenticatedAsActiveDeviceId)
+        public static async Task<AuthenticatedAsActiveDevice> GetTarget_AuthenticatedAsActiveDeviceAsync(string authenticatedAsActiveDeviceId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(InformationContext.CurrentOwner, authenticatedAsActiveDeviceId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<AuthenticatedAsActiveDevice>(InformationContext.CurrentOwner, authenticatedAsActiveDeviceId);
         }
 
         public static string GetTarget_ContentRootLocation(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
@@ -20,23 +22,23 @@ namespace TheBall.CORE
             return contentRootLocation;
         }
 
-        public static ContentItemLocationWithMD5[] GetTarget_ThisSideContentMD5List(string contentRootLocation)
+        public static async Task<ContentItemLocationWithMD5[]> GetTarget_ThisSideContentMD5ListAsync(string contentRootLocation)
         {
-            var blobList = InformationContext.CurrentOwner.GetOwnerBlobListing(contentRootLocation, true);
+            var blobList = await BlobStorage.GetOwnerBlobsA(contentRootLocation);
             int contentRootLength = contentRootLocation.Length;
             List<ContentItemLocationWithMD5> list = new List<ContentItemLocationWithMD5>();
-            foreach (CloudBlockBlob blob in blobList)
+            foreach (var blob in blobList)
             {
                 string relativeLocation = blob.Name.Substring(contentRootLength);
                 list.Add(new ContentItemLocationWithMD5
                     {
-                        ContentLocation = relativeLocation, ContentMD5 = blob.Properties.ContentMD5
+                        ContentLocation = relativeLocation, ContentMD5 = blob.ContentMD5
                     });
             }
             return list.ToArray();
         }
 
-        public static SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue ExecuteMethod_CallPrepareTargetAndListItemsToCopy(AuthenticatedAsActiveDevice authenticatedAsActiveDevice, ContentItemLocationWithMD5[] thisSideContentMd5List)
+        public static async Task<SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue> ExecuteMethod_CallPrepareTargetAndListItemsToCopyAsync(AuthenticatedAsActiveDevice authenticatedAsActiveDevice, ContentItemLocationWithMD5[] thisSideContentMd5List)
         {
             DeviceOperationData deviceOperationData = new DeviceOperationData
                 {
@@ -44,7 +46,7 @@ namespace TheBall.CORE
                     OperationSpecificContentData = thisSideContentMd5List,
                     OperationParameters = new string[] { SyncSupport.RelativeRootFolderValue}
                 };
-            deviceOperationData = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.ID,
+            deviceOperationData = await DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.ID,
                                                                                             "TheBall.CORE.RemoteDeviceCoreOperation", deviceOperationData);
             var returnValue = new SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue
                 {
@@ -54,13 +56,13 @@ namespace TheBall.CORE
             return returnValue;
         }
 
-        public static void ExecuteMethod_CopyItemsToCopyToTargetDevice(AuthenticatedAsActiveDevice authenticatedAsActiveDevice, SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue callPrepareTargetAndListItemsToCopyOutput)
+        public static async Task ExecuteMethod_CopyItemsToCopyToTargetDeviceAsync(AuthenticatedAsActiveDevice authenticatedAsActiveDevice, SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue callPrepareTargetAndListItemsToCopyOutput)
         {
             var itemsToCopy = callPrepareTargetAndListItemsToCopyOutput.ItemsToCopy;
             foreach(var itemToCopy in itemsToCopy)
             {
                 string ownerRelatedLocation = StorageSupport.RemoveOwnerPrefixIfExists(itemToCopy.ContentLocation);
-                DeviceSupport.PushContentToDevice(authenticatedAsActiveDevice, ownerRelatedLocation, ownerRelatedLocation);
+                await DeviceSupport.PushContentToDevice(authenticatedAsActiveDevice, ownerRelatedLocation, ownerRelatedLocation);
             }
         }
 

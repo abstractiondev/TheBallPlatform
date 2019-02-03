@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Web;
 using AzureSupport;
@@ -16,7 +15,7 @@ namespace PlatformCoreTests
         public void SerializeToStream()
         {
             //PrivateType httpFileCollectionType = new PrivateType(typeof(HttpFileCollection));
-            PrivateObject httpFileCollection = new PrivateObject(typeof(HttpFileCollection));
+            //PrivateObject httpFileCollection = new PrivateObject(typeof(HttpFileCollection));
             var serData = new HttpOperationData
             {
                 ExecutorAccountID = "acctid",
@@ -44,7 +43,7 @@ namespace PlatformCoreTests
         public void SerializeToDeserialize()
         {
             //PrivateType httpFileCollectionType = new PrivateType(typeof(HttpFileCollection));
-            PrivateObject httpFileCollection = new PrivateObject(typeof(HttpFileCollection));
+            //PrivateObject httpFileCollection = new PrivateObject(typeof(HttpFileCollection));
             var serData = new HttpOperationData
             {
                 ExecutorAccountID = "acctid",

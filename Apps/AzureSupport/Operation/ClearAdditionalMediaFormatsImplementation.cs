@@ -1,26 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
+using TheBall.CORE.Storage;
 
 namespace AaltoGlobalImpact.OIP
 {
     public static class ClearAdditionalMediaFormatsImplementation
     {
-        public static void ExecuteMethod_ClearImageMediaFormats(string masterRelativeLocation)
+        public static async Task ExecuteMethod_ClearImageMediaFormatsAsync(string masterRelativeLocation)
         {
             string currExtension = Path.GetExtension(masterRelativeLocation);
-            int currExtensionLength = currExtension == null ? 0 : currExtension.Length;
+            int currExtensionLength = currExtension?.Length ?? 0;
             string masterLocationWithoutExtension = masterRelativeLocation.Substring(0,
                                                                                      masterRelativeLocation.Length -
                                                                                      currExtensionLength);
-            var masterRelatedBlobs = StorageSupport.CurrActiveContainer.ListBlobsWithPrefix(masterLocationWithoutExtension + "_");
-            foreach(var cloudBlob in masterRelatedBlobs.Cast<CloudBlockBlob>().Where(blob => blob.Name.EndsWith(".jpg") || blob.Name.EndsWith(".png") || blob.Name.EndsWith(".gif")))
+            var masterRelatedBlobs = await  BlobStorage.GetBlobItemsA(null, masterLocationWithoutExtension + "_");
+            var deleteTasks = new List<Task>();
+            foreach(var blob in masterRelatedBlobs.Where(blob => blob.Name.EndsWith(".jpg") || blob.Name.EndsWith(".png") || blob.Name.EndsWith(".gif")))
             {
-                cloudBlob.DeleteBlob();
+                deleteTasks.Add(BlobStorage.DeleteBlobA(blob.Name));
             }
+            await Task.WhenAll(deleteTasks);
         }
     }
 }

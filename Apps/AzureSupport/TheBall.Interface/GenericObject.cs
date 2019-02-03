@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall.CORE;
 using TheBall.Index;
@@ -25,10 +26,10 @@ namespace TheBall.Interface
             throw new System.NotSupportedException();
         }
 
-        public void PerformBeforeStoreUpdate()
+        public async Task PerformBeforeStoreUpdate()
         {
             var owner = InformationContext.CurrentOwner;
-            var currentCollectionWrapper = ObjectStorage.RetrieveFromOwnerContent<GenericCollectionableObject>(owner, ID);
+            var currentCollectionWrapper = await ObjectStorage.RetrieveFromOwnerContentA<GenericCollectionableObject>(owner, ID);
             if (IncludeInCollection)
             {
                 if (currentCollectionWrapper == null)
@@ -38,21 +39,25 @@ namespace TheBall.Interface
                     currentCollectionWrapper.SetLocationAsOwnerContent(owner, ID);
                 }
                 currentCollectionWrapper.ValueObject = this;
-                currentCollectionWrapper.StoreInformation();
+                await currentCollectionWrapper.StoreInformationAsync();
             }
             else
             {
                 if(currentCollectionWrapper != null)
-                    currentCollectionWrapper.DeleteInformationObject(owner);
+                    await currentCollectionWrapper.DeleteInformationObjectAsync(owner);
             }
 
         }
 
-        partial void DoPostDeleteExecute(IContainerOwner owner)
+        partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task)
         {
-            var currentCollectionWrapper = ObjectStorage.RetrieveFromOwnerContent<GenericCollectionableObject>(owner, ID);
-            if(currentCollectionWrapper != null)
-                currentCollectionWrapper.DeleteInformationObject(owner);
+            task = Task.Run(async () =>
+            {
+                var currentCollectionWrapper =
+                    await ObjectStorage.RetrieveFromOwnerContentA<GenericCollectionableObject>(owner, ID);
+                if (currentCollectionWrapper != null)
+                    await currentCollectionWrapper.DeleteInformationObjectAsync(owner);
+            });
         }
 
         /*

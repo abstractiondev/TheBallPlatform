@@ -3,7 +3,6 @@ using TheBall;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,13 +10,15 @@ using TheBall.CORE;
 
 namespace TheBall.Tests
 {
+#if notported
     [TestClass()]
     public class InformationContextTests
     {
         [TestMethod]
         public void CurrentCollidingLogicalCallContexts()
         {
-            var firstContext = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"), "tstinstance");
+
+            var firstContext = InformationContext.InitializeToLogicalContext(null, new VirtualOwner("tst", "tst"), "tstinstance", null, true);
             var task = Task.Run(async () =>
             {
                 var taskCtx = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"), "tstInstance");
@@ -85,4 +86,5 @@ namespace TheBall.Tests
             return InformationContext.Current;
         }
    }
+#endif
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace TheBall.Index
@@ -24,7 +25,8 @@ namespace TheBall.Index
 
         public static void ExecuteMethod_StoreObject(IndexingRequest indexingRequest)
         {
-            indexingRequest.StoreInformation();
+            throw new NotImplementedException();
+            //indexingRequest.StoreInformation();
         }
 
         public static void ExecuteMethod_PutIndexingRequestToQueue(IndexingRequest indexingRequest)

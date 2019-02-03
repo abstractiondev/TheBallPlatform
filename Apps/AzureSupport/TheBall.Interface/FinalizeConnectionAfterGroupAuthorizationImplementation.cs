@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TheBall.CORE;
 using TheBall.Interface.INT;
 
@@ -10,9 +11,9 @@ namespace TheBall.Interface
             get { return InformationContext.CurrentOwner; }
         }
 
-        public static Connection GetTarget_Connection(string connectionId)
+        public static async Task<Connection> GetTarget_ConnectionAsync(string connectionId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(Owner, connectionId);
 
         }
 
@@ -25,10 +26,10 @@ namespace TheBall.Interface
                 };
         }
 
-        public static void ExecuteMethod_CallDeviceServiceForFinalizing(Connection connection, ConnectionCommunicationData connectionCommunicationData)
+        public static async Task ExecuteMethod_CallDeviceServiceForFinalizingAsync(Connection connection, ConnectionCommunicationData connectionCommunicationData)
         {
             connectionCommunicationData.ProcessParametersString = connection.Description;
-            var result = DeviceSupport
+            var result = await DeviceSupport
                 .ExecuteRemoteOperation<ConnectionCommunicationData>(
                     connection.DeviceID,
                     "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", connectionCommunicationData);
@@ -41,9 +42,9 @@ namespace TheBall.Interface
             connection.OtherSideConnectionID = connectionCommunicationData.ReceivingSideConnectionID;
         }
 
-        public static void ExecuteMethod_StoreObject(Connection connection)
+        public static async Task ExecuteMethod_StoreObjectAsync(Connection connection)
         {
-            connection.StoreInformation();
+            await connection.StoreInformationAsync();
         }
 
         public static CreateConnectionStructuresParameters CallCreateConnectionStructures_GetParameters(Connection connection)
