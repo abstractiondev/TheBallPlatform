@@ -20,6 +20,9 @@ spec:
        - test.theball.me
        - demo.theball.me
        - gaming.theball.me
+       - dev-gaming.theball.me
+       - test-gaming.theball.me
+       - beta-gaming.theball.me
     - secretName: footvoter-legosecret
       hosts:
        - dev.footvoter.org
@@ -29,26 +32,57 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: tbweb-svc
+          serviceName: tbweb-svc-dev
           servicePort: 80
   - host: test.footvoter.org
     http:
       paths:
       - backend:
-          serviceName: tbweb-svc
+          serviceName: tbweb-svc-test
+          servicePort: 80
+  - host: dev.theball.me
+    http:
+      paths:
+      - backend:
+          serviceName: tbweb-svc-dev
           servicePort: 80
   - host: test.theball.me
     http:
       paths:
       - backend:
-          serviceName: tbweb-svc
+          serviceName: tbweb-svc-test
+          servicePort: 80
+  - host: demo.theball.me
+    http:
+      paths:
+      - backend:
+          serviceName: tbweb-svc-beta
           servicePort: 80
   - host: gaming.theball.me
     http:
       paths:
       - backend:
-          serviceName: tbweb-svc
+          serviceName: tbweb-svc-prod
           servicePort: 80
-  backend:
-    serviceName: tbweb-svc
-    servicePort: 80
+  - host: dev-gaming.theball.me
+    http:
+      paths:
+      - backend:
+          serviceName: tbweb-svc-dev
+          servicePort: 80
+  - host: test-gaming.theball.me
+    http:
+      paths:
+      - backend:
+          serviceName: tbweb-svc-test
+          servicePort: 80
+  - host: beta-gaming.theball.me
+    http:
+      paths:
+      - backend:
+          serviceName: tbweb-svc-beta
+          servicePort: 80
+
+#  backend:
+#    serviceName: tbweb-svc
+#    servicePort: 80

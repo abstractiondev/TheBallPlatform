@@ -1,18 +1,18 @@
-apiVersion: apps/v1beta1 # for versions before 1.8.0 use apps/v1beta1
+apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment
 metadata:
-  name: tbwrk-deployment
+  name: tbwrk-deployment-prod
   labels:
-    app: tbwrk
+    app: tbwrk-prod
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: tbwrk
+      app: tbwrk-prod
   template:
     metadata:
       labels:
-        app: tbwrk
+        app: tbwrk-prod
     spec:
 #      securityContext:
 #        capabilities:
@@ -23,7 +23,178 @@ spec:
 #        privileged: true
       containers:
       - name: tbwrk
-        image: abstractiondev/theballworker:20180802.1631_dev_126cbdbf4dc44315dc1578d15ef7a7726a7e26c9
+        image: abstractiondev/theballworker:20190203.0816_prod_23f700e00b7d46a5c9d00b21033bbff2b155c4d3
+        imagePullPolicy: IfNotPresent
+#        ports:
+#        - containerPort: 443
+        volumeMounts:
+        - name: azureconf
+          mountPath: /X
+        env:
+        -   name: CoreFileShareAccountName
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: azurestorageaccountname
+        -   name: CoreFileShareAccountKey
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: azurestorageaccountkey
+        -   name: TBCertificatePassword
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: certpassword
+        -   name: ApplicationConfigFullPath
+            value: "/X/Configs/WorkerConsole.json"
+      volumes:
+      -  name: azureconf
+         azureFile:
+           secretName: tbdevtest-secret
+           shareName: tbcore
+           readOnly: false
+---
+apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: tbwrk-deployment-dev
+  labels:
+    app: tbwrk-dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tbwrk-dev
+  template:
+    metadata:
+      labels:
+        app: tbwrk-dev
+    spec:
+#      securityContext:
+#        capabilities:
+#            add:
+#            - SYS_ADMIN
+#            - DAC_READ_SEARCH
+#            - MKNOD
+#        privileged: true
+      containers:
+      - name: tbwrk
+        image: abstractiondev/theballworker:20190131.2259_dev_12392c0e59260df1f68e5bb380f1f155bbd19712
+        imagePullPolicy: IfNotPresent
+#        ports:
+#        - containerPort: 443
+        volumeMounts:
+        - name: azureconf
+          mountPath: /X
+        env:
+        -   name: CoreFileShareAccountName
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: azurestorageaccountname
+        -   name: CoreFileShareAccountKey
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: azurestorageaccountkey
+        -   name: TBCertificatePassword
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: certpassword
+        -   name: ApplicationConfigFullPath
+            value: "/X/Configs/WorkerConsole.json"
+      volumes:
+      -  name: azureconf
+         azureFile:
+           secretName: tbdevtest-secret
+           shareName: tbcore
+           readOnly: false
+---
+apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: tbwrk-deployment-test
+  labels:
+    app: tbwrk-test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tbwrk-test
+  template:
+    metadata:
+      labels:
+        app: tbwrk-test
+    spec:
+#      securityContext:
+#        capabilities:
+#            add:
+#            - SYS_ADMIN
+#            - DAC_READ_SEARCH
+#            - MKNOD
+#        privileged: true
+      containers:
+      - name: tbwrk
+        image: abstractiondev/theballworker:20190202.0630_test_26c226f121a33e521f541066a78490a07e0e17ca
+        imagePullPolicy: IfNotPresent
+#        ports:
+#        - containerPort: 443
+        volumeMounts:
+        - name: azureconf
+          mountPath: /X
+        env:
+        -   name: CoreFileShareAccountName
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: azurestorageaccountname
+        -   name: CoreFileShareAccountKey
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: azurestorageaccountkey
+        -   name: TBCertificatePassword
+            valueFrom:
+                secretKeyRef:
+                    name: tbdevtest-secret
+                    key: certpassword
+        -   name: ApplicationConfigFullPath
+            value: "/X/Configs/WorkerConsole.json"
+      volumes:
+      -  name: azureconf
+         azureFile:
+           secretName: tbdevtest-secret
+           shareName: tbcore
+           readOnly: false
+---
+apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: tbwrk-deployment-beta
+  labels:
+    app: tbwrk-beta
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tbwrk-beta
+  template:
+    metadata:
+      labels:
+        app: tbwrk-beta
+    spec:
+#      securityContext:
+#        capabilities:
+#            add:
+#            - SYS_ADMIN
+#            - DAC_READ_SEARCH
+#            - MKNOD
+#        privileged: true
+      containers:
+      - name: tbwrk
+        image: abstractiondev/theballworker:20190203.0810_beta_2dc0cad64b3fe6c58e99af130bb49974b646628a
         imagePullPolicy: IfNotPresent
 #        ports:
 #        - containerPort: 443
