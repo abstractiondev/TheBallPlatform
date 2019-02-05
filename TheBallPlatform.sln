@@ -51,7 +51,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AppUpdater", "SharedProject
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCoreLayer", "Apps\WebCoreLayer\WebCoreLayer.csproj", "{7C16009D-8CBA-4277-BE71-F697416BE2FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KubeTool", "Tools\KubeTool\KubeTool.csproj", "{8E60CEEB-619C-4477-9B43-1FD9F807FFEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfraManager", "Tools\InfraManager\InfraManager.csproj", "{8E60CEEB-619C-4477-9B43-1FD9F807FFEF}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

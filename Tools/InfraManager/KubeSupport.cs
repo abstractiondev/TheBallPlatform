@@ -76,7 +76,7 @@ namespace KubeTool
         {
             //return;
             string workerBaseName = @"abstractiondev/theballworker";
-            var workerDeploymentName = "tbwrk-deployment";
+            var workerDeploymentName = "tbwrk-deployment-dev";
             List<string> results = new List<string>();
             var updatedImageName = await UpdateDeployment(workerBaseName, workerDeploymentName);
             if (updatedImageName != null)
@@ -88,7 +88,7 @@ namespace KubeTool
 
 
             string webBaseName = @"abstractiondev/theballweb";
-            var webDeploymentName = "tbweb-deployment";
+            var webDeploymentName = "tbweb-deployment-dev";
             //await UpdateDeployment(webBaseName, webDeploymentName, "20180802.1631_dev_126cbdbf4dc44315dc1578d15ef7a7726a7e26c9");
             updatedImageName = await UpdateDeployment(webBaseName, webDeploymentName);
             if(updatedImageName != null)

@@ -8,9 +8,10 @@ namespace KubeTool
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             //await kubeTest();
-            await KubeSupport.UpdatePlatformToLatest();
+            var updateResult = await KubeSupport.UpdatePlatformToLatest();
+            var message = String.Join(Environment.NewLine, updateResult);
+            Console.WriteLine(message);
         }
     }
 }
