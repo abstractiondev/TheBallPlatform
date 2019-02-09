@@ -9,6 +9,7 @@ using TheBall.CORE;
 
 namespace PlatformCoreTests
 {
+#if notported
     /// <summary>
     /// Summary description for TaskContextTests
     /// </summary>
@@ -41,7 +42,7 @@ namespace PlatformCoreTests
             }
         }
 
-        #region Additional test attributes
+#region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:
         //
@@ -64,7 +65,7 @@ namespace PlatformCoreTests
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
-        #endregion
+#endregion
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
@@ -169,4 +170,5 @@ namespace PlatformCoreTests
         }
 
     }
+#endif
 }

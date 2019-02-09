@@ -1,4 +1,5 @@
 using System.IO;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -7,9 +8,9 @@ namespace TheBall.CORE
 {
     public class PublishGroupToWwwImplementation
     {
-        public static GroupContainer GetTarget_GroupContainer(IContainerOwner owner)
+        public static async Task<GroupContainer> GetTarget_GroupContainerAsync(IContainerOwner owner)
         {
-            var groupContainer = ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(owner, "default");
+            var groupContainer = await ObjectStorage.RetrieveFromOwnerContentA<GroupContainer>(owner, "default");
             return groupContainer;
         }
 
@@ -18,10 +19,10 @@ namespace TheBall.CORE
             return groupContainer.GroupProfile.WwwSiteToPublishTo.Replace(".", "-");
         }
 
-        public static string GetTarget_TargetContainerOwnerString(string targetContainerName)
+        public static async Task<string> GetTarget_TargetContainerOwnerStringAsync(string targetContainerName)
         {
             CloudBlockBlob blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
-            string contents = blob.DownloadText();
+            string contents = await blob.DownloadTextAsync();
             string[] contentArr = contents.Split(':');
             if (contentArr.Length < 2)
                 return null;

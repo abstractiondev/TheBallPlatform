@@ -1,6 +1,6 @@
 using System.Configuration;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure;
+using Microsoft.Azure;
 using Microsoft.WindowsAzure.Management.Compute;
 using Microsoft.WindowsAzure.Management.Compute.Models;
 using Microsoft.WindowsAzure.Management.Models;

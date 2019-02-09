@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
@@ -37,9 +38,9 @@ namespace TheBall.CORE
                         .Select(role => role.Email.EmailAddress).ToArray();
         }
 
-        public static void ExecuteMethod_StoreObject(TBEmailValidation emailValidation)
+        public static async Task ExecuteMethod_StoreObjectAsync(TBEmailValidation emailValidation)
         {
-            emailValidation.StoreInformation();
+            await emailValidation.StoreInformationAsync();
         }
 
         public static void ExecuteMethod_SendEmailConfirmation(DeviceMembership deviceMembership, TBEmailValidation emailValidation, string[] ownerEmailAddresses)

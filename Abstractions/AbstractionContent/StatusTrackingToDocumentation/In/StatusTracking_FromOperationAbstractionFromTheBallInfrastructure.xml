@@ -1,7 +1,72 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
-  <StatusItems scopeName="TheBall.Infrastructure" />
+  <StatusItems scopeName="TheBall.Infrastructure">
+    <StatusItem name="UpdateInfraDataInterfaceObjects_MainConfigShare" displayName="TargetDefinitionType: MainConfigShare" description="Cloud file share reference">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_UpdateConfig" displayName="TargetDefinitionType: UpdateConfig" description="Platform infra update config">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_WebConsoleConfig" displayName="TargetDefinitionType: WebConsoleConfig" description="Platform infra web console config">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_DeploymentShare" displayName="TargetDefinitionType: DeploymentShare" description="Deployment source file share reference">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_DeploymentPackages" displayName="TargetDefinitionType: DeploymentPackages" description="Deployment packages from deploy list">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store interface objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_RuntimeVersionData" displayName="VariableType: RuntimeVersionData" description="Runtime version data; only component versions are relevant">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_MainConfigShare" displayName="TargetDefinitionType: MainConfigShare" description="Cloud file share reference">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_UpdateConfig" displayName="TargetDefinitionType: UpdateConfig" description="Platform infra update config">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_DeploymentShare" displayName="TargetDefinitionType: DeploymentShare" description="Deployment source file share reference">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_DeploymentPackages" displayName="TargetDefinitionType: DeploymentPackages" description="Deployment packages from deploy list">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_ValidateRequestedVersionsAgainstDeploymentPackages" displayName="MethodExecuteType: ValidateRequestedVersionsAgainstDeploymentPackages" description="Validate that requested versions are found in deployment packages">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_WebConsoleConfig" displayName="TargetDefinitionType: WebConsoleConfig" description="Platform infra web console config">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_UpdatePlatformConfigurations" displayName="MethodExecuteType: UpdatePlatformConfigurations" description="Update version fields of platform configurations">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetRuntimeVersions_SaveConfiguration" displayName="MethodExecuteType: SaveConfiguration" description="Save updated configuration file(s)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+  </StatusItems>
   <Groups>
+    <Group name="UpdateInfraDataInterfaceObjects">
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_MainConfigShare" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_UpdateConfig" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_WebConsoleConfig" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_DeploymentShare" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_DeploymentPackages" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_StoreObjects" />
+    </Group>
+    <Group name="SetRuntimeVersions">
+      <ItemRef itemName="SetRuntimeVersions_RuntimeVersionData" />
+      <ItemRef itemName="SetRuntimeVersions_MainConfigShare" />
+      <ItemRef itemName="SetRuntimeVersions_UpdateConfig" />
+      <ItemRef itemName="SetRuntimeVersions_DeploymentShare" />
+      <ItemRef itemName="SetRuntimeVersions_DeploymentPackages" />
+      <ItemRef itemName="SetRuntimeVersions_ValidateRequestedVersionsAgainstDeploymentPackages" />
+      <ItemRef itemName="SetRuntimeVersions_WebConsoleConfig" />
+      <ItemRef itemName="SetRuntimeVersions_UpdatePlatformConfigurations" />
+      <ItemRef itemName="SetRuntimeVersions_SaveConfiguration" />
+    </Group>
     <Group name="CreateCloudDrive" />
     <Group name="MountCloudDrive" />
   </Groups>

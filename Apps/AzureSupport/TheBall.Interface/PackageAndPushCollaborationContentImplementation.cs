@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Ionic.Zip;
+using System.Threading.Tasks;
+//using Ionic.Zip;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 
@@ -10,9 +11,9 @@ namespace TheBall.Interface
 {
     public class PackageAndPushCollaborationContentImplementation
     {
-        public static Connection GetTarget_Connection(string connectionId)
+        public static async Task<Connection> GetTarget_ConnectionAsync(string connectionId)
         {
-            Connection connection = ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner,
+            Connection connection = await ObjectStorage.RetrieveFromOwnerContentA<Connection>(InformationContext.CurrentOwner,
                                                                         connectionId);
             return connection;
         }
@@ -57,9 +58,9 @@ namespace TheBall.Interface
             connection.OutgoingPackages.Add(transferPackage);
         }
 
-        public static void ExecuteMethod_StoreObject(Connection connection)
+        public static async Task ExecuteMethod_StoreObjectAsync(Connection connection)
         {
-            connection.StoreInformation();
+            await connection.StoreInformationAsync();
         }
 
         public static string[] ExecuteMethod_PackageTransferPackageContent(TransferPackage transferPackage, string[] dynamicPackageListingOperationOutput)
@@ -70,13 +71,13 @@ namespace TheBall.Interface
             return zipPackageNames.ToArray();
         }
 
-        public static void ExecuteMethod_SendTransferPackageContent(Connection connection, TransferPackage transferPackage, string[] packageTransferPackageContentOutput)
+        public static async Task ExecuteMethod_SendTransferPackageContentAsync(Connection connection, TransferPackage transferPackage, string[] packageTransferPackageContentOutput)
         {
             string informationOutputID = connection.OutputInformationID;
             var fileNames = packageTransferPackageContentOutput;
             foreach (string fileName in fileNames)
             {
-                CORE.PushToInformationOutput.Execute(
+                await CORE.PushToInformationOutput.ExecuteAsync(
                     new PushToInformationOutputParameters
                         {
                             InformationOutputID = informationOutputID,
@@ -92,21 +93,21 @@ namespace TheBall.Interface
             transferPackage.IsProcessed = true;
         }
 
-        public static void ExecuteMethod_StoreObjectComplete(Connection connection, TransferPackage transferPackage)
+        public static async Task ExecuteMethod_StoreObjectCompleteAsync(Connection connection, TransferPackage transferPackage)
         {
             int retryCount = 10;
             while (true)
             {
                 try
                 {
-                    connection.StoreInformation();
+                    await connection.StoreInformationAsync();
                     break;
                 }
                 catch
                 {
                     if (retryCount-- <= 0)
                         throw;
-                    connection = ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner, connection.ID);
+                    connection = await ObjectStorage.RetrieveFromOwnerContentA<Connection>(InformationContext.CurrentOwner, connection.ID);
                     connection.OutgoingPackages.Add(transferPackage);
                 }
             }

@@ -5,9 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -17,11 +14,14 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
-using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
-using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.ComponentModel.DataAnnotations.Schema;
+using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
+//using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+//using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SQLite.TheBall.Payments { 
@@ -31,15 +31,26 @@ namespace SQLite.TheBall.Payments {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
+		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+				GroupSubscriptionPlan.EntityConfig(modelBuilder);
+				SubscriptionPlanStatus.EntityConfig(modelBuilder);
+				SubscriptionPlanStatusSubscriptionPlan.EntityConfig(modelBuilder);
+				CustomerAccount.EntityConfig(modelBuilder);
+				CustomerAccountActivePlans.EntityConfig(modelBuilder);
+				GroupSubscriptionPlanCollection.EntityConfig(modelBuilder);
+				CustomerAccountCollection.EntityConfig(modelBuilder);
+
+		    }
+
             // Track whether Dispose has been called. 
             private bool disposed = false;
-		    protected override void Dispose(bool disposing)
+		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
 		            return;
-                base.Dispose(disposing);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
@@ -47,16 +58,24 @@ namespace SQLite.TheBall.Payments {
 
             public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
+		    public TheBallDataContext() : base(new DbContextOptions<TheBallDataContext>())
 		    {
 		        
 		    }
 
+		    public readonly string SQLiteDBPath;
+		    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		    {
+		        optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
+		    }
+
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
-		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                var dataContext = new TheBallDataContext(connection);
-		        using (var transaction = connection.BeginTransaction())
+		        var sqliteConnectionString = $"{pathToDBFile}";
+                var dataContext = new TheBallDataContext(sqliteConnectionString);
+		        var db = dataContext.Database;
+                db.OpenConnection();
+		        using (var transaction = db.BeginTransaction())
 		        {
                     dataContext.CreateDomainDatabaseTablesIfNotExists();
                     transaction.Commit();
@@ -64,12 +83,19 @@ namespace SQLite.TheBall.Payments {
                 return dataContext;
 		    }
 
-            public TheBallDataContext(SQLiteConnection connection) : base(connection)
+            public TheBallDataContext(string sqLiteDBPath) : base()
+            {
+                SQLiteDBPath = sqLiteDBPath;
+            }
+
+		    public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		    {
-                if(connection.State != ConnectionState.Open)
-                    connection.Open();
+                //if(connection.State != ConnectionState.Open)
+                //    connection.Open();
+		        return base.SaveChanges(acceptAllChangesOnSuccess);
 		    }
 
+			/*
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
@@ -86,6 +112,7 @@ namespace SQLite.TheBall.Payments {
 		    {
 		        await Task.Run(() => SubmitChanges());
 		    }
+			*/
 
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
@@ -98,7 +125,9 @@ namespace SQLite.TheBall.Payments {
 				tableCreationCommands.Add(CustomerAccountActivePlans.GetCreateTableSQL());
 				tableCreationCommands.Add(GroupSubscriptionPlanCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(CustomerAccountCollection.GetCreateTableSQL());
-			    var connection = this.Connection;
+			    //var connection = this.Connection;
+			    var db = this.Database;
+			    var connection = db.GetDbConnection();
 				foreach (string commandText in tableCreationCommands)
 			    {
 			        var command = connection.CreateCommand();
@@ -108,9 +137,9 @@ namespace SQLite.TheBall.Payments {
 			    }
 			}
 
-			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
+			public DbSet<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
-					return this.GetTable<InformationObjectMetaData>();
+					return this.Set<InformationObjectMetaData>();
 				}
 			}
 
@@ -153,7 +182,7 @@ namespace SQLite.TheBall.Payments {
                                 SubscriptionPlanStatusID = existingObject.ID,
                                 GroupSubscriptionPlanID = serializedObject.SubscriptionPlan
                             };
-                            SubscriptionPlanStatusSubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            SubscriptionPlanStatusSubscriptionPlanTable.Add(relationObject);
 							existingObject.SubscriptionPlan = relationObject;
                     }
 
@@ -169,6 +198,7 @@ namespace SQLite.TheBall.Payments {
 		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.StripeID = serializedObject.StripeID;
+		            existingObject.IsTestAccount = serializedObject.IsTestAccount;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.Description = serializedObject.Description;
                     if (serializedObject.ActivePlans != null)
@@ -182,7 +212,7 @@ namespace SQLite.TheBall.Payments {
                                     CustomerAccountID = existingObject.ID,
                                     SubscriptionPlanStatusID = item
                                 };
-                                CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
+                                CustomerAccountActivePlansTable.Add(relationObject);
                                 existingObject.ActivePlans.Add(relationObject);
 
                             });
@@ -232,7 +262,7 @@ namespace SQLite.TheBall.Payments {
                                 SubscriptionPlanStatusID = existingObject.ID,
                                 GroupSubscriptionPlanID = serializedObject.SubscriptionPlan
                             };
-                            SubscriptionPlanStatusSubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            SubscriptionPlanStatusSubscriptionPlanTable.Add(relationObject);
 							existingObject.SubscriptionPlan = relationObject;
                     }
 
@@ -248,6 +278,7 @@ namespace SQLite.TheBall.Payments {
 		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.StripeID = serializedObject.StripeID;
+		            existingObject.IsTestAccount = serializedObject.IsTestAccount;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.Description = serializedObject.Description;
                     if (serializedObject.ActivePlans != null)
@@ -261,7 +292,7 @@ namespace SQLite.TheBall.Payments {
                                     CustomerAccountID = existingObject.ID,
                                     SubscriptionPlanStatusID = item
                                 };
-                                CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
+                                CustomerAccountActivePlansTable.Add(relationObject);
                                 existingObject.ActivePlans.Add(relationObject);
 
                             });
@@ -276,7 +307,7 @@ namespace SQLite.TheBall.Payments {
 		    {
                 if (insertData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -291,7 +322,7 @@ namespace SQLite.TheBall.Payments {
 		            objectToAdd.Description = serializedObject.Description;
 					if(serializedObject.GroupIDs != null)
 						serializedObject.GroupIDs.ForEach(item => objectToAdd.GroupIDs.Add(item));
-					GroupSubscriptionPlanTable.InsertOnSubmit(objectToAdd);
+					GroupSubscriptionPlanTable.Add(objectToAdd);
                     break;
                 }
                 case "SubscriptionPlanStatus":
@@ -308,12 +339,12 @@ namespace SQLite.TheBall.Payments {
                                 SubscriptionPlanStatusID = objectToAdd.ID,
                                 GroupSubscriptionPlanID = serializedObject.SubscriptionPlan
                             };
-                            SubscriptionPlanStatusSubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            SubscriptionPlanStatusSubscriptionPlanTable.Add(relationObject);
                             objectToAdd.SubscriptionPlan = relationObject;
                     }
 
 		            objectToAdd.ValidUntil = serializedObject.ValidUntil;
-					SubscriptionPlanStatusTable.InsertOnSubmit(objectToAdd);
+					SubscriptionPlanStatusTable.Add(objectToAdd);
                     break;
                 }
                 case "CustomerAccount":
@@ -324,6 +355,7 @@ namespace SQLite.TheBall.Payments {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CustomerAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StripeID = serializedObject.StripeID;
+		            objectToAdd.IsTestAccount = serializedObject.IsTestAccount;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.Description = serializedObject.Description;
                     if (serializedObject.ActivePlans != null)
@@ -336,13 +368,13 @@ namespace SQLite.TheBall.Payments {
                                     CustomerAccountID = objectToAdd.ID,
                                     SubscriptionPlanStatusID = item
                                 };
-                                CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
+                                CustomerAccountActivePlansTable.Add(relationObject);
                                 objectToAdd.ActivePlans.Add(relationObject);
 
                             });
                     }
 
-					CustomerAccountTable.InsertOnSubmit(objectToAdd);
+					CustomerAccountTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -353,7 +385,7 @@ namespace SQLite.TheBall.Payments {
 		    {
                 if (insertData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -368,7 +400,7 @@ namespace SQLite.TheBall.Payments {
 		            objectToAdd.Description = serializedObject.Description;
 					if(serializedObject.GroupIDs != null)
 						serializedObject.GroupIDs.ForEach(item => objectToAdd.GroupIDs.Add(item));
-					GroupSubscriptionPlanTable.InsertOnSubmit(objectToAdd);
+					GroupSubscriptionPlanTable.Add(objectToAdd);
                     break;
                 }
                 case "SubscriptionPlanStatus":
@@ -385,12 +417,12 @@ namespace SQLite.TheBall.Payments {
                                 SubscriptionPlanStatusID = objectToAdd.ID,
                                 GroupSubscriptionPlanID = serializedObject.SubscriptionPlan
                             };
-                            SubscriptionPlanStatusSubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            SubscriptionPlanStatusSubscriptionPlanTable.Add(relationObject);
                             objectToAdd.SubscriptionPlan = relationObject;
                     }
 
 		            objectToAdd.ValidUntil = serializedObject.ValidUntil;
-					SubscriptionPlanStatusTable.InsertOnSubmit(objectToAdd);
+					SubscriptionPlanStatusTable.Add(objectToAdd);
                     break;
                 }
                 case "CustomerAccount":
@@ -401,6 +433,7 @@ namespace SQLite.TheBall.Payments {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new CustomerAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StripeID = serializedObject.StripeID;
+		            objectToAdd.IsTestAccount = serializedObject.IsTestAccount;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.Description = serializedObject.Description;
                     if (serializedObject.ActivePlans != null)
@@ -413,13 +446,13 @@ namespace SQLite.TheBall.Payments {
                                     CustomerAccountID = objectToAdd.ID,
                                     SubscriptionPlanStatusID = item
                                 };
-                                CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
+                                CustomerAccountActivePlansTable.Add(relationObject);
                                 objectToAdd.ActivePlans.Add(relationObject);
 
                             });
                     }
 
-					CustomerAccountTable.InsertOnSubmit(objectToAdd);
+					CustomerAccountTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -430,7 +463,7 @@ namespace SQLite.TheBall.Payments {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -440,7 +473,7 @@ namespace SQLite.TheBall.Payments {
 						//GroupSubscriptionPlanTable.Attach(objectToDelete);
 						var objectToDelete = GroupSubscriptionPlanTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
+							GroupSubscriptionPlanTable.Remove(objectToDelete);
 						break;
 					}
 					case "SubscriptionPlanStatus":
@@ -449,7 +482,7 @@ namespace SQLite.TheBall.Payments {
 						//SubscriptionPlanStatusTable.Attach(objectToDelete);
 						var objectToDelete = SubscriptionPlanStatusTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
+							SubscriptionPlanStatusTable.Remove(objectToDelete);
 						break;
 					}
 					case "CustomerAccount":
@@ -458,7 +491,7 @@ namespace SQLite.TheBall.Payments {
 						//CustomerAccountTable.Attach(objectToDelete);
 						var objectToDelete = CustomerAccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CustomerAccountTable.DeleteOnSubmit(objectToDelete);
+							CustomerAccountTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupSubscriptionPlanCollection":
@@ -467,7 +500,7 @@ namespace SQLite.TheBall.Payments {
 						//GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
 						var objectToDelete = GroupSubscriptionPlanCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+							GroupSubscriptionPlanCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CustomerAccountCollection":
@@ -476,7 +509,7 @@ namespace SQLite.TheBall.Payments {
 						//CustomerAccountCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CustomerAccountCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
+							CustomerAccountCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -488,7 +521,7 @@ namespace SQLite.TheBall.Payments {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -498,7 +531,7 @@ namespace SQLite.TheBall.Payments {
 						//GroupSubscriptionPlanTable.Attach(objectToDelete);
 						var objectToDelete = GroupSubscriptionPlanTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
+							GroupSubscriptionPlanTable.Remove(objectToDelete);
 						break;
 					}
 					case "SubscriptionPlanStatus":
@@ -507,7 +540,7 @@ namespace SQLite.TheBall.Payments {
 						//SubscriptionPlanStatusTable.Attach(objectToDelete);
 						var objectToDelete = SubscriptionPlanStatusTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
+							SubscriptionPlanStatusTable.Remove(objectToDelete);
 						break;
 					}
 					case "CustomerAccount":
@@ -516,7 +549,7 @@ namespace SQLite.TheBall.Payments {
 						//CustomerAccountTable.Attach(objectToDelete);
 						var objectToDelete = CustomerAccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CustomerAccountTable.DeleteOnSubmit(objectToDelete);
+							CustomerAccountTable.Remove(objectToDelete);
 						break;
 					}
 					case "GroupSubscriptionPlanCollection":
@@ -525,7 +558,7 @@ namespace SQLite.TheBall.Payments {
 						//GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
 						var objectToDelete = GroupSubscriptionPlanCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+							GroupSubscriptionPlanCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "CustomerAccountCollection":
@@ -534,7 +567,7 @@ namespace SQLite.TheBall.Payments {
 						//CustomerAccountCollectionTable.Attach(objectToDelete);
 						var objectToDelete = CustomerAccountCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
+							CustomerAccountCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -542,59 +575,32 @@ namespace SQLite.TheBall.Payments {
 
 
 
-			public Table<GroupSubscriptionPlan> GroupSubscriptionPlanTable {
-				get {
-					return this.GetTable<GroupSubscriptionPlan>();
-				}
-			}
-			public Table<SubscriptionPlanStatus> SubscriptionPlanStatusTable {
-				get {
-					return this.GetTable<SubscriptionPlanStatus>();
-				}
-			}
-			public Table<SubscriptionPlanStatusSubscriptionPlan> SubscriptionPlanStatusSubscriptionPlanTable {
-				get {
-					return this.GetTable<SubscriptionPlanStatusSubscriptionPlan>();
-				}
-			}
-
-			public Table<CustomerAccount> CustomerAccountTable {
-				get {
-					return this.GetTable<CustomerAccount>();
-				}
-			}
-			public Table<CustomerAccountActivePlans> CustomerAccountActivePlansTable {
-				get {
-					return this.GetTable<CustomerAccountActivePlans>();
-				}
-			}
-
-			public Table<GroupSubscriptionPlanCollection> GroupSubscriptionPlanCollectionTable {
-				get {
-					return this.GetTable<GroupSubscriptionPlanCollection>();
-				}
-			}
-			public Table<CustomerAccountCollection> CustomerAccountCollectionTable {
-				get {
-					return this.GetTable<CustomerAccountCollection>();
-				}
-			}
+			public DbSet<GroupSubscriptionPlan> GroupSubscriptionPlanTable { get; set; }
+			public DbSet<SubscriptionPlanStatus> SubscriptionPlanStatusTable { get; set; }
+			public DbSet<SubscriptionPlanStatusSubscriptionPlan> SubscriptionPlanStatusSubscriptionPlanTable { get; set; }
+			public DbSet<CustomerAccount> CustomerAccountTable { get; set; }
+			public DbSet<CustomerAccountActivePlans> CustomerAccountActivePlansTable { get; set; }
+			public DbSet<GroupSubscriptionPlanCollection> GroupSubscriptionPlanCollectionTable { get; set; }
+			public DbSet<CustomerAccountCollection> CustomerAccountCollectionTable { get; set; }
         }
 
-    [Table(Name = "GroupSubscriptionPlan")]
-	[ScaffoldTable(true)]
+    [Table("GroupSubscriptionPlan")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupSubscriptionPlan: {ID}")]
 	public class GroupSubscriptionPlan : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -612,30 +618,31 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[PlanName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[GroupIDs] TEXT NOT NULL
+[PlanName] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[GroupIDs] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PlanName { get; set; }
 		// private string _unmodified_PlanName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        [Column(Name = "GroupIDs")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "GroupIDs")] 
+        //[ScaffoldColumn(true)]
 		public string GroupIDsData { get; set; }
 
         private bool _IsGroupIDsRetrieved = false;
         private bool _IsGroupIDsChanged = false;
         private ObservableCollection<string> _GroupIDs = null;
-        public ObservableCollection<string> GroupIDs
+        [NotMapped]
+		public ObservableCollection<string> GroupIDs
         {
             get
             {
@@ -688,20 +695,23 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 
 		}
 	}
-    [Table(Name = "SubscriptionPlanStatus")]
-	[ScaffoldTable(true)]
+    [Table("SubscriptionPlanStatus")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionPlanStatus: {ID}")]
 	public class SubscriptionPlanStatus : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -719,21 +729,23 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ValidUntil] TEXT NOT NULL
+[ValidUntil] TEXT DEFAULT ''
 )";
         }
 
-		private EntityRef<SubscriptionPlanStatusSubscriptionPlan> _SubscriptionPlan = new EntityRef<SubscriptionPlanStatusSubscriptionPlan>();
-        [Association(ThisKey = "ID", OtherKey = "SubscriptionPlanStatusID", Storage="_SubscriptionPlan")]
+		//private obsoleted<SubscriptionPlanStatusSubscriptionPlan> _SubscriptionPlan = new obsoleted<SubscriptionPlanStatusSubscriptionPlan>();
+        //[Association(ThisKey = "ID", OtherKey = "SubscriptionPlanStatusID", Storage="_SubscriptionPlan")]
         public SubscriptionPlanStatusSubscriptionPlan SubscriptionPlan 
 		{ 
-			get { return _SubscriptionPlan.Entity; }
-			set { _SubscriptionPlan.Entity = value; }
+			get;
+			set;
+			//get { return _SubscriptionPlan.Entity; }
+			//set { _SubscriptionPlan.Entity = value; }
 		}
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime ValidUntil { get; set; }
 		// private DateTime _unmodified_ValidUntil;
         public void PrepareForStoring(bool isInitialInsert)
@@ -741,20 +753,23 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
 		
 		}
 	}
-    [Table(Name = "CustomerAccount")]
-	[ScaffoldTable(true)]
+    [Table("CustomerAccount")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CustomerAccount: {ID}")]
 	public class CustomerAccount : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -764,7 +779,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
 			ETag = String.Empty;
 		}
 
-        public static string GetCreateTableSQL()
+        public static string GetCreateTableSQL() 
         {
             return
                 @"
@@ -772,32 +787,40 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[StripeID] TEXT NOT NULL, 
-[EmailAddress] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[StripeID] TEXT DEFAULT '', 
+[IsTestAccount] INTEGER NOT NULL, 
+[EmailAddress] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string StripeID { get; set; }
 		// private string _unmodified_StripeID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+		public bool IsTestAccount { get; set; }
+		// private bool _unmodified_IsTestAccount;
+
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-		private EntitySet<CustomerAccountActivePlans> _ActivePlans = new EntitySet<CustomerAccountActivePlans>();
-        [Association(ThisKey = "ID", OtherKey = "CustomerAccountID", Storage="_ActivePlans")]
-        public EntitySet<CustomerAccountActivePlans> ActivePlans { 
-			get { return _ActivePlans; }
-			set { _ActivePlans.Assign(value); }
+		//private obsoleted<CustomerAccountActivePlans> _ActivePlans = new obsoleted<CustomerAccountActivePlans>();
+        //[Association(ThisKey = "ID", OtherKey = "CustomerAccountID", Storage="_ActivePlans")]
+        public List<CustomerAccountActivePlans> ActivePlans { 
+			get; 
+			set;
+			//get { return _ActivePlans; }
+			//set { _ActivePlans.Assign(value); }
 		}
 
         public void PrepareForStoring(bool isInitialInsert)
@@ -811,20 +834,23 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 				Description = string.Empty;
 		}
 	}
-    [Table(Name = "GroupSubscriptionPlanCollection")]
-	[ScaffoldTable(true)]
+    [Table("GroupSubscriptionPlanCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GroupSubscriptionPlanCollection: {ID}")]
 	public class GroupSubscriptionPlanCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -849,24 +875,27 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlanCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "CustomerAccountCollection")]
-	[ScaffoldTable(true)]
+    [Table("CustomerAccountCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CustomerAccountCollection: {ID}")]
 	public class CustomerAccountCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -891,12 +920,12 @@ CREATE TABLE IF NOT EXISTS [CustomerAccountCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "SubscriptionPlanStatusSubscriptionPlan")]
-	[ScaffoldTable(true)]
+    [Table("SubscriptionPlanStatusSubscriptionPlan")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("SubscriptionPlanStatusSubscriptionPlan: {SubscriptionPlanStatusID} - {GroupSubscriptionPlanID}")]
 	public class SubscriptionPlanStatusSubscriptionPlan // : ITheBallDataContextStorable
 	{
@@ -911,35 +940,33 @@ PRIMARY KEY (SubscriptionPlanStatusID, GroupSubscriptionPlanID)
 )";
         }
 
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<SubscriptionPlanStatusSubscriptionPlan>()
+		        .HasKey(c => new { c.SubscriptionPlanStatusID, c.GroupSubscriptionPlanID});
+			
+		}
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string SubscriptionPlanStatusID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string GroupSubscriptionPlanID { get; set; }
 
 
-        private EntityRef<SubscriptionPlanStatus> _SubscriptionPlanStatus = new EntityRef<SubscriptionPlanStatus>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", 
-			Storage = "_SubscriptionPlanStatus", IsUnique = true)]
-        public SubscriptionPlanStatus SubscriptionPlanStatus 
-		{ 
-			get { return _SubscriptionPlanStatus.Entity; }
-			set { _SubscriptionPlanStatus.Entity = value; }
-		}
+        //private EntityRef<SubscriptionPlanStatus> _SubscriptionPlanStatus = new EntityRef<SubscriptionPlanStatus>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", 
+		//	Storage = "_SubscriptionPlanStatus", IsUnique = true)]
+        public SubscriptionPlanStatus SubscriptionPlanStatus { get; set; }
 
-        private EntityRef<GroupSubscriptionPlan> _GroupSubscriptionPlan = new EntityRef<GroupSubscriptionPlan>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupSubscriptionPlanID", OtherKey = "ID", 
-			Storage = "_GroupSubscriptionPlan")]
-		public GroupSubscriptionPlan GroupSubscriptionPlan 
-		{ 
-			get { return _GroupSubscriptionPlan.Entity; }
-			set { _GroupSubscriptionPlan.Entity = value; }
-		}
+        //private EntityRef<GroupSubscriptionPlan> _GroupSubscriptionPlan = new EntityRef<GroupSubscriptionPlan>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupSubscriptionPlanID", OtherKey = "ID", 
+		//	Storage = "_GroupSubscriptionPlan")]
+		public GroupSubscriptionPlan GroupSubscriptionPlan { get; set; }
 
     }
 
-    [Table(Name = "CustomerAccountActivePlans")]
-	[ScaffoldTable(true)]
+    [Table("CustomerAccountActivePlans")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CustomerAccountActivePlans: {CustomerAccountID} - {SubscriptionPlanStatusID}")]
 	public class CustomerAccountActivePlans // : ITheBallDataContextStorable
 	{
@@ -954,30 +981,28 @@ PRIMARY KEY (CustomerAccountID, SubscriptionPlanStatusID)
 )";
         }
 
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		    modelBuilder.Entity<CustomerAccountActivePlans>()
+		        .HasKey(c => new { c.CustomerAccountID, c.SubscriptionPlanStatusID});
+			
+		}
 
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string CustomerAccountID { get; set; }
-        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        //[Column(IsPrimaryKey = true, CanBeNull = false)]
         public string SubscriptionPlanStatusID { get; set; }
 
 
-        private EntityRef<CustomerAccount> _CustomerAccount = new EntityRef<CustomerAccount>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "CustomerAccountID", OtherKey = "ID", 
-			Storage = "_CustomerAccount", IsUnique = false)]
-        public CustomerAccount CustomerAccount 
-		{ 
-			get { return _CustomerAccount.Entity; }
-			set { _CustomerAccount.Entity = value; }
-		}
+        //private EntityRef<CustomerAccount> _CustomerAccount = new EntityRef<CustomerAccount>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "CustomerAccountID", OtherKey = "ID", 
+		//	Storage = "_CustomerAccount", IsUnique = false)]
+        public CustomerAccount CustomerAccount { get; set; }
 
-        private EntityRef<SubscriptionPlanStatus> _SubscriptionPlanStatus = new EntityRef<SubscriptionPlanStatus>();
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", 
-			Storage = "_SubscriptionPlanStatus")]
-		public SubscriptionPlanStatus SubscriptionPlanStatus 
-		{ 
-			get { return _SubscriptionPlanStatus.Entity; }
-			set { _SubscriptionPlanStatus.Entity = value; }
-		}
+        //private EntityRef<SubscriptionPlanStatus> _SubscriptionPlanStatus = new EntityRef<SubscriptionPlanStatus>();
+        //[Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", 
+		//	Storage = "_SubscriptionPlanStatus")]
+		public SubscriptionPlanStatus SubscriptionPlanStatus { get; set; }
 
     }
 

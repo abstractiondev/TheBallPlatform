@@ -1,12 +1,13 @@
 using System.Security;
+using System.Threading.Tasks;
 
 namespace TheBall.CORE
 {
     public class ProcessFetchedInputsImplementation
     {
-        public static InformationInput GetTarget_InformationInput(IContainerOwner owner, string informationInputId)
+        public static async Task<InformationInput> GetTarget_InformationInputAsync(IContainerOwner owner, string informationInputId)
         {
-            return ObjectStorage.RetrieveFromDefaultLocation<InformationInput>(informationInputId, owner);
+            return await ObjectStorage.RetrieveFromDefaultLocationA<InformationInput>(informationInputId, owner);
         }
 
         public static void ExecuteMethod_VerifyValidInput(InformationInput informationInput)
@@ -27,20 +28,20 @@ namespace TheBall.CORE
             return result;
         }
 
-        public static void ExecuteMethod_StoreObjects(IInformationObject[] processingResultsToStore)
+        public static async Task ExecuteMethod_StoreObjectsAsync(IInformationObject[] processingResultsToStore)
         {
             if (processingResultsToStore == null)
                 return;
             foreach (var iObj in processingResultsToStore)
-                iObj.StoreInformation();
+                await iObj.StoreInformationAsync();
         }
 
-        public static void ExecuteMethod_DeleteObjects(IInformationObject[] processingResultsToDelete)
+        public static async Task ExecuteMethod_DeleteObjectsAsync(IInformationObject[] processingResultsToDelete)
         {
             if (processingResultsToDelete == null)
                 return;
             foreach(var iObj in processingResultsToDelete)
-                iObj.DeleteInformationObject();
+                await iObj.DeleteInformationObjectAsync();
         }
     }
 }

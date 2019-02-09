@@ -3,16 +3,18 @@ using System.IO;
 using System.IO.Compression;
 using AaltoGlobalImpact.OIP;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
+using TheBall.CORE.Storage;
 
 namespace TheBall.CORE
 {
     public class CreateOrUpdateCustomUIImplementation
     {
-        public static GroupContainer GetTarget_GroupContainer(IContainerOwner owner)
+        public static async Task<GroupContainer> GetTarget_GroupContainerAsync(IContainerOwner owner)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(owner, "default");
+            return await ObjectStorage.RetrieveFromOwnerContentA<GroupContainer>(owner, "default");
         }
 
         public static string GetTarget_CustomUIFolder(IContainerOwner owner, string customUiName)
@@ -38,25 +40,25 @@ namespace TheBall.CORE
             customUICollection.CollectionContent.Sort((x, y) => String.Compare(x.Content, y.Content));
         }
 
-        public static void ExecuteMethod_CopyUIContentsFromZipArchive(Stream zipArchiveStream, string customUiFolder)
+        public static async Task ExecuteMethod_CopyUIContentsFromZipArchiveAsync(Stream zipArchiveStream, string customUiFolder)
         {
-            var blobListing = StorageSupport.CurrActiveContainer.GetBlobListing(customUiFolder);
-            foreach (CloudBlockBlob blob in blobListing)
+            var blobListing = await BlobStorage.GetOwnerBlobsA(customUiFolder);
+            foreach (var blob in blobListing)
             {
-                blob.DeleteIfExists();
+                await BlobStorage.DeleteBlobA(blob.Name);
             }
             ZipArchive zipArchive = new ZipArchive(zipArchiveStream, ZipArchiveMode.Read);
             foreach (var zipEntry in zipArchive.Entries)
             {
                 string blobFullName = customUiFolder + zipEntry.FullName;
                 var entryStream = zipEntry.Open();
-                StorageSupport.CurrActiveContainer.UploadBlobStream(blobFullName, entryStream);
+                await StorageSupport.CurrActiveContainer.UploadBlobStreamAsync(blobFullName, entryStream);
             }
         }
 
-        public static void ExecuteMethod_StoreObject(GroupContainer groupContainer)
+        public static async Task ExecuteMethod_StoreObjectAsync(GroupContainer groupContainer)
         {
-            groupContainer.StoreInformation();
+            await groupContainer.StoreInformationAsync();
         }
 
         public static void ExecuteMethod_ValidateCustomUIName(string customUiName)

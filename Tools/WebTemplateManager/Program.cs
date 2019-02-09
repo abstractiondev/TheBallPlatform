@@ -30,15 +30,6 @@ namespace WebTemplateManager
                 ServicePointManager.UseNagleAlgorithm = false;
                 ServicePointManager.DefaultConnectionLimit = 500;
                 ServicePointManager.Expect100Continue = false;
-                /*
-                Console.WriteLine("Running test EKE...");
-                TheBallEKE.TestExecution();
-                Console.WriteLine("Running test EKE complete.");
-                //return;
-                //SecurityNegotiationManager.EchoClient().Wait();
-                SecurityNegotiationManager.EchoClient();
-                Console.ReadLine(); // Enter to exit
-                //return;*/
 
                 if (arguments.Length != 6 || arguments[1].Length != 4)
                 {
@@ -69,8 +60,8 @@ namespace WebTemplateManager
                         AzureStorageKey = storageAccountKey
                     },
                     new InstanceConfig(),
-                    instanceName);
-                InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instanceName);
+                    instanceName, "dev");
+                InformationContext.InitializeToLogicalContext(null, SystemOwner.CurrentSystem, instanceName, null, true);
 
                 IContainerOwner owner;
                 bool isAccount = false;
@@ -144,11 +135,13 @@ namespace WebTemplateManager
 
         private static void ValidateContainerName(string currContainerName)
         {
+            /*
             if (Properties.Settings.Default.AllowedContainerNames == "*")
                 return;
             string[] validContainers = Properties.Settings.Default.AllowedContainerNames.Split(',');
             if(validContainers.Contains(currContainerName) == false)
                 throw new InvalidDataException("Given container name not among app.config approved ones: " + currContainerName);
+                */
         }
 
         private static void Preprocessor(BlobStorageContent content)

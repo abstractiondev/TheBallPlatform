@@ -18,14 +18,14 @@ namespace TheBall.Payments
             return jsonObject.id;
         }
 
-        public static StripeEvent GetTarget_EventData(string eventID)
+        public static StripeEvent GetTarget_EventData(string eventId, bool isTestMode)
         {
             try
             {
-                if (eventID == null)
+                if (eventId == null)
                     return null;
-                StripeEventService service = new StripeEventService(SecureConfig.Current.StripeSecretKey);
-                return service.Get(eventID);
+                StripeEventService service = new StripeEventService(StripeSupport.GetStripeApiKey(isTestMode));
+                return service.Get(eventId);
             }
             catch
             {
@@ -33,7 +33,7 @@ namespace TheBall.Payments
             }
         }
 
-        public static async Task ExecuteMethod_ProcessStripeEventAsync(StripeEvent eventData)
+        public static async Task ExecuteMethod_ProcessStripeEventAsync(StripeEvent eventData, bool testMode)
         {
             if (eventData == null)
                 return;
@@ -44,29 +44,30 @@ namespace TheBall.Payments
                 if (eventType.StartsWith("customer.subscription."))
                 {
                     dynamic subscription = eventData.Data.Object;
-                    string customerID = subscription.customer;
+                    string customerId = subscription.customer;
+                    bool isTestMode = !eventData.LiveMode;
                     var output =
-                        GetAccountFromStripeCustomer.Execute(new GetAccountFromStripeCustomerParameters
+                        await GetAccountFromStripeCustomer.ExecuteAsync(new GetAccountFromStripeCustomerParameters
                         {
-                            StripeCustomerID = customerID
+                            StripeCustomerID = customerId,
+                            IsTestAccount = isTestMode
                         });
                     var account = output.ResultAccount;
                     if (account != null)
                     {
-                        string accountID = output.ResultAccount.ID;
-                        var accountRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRAccountRoot>(accountID);
+                        string accountId = output.ResultAccount.ID;
+                        var accountRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRAccountRoot>(accountId);
                         var currAccount = accountRoot.Account;
-                        string accountName;
                         string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
                         if (accountEmail == null)
                             accountEmail = "";
-                        accountName = accountEmail;
+                        var accountName = accountEmail;
                         accountName = accountName.Trim();
-                        InformationContext.Current.Account = new CoreAccountData(accountID,
+                        InformationContext.Current.Account = new CoreAccountData(accountId,
                             accountName, accountEmail);
                         await SyncEffectivePlanAccessesToAccount.ExecuteAsync(new SyncEffectivePlanAccessesToAccountParameters
                         {
-                            AccountID = accountID
+                            AccountID = accountId
                         });
                     }
                 }
@@ -76,6 +77,11 @@ namespace TheBall.Payments
                 ErrorSupport.ReportException(exception);
             }
 
+        }
+
+        public static bool GetTarget_IsTestMode(StripeWebhookData parametersJsonObject)
+        {
+            return !parametersJsonObject.livemode;
         }
     }
 }

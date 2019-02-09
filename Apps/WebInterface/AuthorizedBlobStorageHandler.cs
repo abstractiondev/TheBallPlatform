@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -47,6 +48,10 @@ namespace WebInterface
         /// see the following link: http://go.microsoft.com/?linkid=8101007
         /// </summary>
         #region IHttpHandler Members
+
+        private static ConcurrentDictionary<Tuple<string, string>, byte[]> InstanceEnvironmentClientConfigDict = new ConcurrentDictionary<Tuple<string, string>, byte[]>();
+        private static ConcurrentDictionary<string, Tuple<Regex, string>[]> EnvironmentPatternsDict =
+            new ConcurrentDictionary<string, Tuple<Regex, string>[]>();
 
         public override bool IsReusable
         {
@@ -156,7 +161,7 @@ namespace WebInterface
                 throw new InvalidOperationException("Device request must be either group or account request");
             string ivStr = authTokens[1];
             string trustID = authTokens[2];
-            DeviceMembership deviceMembership = ObjectStorage.RetrieveFromOwnerContent<DeviceMembership>(deviceOwner, trustID);
+            DeviceMembership deviceMembership = await ObjectStorage.RetrieveFromOwnerContentA<DeviceMembership>(deviceOwner, trustID);
             if(deviceMembership == null)
                 throw new InvalidDataException("Device membership not found");
             if(deviceMembership.IsValidatedAndActive == false)
@@ -288,10 +293,10 @@ namespace WebInterface
                 throw new NotSupportedException("Device request type not supported: " + request.RequestType);
         }
 
-        private static TBAccount getDeviceAccount(string accountEmail)
+        private static async Task<TBAccount> getDeviceAccountAsync(string accountEmail)
         {
             var emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
-            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+            TBREmailRoot emailRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBREmailRoot>(emailRootID);
             var ownerAccount = emailRoot.Account;
             return ownerAccount;
         }
@@ -321,8 +326,8 @@ namespace WebInterface
             GenericPrincipal principal = (GenericPrincipal)context.User;
             TheBallIdentity identity = (TheBallIdentity)principal.Identity;
             var accountID = identity.AccountID;
-            if (accountID == null)
-                accountID = await createMissingAccount(context, identity);
+            if (String.IsNullOrEmpty(accountID))
+                accountID = await createOrReconnectMissingAccount(context, identity);
             var accountOwner = VirtualOwner.FigureOwner("acc/" + accountID);
             InformationContext.AuthenticateContextOwner(accountOwner);
             var request = context.Request;
@@ -330,9 +335,10 @@ namespace WebInterface
             await HandleOwnerRequest(accountOwner, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
         }
 
-        private static async Task<string> createMissingAccount(HttpContext context, TheBallIdentity identity)
+        private static async Task<string> createOrReconnectMissingAccount(HttpContext context, TheBallIdentity identity)
         {
             string loginUrl = WebSupport.GetLoginUrl(context);
+            string emailAddress = identity.EmailAddress;
             var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(Login.GetLoginIDFromLoginURL(loginUrl));
             if (login == null)
             {
@@ -350,7 +356,6 @@ namespace WebInterface
                 }
                 else // Login info without account/login data
                 {
-                    string emailAddress = identity.EmailAddress;
                     var ensuredAccountResult = await EnsureAccount.ExecuteAsync(new EnsureAccountParameters
                     {
                         EmailAddress = emailAddress,
@@ -358,24 +363,27 @@ namespace WebInterface
                     });
                     var ensuredAccount = ensuredAccountResult.EnsuredAccount;
                     var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
-                    var accountID = ensuredAccount.ID;
+                    var ensuredAccountID = ensuredAccount.ID;
                     login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(loginID);
                     if (login == null)
                     {
                         var ensuredLoginResult = await EnsureLogin.ExecuteAsync(new EnsureLoginParameters
                         {
-                            AccountID = accountID,
+                            AccountID = ensuredAccountID,
                             LoginURL = loginUrl
                         });
                         login = ensuredLoginResult.EnsuredLogin;
-                        login.Account = accountID;
+                        login.Account = ensuredAccountID;
                         await login.StoreInformationAsync();
                     }
                 }
             }
             if (login == null)
                 throw new SecurityException("Unknown login: " + loginUrl);
+            var accountID = login.Account;
             var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(login.Account);
+            string base64ClientMetadata = account.GetClientMetadataAsBase64();
+            AuthenticationSupport.SetUserAuthentication(context, loginUrl, emailAddress, accountID, base64ClientMetadata);
             return account.ID;
         }
 
@@ -574,9 +582,23 @@ namespace WebInterface
             }
             operationName = operationType.FullName;
             var request = context.Request;
+            var patternItems = EnvironmentPatternsDict.GetOrAdd(InformationContext.Current.InstanceName, instanceName =>
+            {
+                var environments = InstanceConfig.Current.environments;
+                var result = environments.Select(expObj =>
+                {
+                    dynamic dyn = expObj;
+                    string urlPattern = dyn.urlPattern;
+                    var regex = new Regex(urlPattern, RegexOptions.Compiled);
+                    return new Tuple<Regex, string>(regex, dyn.name);
+                }).ToArray();
+                return result;
+            });
+            var pathAndQuery = request.Url.PathAndQuery;
+            var environmentName = patternItems.FirstOrDefault(item => item.Item1.IsMatch(pathAndQuery))?.Item2;
             var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
                 InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
-                String.Empty);
+                String.Empty, environmentName);
             string operationID = await OperationSupport.QueueHttpOperationAsync(operationData);
             //OperationSupport.ExecuteHttpOperation(operationData);
             //string operationID = "0";
@@ -730,13 +752,19 @@ namespace WebInterface
             bool isGetRequest = request.RequestType == "GET";
             var contentPath = request.GetOwnerContentPath();
             if (isGetRequest)
-                await HandleAboutGetRequest(context, request, request.Path);
+            {
+                if (request.Path.EndsWith("ClientConfig.json"))
+                    await HandleConfigGetRequest(context, request);
+                else
+                    await HandleAboutGetRequest(context, request, request.Path);
+            }
             else
             {
                 bool isUrlOperationRequest = contentPath.StartsWith("op/");
                 if (isUrlOperationRequest)
                 {
-                    await HandleOwnerOperationRequestWithUrlPath(SystemSupport.SystemOwner, context, contentPath);
+                    throw new NotSupportedException("Anonymous URL operations are not supported");
+                    //await HandleOwnerOperationRequestWithUrlPath(SystemSupport.SystemOwner, context, contentPath);
                 }
                 else
                 {
@@ -748,6 +776,30 @@ namespace WebInterface
                     }
                 }
             }
+        }
+
+        private async Task HandleConfigGetRequest(HttpContext context, HttpRequest request)
+        {
+            var environmentName = request.Params["env"];
+            var dictKey = new Tuple<string, string>(InformationContext.Current.InstanceName, environmentName);
+            byte[] configContent = InstanceEnvironmentClientConfigDict.GetOrAdd(dictKey, key =>
+            {
+                dynamic environmentConfig = InstanceConfig.Current.environments.FirstOrDefault(item =>
+                {
+                    dynamic dItem = item;
+                    return dItem.name == environmentName;
+                });
+                byte[] data = null;
+                var clientConfig = environmentConfig?.clientConfig;
+                if (clientConfig != null)
+                {
+                    data = JSONSupport.SerializeToJSONData(clientConfig);
+                }
+                return data;
+            });
+            if(configContent != null)
+                context.Response.BinaryWrite(configContent);
+            context.Response.ContentType = "application/json";
         }
 
         private async Task HandleAboutGetRequest(HttpContext context, HttpRequest request, string contentPath)
@@ -841,8 +893,16 @@ namespace WebInterface
                 if (scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound||
                     scEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.BadRequest)
                 {
-                    response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
-                    response.StatusCode = scEx.RequestInformation.HttpStatusCode;
+                    if (blob.Name.EndsWith(".json") &&
+                        scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
+                    {
+                        response.StatusCode = (int) HttpStatusCode.NoContent;
+                    }
+                    else
+                    {
+                        response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
+                        response.StatusCode = scEx.RequestInformation.HttpStatusCode;
+                    }
                 }
                 else
                 {

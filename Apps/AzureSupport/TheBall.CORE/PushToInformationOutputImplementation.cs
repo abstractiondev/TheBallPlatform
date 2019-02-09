@@ -4,15 +4,16 @@ using System.Linq;
 using System.Net;
 using System.Security;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace TheBall.CORE
 {
     public class PushToInformationOutputImplementation
     {
-        public static InformationOutput GetTarget_InformationOutput(IContainerOwner owner, string informationOutputId)
+        public static async Task<InformationOutput> GetTarget_InformationOutputAsync(IContainerOwner owner, string informationOutputId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<InformationOutput>(owner, informationOutputId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<InformationOutput>(owner, informationOutputId);
         }
 
         public static void ExecuteMethod_VerifyValidOutput(InformationOutput informationOutput)
@@ -44,20 +45,20 @@ namespace TheBall.CORE
             return informationOutput.LocalContentURL;
         }
 
-        public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(InformationOutput informationOutput)
+        public static async Task<AuthenticatedAsActiveDevice> GetTarget_AuthenticatedAsActiveDeviceAsync(InformationOutput informationOutput)
         {
             var authenticationID = informationOutput.AuthenticatedDeviceID;
             if (string.IsNullOrEmpty(authenticationID))
                 return null;
             var owner = VirtualOwner.FigureOwner(informationOutput);
-            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(owner, authenticationID);
+            return await ObjectStorage.RetrieveFromOwnerContentA<AuthenticatedAsActiveDevice>(owner, authenticationID);
         }
 
-        public static void ExecuteMethod_PushToInformationOutput(IContainerOwner owner, InformationOutput informationOutput, string destinationUrl, string destinationContentName, string localContentUrl, AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
+        public static async Task ExecuteMethod_PushToInformationOutputAsync(IContainerOwner owner, InformationOutput informationOutput, string destinationUrl, string destinationContentName, string localContentUrl, AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
         {
             if(authenticatedAsActiveDevice == null)
                 throw new NotSupportedException("Push not currently supported without authenticated as device connection");
-            DeviceSupport.PushContentToDevice(authenticatedAsActiveDevice, localContentUrl, destinationContentName);
+            await DeviceSupport.PushContentToDevice(authenticatedAsActiveDevice, localContentUrl, destinationContentName);
         }
 
         public static string GetTarget_DestinationContentName(string specificDestinationContentName, InformationOutput informationOutput)

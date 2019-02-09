@@ -11,23 +11,44 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{0B6E
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWebRole", "Apps\TheBallWebRole\TheBallWebRole.csproj", "{7DFB6305-BA41-40CE-9D8B-35CF1A0735E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{572A5924-71FC-4A54-BA2D-A50A3C122423} = {572A5924-71FC-4A54-BA2D-A50A3C122423}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServerManager", "Apps\WebServerManager\WebServerManager.csproj", "{977CBDDF-A160-4224-A15A-824074A6F915}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServerManagerTests", "WebServerManagerTests\WebServerManagerTests.csproj", "{576930B0-D8B7-407D-981D-792A86A26E42}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWorkerRole", "Apps\TheBallWorkerRole\TheBallWorkerRole.csproj", "{80766022-D1ED-46FA-B566-A61F494FA3F3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{572A5924-71FC-4A54-BA2D-A50A3C122423} = {572A5924-71FC-4A54-BA2D-A50A3C122423}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureRoleSupport", "Apps\AzureRoleSupport\AzureRoleSupport.csproj", "{0FA0909C-D860-466F-8BC6-FFE440EDDE5C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWebConsole", "Apps\TheBallWebConsole\TheBallWebConsole.csproj", "{4F8CA93C-D355-46A0-93EF-081FE56E2398}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "Apps\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "SharedProjects\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureRoleSupportTests", "Apps\AzureRoleSupportTests\AzureRoleSupportTests.csproj", "{FB0C8FA4-F2EC-4DEF-B1BE-F705397A3372}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitialUpdatingConsole", "Apps\InitialUpdatingConsole\InitialUpdatingConsole.csproj", "{572A5924-71FC-4A54-BA2D-A50A3C122423}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AppUpdater", "SharedProjects\AppUpdater\AppUpdater.shproj", "{1F05B685-1B9E-4413-AE6D-5301C7608654}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "InstanceSupport", "SharedProjects\InstanceSupport\InstanceSupport.shproj", "{3E4EA4B4-8B6D-4422-BC92-2D291E967AA0}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "HybridConfiguration", "Apps\AzureConfiguration\HybridConfiguration\HybridConfiguration.ccproj", "{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
-		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
+		SharedProjects\AppUpdater\AppUpdater.projitems*{1f05b685-1b9e-4413-ae6d-5301c7608654}*SharedItemsImports = 13
+		SharedProjects\InstanceSupport\InstanceSupport.projitems*{3e4ea4b4-8b6d-4422-bc92-2d291e967aa0}*SharedItemsImports = 13
+		SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
+		SharedProjects\AppUpdater\AppUpdater.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
+		SharedProjects\InstanceSupport\InstanceSupport.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
+		SharedProjects\AppUpdater\AppUpdater.projitems*{572a5924-71fc-4a54-ba2d-a50a3c122423}*SharedItemsImports = 4
+		SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +83,17 @@ Global
 		{4F8CA93C-D355-46A0-93EF-081FE56E2398}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F8CA93C-D355-46A0-93EF-081FE56E2398}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F8CA93C-D355-46A0-93EF-081FE56E2398}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB0C8FA4-F2EC-4DEF-B1BE-F705397A3372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB0C8FA4-F2EC-4DEF-B1BE-F705397A3372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB0C8FA4-F2EC-4DEF-B1BE-F705397A3372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB0C8FA4-F2EC-4DEF-B1BE-F705397A3372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{572A5924-71FC-4A54-BA2D-A50A3C122423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{572A5924-71FC-4A54-BA2D-A50A3C122423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{572A5924-71FC-4A54-BA2D-A50A3C122423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

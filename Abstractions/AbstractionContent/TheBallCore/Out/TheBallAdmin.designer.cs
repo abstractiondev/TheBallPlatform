@@ -2,14 +2,15 @@
 
 
 using DOM=TheBall.Admin;
+using System.Threading.Tasks;
 
 namespace TheBall.CORE {
 	public static partial class OwnerInitializer
 	{
-		private static void DOMAININIT_TheBall_Admin(IContainerOwner owner)
+		private static async Task DOMAININIT_TheBall_Admin(IContainerOwner owner)
 		{
-			DOM.DomainInformationSupport.EnsureMasterCollections(owner);
-			DOM.DomainInformationSupport.RefreshMasterCollections(owner);
+			await DOM.DomainInformationSupport.EnsureMasterCollections(owner);
+			await DOM.DomainInformationSupport.RefreshMasterCollections(owner);
 		}
 	}
 }
@@ -27,8 +28,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
 using TheBall.CORE;
-
-
+using TheBall.CORE.Storage;
 
 namespace INT { 
 					[DataContract]
@@ -49,11 +49,11 @@ namespace INT {
 
  } 		public static class DomainInformationSupport
 		{
-            public static void EnsureMasterCollections(IContainerOwner owner)
+            public static async Task EnsureMasterCollections(IContainerOwner owner)
             {
             }
 
-            public static void RefreshMasterCollections(IContainerOwner owner)
+            public static async Task RefreshMasterCollections(IContainerOwner owner)
             {
             }
 		}

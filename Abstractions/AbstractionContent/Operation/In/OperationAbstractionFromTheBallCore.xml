@@ -141,6 +141,56 @@
         <Target name="ResultingAccount" />
       </OperationReturnValues>
     </Operation>
+    <Operation name="SetAccountClientMetadata">
+      <OperationSpec>
+        <Description>Set account client side metadata</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MetadataInfo" dataType="INT.AccountMetadata" designDesc="Account metadata" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
+            <Parameter name="MetadataInfo" />
+          </TargetDefinition>
+          <TargetDefinition name="MetadataAsJSONString" dataType="string" designDesc="Metadata serialized as JSON string" state="implemented">
+            <Parameter name="MetadataInfo" />
+          </TargetDefinition>
+          <MethodExecute name="SetAccountClientMetadata" designDesc="Set metadata" state="implemented">
+            <Target name="Account" />
+            <Target name="MetadataAsJSONString" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store object" state="implemented">
+            <Target name="Account" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="SetAccountServerMetadata">
+      <OperationSpec>
+        <Description>Set account client side metadata</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MetadataInfo" dataType="INT.AccountMetadata" designDesc="Account metadata" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
+            <Parameter name="MetadataInfo" />
+          </TargetDefinition>
+          <TargetDefinition name="MetadataAsJSONString" dataType="string" designDesc="Metadata serialized as JSON string" state="implemented">
+            <Parameter name="MetadataInfo" />
+          </TargetDefinition>
+          <MethodExecute name="SetAccountServerMetadata" designDesc="Set metadata" state="implemented">
+            <Target name="Account" />
+            <Target name="MetadataAsJSONString" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store object" state="implemented">
+            <Target name="Account" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="CreateAccount">
       <OperationSpec>
         <Description>Create account with given login and email</Description>
@@ -493,13 +543,13 @@
             <Parameter name="Owner" />
             <Parameter name="LatestEntryTime" />
           </TargetDefinition>
-          <MethodExecute name="ObtainOwnerLevelLock" designDesc="Obtain owner level lock" state="implemented">
+          <MethodExecute name="ObtainOwnerLevelLock" asyncSupportMode="AsyncOnly" designDesc="Obtain owner level lock" state="implemented">
             <Parameter name="Owner" />
             <Target name="OwnerLockFileName" />
             <Target name="LockFileContent" />
             <ReturnValue name="ObtainedLockID" dataType="string" designDesc="If obtained succesfully, the locks ETag ID" state="implemented" />
           </MethodExecute>
-          <MethodExecute name="ReportSystemLockToMatchOwnerLock" designDesc="Store system lock to match owner lock" state="implemented">
+          <MethodExecute name="ReportSystemLockToMatchOwnerLock" asyncSupportMode="AsyncOnly" designDesc="Store system lock to match owner lock" state="implemented">
             <Target name="ObtainOwnerLevelLockOutput" />
             <Target name="SystemOwnerLockFileName" />
             <Target name="LockFileContent" />
@@ -556,8 +606,8 @@
             <Parameter name="ExecutingOperationName" />
             <Parameter name="InitialArguments" />
           </TargetDefinition>
-          <TargetDefinition name="OwnerProcessContainer" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
-          <MethodExecute name="AddProcessObjectToContainerAndStoreBoth" designDesc="Add process object to container and store both" state="implemented">
+          <TargetDefinition name="OwnerProcessContainer" asyncSupportMode="AsyncOnly" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
+          <MethodExecute name="AddProcessObjectToContainerAndStoreBoth" asyncSupportMode="AsyncOnly" designDesc="Add process object to container and store both" state="implemented">
             <Target name="OwnerProcessContainer" />
             <Target name="Process" />
           </MethodExecute>
@@ -579,11 +629,11 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Process" dataType="Process" designDesc="Process to delete" state="implemented">
+          <TargetDefinition name="Process" asyncSupportMode="AsyncOnly" dataType="Process" designDesc="Process to delete" state="implemented">
             <Parameter name="ProcessID" />
           </TargetDefinition>
-          <TargetDefinition name="OwnerProcessContainer" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
-          <MethodExecute name="ObtainLockRemoveFromContainerAndDeleteProcess" designDesc="Remove process from container and delete process. NOTE! Obtain lock before delete process proceeding. If process is null already, remove ID if it's available in container." state="implemented">
+          <TargetDefinition name="OwnerProcessContainer" asyncSupportMode="AsyncOnly" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
+          <MethodExecute name="ObtainLockRemoveFromContainerAndDeleteProcess" asyncSupportMode="AsyncOnly" designDesc="Remove process from container and delete process. NOTE! Obtain lock before delete process proceeding. If process is null already, remove ID if it's available in container." state="implemented">
             <Parameter name="ProcessID" />
             <Target name="Process" />
             <Target name="OwnerProcessContainer" />
@@ -600,13 +650,13 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Process" dataType="TheBall.CORE.Process" designDesc="Process object of execution" state="implemented">
+          <TargetDefinition name="Process" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Process" designDesc="Process object of execution" state="implemented">
             <Parameter name="ProcessID" />
           </TargetDefinition>
           <TargetDefinition name="ProcessLockLocation" dataType="string" designDesc="Process lock file location" state="implemented">
             <Target name="Process" />
           </TargetDefinition>
-          <MethodExecute name="ExecuteAndStoreProcessWithLock" designDesc="Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there." state="implemented">
+          <MethodExecute name="ExecuteAndStoreProcessWithLock" asyncSupportMode="AsyncOnly" designDesc="Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there." state="implemented">
             <Target name="ProcessLockLocation" />
             <Target name="Process" />
           </MethodExecute>
@@ -620,7 +670,7 @@
       <Parameters>
         <Parameter name="RootObject" dataType="IInformationObject" designDesc="Root object whose values (and tree) to set" state="implemented" />
         <Parameter name="HttpFormData" dataType="NameValueCollection" designDesc="HTTP POST data. Unprocessed and unfiltered." state="implemented" />
-        <Parameter name="HttpFileData" dataType="System.Web.HttpFileCollection" designDesc="Http File data" state="implemented" />
+        <Parameter name="HttpFileData" dataType="Microsoft.AspNetCore.Http.IFormFileCollection" designDesc="Http File data" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
@@ -661,7 +711,7 @@
             <Parameter name="RootObject" />
             <Target name="BinaryContentFiles" />
           </MethodExecute>
-          <MethodExecute name="StoreCompleteObject" designDesc="Stores the created object - with all set values." state="designApproved">
+          <MethodExecute name="StoreCompleteObject" asyncSupportMode="AsyncOnly" designDesc="Stores the created object - with all set values." state="designApproved">
             <Parameter name="RootObject" />
           </MethodExecute>
         </SequentialExecution>
@@ -676,7 +726,7 @@
         <Parameter name="ObjectDomainName" dataType="string" designDesc="Object domain" state="designApproved" />
         <Parameter name="ObjectName" dataType="string" designDesc="Object name" state="designApproved" />
         <Parameter name="HttpFormData" dataType="NameValueCollection" designDesc="Http POST data. Unprocessed and unfiltered." state="implemented" />
-        <Parameter name="HttpFileData" dataType="System.Web.HttpFileCollection" designDesc="Http File data" state="designApproved" />
+        <Parameter name="HttpFileData" dataType="Microsoft.AspNetCore.Http.IFormFileCollection" designDesc="Http File data" state="designApproved" />
       </Parameters>
       <Execution>
         <SequentialExecution>
@@ -691,7 +741,7 @@
           <MethodExecute name="StoreInitialObject" designDesc="Stores the object first time - with set values." state="designApproved">
             <Target name="CreatedObject" />
           </MethodExecute>
-          <OperationExecute name="SetObjectValues" targetOperationName="SetObjectTreeValues" designDesc="Set object values and let the set operation to store the object." state="implemented">
+          <OperationExecute name="SetObjectValues" asyncSupportMode="AsyncOnly" targetOperationName="SetObjectTreeValues" designDesc="Set object values and let the set operation to store the object." state="implemented">
             <Parameter name="HttpFormData" />
             <Parameter name="HttpFileData" />
             <Target name="CreatedObject" />
@@ -720,13 +770,13 @@
           <MethodExecute name="CatchInvalidDomains" designDesc="Catch and throw an exception for invalid domains (system reserved)" state="implemented">
             <Parameter name="ObjectDomainName" />
           </MethodExecute>
-          <TargetDefinition name="ObjectToDelete" dataType="IInformationObject" designDesc="Object that is created" state="designApproved">
+          <TargetDefinition name="ObjectToDelete" asyncSupportMode="AsyncOnly" dataType="IInformationObject" designDesc="Object that is created" state="designApproved">
             <Parameter name="Owner" />
             <Parameter name="ObjectDomainName" />
             <Parameter name="ObjectName" />
             <Parameter name="ObjectID" />
           </TargetDefinition>
-          <MethodExecute name="DeleteObject" designDesc="Delete the object." state="designApproved">
+          <MethodExecute name="DeleteObject" asyncSupportMode="AsyncOnly" designDesc="Delete the object." state="designApproved">
             <Target name="ObjectToDelete" />
           </MethodExecute>
         </SequentialExecution>
@@ -750,7 +800,7 @@
             <Parameter name="DeviceDescription" />
             <Parameter name="ActiveSymmetricAESKey" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="CreatedDeviceMembership" />
           </MethodExecute>
         </SequentialExecution>
@@ -773,7 +823,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="DeviceMembership" dataType="DeviceMembership" designDesc="Created device membership" state="implemented">
+          <TargetDefinition name="DeviceMembership" asyncSupportMode="AsyncOnly" dataType="DeviceMembership" designDesc="Created device membership" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="DeviceMembershipID" />
           </TargetDefinition>
@@ -781,7 +831,7 @@
             <Parameter name="IsValidAndActive" />
             <Target name="DeviceMembership" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="DeviceMembership" />
           </MethodExecute>
         </SequentialExecution>
@@ -799,11 +849,11 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="DeviceMembership" dataType="DeviceMembership" designDesc="Created device membership" state="implemented">
+          <TargetDefinition name="DeviceMembership" asyncSupportMode="AsyncOnly" dataType="DeviceMembership" designDesc="Created device membership" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="DeviceMembershipID" />
           </TargetDefinition>
-          <MethodExecute name="DeleteDeviceMembership" designDesc="Delete device membership record" state="implemented">
+          <MethodExecute name="DeleteDeviceMembership" asyncSupportMode="AsyncOnly" designDesc="Delete device membership record" state="implemented">
             <Target name="DeviceMembership" />
           </MethodExecute>
         </SequentialExecution>
@@ -832,7 +882,7 @@
             <Parameter name="DeviceMembership" />
             <Target name="OwnerEmailAddresses" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store email validation object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store email validation object" state="implemented">
             <Target name="EmailValidation" />
           </MethodExecute>
           <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the devices" state="implemented">
@@ -871,7 +921,7 @@
             <Target name="NegotiationURL" />
             <Target name="ConnectionURL" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
           </MethodExecute>
         </SequentialExecution>
@@ -893,7 +943,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="AuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="Created device membership" state="implemented">
+          <TargetDefinition name="AuthenticatedAsActiveDevice" asyncSupportMode="AsyncOnly" dataType="AuthenticatedAsActiveDevice" designDesc="Created device membership" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="AuthenticatedAsActiveDeviceID" />
           </TargetDefinition>
@@ -914,7 +964,7 @@
             <Target name="SharedSecretData" />
             <Target name="SharedSecretPayload" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
           </MethodExecute>
         </SequentialExecution>
@@ -932,14 +982,14 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="AuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="Created device membership" state="implemented">
+          <TargetDefinition name="AuthenticatedAsActiveDevice" asyncSupportMode="AsyncOnly" dataType="AuthenticatedAsActiveDevice" designDesc="Created device membership" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="AuthenticatedAsActiveDeviceID" />
           </TargetDefinition>
           <MethodExecute name="CallDeleteDeviceOnRemoteSide" designDesc="Call delete device on remote side of device connection" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
           </MethodExecute>
-          <MethodExecute name="DeleteAuthenticatedAsActiveDevice" designDesc="Delete device membership record" state="implemented">
+          <MethodExecute name="DeleteAuthenticatedAsActiveDevice" asyncSupportMode="AsyncOnly" designDesc="Delete device membership record" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
           </MethodExecute>
         </SequentialExecution>
@@ -969,7 +1019,7 @@
             <Parameter name="LocalContentURL" />
             <Parameter name="AuthenticatedDeviceID" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="CreatedInformationOutput" />
           </MethodExecute>
         </SequentialExecution>
@@ -992,7 +1042,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationOutput" dataType="InformationOutput" designDesc="Information output of which to set the status" state="implemented">
+          <TargetDefinition name="InformationOutput" asyncSupportMode="AsyncOnly" dataType="InformationOutput" designDesc="Information output of which to set the status" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationOutputID" />
           </TargetDefinition>
@@ -1000,7 +1050,7 @@
             <Parameter name="IsValidAndActive" />
             <Target name="InformationOutput" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store modified object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store modified object" state="implemented">
             <Target name="InformationOutput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1018,11 +1068,11 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationOutput" dataType="InformationOutput" designDesc="Information output to delete" state="implemented">
+          <TargetDefinition name="InformationOutput" asyncSupportMode="AsyncOnly" dataType="InformationOutput" designDesc="Information output to delete" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationOutputID" />
           </TargetDefinition>
-          <MethodExecute name="DeleteInformationOutput" designDesc="Delete information output record" state="implemented">
+          <MethodExecute name="DeleteInformationOutput" asyncSupportMode="AsyncOnly" designDesc="Delete information output record" state="implemented">
             <Target name="InformationOutput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1076,7 +1126,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationOutput" dataType="InformationOutput" designDesc="Information output to push the data to" state="implemented">
+          <TargetDefinition name="InformationOutput" asyncSupportMode="AsyncOnly" dataType="InformationOutput" designDesc="Information output to push the data to" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationOutputID" />
           </TargetDefinition>
@@ -1094,10 +1144,10 @@
             <Parameter name="LocalContentName" />
             <Target name="InformationOutput" />
           </TargetDefinition>
-          <TargetDefinition name="AuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
+          <TargetDefinition name="AuthenticatedAsActiveDevice" asyncSupportMode="AsyncOnly" dataType="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
             <Target name="InformationOutput" />
           </TargetDefinition>
-          <MethodExecute name="PushToInformationOutput" designDesc="Push information to output" state="implemented">
+          <MethodExecute name="PushToInformationOutput" asyncSupportMode="AsyncOnly" designDesc="Push information to output" state="implemented">
             <Parameter name="Owner" />
             <Target name="InformationOutput" />
             <Target name="DestinationURL" />
@@ -1130,7 +1180,7 @@
             <Parameter name="LocalContentName" />
             <Parameter name="AuthenticatedDeviceID" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="CreatedInformationInput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1153,7 +1203,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationInput" dataType="InformationInput" designDesc="Information input of which to set the status" state="implemented">
+          <TargetDefinition name="InformationInput" asyncSupportMode="AsyncOnly" dataType="InformationInput" designDesc="Information input of which to set the status" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationInputID" />
           </TargetDefinition>
@@ -1161,7 +1211,7 @@
             <Parameter name="IsValidAndActive" />
             <Target name="InformationInput" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="InformationInput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1179,11 +1229,11 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationInput" dataType="InformationInput" designDesc="Information input to delete" state="implemented">
+          <TargetDefinition name="InformationInput" asyncSupportMode="AsyncOnly" dataType="InformationInput" designDesc="Information input to delete" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationInputID" />
           </TargetDefinition>
-          <MethodExecute name="DeleteInformationInput" designDesc="Delete information input record" state="implemented">
+          <MethodExecute name="DeleteInformationInput" asyncSupportMode="AsyncOnly" designDesc="Delete information input record" state="implemented">
             <Target name="InformationInput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1212,10 +1262,10 @@
             <Parameter name="InformationInput" />
             <Target name="OwnerEmailAddresses" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store email validation object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store email validation object" state="implemented">
             <Target name="EmailValidation" />
           </MethodExecute>
-          <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the devices" state="implemented">
+          <MethodExecute name="SendEmailConfirmation" asyncSupportMode="AsyncOnly" designDesc="Create and send email confirmation for joining the devices" state="implemented">
             <Parameter name="InformationInput" />
             <Target name="EmailValidation" />
             <Target name="OwnerEmailAddresses" />
@@ -1274,7 +1324,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationInput" dataType="InformationInput" designDesc="Information input to fetch the data for" state="implemented">
+          <TargetDefinition name="InformationInput" asyncSupportMode="AsyncOnly" dataType="InformationInput" designDesc="Information input to fetch the data for" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationInputID" />
           </TargetDefinition>
@@ -1287,10 +1337,10 @@
           <TargetDefinition name="InputFetchName" dataType="string" designDesc="Name of item to store the fetched input - derived from local content name." state="implemented">
             <Target name="InformationInput" />
           </TargetDefinition>
-          <TargetDefinition name="AuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
+          <TargetDefinition name="AuthenticatedAsActiveDevice" asyncSupportMode="AsyncOnly" dataType="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
             <Target name="InformationInput" />
           </TargetDefinition>
-          <MethodExecute name="FetchInputToStorage" designDesc="Fetch input to storage" state="implemented">
+          <MethodExecute name="FetchInputToStorage" asyncSupportMode="AsyncOnly" designDesc="Fetch input to storage" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="QueryParameters" />
             <Target name="InformationInput" />
@@ -1314,7 +1364,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationInput" dataType="InformationInput" designDesc="Information input to fetch the data for" state="implemented">
+          <TargetDefinition name="InformationInput" asyncSupportMode="AsyncOnly" dataType="InformationInput" designDesc="Information input to fetch the data for" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationInputID" />
           </TargetDefinition>
@@ -1331,10 +1381,10 @@
             <ReturnValue name="ProcessingResultsToStore" dataType="IInformationObject[]" designDesc="Information objects to store as result of processing" state="implemented" />
             <ReturnValue name="ProcessingResultsToDelete" dataType="IInformationObject[]" designDesc="Information objects to delete as result of processing" state="implemented" />
           </MethodExecute>
-          <MethodExecute name="StoreObjects" designDesc="Store processed objects" state="implemented">
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store processed objects" state="implemented">
             <Target name="ProcessInputFromStorageOutput.ProcessingResultsToStore" />
           </MethodExecute>
-          <MethodExecute name="DeleteObjects" designDesc="Delete obsolete processed objects" state="implemented">
+          <MethodExecute name="DeleteObjects" asyncSupportMode="AsyncOnly" designDesc="Delete obsolete processed objects" state="implemented">
             <Target name="ProcessInputFromStorageOutput.ProcessingResultsToDelete" />
           </MethodExecute>
         </SequentialExecution>
@@ -1353,7 +1403,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="ValidateUnexistingEmail" designDesc="Validate that the email to add is not already registered" state="implemented">
+          <MethodExecute name="ValidateUnexistingEmail" asyncSupportMode="AsyncOnly" designDesc="Validate that the email to add is not already registered" state="implemented">
             <Parameter name="EmailAddress" />
           </MethodExecute>
           <TargetDefinition name="EmailValidation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation object prepared ready to stored and to be sent" state="implemented">
@@ -1361,7 +1411,7 @@
             <Parameter name="EmailAddress" />
             <Parameter name="RedirectUrlAfterValidation" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store processed objects" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store processed objects" state="implemented">
             <Target name="EmailValidation" />
           </MethodExecute>
           <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for validating the email" state="implemented">
@@ -1412,33 +1462,6 @@
         </SequentialExecution>
       </Execution>
     </Operation>
-    <Operation name="UnregisterEmailAddress">
-      <OperationSpec>
-        <Description>
-              Begins account email address registration. Registration needs to be confimed by clicking the email validation link that is sent to email to be registered.
-            </Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="AccountID" dataType="string" designDesc="AccountID whose email is to be registered" state="implemented" />
-        <Parameter name="EmailAddress" dataType="string" designDesc="Email address to add to account" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <TargetDefinition name="AccountContainerBeforeGroupRemoval" dataType="AaltoGlobalImpact.OIP.AccountContainer" designDesc="AccountContainer of account" state="designApproved">
-            <Parameter name="AccountID" />
-          </TargetDefinition>
-          <TargetDefinition name="EmailAddressID" dataType="string" designDesc="Email Address ID within AccountContainer" state="designApproved">
-            <Parameter name="EmailAddress" />
-            <Target name="AccountContainerBeforeGroupRemoval" />
-          </TargetDefinition>
-          <MethodExecute name="ExecuteUnlinkEmailAddress" designDesc="Perform unlink" state="designApproved">
-            <Parameter name="AccountID" />
-            <Target name="AccountContainerBeforeGroupRemoval" />
-            <Target name="EmailAddressID" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-    </Operation>
     <Operation name="InitiateImportedGroupWithUnchangedID">
       <OperationSpec>
         <Description>Initiate imported group. NOTE! The ID needs to remain the same. Group contains internal structures.</Description>
@@ -1453,7 +1476,7 @@
           <TargetDefinition name="GroupAsOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Container owner" state="implemented">
             <Parameter name="GroupID" />
           </TargetDefinition>
-          <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container" state="implemented">
+          <TargetDefinition name="GroupContainer" asyncSupportMode="AsyncOnly" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container" state="implemented">
             <Target name="GroupAsOwner" />
           </TargetDefinition>
           <MethodExecute name="ValidateGroupContainerID" designDesc="Validate group container ID, so that it matches the referencing ID" state="implemented">
@@ -1463,7 +1486,7 @@
           <TargetDefinition name="GroupRoot" dataType="AaltoGlobalImpact.OIP.TBRGroupRoot" designDesc="Group root item to match the group" state="implemented">
             <Parameter name="GroupID" />
           </TargetDefinition>
-          <MethodExecute name="StoreObjects" designDesc="Store objects" state="implemented">
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store objects" state="implemented">
             <Target name="GroupRoot" />
             <Target name="GroupContainer" />
           </MethodExecute>
@@ -1563,7 +1586,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="SetRedirection" designDesc="Sets the redirection file for owner." state="implemented">
+          <MethodExecute name="SetRedirection" asyncSupportMode="AsyncOnly" designDesc="Sets the redirection file for owner." state="implemented">
             <Parameter name="Owner" />
             <Parameter name="RedirectPath" />
           </MethodExecute>
@@ -1579,7 +1602,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="ExecuteBatchProcessor" designDesc="Execute batch processor with given batch size until there are less than batch size left" state="implemented">
+          <MethodExecute name="ExecuteBatchProcessor" asyncSupportMode="AsyncOnly" designDesc="Execute batch processor with given batch size until there are less than batch size left" state="implemented">
             <Parameter name="ProcessBatchSize" />
           </MethodExecute>
         </SequentialExecution>
@@ -1595,17 +1618,17 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="BatchToProcess" dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" designDesc="Retrieve block blob list to process - and acquire lock if possible. Null if doesn't match requirement or fail to acquire lock" state="implemented">
+          <TargetDefinition name="BatchToProcess" asyncSupportMode="AsyncOnly" dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" designDesc="Retrieve block blob list to process - and acquire lock if possible. Null if doesn't match requirement or fail to acquire lock" state="implemented">
             <Parameter name="ProcessBatchSize" />
             <Parameter name="ProcessIfLess" />
           </TargetDefinition>
-          <MethodExecute name="ProcessBatch" designDesc="Process batch if not null." state="implemented">
+          <MethodExecute name="ProcessBatch" asyncSupportMode="AsyncOnly" designDesc="Process batch if not null." state="implemented">
             <Target name="BatchToProcess" />
           </MethodExecute>
-          <MethodExecute name="DeleteProcessedItems" designDesc="Delete processed blobs" state="implemented">
+          <MethodExecute name="DeleteProcessedItems" asyncSupportMode="AsyncOnly" designDesc="Delete processed blobs" state="implemented">
             <Target name="BatchToProcess" />
           </MethodExecute>
-          <MethodExecute name="ReleaseLock" designDesc="Release lock if acquired" state="implemented">
+          <MethodExecute name="ReleaseLock" asyncSupportMode="AsyncOnly" designDesc="Release lock if acquired" state="implemented">
             <Target name="BatchToProcess" />
           </MethodExecute>
         </SequentialExecution>
@@ -1627,11 +1650,11 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="SourceItems" dataType="UsageMonitorItem[]" designDesc="SourceItems from day range" state="implemented">
+          <TargetDefinition name="SourceItems" asyncSupportMode="AsyncOnly" dataType="UsageMonitorItem[]" designDesc="SourceItems from day range" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="AmountOfDays" />
           </TargetDefinition>
-          <MethodExecute name="CreateUsageMonitoringSummaries" designDesc="Create usage monitoring summaries for 5 minute, 1 hour and 1 day intervals" state="implemented">
+          <MethodExecute name="CreateUsageMonitoringSummaries" asyncSupportMode="AsyncOnly" designDesc="Create usage monitoring summaries for 5 minute, 1 hour and 1 day intervals" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="AmountOfDays" />
             <Target name="SourceItems" />
@@ -1704,13 +1727,13 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container of the group" state="implemented">
+          <TargetDefinition name="GroupContainer" asyncSupportMode="AsyncOnly" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container of the group" state="implemented">
             <Parameter name="Owner" />
           </TargetDefinition>
           <TargetDefinition name="TargetContainerName" dataType="string" designDesc="Target container name" state="implemented">
             <Target name="GroupContainer" />
           </TargetDefinition>
-          <TargetDefinition name="TargetContainerOwnerString" dataType="string" designDesc="GroupID of targetcontainer owner" state="implemented">
+          <TargetDefinition name="TargetContainerOwnerString" asyncSupportMode="AsyncOnly" dataType="string" designDesc="GroupID of targetcontainer owner" state="implemented">
             <Target name="TargetContainerName" />
           </TargetDefinition>
           <MethodExecute name="ValidatePublishParameters" designDesc="Validate publish pre-requisites and parameters" state="implemented">
@@ -1738,7 +1761,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container to store the custom UI info" state="implemented">
+          <TargetDefinition name="GroupContainer" asyncSupportMode="AsyncOnly" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container to store the custom UI info" state="implemented">
             <Parameter name="Owner" />
           </TargetDefinition>
           <MethodExecute name="ValidateCustomUIName" designDesc="Validate CustomUI name to be valid. Allow only alphanumeric characters." state="implemented">
@@ -1752,11 +1775,11 @@
             <Parameter name="CustomUIName" />
             <Target name="GroupContainer" />
           </MethodExecute>
-          <MethodExecute name="CopyUIContentsFromZipArchive" designDesc="Copy UI contents from zip archive. Replace existing and delete old files." state="implemented">
+          <MethodExecute name="CopyUIContentsFromZipArchive" asyncSupportMode="AsyncOnly" designDesc="Copy UI contents from zip archive. Replace existing and delete old files." state="implemented">
             <Parameter name="ZipArchiveStream" />
             <Target name="CustomUIFolder" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store modified object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store modified object" state="implemented">
             <Target name="GroupContainer" />
           </MethodExecute>
         </SequentialExecution>
@@ -1774,7 +1797,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container to store the custom UI info" state="implemented">
+          <TargetDefinition name="GroupContainer" asyncSupportMode="AsyncOnly" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container to store the custom UI info" state="implemented">
             <Parameter name="Owner" />
           </TargetDefinition>
           <TargetDefinition name="CustomUIFolder" dataType="string" designDesc="CustomUI folder prefix with trailing /" state="implemented">
@@ -1804,7 +1827,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="IncludedFolders" dataType="string[]" designDesc="Package included folders. Filtered by SystemSupport namespace restrictions." state="implemented">
+          <TargetDefinition name="IncludedFolders" asyncSupportMode="AsyncOnly" dataType="string[]" designDesc="Package included folders. Filtered by SystemSupport namespace restrictions." state="implemented">
             <Parameter name="Owner" />
             <Parameter name="PackageRootFolder" />
           </TargetDefinition>
@@ -1888,12 +1911,12 @@
           <TargetDefinition name="GroupOwners" dataType="IContainerOwner[]" designDesc="Account's groups" state="implemented">
             <Target name="AccountOwner" />
           </TargetDefinition>
-          <TargetDefinition name="SyncResponse" dataType="TheBall.Support.VirtualStorage.ContentSyncResponse" designDesc="Sync response based on request and data" state="implemented">
+          <TargetDefinition name="SyncResponse" asyncSupportMode="AsyncOnly" dataType="TheBall.Support.VirtualStorage.ContentSyncResponse" designDesc="Sync response based on request and data" state="implemented">
             <Target name="SyncRequest" />
             <Target name="AccountOwner" />
             <Target name="GroupOwners" />
           </TargetDefinition>
-          <MethodExecute name="WriteResponseToStream" designDesc="Write full response to stream" state="implemented">
+          <MethodExecute name="WriteResponseToStream" asyncSupportMode="AsyncOnly" designDesc="Write full response to stream" state="implemented">
             <Parameter name="OutputStream" />
             <Target name="SyncResponse" />
           </MethodExecute>
@@ -1914,7 +1937,7 @@
             <Parameter name="InputStream" />
           </TargetDefinition>
           <TargetDefinition name="CurrentDevice" dataType="DeviceMembership" designDesc="Current executing device (obtained through InformationContext.CurrentDevice" state="implemented" />
-          <MethodExecute name="PerformOperation" designDesc="Perform specific operation based on Device Operation Data" state="implemented">
+          <MethodExecute name="PerformOperation" asyncSupportMode="AsyncOnly" designDesc="Perform specific operation based on Device Operation Data" state="implemented">
             <Target name="CurrentDevice" />
             <Target name="DeviceOperationData" />
           </MethodExecute>
@@ -1934,22 +1957,22 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="AuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="AuthenticatedAsActiveDevice object" state="implemented">
+          <TargetDefinition name="AuthenticatedAsActiveDevice" asyncSupportMode="AsyncOnly" dataType="AuthenticatedAsActiveDevice" designDesc="AuthenticatedAsActiveDevice object" state="implemented">
             <Parameter name="AuthenticatedAsActiveDeviceID" />
           </TargetDefinition>
           <TargetDefinition name="ContentRootLocation" dataType="string" designDesc="Content root location" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
           </TargetDefinition>
-          <TargetDefinition name="ThisSideContentMD5List" dataType="INT.ContentItemLocationWithMD5[]" designDesc="This side content MD5 list" state="implemented">
+          <TargetDefinition name="ThisSideContentMD5List" asyncSupportMode="AsyncOnly" dataType="INT.ContentItemLocationWithMD5[]" designDesc="This side content MD5 list" state="implemented">
             <Target name="ContentRootLocation" />
           </TargetDefinition>
-          <MethodExecute name="CallPrepareTargetAndListItemsToCopy" designDesc="Call cleanup and retrieve list to copy from target device" state="implemented">
+          <MethodExecute name="CallPrepareTargetAndListItemsToCopy" asyncSupportMode="AsyncOnly" designDesc="Call cleanup and retrieve list to copy from target device" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
             <Target name="ThisSideContentMD5List" />
             <ReturnValue name="ItemsToCopy" dataType="INT.ContentItemLocationWithMD5[]" designDesc="Items to copy to target" state="implemented" />
             <ReturnValue name="ItemsDeleted" dataType="INT.ContentItemLocationWithMD5[]" designDesc="Items deleted on target" state="implemented" />
           </MethodExecute>
-          <MethodExecute name="CopyItemsToCopyToTargetDevice" designDesc="Copy items to copy to target device" state="implemented">
+          <MethodExecute name="CopyItemsToCopyToTargetDevice" asyncSupportMode="AsyncOnly" designDesc="Copy items to copy to target device" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
             <Target name="CallPrepareTargetAndListItemsToCopyOutput" />
           </MethodExecute>
@@ -1960,161 +1983,6 @@
         <ReturnValue name="DeletedItems" dataType="INT.ContentItemLocationWithMD5[]" designDesc="Deleted items" state="implemented" />
         <Target name="CallPrepareTargetAndListItemsToCopyOutput" />
       </OperationReturnValues>
-    </Operation>
-    <Operation name="MergeAccountsDestructively">
-      <OperationSpec>
-        <Description>
-            Merges two accounts into one and destroys the leftover. Parameters state these as "PrimaryAccountToStay" and "AccountToMergeAndDestroy"
-          </Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="PrimaryAccountToStayID" dataType="string" designDesc="Primary account that is going to stay after the merge" state="implemented" />
-        <Parameter name="AccountToBeMergedAndDestroyedID" dataType="string" designDesc="Account to be merged and destroyed" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <TargetDefinition name="PrimaryAccountToStay" dataType="AaltoGlobalImpact.OIP.TBRAccountRoot" designDesc="Primary account root" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-          </TargetDefinition>
-          <TargetDefinition name="AccountToBeMerged" dataType="AaltoGlobalImpact.OIP.TBRAccountRoot" designDesc="Account to be merged" state="implemented">
-            <Parameter name="AccountToBeMergedAndDestroyedID" />
-          </TargetDefinition>
-          <TargetDefinition name="GroupAccessToBeMerged" dataType="AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[]" designDesc="Group access from account, that's being merged - not initiator roles" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </TargetDefinition>
-          <TargetDefinition name="GroupInitiatorAccessToBeTransfered" dataType="AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[]" designDesc="Group access from account, that's being merged - not initiator roles" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </TargetDefinition>
-          <TargetDefinition name="EmailAddressesToBeMerged" dataType="AaltoGlobalImpact.OIP.TBEmail[]" designDesc="Email addresses from account to be merged" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </TargetDefinition>
-          <TargetDefinition name="LoginAccessToBeMerged" dataType="AaltoGlobalImpact.OIP.TBLoginInfo[]" designDesc="Login information from access to be merged" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </TargetDefinition>
-          <MethodExecute name="ValidateAccountToBeMerged" designDesc="Validate account to be merged not to contain groups or emails (for the time being)" state="implemented">
-            <Target name="GroupAccessToBeMerged" />
-            <Target name="GroupInitiatorAccessToBeTransfered" />
-            <Target name="EmailAddressesToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="RemoveAccountToBeMergedFromAllGroups" designDesc="Remove account to be merged from all of its groups" state="implemented">
-            <Target name="AccountToBeMerged" />
-            <Target name="GroupAccessToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="RemoveEmailAddressesFromAccountToBeMerged" designDesc="Remove all email addresses from account to be merged" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="RemoveLoginsFromAccountToBeMerged" designDesc="Remove all login accounts from account to be merged" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="AddLoginsToPrimaryAccount" designDesc="Add logins to new primary account" state="implemented">
-            <Target name="PrimaryAccountToStay" />
-            <Target name="LoginAccessToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="AddEmailAddressesToPrimaryAccount" designDesc="Add email addresses to new primary account" state="implemented">
-            <Target name="PrimaryAccountToStay" />
-            <Target name="EmailAddressesToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="StorePrimaryAccount" designDesc="Store primary account object" state="implemented">
-            <Target name="PrimaryAccountToStay" />
-          </MethodExecute>
-          <MethodExecute name="CallRefreshAccountRootToReferences" designDesc="Fix account root of primary account" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-          </MethodExecute>
-          <MethodExecute name="AddPrimaryAccountToAllGroupsWhereItsMissing" designDesc="All primary account to all groups where its missing" state="implemented">
-            <Target name="PrimaryAccountToStay" />
-            <Target name="GroupAccessToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="TransferGroupInitiatorRights" designDesc="Transfer group initiator rights" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-            <Parameter name="AccountToBeMergedAndDestroyedID" />
-            <Target name="GroupInitiatorAccessToBeTransfered" />
-          </MethodExecute>
-          <MethodExecute name="UpdateAccountGroupLogins" designDesc="Refresh account group relations" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-    </Operation>
-    <Operation name="TransferGroupInitiator">
-      <OperationSpec>
-        <Description>Change group initiator from one account to another</Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="GroupID" dataType="string" designDesc="Group ID whose initiatorship is to be transfered" state="implemented" />
-        <Parameter name="OldInitiatorAccountID" dataType="string" designDesc="Old initiator account ID" state="implemented" />
-        <Parameter name="NewInitiatorAccountID" dataType="string" designDesc="New initiator account ID" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <MethodExecute name="AddNewInitiatorToGroup" designDesc="Add new initiator to group" state="implemented">
-            <Parameter name="GroupID" />
-            <Parameter name="NewInitiatorAccountID" />
-          </MethodExecute>
-          <MethodExecute name="RemoveOldInitiatorFromGroup" designDesc="Remove old initiator from group" state="implemented">
-            <Parameter name="GroupID" />
-            <Parameter name="OldInitiatorAccountID" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-    </Operation>
-    <Operation name="InitiateAccountMergeFromEmail">
-      <OperationSpec>
-        <Description>Initiate account merger from email re-registration.</Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="EmailAddress" dataType="string" designDesc="Email address that the merge is based on" state="implemented" />
-        <Parameter name="CurrentAccountID" dataType="string" designDesc="Current account ID that is submitting the email" state="implemented" />
-        <Parameter name="RedirectUrlAfterValidation" dataType="string" designDesc="Redirect url after email validation" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <MethodExecute name="ValidateExistingEmail" designDesc="Validate that the email to add is already registered" state="implemented">
-            <Parameter name="EmailAddress" />
-          </MethodExecute>
-          <TargetDefinition name="AccountToMergeToID" dataType="string" designDesc="Original account to be merged to" state="implemented">
-            <Parameter name="EmailAddress" />
-          </TargetDefinition>
-          <MethodExecute name="ValidateAccountNotTheSame" designDesc="Validate that the account initiating the merge is not the same as the target" state="implemented">
-            <Parameter name="CurrentAccountID" />
-            <Target name="AccountToMergeToID" />
-          </MethodExecute>
-          <TargetDefinition name="MergeAccountEmailConfirmation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Initiate merge account if current account ID and account to merge to ID are different" state="implemented">
-            <Parameter name="CurrentAccountID" />
-            <Parameter name="EmailAddress" />
-            <Parameter name="RedirectUrlAfterValidation" />
-            <Target name="AccountToMergeToID" />
-          </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
-            <Target name="MergeAccountEmailConfirmation" />
-          </MethodExecute>
-          <MethodExecute name="SendConfirmationEmail" designDesc="Send confirmation email" state="implemented">
-            <Target name="MergeAccountEmailConfirmation" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-    </Operation>
-    <Operation name="ConfirmAccountMergeFromEmail">
-      <OperationSpec>
-        <Description>Confirms account merge from email confirmation</Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="CurrentAccountID" dataType="string" designDesc="Current account ID" state="implemented" />
-        <Parameter name="EmailConfirmation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation object" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <TargetDefinition name="MergeAccountConfirmation" dataType="AaltoGlobalImpact.OIP.TBMergeAccountConfirmation" designDesc="Merge account confirmation" state="implemented">
-            <Parameter name="EmailConfirmation" />
-          </TargetDefinition>
-          <MethodExecute name="ValidateCurrentAccountAsMergingActor" designDesc="Validate that current account ID is indeed the account to be merged owner" state="implemented">
-            <Parameter name="CurrentAccountID" />
-            <Target name="MergeAccountConfirmation" />
-          </MethodExecute>
-          <MethodExecute name="PerformAccountMerge" designDesc="Perform account merge with source and target IDs" state="implemented">
-            <Target name="MergeAccountConfirmation" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
     </Operation>
     <Operation name="GetOwnerSemanticDomains">
       <OperationSpec>

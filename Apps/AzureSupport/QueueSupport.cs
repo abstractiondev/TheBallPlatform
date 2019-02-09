@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
@@ -25,7 +26,7 @@ namespace TheBall
         public static CloudQueue CurrStatisticsQueue { get; private set; }
         public static ConcurrentDictionary<string, CloudQueue> Queues = new ConcurrentDictionary<string, CloudQueue>();
 
-        public static void InitializeAfterStorage(bool debugMode = false)
+        public static async Task InitializeAfterStorage(bool debugMode = false)
         {
             CurrQueueClient = StorageSupport.CurrStorageAccount.CreateCloudQueueClient();
 
@@ -33,35 +34,35 @@ namespace TheBall
             string dbgModePrefix = debugMode ? "dbg" : "";
             CloudQueue queue = CurrQueueClient.GetQueueReference(dbgModePrefix + DefaultQueueName);
             // Create the queue if it doesn't already exist
-            queue.CreateIfNotExists();
+            await queue.CreateIfNotExistsAsync();
             CurrDefaultQueue = queue;
 
             queue = CurrQueueClient.GetQueueReference(ErrorQueueName);
             // Create the queue if it doesn't already exist
-            queue.CreateIfNotExists();
+            await queue.CreateIfNotExistsAsync();
             CurrErrorQueue = queue;
 
             queue = CurrQueueClient.GetQueueReference(dbgModePrefix + StatisticQueueName);
             // Create the queue if it doesn't already exist
-            queue.CreateIfNotExists();
+            await queue.CreateIfNotExistsAsync();
             CurrStatisticsQueue = queue;
         }
 
-        public static void ReportStatistics(string message, TimeSpan? toLive = null)
+        public static async Task ReportStatistics(string message, TimeSpan? toLive = null)
         {
             if(toLive.HasValue == false)
                 toLive = TimeSpan.FromDays(7);
-            CurrStatisticsQueue.AddMessage(new CloudQueueMessage(message), toLive.Value);
+            await CurrStatisticsQueue.AddMessageAsync(new CloudQueueMessage(message), toLive.Value, null, null, null);
         }
 
-        public static CloudQueue RegisterQueue(string queueName, bool createIfNotExist = true)
+        public static async Task<CloudQueue> RegisterQueue(string queueName, bool createIfNotExist = true)
         {
             var queue = CurrQueueClient.GetQueueReference(queueName);
             bool addResult = Queues.TryAdd(queueName, queue);
             if(addResult == false)
                 throw new InvalidOperationException("Cannot add already existing queue: " + queueName);
             if (createIfNotExist)
-                queue.CreateIfNotExists();
+                await queue.CreateIfNotExistsAsync();
             return queue;
         }
 
@@ -83,28 +84,28 @@ namespace TheBall
             return queue;
         }
 
-        public static void PutToErrorQueue(string error)
+        public static async Task PutToErrorQueue(string error)
         {
             CloudQueueMessage message = new CloudQueueMessage(error);
-            CurrErrorQueue.AddMessage(message);
+            await CurrErrorQueue.AddMessageAsync(message);
         }
 
-        public static void WriteObjectAsJSONToQueue<T>(string queueName, T objectToWrite)
+        public static async Task WriteObjectAsJSONToQueue<T>(string queueName, T objectToWrite)
         {
             var queue = GetQueue(queueName);
             var jsonString = JSONSupport.SerializeToJSONString(objectToWrite);
             CloudQueueMessage message = new CloudQueueMessage(jsonString);
-            queue.AddMessage(message);
+            await queue.AddMessageAsync(message);
         }
 
 
 
-        public static void GetJSONObjectsFromQueue<T>(string queueName, out MessageObject<T>[] messageObjects, int maxMessagesToRetrieve)
+        public static async Task<MessageObject<T>[]> GetJSONObjectsFromQueue<T>(string queueName, int maxMessagesToRetrieve)
         {
             if (maxMessagesToRetrieve > 32)
                 throw new ArgumentException("Max messages to retrieve is 32", "maxMessagesToRetrieve");
             var queue = GetQueue(queueName);
-            var messages = queue.GetMessages(maxMessagesToRetrieve);
+            var messages = await queue.GetMessagesAsync(maxMessagesToRetrieve);
             List<MessageObject<T>> resultData = new List<MessageObject<T>>();
             foreach (var message in messages)
             {
@@ -117,7 +118,8 @@ namespace TheBall
                     };
                 resultData.Add(messageObject);
             }
-            messageObjects = resultData.ToArray();
+            var messageObjects = resultData.ToArray();
+            return messageObjects;
         }
 
         public class MessageObject<T>
@@ -126,25 +128,26 @@ namespace TheBall
             public T RetrievedObject;
         }
 
-        public static void PutMessageToQueue(string queueName, string messageText)
+        public static async Task PutMessageToQueue(string queueName, string messageText)
         {
             var queue = GetQueue(queueName);
             CloudQueueMessage message = new CloudQueueMessage(messageText);
-            queue.AddMessage(message);
+            await queue.AddMessageAsync(message);
         }
 
-        public static void GetMessagesFromQueue(string queueName, out MessageObject<string>[] messageObjects, int maxCount = 32, bool deleteOnRetrieval = true)
+        public static async Task<MessageObject<string>[]> GetMessagesFromQueue(string queueName, int maxCount = 32, bool deleteOnRetrieval = true)
         {
             var queue = GetQueue(queueName);
             //List<CloudQueueMessage> messageList = new List<CloudQueueMessage>();
-            var messages = queue.GetMessages(maxCount);
+            var messages = await queue.GetMessagesAsync(maxCount);
             //messageList.AddRange(messages);
-            messageObjects = messages.Select(msg => new MessageObject<string> { Message = msg, RetrievedObject = msg.AsString }).ToArray();
+            var messageObjects = messages.Select(msg => new MessageObject<string> { Message = msg, RetrievedObject = msg.AsString }).ToArray();
             if (deleteOnRetrieval)
             {
                 foreach(var msgObj in messageObjects)
-                    queue.DeleteMessage(msgObj.Message);
+                    await queue.DeleteMessageAsync(msgObj.Message);
             }
+            return messageObjects;
         }
     }
 }

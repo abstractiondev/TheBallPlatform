@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TheBall;
 using TheBall.CORE;
 using TheBall.Interface;
@@ -10,14 +11,14 @@ namespace AaltoGlobalImpact.OIP
 {
     public class PickCategorizedContentToConnectionImplementation
     {
-        public static Connection GetTarget_Connection(string connectionId)
+        public static async Task<Connection> GetTarget_ConnectionAsync(string connectionId)
         {
-            Connection connection = ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner,
+            Connection connection = await ObjectStorage.RetrieveFromOwnerContentA<Connection>(InformationContext.CurrentOwner,
                                                                         connectionId);
             return connection;
         }
 
-        public static Dictionary<string, Category> GetTarget_CategoriesToTransfer(Connection connection)
+        public static async Task<Dictionary<string, Category>> GetTarget_CategoriesToTransferAsync(Connection connection)
         {
             var transferCategories =
                 connection.ThisSideCategories
@@ -25,7 +26,7 @@ namespace AaltoGlobalImpact.OIP
                               tCat => tCat.NativeCategoryDomainName == "AaltoGlobalImpact.OIP" &&
                                       tCat.NativeCategoryObjectName == "Category")
                           .ToArray();
-            CategoryCollection categoryCollection = ObjectStorage.RetrieveFromOwnerContent<CategoryCollection>(
+            CategoryCollection categoryCollection = await ObjectStorage.RetrieveFromOwnerContentA<CategoryCollection>(
                 InformationContext.CurrentOwner, "MasterCollection");
             var sourceCategoryDict = categoryCollection.CollectionContent.ToDictionary(cat => cat.ID);
             var sourceCategoryList = categoryCollection.CollectionContent;
@@ -60,23 +61,23 @@ namespace AaltoGlobalImpact.OIP
             return false;
         }
 
-        public static string[] GetTarget_ContentToTransferLocations(Dictionary<string, Category> categoriesToTransfer)
+        public static async Task<string[]> GetTarget_ContentToTransferLocationsAsync(Dictionary<string, Category> categoriesToTransfer)
         {
-            BinaryFileCollection binaryFiles =
-                ObjectStorage.RetrieveFromOwnerContent<BinaryFileCollection>(InformationContext.CurrentOwner,
+            BinaryFileCollection binaryFiles = await 
+                ObjectStorage.RetrieveFromOwnerContentA<BinaryFileCollection>(InformationContext.CurrentOwner,
                                                               "MasterCollection");
-            LinkToContentCollection linkToContents =
-                ObjectStorage.RetrieveFromOwnerContent<LinkToContentCollection>(InformationContext.CurrentOwner,
+            LinkToContentCollection linkToContents = await 
+                ObjectStorage.RetrieveFromOwnerContentA<LinkToContentCollection>(InformationContext.CurrentOwner,
                                                                  "MasterCollection");
-            EmbeddedContentCollection embeddedContents =
-                ObjectStorage.RetrieveFromOwnerContent<EmbeddedContentCollection>(InformationContext.CurrentOwner,
+            EmbeddedContentCollection embeddedContents = await 
+                ObjectStorage.RetrieveFromOwnerContentA<EmbeddedContentCollection>(InformationContext.CurrentOwner,
                                                                    "MasterCollection");
-            ImageCollection images =
-                ObjectStorage.RetrieveFromOwnerContent<ImageCollection>(InformationContext.CurrentOwner,
+            ImageCollection images = await 
+                ObjectStorage.RetrieveFromOwnerContentA<ImageCollection>(InformationContext.CurrentOwner,
                                                          "MasterCollection");
 
-            TextContentCollection textContents =
-                ObjectStorage.RetrieveFromOwnerContent<TextContentCollection>(InformationContext.CurrentOwner,
+            TextContentCollection textContents = await 
+                ObjectStorage.RetrieveFromOwnerContentA<TextContentCollection>(InformationContext.CurrentOwner,
                                                                "MasterCollection");
             var locationCategoriesTuplesWithMedia = binaryFiles.CollectionContent
                                                                .Select(getBinaryFileTuple)

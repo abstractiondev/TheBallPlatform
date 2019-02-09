@@ -3,6 +3,7 @@ using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
 {
+#if never
     public class UnregisterEmailAddressImplementation
     {
         public static AccountContainer GetTarget_AccountContainerBeforeGroupRemoval(string accountId)
@@ -29,4 +30,5 @@ namespace TheBall.CORE
             UnlinkEmailAddress.Execute(parameters);
         }
     }
+#endif
 }

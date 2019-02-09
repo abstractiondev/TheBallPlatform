@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace TheBall
 {
@@ -6,6 +7,6 @@ namespace TheBall
     {
         public string FileName;
         public byte[] FileContent;
-        public HttpPostedFile HttpFile;
+        public IFormFile HttpFile;
     }
 }

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class CreateInformationOutputImplementation
@@ -14,9 +16,9 @@ namespace TheBall.CORE
             return informationOutput;
         }
 
-        public static void ExecuteMethod_StoreObject(InformationOutput createdInformationOutput)
+        public static async Task ExecuteMethod_StoreObjectAsync(InformationOutput createdInformationOutput)
         {
-            createdInformationOutput.StoreInformation();
+            await createdInformationOutput.StoreInformationAsync();
         }
 
         public static CreateInformationOutputReturnValue Get_ReturnValue(InformationOutput createdInformationOutput)

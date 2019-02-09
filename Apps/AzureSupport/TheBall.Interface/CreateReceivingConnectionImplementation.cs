@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TheBall.CORE;
 
 namespace TheBall.Interface
@@ -20,9 +21,9 @@ namespace TheBall.Interface
             return connection;
         }
 
-        public static void ExecuteMethod_StoreConnection(Connection connection)
+        public static async Task ExecuteMethod_StoreConnectionAsync(Connection connection)
         {
-            connection.StoreInformation();
+            await connection.StoreInformationAsync();
         }
 
         public static CreateReceivingConnectionReturnValue Get_ReturnValue(Connection connection)

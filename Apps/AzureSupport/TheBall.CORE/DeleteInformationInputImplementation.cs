@@ -1,15 +1,17 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class DeleteInformationInputImplementation
     {
-        public static InformationInput GetTarget_InformationInput(IContainerOwner owner, string informationInputId)
+        public static async Task<InformationInput> GetTarget_InformationInputAsync(IContainerOwner owner, string informationInputId)
         {
-            return ObjectStorage.RetrieveFromDefaultLocation<InformationInput>(informationInputId, owner);
+            return await ObjectStorage.RetrieveFromDefaultLocationA<InformationInput>(informationInputId, owner);
         }
 
-        public static void ExecuteMethod_DeleteInformationInput(InformationInput informationInput)
+        public static async Task ExecuteMethod_DeleteInformationInputAsync(InformationInput informationInput)
         {
-            informationInput.DeleteInformationObject();
+            await informationInput.DeleteInformationObjectA();
         }
     }
 }

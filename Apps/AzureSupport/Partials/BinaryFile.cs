@@ -1,13 +1,13 @@
-﻿using TheBall.CORE;
+﻿using System.Threading.Tasks;
+using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {
     partial class BinaryFile : IAdditionalFormatProvider
     {
-        partial void DoPostDeleteExecute(IContainerOwner owner)
+        partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task)
         {
-            if(Data != null)
-                Data.ClearCurrentContent(owner);
+            task = Data?.ClearCurrentContent(owner);
         }
 
         AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall.Interface
@@ -15,7 +16,7 @@ namespace TheBall.Interface
             return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
-        void IBeforeStoreHandler.PerformBeforeStoreUpdate()
+        async Task IBeforeStoreHandler.PerformBeforeStoreUpdate()
         {
             if (Created == default(DateTime))
                 Created = DateTime.UtcNow;

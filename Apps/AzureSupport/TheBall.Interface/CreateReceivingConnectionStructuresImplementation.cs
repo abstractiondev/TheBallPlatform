@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using TheBall.CORE;
 using TheBall.Interface.INT;
 
@@ -12,11 +13,11 @@ namespace TheBall.Interface
             get { return InformationContext.CurrentOwner; }
         }
 
-        public static Connection GetTarget_ThisSideConnection(ConnectionCommunicationData connectionCommunicationData)
+        public static async Task<Connection> GetTarget_ThisSideConnectionAsync(ConnectionCommunicationData connectionCommunicationData)
         {
             if(string.IsNullOrEmpty(connectionCommunicationData.ReceivingSideConnectionID))
                 throw new InvalidDataException("ReceivingSideConnectionID be initialized to retrieve the connection");
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionCommunicationData.ReceivingSideConnectionID);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(Owner, connectionCommunicationData.ReceivingSideConnectionID);
         }
 
 
@@ -28,9 +29,9 @@ namespace TheBall.Interface
                 };
         }
 
-        public static void ExecuteMethod_StoreObject(Connection thisSideConnection)
+        public static async Task ExecuteMethod_StoreObjectAsync(Connection thisSideConnection)
         {
-            thisSideConnection.StoreInformation();
+            await thisSideConnection.StoreInformationAsync();
         }
     }
 }

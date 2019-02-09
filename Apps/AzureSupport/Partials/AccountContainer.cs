@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -19,7 +20,7 @@ namespace AaltoGlobalImpact.OIP
         //        throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
 
         //}
-        public void PerformBeforeStoreUpdate()
+        public async Task PerformBeforeStoreUpdate()
         {
             this.AccountModule.LocationCollection.IsCollectionFiltered = true;
         }

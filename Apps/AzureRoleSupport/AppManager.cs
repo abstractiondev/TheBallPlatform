@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using Nito.AsyncEx;
 
 namespace TheBall.Infra.AzureRoleSupport
 {
@@ -29,44 +30,99 @@ namespace TheBall.Infra.AzureRoleSupport
 
         private Process ClientProcess;
         private AnonymousPipeServerStream PipeServer = null;
+        public int? LatestExitCode { get; private set; }
 
-        internal async Task StartAppConsole()
+        public event EventHandler OnConsoleExited
+        {
+            add { ClientProcess.Exited += value; }
+            remove { ClientProcess.Exited -= value; }
+        }
+
+        private Task RunOnExitTask;
+
+        public async Task StartAppConsole(bool isTestMode, bool autoUpdate, EventHandler onClientExitHandler = null, string additionalManagerArgs = null)
         {
             PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
-            string args = $@"{_appConfigPath} {clientPipeHandler}";
-            var startInfo = new ProcessStartInfo(_appConsolePath, args)
-            {
-                UseShellExecute = false
-            };
-            ClientProcess = new Process {StartInfo = startInfo};
-            ClientProcess.Start();
-            var clientWnd = ClientProcess.MainWindowHandle;
-            ShowWindow(clientWnd, SW_SHOW);
-        }
-
-        internal async Task ShutdownAppConsole()
-        {
-            PipeServer.DisposeLocalCopyOfClientHandle();
+            string appConfigPart = isTestMode ? "-test" : $"--ac \"{_appConfigPath}\"";
+            string autoUpdatePart = autoUpdate ? " --au" : "";
+            string additionalPart = !String.IsNullOrEmpty(additionalManagerArgs) ? " " + additionalManagerArgs : "";
+            string args = $"{appConfigPart} --ch {clientPipeHandler}{autoUpdatePart}{additionalPart}";
             try
             {
-                using (StreamWriter writer = new StreamWriter(PipeServer))
+                var startInfo = new ProcessStartInfo(_appConsolePath, args)
                 {
-                    writer.AutoFlush = true;
-                    await writer.WriteAsync("QUIT");
-                    PipeServer.WaitForPipeDrain();
+                    UseShellExecute = false
+                };
+                ClientProcess = new Process {StartInfo = startInfo};
+                LatestExitCode = null;
+                RunOnExitTask = new Task(onExitCleanup);
+                ClientProcess.EnableRaisingEvents = true;
+                ClientProcess.Exited += ClientProcess_Exited;
+                if(onClientExitHandler != null)
+                    ClientProcess.Exited += onClientExitHandler;
+                ClientProcess.Start();
+                PipeServer.DisposeLocalCopyOfClientHandle();
+                try
+                {
+                    var clientWnd = ClientProcess.MainWindowHandle;
+                    ShowWindow(clientWnd, SW_SHOW);
                 }
-                ClientProcess.WaitForExit();
-                ClientProcess.Close();
-                ClientProcess = null;
-
-                PipeServer.Dispose();
-                PipeServer = null;
-
+                catch
+                {
+                    
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                throw new ApplicationException($"Error starting app console from path: {_appConsolePath}", ex);                
+            }
+        }
+
+        private void onExitCleanup()
+        {
+            LatestExitCode = ClientProcess.ExitCode;
+            ClientProcess.Close();
+            ClientProcess = null;
+
+            PipeServer.Dispose();
+            PipeServer = null;
+            RunOnExitTask = null;
+        }
+
+        private void ClientProcess_Exited(object sender, EventArgs e)
+        {
+            RunOnExitTask.Start();
+        }
+
+        public bool IsRunning => ClientProcess?.HasExited == false;
+
+        public async Task ShutdownAppConsole(bool throwOnFail = false)
+        {
+            try
+            {
+                try
+                {
+
+                    using (StreamWriter writer = new StreamWriter(PipeServer))
+                    {
+                        writer.AutoFlush = true;
+                        await writer.WriteAsync("QUIT");
+                        PipeServer.WaitForPipeDrain();
+                    }
+                }
+                catch
+                {
+                    
+                }
+                var exitTask = RunOnExitTask;
+                if (exitTask != null)
+                    await exitTask;
+            }
+            catch (Exception ex)
+            {
+                if (throwOnFail)
+                    throw;
             }
 
         }

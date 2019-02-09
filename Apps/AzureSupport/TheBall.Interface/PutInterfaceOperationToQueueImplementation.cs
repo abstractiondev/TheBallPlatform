@@ -41,14 +41,6 @@ namespace TheBall.Interface
             return InformationContext.CurrentAccount;
         }
 
-        public static void ExecuteMethod_CreateQueueEntry(string operationID, string queueItemFullPath, IAccountInfo invokerAccount)
-        {
-            string content = String.Join(Environment.NewLine,
-                new string[]
-                {operationID, invokerAccount?.AccountID, invokerAccount?.AccountEmail, invokerAccount?.AccountName});
-            StorageSupport.CurrActiveContainer.UploadBlobText(queueItemFullPath, content);
-        }
-
         public static async Task ExecuteMethod_CreateQueueEntryAsync(string operationID, string queueItemFullPath, IAccountInfo invokerAccount)
         {
             string content = String.Join(Environment.NewLine,

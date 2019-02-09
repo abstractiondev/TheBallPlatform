@@ -63,7 +63,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="IndexingRequest" dataType="IndexingRequest" designDesc="Indexing request object for the ID" state="implemented">
+          <TargetDefinition name="IndexingRequest" asyncSupportMode="AsyncOnly" dataType="IndexingRequest" designDesc="Indexing request object for the ID" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="IndexingRequestID" />
           </TargetDefinition>
@@ -77,7 +77,7 @@
             <Target name="IndexingRequest" />
             <Target name="LuceneIndexFolder" />
           </MethodExecute>
-          <MethodExecute name="DeleteIndexingRequest" designDesc="Delete associated indexing request" state="implemented">
+          <MethodExecute name="DeleteIndexingRequest" asyncSupportMode="AsyncOnly" designDesc="Delete associated indexing request" state="implemented">
             <Target name="IndexingRequest" />
           </MethodExecute>
         </SequentialExecution>
@@ -95,7 +95,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="QueryRequest" dataType="QueryRequest" designDesc="Query request object for the ID" state="implemented">
+          <TargetDefinition name="QueryRequest" asyncSupportMode="AsyncOnly" dataType="QueryRequest" designDesc="Query request object for the ID" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="QueryRequestID" />
           </TargetDefinition>
@@ -108,7 +108,7 @@
             <Target name="QueryRequest" />
             <Target name="LuceneIndexFolder" />
           </MethodExecute>
-          <MethodExecute name="SaveQueryRequest" designDesc="Save fullfilled query request" state="implemented">
+          <MethodExecute name="SaveQueryRequest" asyncSupportMode="AsyncOnly" designDesc="Save fullfilled query request" state="implemented">
             <Target name="QueryRequest" />
           </MethodExecute>
         </SequentialExecution>

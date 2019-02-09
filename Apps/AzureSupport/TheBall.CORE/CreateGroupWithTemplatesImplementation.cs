@@ -6,6 +6,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.CORE
 {
+#if obsolete    
     public class CreateGroupWithTemplatesImplementation
     {
         public static string ExecuteMethod_ExecuteCreateGroup(string groupName, string accountId)
@@ -54,4 +55,5 @@ namespace TheBall.CORE
             nodeSummaryContainer.StoreInformation(groupAsOwner, true);
         }
     }
+#endif
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
@@ -8,12 +9,7 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class GroupContainer : IBeforeStoreHandler, IAdditionalFormatProvider
     {
-        partial void DoPostStoringExecute(IContainerOwner owner)
-        {
-            return;
-        }
-
-        public void PerformBeforeStoreUpdate()
+        public async Task PerformBeforeStoreUpdate()
         {
             this.GroupIndex.Icon = this.GroupProfile.ProfileImage;
             this.LocationCollection.IsCollectionFiltered = true;

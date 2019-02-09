@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.0;net462</TargetFrameworks>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLine.Options" Version="0.0.2" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0-beta5" />
+    <PackageReference Include="Nito.AsyncEx" Version="5.0.0-pre-05" />
+    <PackageReference Include="WindowsAzure.Storage" Version="8.4.0" />
+  </ItemGroup>
+  <Import Project="..\..\SharedProjects\AppUpdater\AppUpdater.projitems" Label="Shared" />
+</Project>

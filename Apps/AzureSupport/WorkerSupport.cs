@@ -32,47 +32,14 @@ namespace TheBall
 
         public delegate Task<bool> PerformCustomOperation(CloudBlob source, CloudBlob target, SyncOperationType operationType);
 
-        private static void UpdateContainerFromMasterCollection(string containerType, string containerLocation, string masterCollectionType, string masterCollectionLocation)
-        {
-            IInformationObject containerObject = StorageSupport.RetrieveInformation(containerLocation, containerType);
-            IInformationObject masterCollectionObject = StorageSupport.RetrieveInformation(masterCollectionLocation,
-                                                                                           masterCollectionType);
-            IInformationCollection masterCollection = (IInformationCollection) masterCollectionObject;
-            // TODO: Revisit why this can be null
-            if (containerObject == null || masterCollection == null)
-                return;
-            containerObject.UpdateCollections(masterCollection);
-            StorageSupport.StoreInformation(containerObject);
-        }
-
-        private static void UpdateCollectionFromMasterCollection(string referenceCollectionType, string referenceCollectionLocation, string masterCollectionType, string masterCollectionLocation)
-        {
-            IInformationObject referenceCollectionObject = StorageSupport.RetrieveInformation(referenceCollectionLocation,
-                                                                                        referenceCollectionType);
-            IInformationCollection referenceCollection = (IInformationCollection) referenceCollectionObject;
-            // TODO: Revisit why this can be null
-            if (referenceCollection == null)
-                return;
-            referenceCollection.RefreshContent();
-            StorageSupport.StoreInformation(referenceCollectionObject);
-        }
-
-        private static void UpdateCollectionFromDirectory(string collectionType, string collectionLocation, string directoryLocation)
-        {
-            IInformationObject collectionObject = StorageSupport.RetrieveInformation(collectionLocation, collectionType);
-            IInformationCollection collection = (IInformationCollection) collectionObject;
-            collection.RefreshContent();
-            StorageSupport.StoreInformation(collectionObject);
-        }
-
-        public static void UpdateContainerFromMaster(string containerLocation, string containerType, string masterLocation, string masterType)
+        public static async Task UpdateContainerFromMaster(string containerLocation, Type containerType, string masterLocation, Type masterType)
         {
             bool masterEtagUpdated = false;
             //do
             //{
                 masterEtagUpdated = false;
-                IInformationObject container = StorageSupport.RetrieveInformation(containerLocation, containerType);
-                IInformationObject referenceToMaster = StorageSupport.RetrieveInformation(masterLocation, masterType);
+                IInformationObject container = await StorageSupport.RetrieveInformationA(containerLocation, containerType);
+                IInformationObject referenceToMaster = await StorageSupport.RetrieveInformationA(masterLocation, masterType);
                 string masterEtag = referenceToMaster.ETag;
                 string masterID = referenceToMaster.ID;
                 Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
@@ -83,8 +50,8 @@ namespace TheBall
                 {
                     referenceToMaster.MasterETag = referenceToMaster.ETag;
                     container.ReplaceObjectInTree(referenceToMaster);
-                    container.StoreInformation();
-                    referenceToMaster = StorageSupport.RetrieveInformation(masterLocation, masterType);
+                    await container.StoreInformationAsync();
+                    referenceToMaster = await StorageSupport.RetrieveInformationA(masterLocation, masterType);
                     masterEtagUpdated = referenceToMaster.ETag != masterEtag;
                 }
             //} while (masterEtagUpdated);
@@ -166,11 +133,13 @@ namespace TheBall
             string sourceSearchRoot = sourceContainerName + "/" + sourcePathRoot;
             string targetSearchRoot = targetContainerName + "/" + targetPathRoot;
             CloudBlobContainer targetContainer = StorageSupport.CurrBlobClient.GetContainerReference(targetContainerName);
-            var sourceBlobList = StorageSupport.CurrBlobClient.ListBlobs(sourceSearchRoot, true, BlobListingDetails.Metadata).
-                OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
-            var targetBlobList = StorageSupport.CurrBlobClient.ListBlobs(targetSearchRoot, true, BlobListingDetails.Metadata).
-                OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
-            List<CloudBlockBlob> targetBlobsToDelete;
+            CloudBlockBlob[] sourceBlobList = null;
+            //StorageSupport.CurrBlobClient.ListBlobs(sourceSearchRoot, true, BlobListingDetails.Metadata).
+            //OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
+            CloudBlockBlob[] targetBlobList = null;
+                //StorageSupport.CurrBlobClient.ListBlobs(targetSearchRoot, true, BlobListingDetails.Metadata).
+                //OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
+            List<CloudBlockBlob> targetBlobsToDelete = null;
             List<BlobCopyItem> blobCopyList;
             int sourcePathLen = sourcePathRoot.Length;
             int targetPathLen = targetPathRoot.Length;
@@ -289,9 +258,9 @@ namespace TheBall
         private static int counter = 0;
 
         
-        public static void DeleteEntireOwner(IContainerOwner containerOwner)
+        public static async Task DeleteEntireOwner(IContainerOwner containerOwner)
         {
-            StorageSupport.DeleteEntireOwner(containerOwner);
+            await StorageSupport.DeleteEntireOwnerAsync(containerOwner);
         }
 
         public static Task GetFirstCompleted(Task[] tasks, out int availableIx)
@@ -324,7 +293,7 @@ namespace TheBall
                 try
                 {
                     InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerIndexing);
-                    IndexInformation.Execute(new IndexInformationParameters
+                    await IndexInformation.ExecuteAsync(new IndexInformationParameters
                         {
                             IndexingRequestID = indexRequestID,
                             IndexName = IndexSupport.DefaultIndexName,
@@ -357,7 +326,7 @@ namespace TheBall
                 try
                 {
                     InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerQuery);
-                    QueryIndexedInformation.Execute(new QueryIndexedInformationParameters
+                    await QueryIndexedInformation.ExecuteAsync(new QueryIndexedInformationParameters
                         {
                             QueryRequestID = queryRequestID,
                             IndexName = IndexSupport.DefaultIndexName,
@@ -378,7 +347,7 @@ namespace TheBall
         {
             // Hardcoded double-verify for valid container
             var blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
-            var blobData = blob.DownloadText();
+            var blobData = await blob.DownloadTextAsync();
             string[] contentArr = blobData.Split(':');
             if (contentArr.Length < 2 || contentArr[1] != sourceOwner)
                 return;
@@ -420,9 +389,9 @@ namespace TheBall
                 await WebContentSyncBetweenContainersA(sourceContainerName, sourceFolder, targetContainerName, targetFolder);
             }
             var lastUpdateFileBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.LastUpdateFileName);
-            lastUpdateFileBlob.UploadBlobText(targetRootFolderName);
+            await lastUpdateFileBlob.UploadBlobTextAsync(targetRootFolderName);
             var currentToServeBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
-            currentToServeBlob.UploadBlobText(targetRootFolderName + ":" + sourceOwner);
+            await currentToServeBlob.UploadBlobTextAsync(targetRootFolderName + ":" + sourceOwner);
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Web;
 using AzureSupport;
 using TheBall.CORE;
 using System.Linq;
+using System.Threading.Tasks;
 using TheBall.CORE.Storage;
 using TheBall.Interface.INT;
 
@@ -21,9 +22,9 @@ namespace TheBall.Interface
             return result;
         }
 
-        public static Connection GetTarget_Connection(CategoryLinkParameters categoryLinkingParameters)
+        public static async Task<Connection> GetTarget_ConnectionAsync(CategoryLinkParameters categoryLinkingParameters)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, categoryLinkingParameters.ConnectionID);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(Owner, categoryLinkingParameters.ConnectionID);
         }
 
         public static void ExecuteMethod_SetConnectionLinkingData(Connection connection, CategoryLinkParameters categoryLinkingParameters)
@@ -42,9 +43,9 @@ namespace TheBall.Interface
                 };
         }
 
-        public static void ExecuteMethod_StoreObject(Connection connection)
+        public static async Task ExecuteMethod_StoreObjectAsync(Connection connection)
         {
-            connection.StoreInformation();
+            await connection.StoreInformationAsync();
         }
     }
 }

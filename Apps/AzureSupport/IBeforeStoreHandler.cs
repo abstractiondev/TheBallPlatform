@@ -1,7 +1,9 @@
-﻿namespace AaltoGlobalImpact.OIP
+﻿using System.Threading.Tasks;
+
+namespace AaltoGlobalImpact.OIP
 {
     public interface IBeforeStoreHandler
     {
-        void PerformBeforeStoreUpdate();
+        Task PerformBeforeStoreUpdate();
     }
 }

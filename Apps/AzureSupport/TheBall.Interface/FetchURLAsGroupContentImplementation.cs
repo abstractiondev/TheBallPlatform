@@ -1,5 +1,5 @@
 using System;
-using System.Data.Linq;
+//using System.Data.Linq;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -16,16 +16,16 @@ namespace TheBall.Interface
             return new VirtualOwner("grp", groupId);
         }
 
-        public static BinaryFile GetTarget_BinaryFile(string fileName, IContainerOwner owner)
+        public static async Task<BinaryFile> GetTarget_BinaryFileAsync(string fileName, IContainerOwner owner)
         {
             BinaryFile binaryFile = new BinaryFile();
             binaryFile.SetLocationAsOwnerContent(owner, binaryFile.ID);
             binaryFile.OriginalFileName = fileName;
-            binaryFile.StoreInformation(owner);
+            await binaryFile.StoreInformationAsync(owner);
             return binaryFile;
         }
 
-        public static void ExecuteMethod_FetchDataAndAttachToFile(string dataUrl, BinaryFile binaryFile)
+        public static async Task ExecuteMethod_FetchDataAndAttachToFileAsync(string dataUrl, BinaryFile binaryFile)
         {
             var owner = VirtualOwner.FigureOwner(binaryFile);
             var mediaContent = new MediaContent();
@@ -43,7 +43,7 @@ namespace TheBall.Interface
                 string blobName = mediaContent.RelativeLocation;
                 var storageBlob = StorageSupport.CurrActiveContainer.GetBlob(blobName, owner);
                 int totalLength = 0;
-                using (var writeStream = storageBlob.OpenWrite())
+                using (var writeStream = await storageBlob.OpenWriteAsync())
                 {
                     byte[] readBuffer = new byte[128 * 1024];
                     byte[] writeBuffer = new byte[128 * 1024];
@@ -69,7 +69,7 @@ namespace TheBall.Interface
                     writeStream.Close();
                 }
                 binaryFile.Data.ContentLength = totalLength;
-                binaryFile.StoreInformation();
+                await binaryFile.StoreInformationAsync();
             }
             finally
             {

@@ -103,11 +103,11 @@ namespace ContentSyncTool
 
         public static void stageOperation(StageOperationSubOptions stageOperationSubOptions)
         {
-            object sqlitePlatform = null;
+            const string fsRoot = @"C:\TMP\TBFSRoot";
             ClientExecute.StageOperation(stageOperationSubOptions.ConnectionName,
                                          stageOperationSubOptions.GetData, stageOperationSubOptions.PutDEV,
                                          stageOperationSubOptions.PutLIVE, stageOperationSubOptions.GetFullAccount,
-                                         stageOperationSubOptions.UseVirtualFS, sqlitePlatform).Wait();
+                                         stageOperationSubOptions.UseVirtualFS, fsRoot).Wait();
         }
     }
 

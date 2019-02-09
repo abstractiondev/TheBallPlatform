@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
@@ -17,7 +16,6 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AzureSupport;
-using DotNetOpenAuth.AspNet.Clients;
 using DotNetOpenAuth.FacebookOAuth2;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
@@ -170,7 +168,7 @@ namespace WebInterface
             else
                 throw new NotSupportedException("Provider not supported: " + provider);
             validateEmailAndExitForRestricted(emailAddress);
-            AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress, null);
+            AuthenticationSupport.SetAuthenticationCookieFromUserName(Response, userName, emailAddress);
             Response.Redirect(redirectUrl, true);
             return redirectUrl;
         }
@@ -235,7 +233,7 @@ namespace WebInterface
                     //                                                                 DateTime.Now.AddDays(10),
                     //                                                                 true, "user custom data");
 
-                    AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress, null);
+                    AuthenticationSupport.SetAuthenticationCookieFromUserName(Response, userName, emailAddress);
                     //FormsAuthentication.RedirectFromLoginPage(response.ClaimedIdentifier, false);
                     //string redirectUrl = FormsAuthentication.GetRedirectUrl(userName, true);
                     string redirectUrl = Request.Params["ReturnUrl"];
@@ -351,7 +349,7 @@ namespace WebInterface
                     throw new SecurityException("Invalid URL for UserID");
                 //string queryWithoutPrefix = query.Substring(secureProtocolPrefix.Length);
                 string wilmaUserID = query + "/" + wilmaLoginName;
-                AuthenticationSupport.SetAuthenticationCookie(Response, wilmaUserID, null, null);
+                AuthenticationSupport.SetAuthenticationCookieFromUserName(Response, wilmaUserID, null);
                 string redirectUrl = Request.Params["ReturnUrl"];
                 if (redirectUrl == null)
                     redirectUrl = FormsAuthentication.DefaultUrl;
@@ -473,7 +471,12 @@ namespace WebInterface
 
         protected static Tuple<string, string> GetFacebookAuthTokens(Uri returnUrl, string authorizationCode)
         {
-            var client = new FacebookOAuth2Client(appId: SecureConfig.Current.FacebookOAuthClientID,
+            //OAuthConfig.RegisterAuth(SecureConfig.Current.FacebookOAuthClientID, SecureConfig.Current.FacebookOAuthClientSecret);
+            FacebookClient2017.RewriteRequest();
+            //string returnUrl = this.Request.QueryString["ReturnUrl"];
+
+
+            var client = new FacebookClient2017(appId: SecureConfig.Current.FacebookOAuthClientID,
                 appSecret: SecureConfig.Current.FacebookOAuthClientSecret, requestedScopes:"email");
             var authResult = client.VerifyAuthentication(new HttpContextWrapper(HttpContext.Current), returnUrl);
             var data = authResult.ExtraData;

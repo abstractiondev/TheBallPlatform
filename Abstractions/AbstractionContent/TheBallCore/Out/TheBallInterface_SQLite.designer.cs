@@ -5,9 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -17,11 +14,14 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
-using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
-using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.ComponentModel.DataAnnotations.Schema;
+using Key=System.ComponentModel.DataAnnotations.KeyAttribute;
+//using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+//using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace SQLite.TheBall.Interface { 
@@ -31,15 +31,32 @@ namespace SQLite.TheBall.Interface {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
+		public class TheBallDataContext : DbContext, IStorageSyncableDataContext
 		{
+		    protected override void OnModelCreating(ModelBuilder modelBuilder)
+		    {
+				InterfaceOperation.EntityConfig(modelBuilder);
+				Connection.EntityConfig(modelBuilder);
+				TransferPackage.EntityConfig(modelBuilder);
+				CategoryLink.EntityConfig(modelBuilder);
+				Category.EntityConfig(modelBuilder);
+				StatusSummary.EntityConfig(modelBuilder);
+				InformationChangeItem.EntityConfig(modelBuilder);
+				OperationExecutionItem.EntityConfig(modelBuilder);
+				GenericCollectionableObject.EntityConfig(modelBuilder);
+				GenericObject.EntityConfig(modelBuilder);
+				GenericValue.EntityConfig(modelBuilder);
+				ConnectionCollection.EntityConfig(modelBuilder);
+				GenericObjectCollection.EntityConfig(modelBuilder);
+
+		    }
+
             // Track whether Dispose has been called. 
             private bool disposed = false;
-		    protected override void Dispose(bool disposing)
+		    void IDisposable.Dispose()
 		    {
 		        if (disposed)
 		            return;
-                base.Dispose(disposing);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
@@ -47,16 +64,24 @@ namespace SQLite.TheBall.Interface {
 
             public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
+		    public TheBallDataContext() : base(new DbContextOptions<TheBallDataContext>())
 		    {
 		        
 		    }
 
+		    public readonly string SQLiteDBPath;
+		    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		    {
+		        optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
+		    }
+
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
-		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                var dataContext = new TheBallDataContext(connection);
-		        using (var transaction = connection.BeginTransaction())
+		        var sqliteConnectionString = $"{pathToDBFile}";
+                var dataContext = new TheBallDataContext(sqliteConnectionString);
+		        var db = dataContext.Database;
+                db.OpenConnection();
+		        using (var transaction = db.BeginTransaction())
 		        {
                     dataContext.CreateDomainDatabaseTablesIfNotExists();
                     transaction.Commit();
@@ -64,12 +89,19 @@ namespace SQLite.TheBall.Interface {
                 return dataContext;
 		    }
 
-            public TheBallDataContext(SQLiteConnection connection) : base(connection)
+            public TheBallDataContext(string sqLiteDBPath) : base()
+            {
+                SQLiteDBPath = sqLiteDBPath;
+            }
+
+		    public override int SaveChanges(bool acceptAllChangesOnSuccess)
 		    {
-                if(connection.State != ConnectionState.Open)
-                    connection.Open();
+                //if(connection.State != ConnectionState.Open)
+                //    connection.Open();
+		        return base.SaveChanges(acceptAllChangesOnSuccess);
 		    }
 
+			/*
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
@@ -86,6 +118,7 @@ namespace SQLite.TheBall.Interface {
 		    {
 		        await Task.Run(() => SubmitChanges());
 		    }
+			*/
 
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
@@ -104,7 +137,9 @@ namespace SQLite.TheBall.Interface {
 				tableCreationCommands.Add(GenericValue.GetCreateTableSQL());
 				tableCreationCommands.Add(ConnectionCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(GenericObjectCollection.GetCreateTableSQL());
-			    var connection = this.Connection;
+			    //var connection = this.Connection;
+			    var db = this.Database;
+			    var connection = db.GetDbConnection();
 				foreach (string commandText in tableCreationCommands)
 			    {
 			        var command = connection.CreateCommand();
@@ -114,9 +149,9 @@ namespace SQLite.TheBall.Interface {
 			    }
 			}
 
-			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
+			public DbSet<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
-					return this.GetTable<InformationObjectMetaData>();
+					return this.Set<InformationObjectMetaData>();
 				}
 			}
 
@@ -618,7 +653,7 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if (insertData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -638,7 +673,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.Finished = serializedObject.Finished;
 		            objectToAdd.ErrorCode = serializedObject.ErrorCode;
 		            objectToAdd.ErrorMessage = serializedObject.ErrorMessage;
-					InterfaceOperationTable.InsertOnSubmit(objectToAdd);
+					InterfaceOperationTable.Add(objectToAdd);
                     break;
                 }
                 case "Connection":
@@ -669,7 +704,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ProcessIDToListPackageContents = serializedObject.ProcessIDToListPackageContents;
 		            objectToAdd.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
 		            objectToAdd.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
-					ConnectionTable.InsertOnSubmit(objectToAdd);
+					ConnectionTable.Add(objectToAdd);
                     break;
                 }
                 case "TransferPackage":
@@ -685,7 +720,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.IsProcessed = serializedObject.IsProcessed;
 					if(serializedObject.PackageContentBlobs != null)
 						serializedObject.PackageContentBlobs.ForEach(item => objectToAdd.PackageContentBlobs.Add(item));
-					TransferPackageTable.InsertOnSubmit(objectToAdd);
+					TransferPackageTable.Add(objectToAdd);
                     break;
                 }
                 case "CategoryLink":
@@ -698,7 +733,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.SourceCategoryID = serializedObject.SourceCategoryID;
 		            objectToAdd.TargetCategoryID = serializedObject.TargetCategoryID;
 		            objectToAdd.LinkingType = serializedObject.LinkingType;
-					CategoryLinkTable.InsertOnSubmit(objectToAdd);
+					CategoryLinkTable.Add(objectToAdd);
                     break;
                 }
                 case "Category":
@@ -713,7 +748,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
 		            objectToAdd.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
 		            objectToAdd.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
-					CategoryTable.InsertOnSubmit(objectToAdd);
+					CategoryTable.Add(objectToAdd);
                     break;
                 }
                 case "StatusSummary":
@@ -731,7 +766,7 @@ namespace SQLite.TheBall.Interface {
 						serializedObject.RecentCompletedOperations.ForEach(item => objectToAdd.RecentCompletedOperations.Add(item));
 					if(serializedObject.ChangeItemTrackingList != null)
 						serializedObject.ChangeItemTrackingList.ForEach(item => objectToAdd.ChangeItemTrackingList.Add(item));
-					StatusSummaryTable.InsertOnSubmit(objectToAdd);
+					StatusSummaryTable.Add(objectToAdd);
                     break;
                 }
                 case "InformationChangeItem":
@@ -745,7 +780,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.EndTimeUTC = serializedObject.EndTimeUTC;
 					if(serializedObject.ChangedObjectIDList != null)
 						serializedObject.ChangedObjectIDList.ForEach(item => objectToAdd.ChangedObjectIDList.Add(item));
-					InformationChangeItemTable.InsertOnSubmit(objectToAdd);
+					InformationChangeItemTable.Add(objectToAdd);
                     break;
                 }
                 case "OperationExecutionItem":
@@ -763,7 +798,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ExecutionBeginTime = serializedObject.ExecutionBeginTime;
 		            objectToAdd.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
 		            objectToAdd.ExecutionStatus = serializedObject.ExecutionStatus;
-					OperationExecutionItemTable.InsertOnSubmit(objectToAdd);
+					OperationExecutionItemTable.Add(objectToAdd);
                     break;
                 }
                 case "GenericCollectionableObject":
@@ -777,7 +812,7 @@ namespace SQLite.TheBall.Interface {
 						objectToAdd.ValueObjectID = serializedObject.ValueObject.ID;
 					else
 						objectToAdd.ValueObjectID = null;
-					GenericCollectionableObjectTable.InsertOnSubmit(objectToAdd);
+					GenericCollectionableObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "GenericObject":
@@ -791,7 +826,7 @@ namespace SQLite.TheBall.Interface {
 						serializedObject.Values.ForEach(item => objectToAdd.Values.Add(item));
 		            objectToAdd.IncludeInCollection = serializedObject.IncludeInCollection;
 		            objectToAdd.OptionalCollectionName = serializedObject.OptionalCollectionName;
-					GenericObjectTable.InsertOnSubmit(objectToAdd);
+					GenericObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "GenericValue":
@@ -821,7 +856,7 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ObjectArray != null)
 						serializedObject.ObjectArray.ForEach(item => objectToAdd.ObjectArray.Add(item));
 		            objectToAdd.IndexingInfo = serializedObject.IndexingInfo;
-					GenericValueTable.InsertOnSubmit(objectToAdd);
+					GenericValueTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -832,7 +867,7 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if (insertData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                InformationObjectMetaDataTable.Add(insertData);
 
 				switch(insertData.ObjectType)
 				{
@@ -852,7 +887,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.Finished = serializedObject.Finished;
 		            objectToAdd.ErrorCode = serializedObject.ErrorCode;
 		            objectToAdd.ErrorMessage = serializedObject.ErrorMessage;
-					InterfaceOperationTable.InsertOnSubmit(objectToAdd);
+					InterfaceOperationTable.Add(objectToAdd);
                     break;
                 }
                 case "Connection":
@@ -883,7 +918,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ProcessIDToListPackageContents = serializedObject.ProcessIDToListPackageContents;
 		            objectToAdd.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
 		            objectToAdd.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
-					ConnectionTable.InsertOnSubmit(objectToAdd);
+					ConnectionTable.Add(objectToAdd);
                     break;
                 }
                 case "TransferPackage":
@@ -899,7 +934,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.IsProcessed = serializedObject.IsProcessed;
 					if(serializedObject.PackageContentBlobs != null)
 						serializedObject.PackageContentBlobs.ForEach(item => objectToAdd.PackageContentBlobs.Add(item));
-					TransferPackageTable.InsertOnSubmit(objectToAdd);
+					TransferPackageTable.Add(objectToAdd);
                     break;
                 }
                 case "CategoryLink":
@@ -912,7 +947,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.SourceCategoryID = serializedObject.SourceCategoryID;
 		            objectToAdd.TargetCategoryID = serializedObject.TargetCategoryID;
 		            objectToAdd.LinkingType = serializedObject.LinkingType;
-					CategoryLinkTable.InsertOnSubmit(objectToAdd);
+					CategoryLinkTable.Add(objectToAdd);
                     break;
                 }
                 case "Category":
@@ -927,7 +962,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
 		            objectToAdd.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
 		            objectToAdd.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
-					CategoryTable.InsertOnSubmit(objectToAdd);
+					CategoryTable.Add(objectToAdd);
                     break;
                 }
                 case "StatusSummary":
@@ -945,7 +980,7 @@ namespace SQLite.TheBall.Interface {
 						serializedObject.RecentCompletedOperations.ForEach(item => objectToAdd.RecentCompletedOperations.Add(item));
 					if(serializedObject.ChangeItemTrackingList != null)
 						serializedObject.ChangeItemTrackingList.ForEach(item => objectToAdd.ChangeItemTrackingList.Add(item));
-					StatusSummaryTable.InsertOnSubmit(objectToAdd);
+					StatusSummaryTable.Add(objectToAdd);
                     break;
                 }
                 case "InformationChangeItem":
@@ -959,7 +994,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.EndTimeUTC = serializedObject.EndTimeUTC;
 					if(serializedObject.ChangedObjectIDList != null)
 						serializedObject.ChangedObjectIDList.ForEach(item => objectToAdd.ChangedObjectIDList.Add(item));
-					InformationChangeItemTable.InsertOnSubmit(objectToAdd);
+					InformationChangeItemTable.Add(objectToAdd);
                     break;
                 }
                 case "OperationExecutionItem":
@@ -977,7 +1012,7 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ExecutionBeginTime = serializedObject.ExecutionBeginTime;
 		            objectToAdd.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
 		            objectToAdd.ExecutionStatus = serializedObject.ExecutionStatus;
-					OperationExecutionItemTable.InsertOnSubmit(objectToAdd);
+					OperationExecutionItemTable.Add(objectToAdd);
                     break;
                 }
                 case "GenericCollectionableObject":
@@ -991,7 +1026,7 @@ namespace SQLite.TheBall.Interface {
 						objectToAdd.ValueObjectID = serializedObject.ValueObject.ID;
 					else
 						objectToAdd.ValueObjectID = null;
-					GenericCollectionableObjectTable.InsertOnSubmit(objectToAdd);
+					GenericCollectionableObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "GenericObject":
@@ -1005,7 +1040,7 @@ namespace SQLite.TheBall.Interface {
 						serializedObject.Values.ForEach(item => objectToAdd.Values.Add(item));
 		            objectToAdd.IncludeInCollection = serializedObject.IncludeInCollection;
 		            objectToAdd.OptionalCollectionName = serializedObject.OptionalCollectionName;
-					GenericObjectTable.InsertOnSubmit(objectToAdd);
+					GenericObjectTable.Add(objectToAdd);
                     break;
                 }
                 case "GenericValue":
@@ -1035,7 +1070,7 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ObjectArray != null)
 						serializedObject.ObjectArray.ForEach(item => objectToAdd.ObjectArray.Add(item));
 		            objectToAdd.IndexingInfo = serializedObject.IndexingInfo;
-					GenericValueTable.InsertOnSubmit(objectToAdd);
+					GenericValueTable.Add(objectToAdd);
                     break;
                 }
 				}
@@ -1046,7 +1081,7 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -1056,7 +1091,7 @@ namespace SQLite.TheBall.Interface {
 						//InterfaceOperationTable.Attach(objectToDelete);
 						var objectToDelete = InterfaceOperationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
+							InterfaceOperationTable.Remove(objectToDelete);
 						break;
 					}
 					case "Connection":
@@ -1065,7 +1100,7 @@ namespace SQLite.TheBall.Interface {
 						//ConnectionTable.Attach(objectToDelete);
 						var objectToDelete = ConnectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ConnectionTable.DeleteOnSubmit(objectToDelete);
+							ConnectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TransferPackage":
@@ -1074,7 +1109,7 @@ namespace SQLite.TheBall.Interface {
 						//TransferPackageTable.Attach(objectToDelete);
 						var objectToDelete = TransferPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TransferPackageTable.DeleteOnSubmit(objectToDelete);
+							TransferPackageTable.Remove(objectToDelete);
 						break;
 					}
 					case "CategoryLink":
@@ -1083,7 +1118,7 @@ namespace SQLite.TheBall.Interface {
 						//CategoryLinkTable.Attach(objectToDelete);
 						var objectToDelete = CategoryLinkTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryLinkTable.DeleteOnSubmit(objectToDelete);
+							CategoryLinkTable.Remove(objectToDelete);
 						break;
 					}
 					case "Category":
@@ -1092,7 +1127,7 @@ namespace SQLite.TheBall.Interface {
 						//CategoryTable.Attach(objectToDelete);
 						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryTable.DeleteOnSubmit(objectToDelete);
+							CategoryTable.Remove(objectToDelete);
 						break;
 					}
 					case "StatusSummary":
@@ -1101,7 +1136,7 @@ namespace SQLite.TheBall.Interface {
 						//StatusSummaryTable.Attach(objectToDelete);
 						var objectToDelete = StatusSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StatusSummaryTable.DeleteOnSubmit(objectToDelete);
+							StatusSummaryTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationChangeItem":
@@ -1110,7 +1145,7 @@ namespace SQLite.TheBall.Interface {
 						//InformationChangeItemTable.Attach(objectToDelete);
 						var objectToDelete = InformationChangeItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
+							InformationChangeItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "OperationExecutionItem":
@@ -1119,7 +1154,7 @@ namespace SQLite.TheBall.Interface {
 						//OperationExecutionItemTable.Attach(objectToDelete);
 						var objectToDelete = OperationExecutionItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
+							OperationExecutionItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "GenericCollectionableObject":
@@ -1128,7 +1163,7 @@ namespace SQLite.TheBall.Interface {
 						//GenericCollectionableObjectTable.Attach(objectToDelete);
 						var objectToDelete = GenericCollectionableObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
+							GenericCollectionableObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "GenericObject":
@@ -1137,7 +1172,7 @@ namespace SQLite.TheBall.Interface {
 						//GenericObjectTable.Attach(objectToDelete);
 						var objectToDelete = GenericObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GenericObjectTable.DeleteOnSubmit(objectToDelete);
+							GenericObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "GenericValue":
@@ -1146,7 +1181,7 @@ namespace SQLite.TheBall.Interface {
 						//GenericValueTable.Attach(objectToDelete);
 						var objectToDelete = GenericValueTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GenericValueTable.DeleteOnSubmit(objectToDelete);
+							GenericValueTable.Remove(objectToDelete);
 						break;
 					}
 					case "ConnectionCollection":
@@ -1155,7 +1190,7 @@ namespace SQLite.TheBall.Interface {
 						//ConnectionCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ConnectionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
+							ConnectionCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "GenericObjectCollection":
@@ -1164,7 +1199,7 @@ namespace SQLite.TheBall.Interface {
 						//GenericObjectCollectionTable.Attach(objectToDelete);
 						var objectToDelete = GenericObjectCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+							GenericObjectCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -1176,7 +1211,7 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.Remove(deleteData);
 
 				switch(deleteData.ObjectType)
 				{
@@ -1186,7 +1221,7 @@ namespace SQLite.TheBall.Interface {
 						//InterfaceOperationTable.Attach(objectToDelete);
 						var objectToDelete = InterfaceOperationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
+							InterfaceOperationTable.Remove(objectToDelete);
 						break;
 					}
 					case "Connection":
@@ -1195,7 +1230,7 @@ namespace SQLite.TheBall.Interface {
 						//ConnectionTable.Attach(objectToDelete);
 						var objectToDelete = ConnectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ConnectionTable.DeleteOnSubmit(objectToDelete);
+							ConnectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "TransferPackage":
@@ -1204,7 +1239,7 @@ namespace SQLite.TheBall.Interface {
 						//TransferPackageTable.Attach(objectToDelete);
 						var objectToDelete = TransferPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							TransferPackageTable.DeleteOnSubmit(objectToDelete);
+							TransferPackageTable.Remove(objectToDelete);
 						break;
 					}
 					case "CategoryLink":
@@ -1213,7 +1248,7 @@ namespace SQLite.TheBall.Interface {
 						//CategoryLinkTable.Attach(objectToDelete);
 						var objectToDelete = CategoryLinkTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryLinkTable.DeleteOnSubmit(objectToDelete);
+							CategoryLinkTable.Remove(objectToDelete);
 						break;
 					}
 					case "Category":
@@ -1222,7 +1257,7 @@ namespace SQLite.TheBall.Interface {
 						//CategoryTable.Attach(objectToDelete);
 						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							CategoryTable.DeleteOnSubmit(objectToDelete);
+							CategoryTable.Remove(objectToDelete);
 						break;
 					}
 					case "StatusSummary":
@@ -1231,7 +1266,7 @@ namespace SQLite.TheBall.Interface {
 						//StatusSummaryTable.Attach(objectToDelete);
 						var objectToDelete = StatusSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							StatusSummaryTable.DeleteOnSubmit(objectToDelete);
+							StatusSummaryTable.Remove(objectToDelete);
 						break;
 					}
 					case "InformationChangeItem":
@@ -1240,7 +1275,7 @@ namespace SQLite.TheBall.Interface {
 						//InformationChangeItemTable.Attach(objectToDelete);
 						var objectToDelete = InformationChangeItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
+							InformationChangeItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "OperationExecutionItem":
@@ -1249,7 +1284,7 @@ namespace SQLite.TheBall.Interface {
 						//OperationExecutionItemTable.Attach(objectToDelete);
 						var objectToDelete = OperationExecutionItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
+							OperationExecutionItemTable.Remove(objectToDelete);
 						break;
 					}
 					case "GenericCollectionableObject":
@@ -1258,7 +1293,7 @@ namespace SQLite.TheBall.Interface {
 						//GenericCollectionableObjectTable.Attach(objectToDelete);
 						var objectToDelete = GenericCollectionableObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
+							GenericCollectionableObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "GenericObject":
@@ -1267,7 +1302,7 @@ namespace SQLite.TheBall.Interface {
 						//GenericObjectTable.Attach(objectToDelete);
 						var objectToDelete = GenericObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GenericObjectTable.DeleteOnSubmit(objectToDelete);
+							GenericObjectTable.Remove(objectToDelete);
 						break;
 					}
 					case "GenericValue":
@@ -1276,7 +1311,7 @@ namespace SQLite.TheBall.Interface {
 						//GenericValueTable.Attach(objectToDelete);
 						var objectToDelete = GenericValueTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GenericValueTable.DeleteOnSubmit(objectToDelete);
+							GenericValueTable.Remove(objectToDelete);
 						break;
 					}
 					case "ConnectionCollection":
@@ -1285,7 +1320,7 @@ namespace SQLite.TheBall.Interface {
 						//ConnectionCollectionTable.Attach(objectToDelete);
 						var objectToDelete = ConnectionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
+							ConnectionCollectionTable.Remove(objectToDelete);
 						break;
 					}
 					case "GenericObjectCollection":
@@ -1294,7 +1329,7 @@ namespace SQLite.TheBall.Interface {
 						//GenericObjectCollectionTable.Attach(objectToDelete);
 						var objectToDelete = GenericObjectCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
-							GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+							GenericObjectCollectionTable.Remove(objectToDelete);
 						break;
 					}
 				}
@@ -1302,87 +1337,38 @@ namespace SQLite.TheBall.Interface {
 
 
 
-			public Table<InterfaceOperation> InterfaceOperationTable {
-				get {
-					return this.GetTable<InterfaceOperation>();
-				}
-			}
-			public Table<Connection> ConnectionTable {
-				get {
-					return this.GetTable<Connection>();
-				}
-			}
-			public Table<TransferPackage> TransferPackageTable {
-				get {
-					return this.GetTable<TransferPackage>();
-				}
-			}
-			public Table<CategoryLink> CategoryLinkTable {
-				get {
-					return this.GetTable<CategoryLink>();
-				}
-			}
-			public Table<Category> CategoryTable {
-				get {
-					return this.GetTable<Category>();
-				}
-			}
-			public Table<StatusSummary> StatusSummaryTable {
-				get {
-					return this.GetTable<StatusSummary>();
-				}
-			}
-			public Table<InformationChangeItem> InformationChangeItemTable {
-				get {
-					return this.GetTable<InformationChangeItem>();
-				}
-			}
-			public Table<OperationExecutionItem> OperationExecutionItemTable {
-				get {
-					return this.GetTable<OperationExecutionItem>();
-				}
-			}
-			public Table<GenericCollectionableObject> GenericCollectionableObjectTable {
-				get {
-					return this.GetTable<GenericCollectionableObject>();
-				}
-			}
-			public Table<GenericObject> GenericObjectTable {
-				get {
-					return this.GetTable<GenericObject>();
-				}
-			}
-			public Table<GenericValue> GenericValueTable {
-				get {
-					return this.GetTable<GenericValue>();
-				}
-			}
-			public Table<ConnectionCollection> ConnectionCollectionTable {
-				get {
-					return this.GetTable<ConnectionCollection>();
-				}
-			}
-			public Table<GenericObjectCollection> GenericObjectCollectionTable {
-				get {
-					return this.GetTable<GenericObjectCollection>();
-				}
-			}
+			public DbSet<InterfaceOperation> InterfaceOperationTable { get; set; }
+			public DbSet<Connection> ConnectionTable { get; set; }
+			public DbSet<TransferPackage> TransferPackageTable { get; set; }
+			public DbSet<CategoryLink> CategoryLinkTable { get; set; }
+			public DbSet<Category> CategoryTable { get; set; }
+			public DbSet<StatusSummary> StatusSummaryTable { get; set; }
+			public DbSet<InformationChangeItem> InformationChangeItemTable { get; set; }
+			public DbSet<OperationExecutionItem> OperationExecutionItemTable { get; set; }
+			public DbSet<GenericCollectionableObject> GenericCollectionableObjectTable { get; set; }
+			public DbSet<GenericObject> GenericObjectTable { get; set; }
+			public DbSet<GenericValue> GenericValueTable { get; set; }
+			public DbSet<ConnectionCollection> ConnectionCollectionTable { get; set; }
+			public DbSet<GenericObjectCollection> GenericObjectCollectionTable { get; set; }
         }
 
-    [Table(Name = "InterfaceOperation")]
-	[ScaffoldTable(true)]
+    [Table("InterfaceOperation")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InterfaceOperation: {ID}")]
 	public class InterfaceOperation : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1400,61 +1386,61 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OperationName] TEXT NOT NULL, 
-[Status] TEXT NOT NULL, 
-[OperationDataType] TEXT NOT NULL, 
-[Created] TEXT NOT NULL, 
-[Started] TEXT NOT NULL, 
+[OperationName] TEXT DEFAULT '', 
+[Status] TEXT DEFAULT '', 
+[OperationDataType] TEXT DEFAULT '', 
+[Created] TEXT DEFAULT '', 
+[Started] TEXT DEFAULT '', 
 [Progress] REAL NOT NULL, 
-[Finished] TEXT NOT NULL, 
-[ErrorCode] TEXT NOT NULL, 
-[ErrorMessage] TEXT NOT NULL
+[Finished] TEXT DEFAULT '', 
+[ErrorCode] TEXT DEFAULT '', 
+[ErrorMessage] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OperationName { get; set; }
 		// private string _unmodified_OperationName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Status { get; set; }
 		// private string _unmodified_Status;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OperationDataType { get; set; }
 		// private string _unmodified_OperationDataType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Created { get; set; }
 		// private DateTime _unmodified_Created;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Started { get; set; }
 		// private DateTime _unmodified_Started;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double Progress { get; set; }
 		// private double _unmodified_Progress;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime Finished { get; set; }
 		// private DateTime _unmodified_Finished;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ErrorCode { get; set; }
 		// private string _unmodified_ErrorCode;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ErrorMessage { get; set; }
 		// private string _unmodified_ErrorMessage;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1472,20 +1458,23 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 				ErrorMessage = string.Empty;
 		}
 	}
-    [Table(Name = "Connection")]
-	[ScaffoldTable(true)]
+    [Table("Connection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Connection: {ID}")]
 	public class Connection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1503,58 +1492,59 @@ CREATE TABLE IF NOT EXISTS [Connection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OutputInformationID] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[DeviceID] TEXT NOT NULL, 
+[OutputInformationID] TEXT DEFAULT '', 
+[Description] TEXT DEFAULT '', 
+[DeviceID] TEXT DEFAULT '', 
 [IsActiveParty] INTEGER NOT NULL, 
-[OtherSideConnectionID] TEXT NOT NULL, 
-[ThisSideCategoriesID] TEXT NULL, 
-[OtherSideCategoriesID] TEXT NULL, 
-[CategoryLinksID] TEXT NULL, 
-[IncomingPackagesID] TEXT NULL, 
-[OutgoingPackagesID] TEXT NULL, 
-[OperationNameToListPackageContents] TEXT NOT NULL, 
-[OperationNameToProcessReceived] TEXT NOT NULL, 
-[OperationNameToUpdateThisSideCategories] TEXT NOT NULL, 
-[ProcessIDToListPackageContents] TEXT NOT NULL, 
-[ProcessIDToProcessReceived] TEXT NOT NULL, 
-[ProcessIDToUpdateThisSideCategories] TEXT NOT NULL
+[OtherSideConnectionID] TEXT DEFAULT '', 
+[ThisSideCategoriesID] TEXT DEFAULT '', 
+[OtherSideCategoriesID] TEXT DEFAULT '', 
+[CategoryLinksID] TEXT DEFAULT '', 
+[IncomingPackagesID] TEXT DEFAULT '', 
+[OutgoingPackagesID] TEXT DEFAULT '', 
+[OperationNameToListPackageContents] TEXT DEFAULT '', 
+[OperationNameToProcessReceived] TEXT DEFAULT '', 
+[OperationNameToUpdateThisSideCategories] TEXT DEFAULT '', 
+[ProcessIDToListPackageContents] TEXT DEFAULT '', 
+[ProcessIDToProcessReceived] TEXT DEFAULT '', 
+[ProcessIDToUpdateThisSideCategories] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OutputInformationID { get; set; }
 		// private string _unmodified_OutputInformationID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string DeviceID { get; set; }
 		// private string _unmodified_DeviceID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsActiveParty { get; set; }
 		// private bool _unmodified_IsActiveParty;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OtherSideConnectionID { get; set; }
 		// private string _unmodified_OtherSideConnectionID;
-        [Column(Name = "ThisSideCategories")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "ThisSideCategories")] 
+        //[ScaffoldColumn(true)]
 		public string ThisSideCategoriesData { get; set; }
 
         private bool _IsThisSideCategoriesRetrieved = false;
         private bool _IsThisSideCategoriesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.Category> _ThisSideCategories = null;
-        public ObservableCollection<SER.TheBall.Interface.Category> ThisSideCategories
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.Category> ThisSideCategories
         {
             get
             {
@@ -1592,14 +1582,15 @@ CREATE TABLE IF NOT EXISTS [Connection](
 			}
         }
 
-        [Column(Name = "OtherSideCategories")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "OtherSideCategories")] 
+        //[ScaffoldColumn(true)]
 		public string OtherSideCategoriesData { get; set; }
 
         private bool _IsOtherSideCategoriesRetrieved = false;
         private bool _IsOtherSideCategoriesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.Category> _OtherSideCategories = null;
-        public ObservableCollection<SER.TheBall.Interface.Category> OtherSideCategories
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.Category> OtherSideCategories
         {
             get
             {
@@ -1637,14 +1628,15 @@ CREATE TABLE IF NOT EXISTS [Connection](
 			}
         }
 
-        [Column(Name = "CategoryLinks")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "CategoryLinks")] 
+        //[ScaffoldColumn(true)]
 		public string CategoryLinksData { get; set; }
 
         private bool _IsCategoryLinksRetrieved = false;
         private bool _IsCategoryLinksChanged = false;
         private ObservableCollection<SER.TheBall.Interface.CategoryLink> _CategoryLinks = null;
-        public ObservableCollection<SER.TheBall.Interface.CategoryLink> CategoryLinks
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.CategoryLink> CategoryLinks
         {
             get
             {
@@ -1682,14 +1674,15 @@ CREATE TABLE IF NOT EXISTS [Connection](
 			}
         }
 
-        [Column(Name = "IncomingPackages")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "IncomingPackages")] 
+        //[ScaffoldColumn(true)]
 		public string IncomingPackagesData { get; set; }
 
         private bool _IsIncomingPackagesRetrieved = false;
         private bool _IsIncomingPackagesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.TransferPackage> _IncomingPackages = null;
-        public ObservableCollection<SER.TheBall.Interface.TransferPackage> IncomingPackages
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.TransferPackage> IncomingPackages
         {
             get
             {
@@ -1727,14 +1720,15 @@ CREATE TABLE IF NOT EXISTS [Connection](
 			}
         }
 
-        [Column(Name = "OutgoingPackages")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "OutgoingPackages")] 
+        //[ScaffoldColumn(true)]
 		public string OutgoingPackagesData { get; set; }
 
         private bool _IsOutgoingPackagesRetrieved = false;
         private bool _IsOutgoingPackagesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.TransferPackage> _OutgoingPackages = null;
-        public ObservableCollection<SER.TheBall.Interface.TransferPackage> OutgoingPackages
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.TransferPackage> OutgoingPackages
         {
             get
             {
@@ -1773,33 +1767,33 @@ CREATE TABLE IF NOT EXISTS [Connection](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OperationNameToListPackageContents { get; set; }
 		// private string _unmodified_OperationNameToListPackageContents;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OperationNameToProcessReceived { get; set; }
 		// private string _unmodified_OperationNameToProcessReceived;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OperationNameToUpdateThisSideCategories { get; set; }
 		// private string _unmodified_OperationNameToUpdateThisSideCategories;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProcessIDToListPackageContents { get; set; }
 		// private string _unmodified_ProcessIDToListPackageContents;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProcessIDToProcessReceived { get; set; }
 		// private string _unmodified_ProcessIDToProcessReceived;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ProcessIDToUpdateThisSideCategories { get; set; }
 		// private string _unmodified_ProcessIDToUpdateThisSideCategories;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1857,20 +1851,23 @@ CREATE TABLE IF NOT EXISTS [Connection](
 
 		}
 	}
-    [Table(Name = "TransferPackage")]
-	[ScaffoldTable(true)]
+    [Table("TransferPackage")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("TransferPackage: {ID}")]
 	public class TransferPackage : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -1888,42 +1885,43 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ConnectionID] TEXT NOT NULL, 
-[PackageDirection] TEXT NOT NULL, 
-[PackageType] TEXT NOT NULL, 
+[ConnectionID] TEXT DEFAULT '', 
+[PackageDirection] TEXT DEFAULT '', 
+[PackageType] TEXT DEFAULT '', 
 [IsProcessed] INTEGER NOT NULL, 
-[PackageContentBlobs] TEXT NOT NULL
+[PackageContentBlobs] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ConnectionID { get; set; }
 		// private string _unmodified_ConnectionID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PackageDirection { get; set; }
 		// private string _unmodified_PackageDirection;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string PackageType { get; set; }
 		// private string _unmodified_PackageType;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IsProcessed { get; set; }
 		// private bool _unmodified_IsProcessed;
-        [Column(Name = "PackageContentBlobs")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "PackageContentBlobs")] 
+        //[ScaffoldColumn(true)]
 		public string PackageContentBlobsData { get; set; }
 
         private bool _IsPackageContentBlobsRetrieved = false;
         private bool _IsPackageContentBlobsChanged = false;
         private ObservableCollection<string> _PackageContentBlobs = null;
-        public ObservableCollection<string> PackageContentBlobs
+        [NotMapped]
+		public ObservableCollection<string> PackageContentBlobs
         {
             get
             {
@@ -1978,20 +1976,23 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 
 		}
 	}
-    [Table(Name = "CategoryLink")]
-	[ScaffoldTable(true)]
+    [Table("CategoryLink")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("CategoryLink: {ID}")]
 	public class CategoryLink : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -2009,25 +2010,25 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[SourceCategoryID] TEXT NOT NULL, 
-[TargetCategoryID] TEXT NOT NULL, 
-[LinkingType] TEXT NOT NULL
+[SourceCategoryID] TEXT DEFAULT '', 
+[TargetCategoryID] TEXT DEFAULT '', 
+[LinkingType] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string SourceCategoryID { get; set; }
 		// private string _unmodified_SourceCategoryID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string TargetCategoryID { get; set; }
 		// private string _unmodified_TargetCategoryID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string LinkingType { get; set; }
 		// private string _unmodified_LinkingType;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2041,20 +2042,23 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 				LinkingType = string.Empty;
 		}
 	}
-    [Table(Name = "Category")]
-	[ScaffoldTable(true)]
+    [Table("Category")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("Category: {ID}")]
 	public class Category : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -2072,37 +2076,37 @@ CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[NativeCategoryID] TEXT NOT NULL, 
-[NativeCategoryDomainName] TEXT NOT NULL, 
-[NativeCategoryObjectName] TEXT NOT NULL, 
-[NativeCategoryTitle] TEXT NOT NULL, 
-[IdentifyingCategoryName] TEXT NOT NULL
+[NativeCategoryID] TEXT DEFAULT '', 
+[NativeCategoryDomainName] TEXT DEFAULT '', 
+[NativeCategoryObjectName] TEXT DEFAULT '', 
+[NativeCategoryTitle] TEXT DEFAULT '', 
+[IdentifyingCategoryName] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string NativeCategoryID { get; set; }
 		// private string _unmodified_NativeCategoryID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string NativeCategoryDomainName { get; set; }
 		// private string _unmodified_NativeCategoryDomainName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string NativeCategoryObjectName { get; set; }
 		// private string _unmodified_NativeCategoryObjectName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string NativeCategoryTitle { get; set; }
 		// private string _unmodified_NativeCategoryTitle;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IdentifyingCategoryName { get; set; }
 		// private string _unmodified_IdentifyingCategoryName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2120,20 +2124,23 @@ CREATE TABLE IF NOT EXISTS [Category](
 				IdentifyingCategoryName = string.Empty;
 		}
 	}
-    [Table(Name = "StatusSummary")]
-	[ScaffoldTable(true)]
+    [Table("StatusSummary")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("StatusSummary: {ID}")]
 	public class StatusSummary : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -2151,21 +2158,22 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[PendingOperationsID] TEXT NULL, 
-[ExecutingOperationsID] TEXT NULL, 
-[RecentCompletedOperationsID] TEXT NULL, 
-[ChangeItemTrackingList] TEXT NOT NULL
+[PendingOperationsID] TEXT DEFAULT '', 
+[ExecutingOperationsID] TEXT DEFAULT '', 
+[RecentCompletedOperationsID] TEXT DEFAULT '', 
+[ChangeItemTrackingList] TEXT DEFAULT ''
 )";
         }
 
-        [Column(Name = "PendingOperations")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "PendingOperations")] 
+        //[ScaffoldColumn(true)]
 		public string PendingOperationsData { get; set; }
 
         private bool _IsPendingOperationsRetrieved = false;
         private bool _IsPendingOperationsChanged = false;
         private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _PendingOperations = null;
-        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> PendingOperations
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> PendingOperations
         {
             get
             {
@@ -2203,14 +2211,15 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 			}
         }
 
-        [Column(Name = "ExecutingOperations")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "ExecutingOperations")] 
+        //[ScaffoldColumn(true)]
 		public string ExecutingOperationsData { get; set; }
 
         private bool _IsExecutingOperationsRetrieved = false;
         private bool _IsExecutingOperationsChanged = false;
         private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _ExecutingOperations = null;
-        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> ExecutingOperations
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> ExecutingOperations
         {
             get
             {
@@ -2248,14 +2257,15 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 			}
         }
 
-        [Column(Name = "RecentCompletedOperations")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "RecentCompletedOperations")] 
+        //[ScaffoldColumn(true)]
 		public string RecentCompletedOperationsData { get; set; }
 
         private bool _IsRecentCompletedOperationsRetrieved = false;
         private bool _IsRecentCompletedOperationsChanged = false;
         private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _RecentCompletedOperations = null;
-        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> RecentCompletedOperations
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> RecentCompletedOperations
         {
             get
             {
@@ -2293,14 +2303,15 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 			}
         }
 
-        [Column(Name = "ChangeItemTrackingList")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "ChangeItemTrackingList")] 
+        //[ScaffoldColumn(true)]
 		public string ChangeItemTrackingListData { get; set; }
 
         private bool _IsChangeItemTrackingListRetrieved = false;
         private bool _IsChangeItemTrackingListChanged = false;
         private ObservableCollection<string> _ChangeItemTrackingList = null;
-        public ObservableCollection<string> ChangeItemTrackingList
+        [NotMapped]
+		public ObservableCollection<string> ChangeItemTrackingList
         {
             get
             {
@@ -2367,20 +2378,23 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 
 		}
 	}
-    [Table(Name = "InformationChangeItem")]
-	[ScaffoldTable(true)]
+    [Table("InformationChangeItem")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("InformationChangeItem: {ID}")]
 	public class InformationChangeItem : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -2398,30 +2412,31 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[StartTimeUTC] TEXT NOT NULL, 
-[EndTimeUTC] TEXT NOT NULL, 
-[ChangedObjectIDList] TEXT NOT NULL
+[StartTimeUTC] TEXT DEFAULT '', 
+[EndTimeUTC] TEXT DEFAULT '', 
+[ChangedObjectIDList] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime StartTimeUTC { get; set; }
 		// private DateTime _unmodified_StartTimeUTC;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime EndTimeUTC { get; set; }
 		// private DateTime _unmodified_EndTimeUTC;
-        [Column(Name = "ChangedObjectIDList")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "ChangedObjectIDList")] 
+        //[ScaffoldColumn(true)]
 		public string ChangedObjectIDListData { get; set; }
 
         private bool _IsChangedObjectIDListRetrieved = false;
         private bool _IsChangedObjectIDListChanged = false;
         private ObservableCollection<string> _ChangedObjectIDList = null;
-        public ObservableCollection<string> ChangedObjectIDList
+        [NotMapped]
+		public ObservableCollection<string> ChangedObjectIDList
         {
             get
             {
@@ -2470,20 +2485,23 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 
 		}
 	}
-    [Table(Name = "OperationExecutionItem")]
-	[ScaffoldTable(true)]
+    [Table("OperationExecutionItem")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("OperationExecutionItem: {ID}")]
 	public class OperationExecutionItem : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -2501,55 +2519,55 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[OperationName] TEXT NOT NULL, 
-[OperationDomain] TEXT NOT NULL, 
-[OperationID] TEXT NOT NULL, 
-[CallerProvidedInfo] TEXT NOT NULL, 
-[CreationTime] TEXT NOT NULL, 
-[ExecutionBeginTime] TEXT NOT NULL, 
-[ExecutionCompletedTime] TEXT NOT NULL, 
-[ExecutionStatus] TEXT NOT NULL
+[OperationName] TEXT DEFAULT '', 
+[OperationDomain] TEXT DEFAULT '', 
+[OperationID] TEXT DEFAULT '', 
+[CallerProvidedInfo] TEXT DEFAULT '', 
+[CreationTime] TEXT DEFAULT '', 
+[ExecutionBeginTime] TEXT DEFAULT '', 
+[ExecutionCompletedTime] TEXT DEFAULT '', 
+[ExecutionStatus] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OperationName { get; set; }
 		// private string _unmodified_OperationName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OperationDomain { get; set; }
 		// private string _unmodified_OperationDomain;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OperationID { get; set; }
 		// private string _unmodified_OperationID;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string CallerProvidedInfo { get; set; }
 		// private string _unmodified_CallerProvidedInfo;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime CreationTime { get; set; }
 		// private DateTime _unmodified_CreationTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime ExecutionBeginTime { get; set; }
 		// private DateTime _unmodified_ExecutionBeginTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime ExecutionCompletedTime { get; set; }
 		// private DateTime _unmodified_ExecutionCompletedTime;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ExecutionStatus { get; set; }
 		// private string _unmodified_ExecutionStatus;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2567,20 +2585,23 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 				ExecutionStatus = string.Empty;
 		}
 	}
-    [Table(Name = "GenericCollectionableObject")]
-	[ScaffoldTable(true)]
+    [Table("GenericCollectionableObject")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GenericCollectionableObject: {ID}")]
 	public class GenericCollectionableObject : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -2598,11 +2619,11 @@ CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ValueObjectID] TEXT NULL
+[ValueObjectID] TEXT DEFAULT ''
 )";
         }
 
-			[Column]
+			//[Column]
 			public string ValueObjectID { get; set; }
 			private EntityRef< GenericObject > _ValueObject;
 			[Association(Storage = "_ValueObject", ThisKey = "ValueObjectID")]
@@ -2617,20 +2638,23 @@ CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
 		
 		}
 	}
-    [Table(Name = "GenericObject")]
-	[ScaffoldTable(true)]
+    [Table("GenericObject")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GenericObject: {ID}")]
 	public class GenericObject : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -2648,20 +2672,21 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ValuesID] TEXT NULL, 
+[ValuesID] TEXT DEFAULT '', 
 [IncludeInCollection] INTEGER NOT NULL, 
-[OptionalCollectionName] TEXT NOT NULL
+[OptionalCollectionName] TEXT DEFAULT ''
 )";
         }
 
-        [Column(Name = "Values")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "Values")] 
+        //[ScaffoldColumn(true)]
 		public string ValuesData { get; set; }
 
         private bool _IsValuesRetrieved = false;
         private bool _IsValuesChanged = false;
         private ObservableCollection<SER.TheBall.Interface.GenericValue> _Values = null;
-        public ObservableCollection<SER.TheBall.Interface.GenericValue> Values
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.GenericValue> Values
         {
             get
             {
@@ -2700,13 +2725,13 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool IncludeInCollection { get; set; }
 		// private bool _unmodified_IncludeInCollection;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string OptionalCollectionName { get; set; }
 		// private string _unmodified_OptionalCollectionName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2722,20 +2747,23 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 
 		}
 	}
-    [Table(Name = "GenericValue")]
-	[ScaffoldTable(true)]
+    [Table("GenericValue")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GenericValue: {ID}")]
 	public class GenericValue : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -2753,39 +2781,40 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ValueName] TEXT NOT NULL, 
-[String] TEXT NOT NULL, 
-[StringArray] TEXT NOT NULL, 
+[ValueName] TEXT DEFAULT '', 
+[String] TEXT DEFAULT '', 
+[StringArray] TEXT DEFAULT '', 
 [Number] REAL NOT NULL, 
-[NumberArray] TEXT NOT NULL, 
+[NumberArray] TEXT DEFAULT '', 
 [Boolean] INTEGER NOT NULL, 
-[BooleanArray] TEXT NOT NULL, 
-[DateTime] TEXT NOT NULL, 
-[DateTimeArray] TEXT NOT NULL, 
-[ObjectID] TEXT NULL, 
-[ObjectArrayID] TEXT NULL, 
-[IndexingInfo] TEXT NOT NULL
+[BooleanArray] TEXT DEFAULT '', 
+[DateTime] TEXT DEFAULT '', 
+[DateTimeArray] TEXT DEFAULT '', 
+[ObjectID] TEXT DEFAULT '', 
+[ObjectArrayID] TEXT DEFAULT '', 
+[IndexingInfo] TEXT DEFAULT ''
 )";
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string ValueName { get; set; }
 		// private string _unmodified_ValueName;
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string String { get; set; }
 		// private string _unmodified_String;
-        [Column(Name = "StringArray")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "StringArray")] 
+        //[ScaffoldColumn(true)]
 		public string StringArrayData { get; set; }
 
         private bool _IsStringArrayRetrieved = false;
         private bool _IsStringArrayChanged = false;
         private ObservableCollection<string> _StringArray = null;
-        public ObservableCollection<string> StringArray
+        [NotMapped]
+		public ObservableCollection<string> StringArray
         {
             get
             {
@@ -2824,18 +2853,19 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public double Number { get; set; }
 		// private double _unmodified_Number;
-        [Column(Name = "NumberArray")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "NumberArray")] 
+        //[ScaffoldColumn(true)]
 		public string NumberArrayData { get; set; }
 
         private bool _IsNumberArrayRetrieved = false;
         private bool _IsNumberArrayChanged = false;
         private ObservableCollection<double> _NumberArray = null;
-        public ObservableCollection<double> NumberArray
+        [NotMapped]
+		public ObservableCollection<double> NumberArray
         {
             get
             {
@@ -2874,18 +2904,19 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public bool Boolean { get; set; }
 		// private bool _unmodified_Boolean;
-        [Column(Name = "BooleanArray")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "BooleanArray")] 
+        //[ScaffoldColumn(true)]
 		public string BooleanArrayData { get; set; }
 
         private bool _IsBooleanArrayRetrieved = false;
         private bool _IsBooleanArrayChanged = false;
         private ObservableCollection<bool> _BooleanArray = null;
-        public ObservableCollection<bool> BooleanArray
+        [NotMapped]
+		public ObservableCollection<bool> BooleanArray
         {
             get
             {
@@ -2924,18 +2955,19 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public DateTime DateTime { get; set; }
 		// private DateTime _unmodified_DateTime;
-        [Column(Name = "DateTimeArray")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "DateTimeArray")] 
+        //[ScaffoldColumn(true)]
 		public string DateTimeArrayData { get; set; }
 
         private bool _IsDateTimeArrayRetrieved = false;
         private bool _IsDateTimeArrayChanged = false;
         private ObservableCollection<DateTime> _DateTimeArray = null;
-        public ObservableCollection<DateTime> DateTimeArray
+        [NotMapped]
+		public ObservableCollection<DateTime> DateTimeArray
         {
             get
             {
@@ -2973,7 +3005,7 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 			}
         }
 
-			[Column]
+			//[Column]
 			public string ObjectID { get; set; }
 			private EntityRef< GenericObject > _Object;
 			[Association(Storage = "_Object", ThisKey = "ObjectID")]
@@ -2983,14 +3015,15 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 				set { this._Object.Entity = value; }
 			}
 
-        [Column(Name = "ObjectArray")] 
-        [ScaffoldColumn(true)]
+        //[Column(Name = "ObjectArray")] 
+        //[ScaffoldColumn(true)]
 		public string ObjectArrayData { get; set; }
 
         private bool _IsObjectArrayRetrieved = false;
         private bool _IsObjectArrayChanged = false;
         private ObservableCollection<SER.TheBall.Interface.GenericObject> _ObjectArray = null;
-        public ObservableCollection<SER.TheBall.Interface.GenericObject> ObjectArray
+        [NotMapped]
+		public ObservableCollection<SER.TheBall.Interface.GenericObject> ObjectArray
         {
             get
             {
@@ -3029,8 +3062,8 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         }
 
 
-		[Column]
-        [ScaffoldColumn(true)]
+		//[Column]
+        //[ScaffoldColumn(true)]
 		public string IndexingInfo { get; set; }
 		// private string _unmodified_IndexingInfo;
         public void PrepareForStoring(bool isInitialInsert)
@@ -3074,20 +3107,23 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 
 		}
 	}
-    [Table(Name = "ConnectionCollection")]
-	[ScaffoldTable(true)]
+    [Table("ConnectionCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("ConnectionCollection: {ID}")]
 	public class ConnectionCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -3112,24 +3148,27 @@ CREATE TABLE IF NOT EXISTS [ConnectionCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "GenericObjectCollection")]
-	[ScaffoldTable(true)]
+    [Table("GenericObjectCollection")]
+	//[ScaffoldTable(true)]
 	[DebuggerDisplay("GenericObjectCollection: {ID}")]
 	public class GenericObjectCollection : ITheBallDataContextStorable
 	{
+		public static void EntityConfig(ModelBuilder modelBuilder) {
+		}
 
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column(IsPrimaryKey = true)]
+        //[ScaffoldColumn(true)]
+		[Key]
+        //[Editable(false)]
 		public string ID { get; set; }
 
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+		//[Column]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string ETag { get; set; }
 
 
@@ -3154,8 +3193,8 @@ CREATE TABLE IF NOT EXISTS [GenericObjectCollection](
         {
 		}
 		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
+        //[ScaffoldColumn(true)]
+        //[Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
  } 

@@ -1,9 +1,11 @@
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.Storage;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -25,7 +27,7 @@ namespace AaltoGlobalImpact.OIP
             return operationReturnValue.ContentLocations;
         }
 
-        public static void ExecuteMethod_SetContentsAsProcessOutput(Process process, string[] callPickCategorizedContentConnectionOutput)
+        public static async Task ExecuteMethod_SetContentsAsProcessOutputAsync(Process process, string[] callPickCategorizedContentConnectionOutput)
         {
 /*
  *                 var contentLocation = processItem.Outputs.First(item => item.ItemFullType == "ContentLocation").ItemValue;
@@ -39,8 +41,8 @@ namespace AaltoGlobalImpact.OIP
                 {
                     string extension = Path.GetExtension(contentLocation);
                     string fullLocationWithoutExtension = contentLocation.Substring(0, contentLocation.Length - extension.Length);
-                    var mediaContentBlobs = InformationContext.CurrentOwner.GetOwnerBlobListing(fullLocationWithoutExtension, true);
-                    foreach (CloudBlockBlob mediaContentBlob in mediaContentBlobs)
+                    var mediaContentBlobs = await BlobStorage.GetBlobItemsA(InformationContext.CurrentOwner, fullLocationWithoutExtension);
+                    foreach (var mediaContentBlob in mediaContentBlobs)
                     {
                         SemanticInformationItem semanticItemForLocation = new SemanticInformationItem
                         {
@@ -50,7 +52,7 @@ namespace AaltoGlobalImpact.OIP
                         SemanticInformationItem semanticItemForMD5 = new SemanticInformationItem
                         {
                             ItemFullType = "ContentMD5",
-                            ItemValue = mediaContentBlob.Properties.ContentMD5
+                            ItemValue = mediaContentBlob.ContentMD5
                         };
                         ProcessItem processItem = new ProcessItem();
                         processItem.Outputs.Add(semanticItemForLocation);
@@ -61,7 +63,7 @@ namespace AaltoGlobalImpact.OIP
                 else
                 {
                     var blob = StorageSupport.GetOwnerBlobReference(contentLocation);
-                    blob.FetchAttributes();
+                    await blob.FetchAttributesAsync();
                     SemanticInformationItem semanticItemForLocation = new SemanticInformationItem
                         {
                             ItemFullType = "ContentLocation",

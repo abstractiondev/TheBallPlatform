@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 
@@ -12,16 +13,16 @@ namespace AaltoGlobalImpact.OIP
 {
     public static class CreateAdditionalMediaFormatsImplementation
     {
-        public static Bitmap GetTarget_BitmapData(string masterRelativeLocation)
+        public static async Task<Bitmap> GetTarget_BitmapDataAsync(string masterRelativeLocation)
         {
             try
             {
                 CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(masterRelativeLocation);
-                blob.FetchAttributes();
+                await blob.FetchAttributesAsync();
                 Bitmap bitmap;
                 using(Stream bitmapStream = new MemoryStream((int) blob.Properties.Length))
                 {
-                    blob.DownloadToStream(bitmapStream);
+                    await blob.DownloadToStreamAsync(bitmapStream);
                     bitmapStream.Seek(0, SeekOrigin.Begin);
                     bitmap = new Bitmap(bitmapStream);
                 }
@@ -114,14 +115,14 @@ namespace AaltoGlobalImpact.OIP
             }
         }
 
-        private static void StoreToBlob(string blobLocation, Bitmap bitmap, ImageFormat format)
+        private static async Task StoreToBlob(string blobLocation, Bitmap bitmap, ImageFormat format)
         {
             var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobLocation);
             using(MemoryStream stream = new MemoryStream())
             {
                 bitmap.Save(stream, format);
                 stream.Seek(0, SeekOrigin.Begin);
-                blob.UploadFromStream(stream);
+                await blob.UploadFromStreamAsync(stream);
                 Debug.WriteLine("Uploaded media blob: " + blobLocation);
             }
         }

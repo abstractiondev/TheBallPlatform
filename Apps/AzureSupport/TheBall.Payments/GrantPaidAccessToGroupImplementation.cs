@@ -13,19 +13,7 @@ namespace TheBall.Payments
             var accountEmail = InformationContext.CurrentAccount.AccountEmail;
             if (string.IsNullOrEmpty(accountEmail))
                 throw new InvalidDataException("Account email is required for granting access to account for plan groups");
-            InviteMemberToGroup.Execute(new InviteMemberToGroupParameters
-            {
-                GroupID = groupId,
-                MemberEmailAddress = accountEmail,
-                MemberRole = TBCollaboratorRole.ViewerRoleValue,
-                DontSendEmailInvitation = true
-            });
-            ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
-            {
-                GroupID = groupId,
-                MemberEmailAddress = accountEmail
-            });
-            
-        }
+            throw new NotImplementedException();
+       }
     }
 }

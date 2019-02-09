@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
@@ -12,9 +13,9 @@ namespace TheBall.CORE
             return VirtualOwner.FigureOwner("grp/" + groupId);
         }
 
-        public static GroupContainer GetTarget_GroupContainer(IContainerOwner groupAsOwner)
+        public static async Task<GroupContainer> GetTarget_GroupContainerAsync(IContainerOwner groupAsOwner)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(groupAsOwner, "default");
+            return await ObjectStorage.RetrieveFromOwnerContentA<GroupContainer>(groupAsOwner, "default");
         }
 
         public static void ExecuteMethod_ValidateGroupContainerID(string groupId, GroupContainer groupContainer)
@@ -40,10 +41,10 @@ namespace TheBall.CORE
 
         }
 
-        public static void ExecuteMethod_StoreObjects(TBRGroupRoot groupRoot, GroupContainer groupContainer)
+        public static async Task ExecuteMethod_StoreObjectsAsync(TBRGroupRoot groupRoot, GroupContainer groupContainer)
         {
-            groupRoot.StoreInformation();
-            groupContainer.StoreInformation();
+            await groupRoot.StoreInformationAsync();
+            await groupContainer.StoreInformationAsync();
         }
 
         public static void ExecuteMethod_FixContentTypesAndMetadataOfBlobs(IContainerOwner groupAsOwner)

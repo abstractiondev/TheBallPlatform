@@ -5,6 +5,7 @@ using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {
+#if never
     partial class TBSystem : IContainerOwner
     {
         private const string SingletonRelativeLocation = "AAA-System";
@@ -38,4 +39,5 @@ namespace AaltoGlobalImpact.OIP
             get { return CurrSystem.ID; }
         }
     }
+#endif
 }
