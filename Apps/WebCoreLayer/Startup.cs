@@ -31,6 +31,8 @@ namespace WebCoreLayer
 {
     public class Startup
     {
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -43,6 +45,18 @@ namespace WebCoreLayer
         public void ConfigureServices(IServiceCollection services)
         {
             initializePlatform();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
+            bool autoApproveClaimBasedEmail = true;
             services.AddMvcCore().AddAuthorization().AddJsonFormatters();
             services.AddDataProtection().PersistKeysToAzureBlobStorage(new Uri(InfraSharedConfig.Current.SecurityKeyBlobSAS));
             var authBuilder = services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -58,7 +72,7 @@ namespace WebCoreLayer
                         if (claimEmailValue == null)
                             throw new SecurityException("Email address from claim missing");
 
-                        if (claimEmailValue == LoginController.AnonymousEmail)
+                        if (claimEmailValue == LoginController.AnonymousEmail || autoApproveClaimBasedEmail)
                         {
                             await EnsureAccount.ExecuteAsync(new EnsureAccountParameters()
                             {
@@ -155,6 +169,7 @@ namespace WebCoreLayer
             app.UseHttpMethodOverride();
             app.UseAuthentication();
             app.UseInformationContextAuthentication();
+            app.UseCors(MyAllowSpecificOrigins);
             //app.UseStaticFiles();
             app.UseMvc(routes =>
             {
