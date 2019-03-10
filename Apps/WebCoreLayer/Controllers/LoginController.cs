@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheBall;
+using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 
 namespace WebCoreLayer.Controllers
@@ -39,11 +40,68 @@ namespace WebCoreLayer.Controllers
             await HttpContext.ChallengeAsync(instanceProvider, properties);
         }
 
+        public class RequestParameters
+        {
+            public string email { get; set; }
+        }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task Login(string login, string password, string returnUrl)
+        [HttpPost]
+        public async Task RequestPassword([FromBody] RequestParameters parameters)
         {
+
+        }
+
+        public class ResetParameters
+        {
+            public string password { get; set; }
+            public string confirmPassword { get; set; }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [HttpPost]
+        public async Task ResetPassword([FromBody] ResetParameters parameters)
+        {
+
+        }
+
+
+
+        public class RegisterParameters
+        {
+            public string fullName { get; set; }
+            public string email { get; set; }
+            public string password { get; set; }
+            public string confirmPassword { get; set; }
+            public bool terms { get; set; }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [HttpPost]
+        public async Task Register([FromBody] RegisterParameters parameters)
+        {
+
+        }
+
+
+        public class LoginParameters
+        {
+            public string email { get; set; }
+            public string password { get; set; }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [HttpPost]
+        public async Task Login(string login, string password, string returnUrl)
+        //public async Task Login([FromBody] LoginParameters parameters)
+        {
+            //string returnUrl = "";
+            //string login = parameters.email;
+            //string password = parameters.password;
             var instanceName = InstanceConfig.Current.InstanceName;
             var properties = new AuthenticationProperties
             {
