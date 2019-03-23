@@ -779,7 +779,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
 			ETag = String.Empty;
 		}
 
-        public static string GetCreateTableSQL() 
+        public static string GetCreateTableSQL()
         {
             return
                 @"
