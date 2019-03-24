@@ -258,6 +258,7 @@ namespace INT {
 			private DateTime _unmodified_VoteTime;
 			
 			}
+	
 	#region Operation Calls
 	public partial class Server 
 	{

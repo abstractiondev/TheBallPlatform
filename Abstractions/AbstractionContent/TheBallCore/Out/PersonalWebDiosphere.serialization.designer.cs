@@ -13,7 +13,8 @@ using System.Threading.Tasks;
 
 
 namespace INT { 
-		 } 	#region Operation Calls
+		 } 	
+	#region Operation Calls
 	public partial class Server 
 	{
 	    public delegate Task ExecuteOperationFunc(string operationName, object parameters = null);

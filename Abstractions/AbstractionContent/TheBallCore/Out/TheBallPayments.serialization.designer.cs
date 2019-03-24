@@ -590,6 +590,7 @@ namespace INT {
 			public List< string > ActivePlans = new List< string >();
 			
 			}
+	
 	#region Operation Calls
 	public partial class Server 
 	{

@@ -1,125 +1,151 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3A9EEC93-0E0B-4740-853F-ACD9397E3E46}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AbstractionContent</RootNamespace>
-    <AssemblyName>AbstractionContent</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromCaloomCore.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromCaloomHousing.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromCaloomSchools.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromFootvoter.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromFootvoterServices.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromOIPBallInstance.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromOnlineTraining.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromPersonalWebDiosphere.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromTheBallAdmin.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromTheBallCore.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromTheBallIndex.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromTheBallInfrastructure.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromTheBallInterface.designer.cs" />
+    <Compile Remove="Operation\Out\OperationAbstractionFromTheBallPayments.designer.cs" />
+    <Compile Remove="ServiceLayer\Out\ServiceClient_CSharp_v1_0.designer.cs" />
+    <Compile Remove="ServiceLayer\Out\ServiceContract_CSharp_v1_0.designer.cs" />
+    <Compile Remove="ServiceLayer\Out\ServiceServer_CSharp_v1_0.designer.cs" />
+    <Compile Remove="TheBallCore\Out\Footvoter.designer.cs" />
+    <Compile Remove="TheBallCore\Out\Footvoter.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\FootvoterServices.designer.cs" />
+    <Compile Remove="TheBallCore\Out\FootvoterServices.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\FootvoterServices_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\FootvoterServices_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\FootvoterServices_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\Footvoter_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\Footvoter_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\Footvoter_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OIPBallInstance.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OIPBallInstance.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OIPBallInstance_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OIPBallInstance_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OIPBallInstance_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OnlineTraining.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OnlineTraining.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OnlineTraining_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OnlineTraining_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\OnlineTraining_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\PersonalWebDiosphere.designer.cs" />
+    <Compile Remove="TheBallCore\Out\PersonalWebDiosphere.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\PersonalWebDiosphere_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\PersonalWebDiosphere_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallAdmin.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallAdmin.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallAdmin_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallAdmin_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallAdmin_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallCore.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallCore.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallCore_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallCore_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallCore_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallIndex.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallIndex.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallIndex_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallIndex_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallIndex_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInfrastructure.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInfrastructure.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInfrastructure_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInfrastructure_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInfrastructure_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInterface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInterface.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInterface_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInterface_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallInterface_SQLite.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallPayments.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallPayments.serialization.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallPayments_dataclass.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallPayments_interface.designer.cs" />
+    <Compile Remove="TheBallCore\Out\TheBallPayments_SQLite.designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\InformationAndProcessModels\Footvoter.xml">
-      <Link>TheBallCore\Footvoter.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\OIPBallInstance.xml">
-      <Link>TheBallCore\OIPBallInstance.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\OnlineTraining.xml">
-      <Link>TheBallCore\OnlineTraining.xml</Link>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\PersonalWebDiosphere.xml">
-      <Link>TheBallCore\PersonalWebDiosphere.xml</Link>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\TheBallAdmin.xml">
-      <Link>TheBallCore\TheBallAdmin.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\TheBallCore.xml">
-      <Link>TheBallCore\TheBallCore.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\TheBallIndex.xml">
-      <Link>TheBallCore\TheBallIndex.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\TheBallInfrastructure.xml">
-      <Link>TheBallCore\TheBallInfrastructure.xml</Link>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\TheBallInterface.xml">
-      <Link>TheBallCore\TheBallInterface.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\TheBallPayments.xml">
-      <Link>TheBallCore\TheBallPayments.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="ClassModel\In\ClassModelFromCaloomStdUI.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="ObjectRelational\In\Content_v1_0\CaloomDatabase_v1_0.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <None Include="Operation\Out\OperationAbstractionFromCaloomCore.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromCaloomHousing.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromCaloomSchools.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromFootvoter.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromFootvoterServices.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromOIPBallInstance.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromOnlineTraining.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromPersonalWebDiosphere.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromTheBallAdmin.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromTheBallCore.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromTheBallIndex.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromTheBallInfrastructure.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromTheBallInterface.designer.cs" />
+    <None Include="Operation\Out\OperationAbstractionFromTheBallPayments.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceClient_CSharp_v1_0.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceContract_CSharp_v1_0.designer.cs" />
     <None Include="ServiceLayer\Out\ServiceServer_CSharp_v1_0.designer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="ServiceLayer\In\Content_v1_0\CaloomServiceLayer.xml" />
+    <None Include="TheBallCore\Out\Footvoter.designer.cs" />
+    <None Include="TheBallCore\Out\Footvoter.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\FootvoterServices.designer.cs" />
+    <None Include="TheBallCore\Out\FootvoterServices.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\FootvoterServices_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\FootvoterServices_interface.designer.cs" />
+    <None Include="TheBallCore\Out\FootvoterServices_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\Footvoter_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\Footvoter_interface.designer.cs" />
+    <None Include="TheBallCore\Out\Footvoter_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\OIPBallInstance.designer.cs" />
+    <None Include="TheBallCore\Out\OIPBallInstance.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\OIPBallInstance_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\OIPBallInstance_interface.designer.cs" />
+    <None Include="TheBallCore\Out\OIPBallInstance_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\OnlineTraining.designer.cs" />
+    <None Include="TheBallCore\Out\OnlineTraining.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\OnlineTraining_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\OnlineTraining_interface.designer.cs" />
+    <None Include="TheBallCore\Out\OnlineTraining_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\PersonalWebDiosphere.designer.cs" />
+    <None Include="TheBallCore\Out\PersonalWebDiosphere.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\PersonalWebDiosphere_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\PersonalWebDiosphere_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallAdmin.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallAdmin.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallAdmin_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallAdmin_interface.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallAdmin_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallCore.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallCore.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallCore_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallCore_interface.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallCore_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallIndex.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallIndex.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallIndex_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallIndex_interface.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallIndex_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInfrastructure.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInfrastructure.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInfrastructure_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInfrastructure_interface.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInfrastructure_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInterface.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInterface.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInterface_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInterface_interface.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallInterface_SQLite.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallPayments.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallPayments.serialization.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallPayments_dataclass.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallPayments_interface.designer.cs" />
+    <None Include="TheBallCore\Out\TheBallPayments_SQLite.designer.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="absbuilder\In\Content_v1_0\AbstractionBuilderContent_v1_0.xml">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ClassModel\Out\" />
-    <Folder Include="Documentation\In\" />
-    <Folder Include="Documentation\Out\" />
-    <Folder Include="Operation\In\" />
-    <Folder Include="Operation\Out\" />
-    <Folder Include="StatusTracking\In\" />
-    <Folder Include="StatusTracking\Out\" />
-    <Folder Include="TheBallCore\In\Content_v1_0\" />
-    <Folder Include="TheBallCore\Out\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>copy "$(SolutionDir)InformationAndProcessModels\*.xml" "$(SolutionDir)Abstractions\AbstractionContent\TheBallCore\In\Content_v1_0\"</PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -114,7 +114,8 @@ namespace INT {
 				public UpdateConfigItem[] PackageData { get; set; }
 			}
 
- } 	#region Operation Calls
+ } 	
+	#region Operation Calls
 	public partial class Server 
 	{
 	    public delegate Task ExecuteOperationFunc(string operationName, object parameters = null);

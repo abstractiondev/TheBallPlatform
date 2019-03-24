@@ -289,6 +289,7 @@ namespace INT {
 			private double _unmodified_Rank;
 			
 			}
+	
 	#region Operation Calls
 	public partial class Server 
 	{
