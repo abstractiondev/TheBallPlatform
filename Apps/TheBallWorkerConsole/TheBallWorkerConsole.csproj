@@ -9,6 +9,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="2.3.0" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.8.1" />
     <PackageReference Include="NDesk.Options.Core" Version="1.2.4" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0-pre-05" />
