@@ -1,22 +1,22 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBallWorkerConsole", "Apps\TheBallWorkerConsole\TheBallWorkerConsole.csproj", "{C5D4D065-D884-4590-A3F5-BB2566C0A890}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureSupport", "Apps\AzureSupport\AzureSupport.csproj", "{33F04EB2-55DE-4539-8E67-152A6057F100}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuceneSupport", "Apps\LuceneSupport\LuceneSupport.csproj", "{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuceneSupport", "Apps\LuceneSupport\LuceneSupport.csproj", "{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLiteSupport", "Apps\SQLiteSupport\SQLiteSupport.csproj", "{4944D743-F381-471E-980B-54D8387F5478}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuritySupport", "Apps\SecuritySupport\SecuritySupport.csproj", "{FE40FC1C-284E-4F91-B00F-5CCA71846208}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "InstanceSupport", "SharedProjects\InstanceSupport\InstanceSupport.shproj", "{3E4EA4B4-8B6D-4422-BC92-2D291E967AA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlatformCoreTests", "Tests\PlatformCoreTests\PlatformCoreTests.csproj", "{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlatformCoreTests", "Tests\PlatformCoreTests\PlatformCoreTests.csproj", "{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD441353-0628-430F-B197-8175CC6A755D}"
 	ProjectSection(SolutionItems) = preProject
@@ -140,16 +140,16 @@ Global
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|x86.Build.0 = Release|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Debug|x86.ActiveCfg = Debug|x86
-		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Debug|x86.Build.0 = Debug|x86
+		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Debug|x86.Build.0 = Debug|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.NuGetDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.NuGetDebug|Any CPU.Build.0 = Debug|Any CPU
-		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.NuGetDebug|x86.ActiveCfg = Debug|x86
-		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.NuGetDebug|x86.Build.0 = Debug|x86
+		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.NuGetDebug|x86.ActiveCfg = Debug|Any CPU
+		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.NuGetDebug|x86.Build.0 = Debug|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.ActiveCfg = Release|x86
-		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.Build.0 = Release|x86
+		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.ActiveCfg = Release|Any CPU
+		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.Build.0 = Release|Any CPU
 		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|x86.ActiveCfg = Debug|Any CPU

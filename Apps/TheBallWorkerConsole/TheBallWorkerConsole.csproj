@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;net462</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;net462</TargetFrameworks>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
