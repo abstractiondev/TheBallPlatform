@@ -55,7 +55,7 @@
             <Header text="Target Definition: UsersData" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Users data retrieved from TheBall.CORE structures</TextContent>
+                  <TextContent>Users data retrieved from TheBall.Core structures</TextContent>
                 </Text>
               </Paragraph>
             </Header>

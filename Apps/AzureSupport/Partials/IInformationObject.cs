@@ -8,9 +8,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public enum StorageSerializationType
     {
@@ -51,7 +51,7 @@ namespace TheBall.CORE
 
 }
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
 
     public static class ExtIInformationObject

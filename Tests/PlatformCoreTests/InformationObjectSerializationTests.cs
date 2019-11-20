@@ -4,8 +4,8 @@ using System.IO;
 using AzureSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ProBroz.OnlineTraining;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 
 namespace PlatformCoreTests
 {

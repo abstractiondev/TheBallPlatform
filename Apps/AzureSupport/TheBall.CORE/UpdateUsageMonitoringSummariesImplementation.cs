@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class UpdateUsageMonitoringSummariesImplementation
     {
         public static async Task<UsageMonitorItem[]> GetTarget_SourceItemsAsync(IContainerOwner owner, int amountOfDays)
         {
-            string filterPrefix = "TheBall.CORE/UsageMonitorItem/";
+            string filterPrefix = "TheBall.Core/UsageMonitorItem/";
             DateTime today = DateTime.UtcNow.Date;
             List<UsageMonitorItem> result = new List<UsageMonitorItem>();
             Type type = typeof (UsageMonitorItem);

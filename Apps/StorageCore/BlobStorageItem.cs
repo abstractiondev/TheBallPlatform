@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace TheBall.CORE.Storage
+namespace TheBall.Core.Storage
 {
     public class BlobStorageItem
     {

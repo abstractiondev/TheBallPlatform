@@ -1,8 +1,8 @@
 using System;
 using AzureSupport;
 using Microsoft.AspNetCore.Http;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 using TheBall.Index.INT;
 
 namespace TheBall.Index

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Interface
 {

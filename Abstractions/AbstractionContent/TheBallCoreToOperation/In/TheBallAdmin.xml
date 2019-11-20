@@ -42,7 +42,7 @@
         </OperationSpec>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="UsersData" dataType="INT.UsersData" designDesc="Users data retrieved from TheBall.CORE structures" asyncSupportMode="AsyncOnly" state="implemented" />
+            <TargetDefinition name="UsersData" dataType="INT.UsersData" designDesc="Users data retrieved from TheBall.Core structures" asyncSupportMode="AsyncOnly" state="implemented" />
             <MethodExecute name="StoreInterfaceObject" designDesc="Store users data" asyncSupportMode="AsyncOnly" state="implemented">
               <Target name="UsersData"/>
             </MethodExecute>

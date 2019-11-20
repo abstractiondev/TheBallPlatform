@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using AaltoGlobalImpact.OIP;
+using TheBall.Core;
 
 namespace TheBall.Payments
 {

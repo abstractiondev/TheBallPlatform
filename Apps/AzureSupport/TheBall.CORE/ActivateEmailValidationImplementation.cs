@@ -2,9 +2,9 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core.InstanceSupport;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class ActivateEmailValidationImplementation
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using TheBall;
+using TheBall.Core;
 
 namespace ProBroz.OnlineTraining
 {

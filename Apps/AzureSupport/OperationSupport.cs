@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using Microsoft.AspNetCore.Http;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
+using TheBall.Core.Storage;
 using TheBall.Interface;
 
 namespace TheBall
@@ -58,13 +58,13 @@ namespace TheBall
             {
                 ownerPrefix = "grp/" + InstanceConfig.Current.PaymentsGroupID;
             }
-            if (operationName.StartsWith("TheBall.CORE") || operationName.StartsWith("TheBall.Admin") || operationName.StartsWith("TheBall.Infrastructure"))
+            if (operationName.StartsWith("TheBall.Core") || operationName.StartsWith("TheBall.Admin") || operationName.StartsWith("TheBall.Infrastructure"))
             {
                 var owner = VirtualOwner.FigureOwner(ownerPrefix);
                 var isAdminOwner = owner.IsGroupContainer() &&
                                    owner.GetIDFromLocationPrefix() == InstanceConfig.Current.AdminGroupID;
                 if(!isAdminOwner)
-                    throw new SecurityException("TheBall.CORE or TheBall.Admin operations are only allowed from admin group");
+                    throw new SecurityException("TheBall.Core or TheBall.Admin operations are only allowed from admin group");
             }
 
             Dictionary<string, string> formValues;

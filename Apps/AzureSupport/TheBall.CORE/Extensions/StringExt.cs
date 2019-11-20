@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheBall.CORE;
+using TheBall.Core;
 
-namespace AzureSupport.TheBall.CORE
+namespace AzureSupport.TheBall.Core
 {
     public delegate void ExecuteForTarget(
         IContainerOwner owner, string semanticDomain, string objectType, string objectID, string fullPath);

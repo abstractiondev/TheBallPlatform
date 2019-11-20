@@ -3,7 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureSupport;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface

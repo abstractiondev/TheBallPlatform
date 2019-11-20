@@ -5,12 +5,58 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
+using TheBall.Core.StorageCore;
 
-namespace TheBall.CORE.Storage
+namespace TheBall.Core.Storage
 {
     public static class BlobStorage
     {
+        internal class StorageSupport
+        {
+            public const int GuidLength = 36;
+
+            public static async Task<BlobStorageItem> GetBlobStorageItem(string sourceFullPath, IContainerOwner owner)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static async Task UploadOwnerBlobTextAsync(IContainerOwner owner, string name, string textData)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static async Task CopyBlobBetweenOwnersA(IContainerOwner sourceOwner, string sourceItemName, IContainerOwner targetOwner, string targetItemName)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static async Task DeleteBlobAsync(string name)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static async Task<byte[]> DownloadBlobByteArrayAsync(string name, bool returnNullIfMissing, IContainerOwner owner)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static async Task<string[]> ListOwnerFoldersA(string rootFolder)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static async Task<BlobStorageItem> UploadOwnerBlobBinaryA(IContainerOwner owner, string name, object data)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         const string InterfaceDataPrefixFolder = "TheBall.Interface/InterfaceData";
         const string ShareDataPrefixFolder = "TheBall.Interface/ShareInfo";
 
@@ -20,16 +66,16 @@ namespace TheBall.CORE.Storage
             return blob;
         }
 
-        public static string GetOwnerInterfaceDataFullPath(string fileName)
+        public static string GetOwnerInterfaceDataFullPath(IContainerOwner owner, string fileName)
         {
             var interfaceDataName = Path.Combine(InterfaceDataPrefixFolder, fileName).Replace("\\", "/");
             if (!interfaceDataName.StartsWith(InterfaceDataPrefixFolder + "/"))
                 throw new ArgumentException("Relative filename not allowed: " + fileName);
-            var ownerPrefixed = GetOwnerContentLocation(InformationContext.CurrentOwner, interfaceDataName);
+            var ownerPrefixed = GetOwnerContentLocation(owner, interfaceDataName);
             return ownerPrefixed;
         }
 
-        public static string GetCollaborationOwnerShareFullPath(IContainerOwner collaborationTarget, string shareFileName, bool isMetadataFile)
+        public static string GetCollaborationOwnerShareFullPath(IContainerOwner owner, IContainerOwner collaborationTarget, string shareFileName, bool isMetadataFile)
         {
             string storedFileName;
             if (isMetadataFile)
@@ -45,7 +91,7 @@ namespace TheBall.CORE.Storage
                 collaborationTarget.LocationPrefix, storedFileName).Replace("\\", "/");
             if (!interfaceDataName.StartsWith(ShareDataPrefixFolder + "/"))
                 throw new ArgumentException("Relative filename not allowed: " + shareFileName);
-            var ownerPrefixed = GetOwnerContentLocation(InformationContext.CurrentOwner, interfaceDataName);
+            var ownerPrefixed = GetOwnerContentLocation(owner, interfaceDataName);
             return ownerPrefixed;
         }
 
@@ -61,9 +107,8 @@ namespace TheBall.CORE.Storage
             return ownerPrefix + blobAddress;
         }
 
-        public static async Task UploadCurrentOwnerBlobTextAsync(string name, string textData)
+        public static async Task UploadCurrentOwnerBlobTextAsync(IContainerOwner owner, string name, string textData)
         {
-            var owner = InformationContext.CurrentOwner;
             await StorageSupport.UploadOwnerBlobTextAsync(owner, name, textData);
         }
 
@@ -83,8 +128,7 @@ namespace TheBall.CORE.Storage
 
         public static string CombinePathForOwner(this IContainerOwner owner, params string[] pathComponents)
         {
-            var path = CombinePath(pathComponents);
-            var ownerPath = owner.GetOwnerContentLocation(path);
+            var ownerPath = StorageService.PlatformService.CombinePathForOwner(owner, pathComponents);
             return ownerPath;
         }
 
@@ -123,9 +167,9 @@ namespace TheBall.CORE.Storage
             return blobFolders;
         }
 
-        public static async Task<BlobStorageItem[]> GetOwnerBlobsA(string rootFolder)
+        public static async Task<BlobStorageItem[]> GetOwnerBlobsA(IContainerOwner owner, string rootFolder)
         {
-            return await GetBlobItemsA(InformationContext.CurrentOwner, rootFolder);
+            return await GetBlobItemsA(owner, rootFolder);
         }
 
         public static async Task<BlobStorageItem[]> GetAbsoluteLocationBlobsA(string rootFolder)
@@ -142,10 +186,23 @@ namespace TheBall.CORE.Storage
             return data;
         }
 
-        public static async Task<BlobStorageItem> StoreBlobJsonContentA(string name, object dataObject)
+        public class JSONSupport
+        {
+            public static T GetObjectFromData<T>(byte[] blobData) where T : class
+            {
+                throw new NotImplementedException();
+            }
+
+            public static object SerializeToJSONData(object dataObject)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public static async Task<BlobStorageItem> StoreBlobJsonContentA(IContainerOwner owner, string name, object dataObject)
         {
             var data = JSONSupport.SerializeToJSONData(dataObject);
-            var blobStorageItem = await StorageSupport.UploadOwnerBlobBinaryA(InformationContext.CurrentOwner, name, data);
+            var blobStorageItem = await StorageSupport.UploadOwnerBlobBinaryA(owner, name, data);
             return blobStorageItem;
         }
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheBall.CORE.InstanceSupport
+namespace TheBall.Core.InstanceSupport
 {
     public static class RuntimeSupport
     {

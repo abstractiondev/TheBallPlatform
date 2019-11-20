@@ -26,7 +26,7 @@
                         <TextContent>Owner</TextContent>
                       </ColumnData>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                        <TextContent>TheBall.Core.IContainerOwner</TextContent>
                       </ColumnData>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                         <TextContent>Data owner</TextContent>
@@ -218,7 +218,7 @@
                         <TextContent>Process</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>TheBall.CORE.Process</TextContent>
+                        <TextContent>TheBall.Core.Process</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Process object to perform the listing to</TextContent>
@@ -376,7 +376,7 @@
                         <TextContent>Process</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>TheBall.CORE.Process</TextContent>
+                        <TextContent>TheBall.Core.Process</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Process that has ConnectionID as initial parameter</TextContent>
@@ -669,7 +669,7 @@
                         <TextContent>Process</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>TheBall.CORE.Process</TextContent>
+                        <TextContent>TheBall.Core.Process</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Process that has ConnectionID as initial parameter</TextContent>
@@ -737,7 +737,7 @@
                         <TextContent>Owner</TextContent>
                       </ColumnData>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                        <TextContent>TheBall.Core.IContainerOwner</TextContent>
                       </ColumnData>
                       <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                         <TextContent>Data owner</TextContent>

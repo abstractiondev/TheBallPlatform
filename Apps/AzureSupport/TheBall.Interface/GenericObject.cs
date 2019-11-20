@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
-using TheBall.CORE;
+using TheBall.Core;
 using TheBall.Index;
 
 namespace TheBall.Interface

@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
 
 namespace WebCoreLayer.Controllers
 {

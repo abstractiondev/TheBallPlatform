@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using TheBall.CORE.INT;
-using TheBall.CORE.Storage;
+using TheBall.Core.INT;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class SetAccountServerMetadataImplementation
     {

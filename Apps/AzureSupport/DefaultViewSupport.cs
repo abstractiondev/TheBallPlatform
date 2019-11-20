@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Web;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace AaltoGlobalImpact.OIP
 {

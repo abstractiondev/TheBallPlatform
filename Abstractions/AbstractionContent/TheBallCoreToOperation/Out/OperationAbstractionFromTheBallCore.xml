@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
-  <Operations codeNamespace="TheBall.CORE">
+  <Operations codeNamespace="TheBall.Core">
     <Operation name="ImportAccountFromOIPLegacy">
       <OperationSpec>
         <Description>Imports account from OIP Legacy data</Description>
@@ -650,7 +650,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Process" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Process" designDesc="Process object of execution" state="implemented">
+          <TargetDefinition name="Process" asyncSupportMode="AsyncOnly" dataType="TheBall.Core.Process" designDesc="Process object of execution" state="implemented">
             <Parameter name="ProcessID" />
           </TargetDefinition>
           <TargetDefinition name="ProcessLockLocation" dataType="string" designDesc="Process lock file location" state="implemented">
@@ -1473,7 +1473,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="GroupAsOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Container owner" state="implemented">
+          <TargetDefinition name="GroupAsOwner" dataType="TheBall.Core.IContainerOwner" designDesc="Container owner" state="implemented">
             <Parameter name="GroupID" />
           </TargetDefinition>
           <TargetDefinition name="GroupContainer" asyncSupportMode="AsyncOnly" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container" state="implemented">

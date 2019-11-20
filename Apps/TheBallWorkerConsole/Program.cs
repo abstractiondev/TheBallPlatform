@@ -10,8 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NDesk.Options;
 using Nito.AsyncEx;
-using TheBall.CORE.InstanceSupport;
-using TheBall.CORE.Storage;
+using TheBall.Core.InstanceSupport;
+using TheBall.Core.Storage;
 using TheBall.Infra.AppUpdater;
 
 namespace TheBall.Infra.TheBallWorkerConsole

@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Infra.TheBallWorkerConsole
 {

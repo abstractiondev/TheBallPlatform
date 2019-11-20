@@ -526,7 +526,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition dataType="TheBall.CORE.IContainerOwner" designDesc="Validate group ID as valid Payments managing group" name="Owner" state="implemented">
+            <TargetDefinition dataType="TheBall.Core.IContainerOwner" designDesc="Validate group ID as valid Payments managing group" name="Owner" state="implemented">
               <Parameter name="GroupID"/>
             </TargetDefinition>
             <TargetDefinition name="StripeCustomers" dataType="Stripe.StripeCustomer[]" designDesc="Stripe customers from service call" state="implemented" />
@@ -555,7 +555,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="GroupAsOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Group as owner" state="implemented">
+            <TargetDefinition name="GroupAsOwner" dataType="TheBall.Core.IContainerOwner" designDesc="Group as owner" state="implemented">
               <Parameter name="GroupID"/>
             </TargetDefinition>
           </SequentialExecution>

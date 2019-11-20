@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public static class ExtProcessItem
     {

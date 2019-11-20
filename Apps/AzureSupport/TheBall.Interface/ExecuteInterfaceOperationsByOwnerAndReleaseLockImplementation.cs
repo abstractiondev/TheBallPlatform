@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
 
 namespace TheBall.Interface
 {

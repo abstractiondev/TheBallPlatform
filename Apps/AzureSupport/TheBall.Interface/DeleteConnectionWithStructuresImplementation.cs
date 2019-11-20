@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using TheBall.CORE;
+using TheBall.Core;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface
@@ -55,7 +55,7 @@ namespace TheBall.Interface
             else
             {
                 if (connection.DeviceID != null)
-                    targetLocation = "TheBall.CORE/DeviceMembership/" + connection.DeviceID + "_Input/";
+                    targetLocation = "TheBall.Core/DeviceMembership/" + connection.DeviceID + "_Input/";
                 else
                     targetLocation = null;
             }

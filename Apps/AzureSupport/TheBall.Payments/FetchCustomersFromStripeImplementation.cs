@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Stripe;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Payments
 {

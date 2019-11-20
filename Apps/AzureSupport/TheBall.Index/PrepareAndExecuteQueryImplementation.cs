@@ -1,7 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Index
 {

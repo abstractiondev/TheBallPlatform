@@ -6,9 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class CreateOrUpdateCustomUIImplementation
     {
@@ -42,7 +42,7 @@ namespace TheBall.CORE
 
         public static async Task ExecuteMethod_CopyUIContentsFromZipArchiveAsync(Stream zipArchiveStream, string customUiFolder)
         {
-            var blobListing = await BlobStorage.GetOwnerBlobsA(customUiFolder);
+            var blobListing = await BlobStorage.GetOwnerBlobsA(InformationContext.CurrentOwner, customUiFolder);
             foreach (var blob in blobListing)
             {
                 await BlobStorage.DeleteBlobA(blob.Name);

@@ -424,7 +424,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		TheBall.CORE.IContainerOwner
+		TheBall.Core.IContainerOwner
 		</div>
 				</td>
 				<td>
@@ -651,7 +651,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		TheBall.CORE.IContainerOwner
+		TheBall.Core.IContainerOwner
 		</div>
 				</td>
 				<td>

@@ -3,8 +3,8 @@ using System.IO;
 using System.Security;
 using System.Threading.Tasks;
 using AzureSupport;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface
@@ -13,12 +13,12 @@ namespace TheBall.Interface
     {
         public static string GetTarget_SourceFullPath(string fileName)
         {
-            return BlobStorage.GetOwnerInterfaceDataFullPath(fileName);
+            return BlobStorage.GetOwnerInterfaceDataFullPath(InformationContext.CurrentOwner, fileName);
         }
 
         public static string GetTarget_MetadataFullPath(string fileName, IContainerOwner collaborationTarget)
         {
-            var metadataFullPath = BlobStorage.GetCollaborationOwnerShareFullPath(collaborationTarget, fileName, true);
+            var metadataFullPath = BlobStorage.GetCollaborationOwnerShareFullPath(InformationContext.CurrentOwner, collaborationTarget, fileName, true);
             return metadataFullPath;
         }
         public static async Task<ShareInfo> GetTarget_MetadataObjectAsync(string fileName, string sourceFullPath)
@@ -41,7 +41,7 @@ namespace TheBall.Interface
             if (metadataObject != null)
             {
                 var jsonData = JSONSupport.SerializeToJSONString(metadataObject);
-                await BlobStorage.UploadCurrentOwnerBlobTextAsync(metadataFullPath, jsonData);
+                await BlobStorage.UploadCurrentOwnerBlobTextAsync(InformationContext.CurrentOwner,metadataFullPath, jsonData);
             }
         }
 

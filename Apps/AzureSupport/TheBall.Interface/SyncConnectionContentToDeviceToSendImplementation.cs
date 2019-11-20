@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE;
-using TheBall.CORE.INT;
+using TheBall.Core;
+using TheBall.Core.INT;
 
 namespace TheBall.Interface
 {
@@ -45,7 +45,7 @@ namespace TheBall.Interface
         {
             if(string.IsNullOrEmpty(connection.DeviceID))
                 throw new InvalidDataException("Connection requires device ID");
-            var ownerTargetDeviceLocation = string.Format("TheBall.CORE/AuthenticatedAsActiveDevice/{0}/",
+            var ownerTargetDeviceLocation = string.Format("TheBall.Core/AuthenticatedAsActiveDevice/{0}/",
                                                           connection.DeviceID);
             return ownerTargetDeviceLocation;
         }

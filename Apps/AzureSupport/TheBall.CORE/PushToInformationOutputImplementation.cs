@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class PushToInformationOutputImplementation
     {
@@ -50,7 +50,7 @@ namespace TheBall.CORE
             var authenticationID = informationOutput.AuthenticatedDeviceID;
             if (string.IsNullOrEmpty(authenticationID))
                 return null;
-            var owner = VirtualOwner.FigureOwner(informationOutput);
+            var owner = VirtualOwner.FigureOwner(informationOutput.RelativeLocation);
             return await ObjectStorage.RetrieveFromOwnerContentA<AuthenticatedAsActiveDevice>(owner, authenticationID);
         }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AzureSupport.TheBall.CORE
+namespace AzureSupport.TheBall.Core
 {
     public static class LinqExt
     {

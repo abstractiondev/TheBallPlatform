@@ -390,10 +390,10 @@
             <MethodExecute name="ExecuteContentListingProcess" designDesc="Process execution to list package content items" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="PackageContentListingProcessID"/>
             </MethodExecute>
-            <TargetDefinition name="PackageContentListingProcess" dataType="TheBall.CORE.Process" designDesc="Process for listing  package contents" state="implemented" asyncSupportMode="AsyncOnly">
+            <TargetDefinition name="PackageContentListingProcess" dataType="TheBall.Core.Process" designDesc="Process for listing  package contents" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="PackageContentListingProcessID"/>
             </TargetDefinition>
-            <TargetDefinition name="ContentListingResult" dataType="TheBall.CORE.INT.ContentItemLocationWithMD5[]" designDesc="Content listing result" state="implemented">
+            <TargetDefinition name="ContentListingResult" dataType="TheBall.Core.INT.ContentItemLocationWithMD5[]" designDesc="Content listing result" state="implemented">
               <Target name="PackageContentListingProcess"/>
             </TargetDefinition>
             <TargetDefinition name="SyncTargetRootFolder" dataType="string" designDesc="Target root folder for sync-copy" state="implemented">
@@ -561,10 +561,10 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="QueueOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
+            <TargetDefinition name="QueueOwner" dataType="TheBall.Core.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
             <TargetDefinition name="QueueLocation" dataType="string" designDesc="Queue root folder location" state="implemented" />
-            <TargetDefinition name="OperationOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Operation item owner from Context.CurrentOwner" state="implemented" />
-            <TargetDefinition name="InvokerAccount" dataType="TheBall.CORE.IAccountInfo" designDesc="Operation requesting account" state="implemented" />
+            <TargetDefinition name="OperationOwner" dataType="TheBall.Core.IContainerOwner" designDesc="Operation item owner from Context.CurrentOwner" state="implemented" />
+            <TargetDefinition name="InvokerAccount" dataType="TheBall.Core.IAccountInfo" designDesc="Operation requesting account" state="implemented" />
             <TargetDefinition name="QueueItemFileNameFormat" dataType="string" designDesc="Queue item file name as: timestamp_ownerprefix_ownerid_operationid" state="implemented" />
             <TargetDefinition name="QueueItemFullPath" dataType="string" designDesc="Queue item filename format populated with data and combined with queue owner and location" state="implemented">
               <Parameter name="OperationID"/>
@@ -586,11 +586,11 @@
           <Description>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</Description>
         </OperationSpec>
         <Parameters>
-          <Parameter name="DedicatedToOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Dedicated to owner - null if not dedicated" state="implemented"/>
+          <Parameter name="DedicatedToOwner" dataType="TheBall.Core.IContainerOwner" designDesc="Dedicated to owner - null if not dedicated" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="QueueOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
+            <TargetDefinition name="QueueOwner" dataType="TheBall.Core.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
             <TargetDefinition name="QueueLocation" dataType="string" designDesc="Queue root folder location" state="implemented" />
             <TargetDefinition name="OwnerGroupedItems" dataType="IEnumerable&lt;System.Linq.IGrouping&lt;string, string&gt;&gt;" designDesc="Grouped data by owner; preserving alphabetical order for oldest-first" asyncSupportMode="AsyncOnly" state="implemented">
               <Target name="QueueOwner"/>
@@ -656,7 +656,7 @@
           </Description>
         </OperationSpec>
         <Parameters>
-          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Owner of the operation context" state="implemented"/>
+          <Parameter name="Owner" dataType="TheBall.Core.IContainerOwner" designDesc="Owner of the operation context" state="implemented"/>
           <Parameter name="UpdateTime" dataType="DateTime" designDesc="Starting time of changes updated in this cycle" state="implemented"/>
           <Parameter name="ChangedIDList" dataType="string[]" designDesc="Changed ID list on this cycle" state="implemented"/>
           <Parameter name="RemoveExpiredEntriesSeconds" dataType="int" designDesc="Remove entries older than amount of seconds given here" state="implemented"/>
@@ -737,7 +737,7 @@
             <TargetDefinition name="Connection" dataType="Connection" designDesc="Creates connection" state="implemented">
               <Parameter name="Description"/>
             </TargetDefinition>
-            <TargetDefinition dataType="TheBall.CORE.AuthenticatedAsActiveDevice" name="DeviceForConnection" designDesc="Device for the connection" state="implemented" asyncSupportMode="AsyncOnly">
+            <TargetDefinition dataType="TheBall.Core.AuthenticatedAsActiveDevice" name="DeviceForConnection" designDesc="Device for the connection" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="Description"/>
               <Parameter name="TargetBallHostName"/>
               <Parameter name="TargetGroupID"/>
@@ -822,13 +822,13 @@
             <TargetDefinition name="Connection" dataType="Connection" designDesc="This side connection entry" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="ConnectionID"/>
             </TargetDefinition>
-            <TargetDefinition name="ProcessToListPackageContents" dataType="TheBall.CORE.Process" designDesc="Process to list package contents" state="implemented" asyncSupportMode="AsyncOnly">
+            <TargetDefinition name="ProcessToListPackageContents" dataType="TheBall.Core.Process" designDesc="Process to list package contents" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Connection"/>
             </TargetDefinition>
-            <TargetDefinition name="ProcessToProcessReceivedData" dataType="TheBall.CORE.Process" designDesc="Process to process received data" state="implemented" asyncSupportMode="AsyncOnly">
+            <TargetDefinition name="ProcessToProcessReceivedData" dataType="TheBall.Core.Process" designDesc="Process to process received data" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Connection"/>
             </TargetDefinition>
-            <TargetDefinition name="ProcessToUpdateThisSideCategories" dataType="TheBall.CORE.Process" designDesc="Process to update this side categories" state="implemented" asyncSupportMode="AsyncOnly">
+            <TargetDefinition name="ProcessToUpdateThisSideCategories" dataType="TheBall.Core.Process" designDesc="Process to update this side categories" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Connection"/>
             </TargetDefinition>
             <MethodExecute name="SetConnectionProcesses" designDesc="Set connection processes" state="implemented">
@@ -941,7 +941,7 @@
             <MethodExecute name="ValidateFileName" designDesc="Validate file name for not being metadata-alike" state="implemented">
               <Target name="FileName"/>
             </MethodExecute>
-            <TargetDefinition dataType="TheBall.CORE.IContainerOwner" name="CollaborationTarget" designDesc="Collaboration target verified and instanced" state="implemented">
+            <TargetDefinition dataType="TheBall.Core.IContainerOwner" name="CollaborationTarget" designDesc="Collaboration target verified and instanced" state="implemented">
               <Parameter name="CollabParams"/>
             </TargetDefinition>
             <TargetDefinition dataType="string" name="SourceFullPath" designDesc="Source file full path" state="implemented">
@@ -974,7 +974,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="CollaborationTarget" dataType="TheBall.CORE.IContainerOwner" designDesc="Collaboration target owner" state="implemented">
+            <TargetDefinition name="CollaborationTarget" dataType="TheBall.Core.IContainerOwner" designDesc="Collaboration target owner" state="implemented">
               <Parameter name="Partner"/>
             </TargetDefinition>
             <TargetDefinition name="SyncOperationData" dataType="AzureSupport.HttpOperationData" designDesc="OperationData for Sync notification" state="implemented">
@@ -996,21 +996,21 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="CollaborationSource" dataType="TheBall.CORE.IContainerOwner" designDesc="Collaboration target owner" state="implemented">
+            <TargetDefinition name="CollaborationSource" dataType="TheBall.Core.IContainerOwner" designDesc="Collaboration target owner" state="implemented">
               <Parameter name="Partner"/>
             </TargetDefinition>
-            <TargetDefinition name="CollaborationTarget" dataType="TheBall.CORE.IContainerOwner" designDesc="Collaboration target owner" state="implemented" />
+            <TargetDefinition name="CollaborationTarget" dataType="TheBall.Core.IContainerOwner" designDesc="Collaboration target owner" state="implemented" />
             <TargetDefinition name="SyncSourceRoot" dataType="string" designDesc="Sync source root folder" state="implemented">
               <Target name="CollaborationTarget"/>
             </TargetDefinition>
             <TargetDefinition name="SyncTargetRoot" dataType="string" designDesc="Sync target root folder" state="implemented">
               <Target name="CollaborationSource"/>
             </TargetDefinition>
-            <TargetDefinition name="ExistingSourceItems" dataType="TheBall.CORE.Storage.BlobStorageItem[]" designDesc="Sync source items" asyncSupportMode="AsyncOnly" state="implemented">
+            <TargetDefinition name="ExistingSourceItems" dataType="TheBall.Core.Storage.BlobStorageItem[]" designDesc="Sync source items" asyncSupportMode="AsyncOnly" state="implemented">
               <Target name="CollaborationSource"/>
               <Target name="SyncSourceRoot"/>
             </TargetDefinition>
-            <TargetDefinition name="ExistingTargetItems" dataType="TheBall.CORE.Storage.BlobStorageItem[]" designDesc="Existing target items" asyncSupportMode="AsyncOnly" state="implemented">
+            <TargetDefinition name="ExistingTargetItems" dataType="TheBall.Core.Storage.BlobStorageItem[]" designDesc="Existing target items" asyncSupportMode="AsyncOnly" state="implemented">
               <Target name="CollaborationTarget"/>
               <Target name="SyncTargetRoot"/>
             </TargetDefinition>
@@ -1040,14 +1040,14 @@
             <TargetDefinition name="IsCompleteUpdate" dataType="bool" designDesc="Define if this is complete sync" state="implemented">
               <Parameter name="Partner"/>
             </TargetDefinition>
-            <TargetDefinition name="CollaborationPartners" dataType="TheBall.CORE.IContainerOwner[]" designDesc="Collaboration partner(s) to sync summary data for" state="implemented" asyncSupportMode="AsyncOnly">
+            <TargetDefinition name="CollaborationPartners" dataType="TheBall.Core.IContainerOwner[]" designDesc="Collaboration partner(s) to sync summary data for" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="Partner"/>
               <Target name="IsCompleteUpdate"/>
             </TargetDefinition>
             <MethodExecute name="UpdatePartnerSummaries" designDesc="Update individual partner summaries" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="CollaborationPartners"/>
               <Target name="IsCompleteUpdate"/>
-              <ReturnValue dataType="Tuple&lt;TheBall.CORE.IContainerOwner, string&gt;[]" name="DataStatuses" designDesc="Data status item for each owner" state="implemented"/>
+              <ReturnValue dataType="Tuple&lt;TheBall.Core.IContainerOwner, string&gt;[]" name="DataStatuses" designDesc="Data status item for each owner" state="implemented"/>
             </MethodExecute>
             <MethodExecute name="UpdateCompleteShareSummary" designDesc="Update complete share summary" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="UpdatePartnerSummariesOutput"/>
@@ -1111,12 +1111,12 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="Group" dataType="TheBall.CORE.Group" designDesc="Current group" asyncSupportMode="AsyncOnly" state="implemented" />
+            <TargetDefinition name="Group" dataType="TheBall.Core.Group" designDesc="Current group" asyncSupportMode="AsyncOnly" state="implemented" />
             <MethodExecute name="SaveGroupDetails" designDesc="Save group details over existing" asyncSupportMode="AsyncOnly" state="implemented">
               <Parameter name="GroupDetails"/>
               <Target name="Group"/>
             </MethodExecute>
-            <TargetDefinition name="CurrentMemberships" dataType="TheBall.CORE.GroupMembership[]" designDesc="Current group memberships" asyncSupportMode="AsyncOnly" state="implemented">
+            <TargetDefinition name="CurrentMemberships" dataType="TheBall.Core.GroupMembership[]" designDesc="Current group memberships" asyncSupportMode="AsyncOnly" state="implemented">
               <Target name="Group"/>
             </TargetDefinition>
             <MethodExecute name="UpdateDetailsChangeToMembers" designDesc="Update membership states to members (run as System)" asyncSupportMode="AsyncOnly" state="implemented">
@@ -1137,7 +1137,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition dataType="TheBall.CORE.IContainerOwner" name="Owner" designDesc="GroupID as owner" state="implemented">
+            <TargetDefinition dataType="TheBall.Core.IContainerOwner" name="Owner" designDesc="GroupID as owner" state="implemented">
               <Parameter name="GroupID"/>
             </TargetDefinition>
             <TargetDefinition name="BinaryFile" dataType="AaltoGlobalImpact.OIP.BinaryFile" designDesc="Binary file to attach the mediacontent to" state="implemented" asyncSupportMode="AsyncOnly">

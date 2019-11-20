@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 		namespace AaltoGlobalImpact.OIP { 
 				public class ListConnectionPackageContentsParameters 
 		{
-				public TheBall.CORE.Process Process ;
+				public TheBall.Core.Process Process ;
 				}
 		
 		public class ListConnectionPackageContents 
@@ -110,7 +110,7 @@ using System.Threading.Tasks;
 				}
 				public class UpdatePublicationInfoParameters 
 		{
-				public TheBall.CORE.IContainerOwner Owner ;
+				public TheBall.Core.IContainerOwner Owner ;
 				public string ContainerName ;
 				}
 		
@@ -127,7 +127,7 @@ using System.Threading.Tasks;
 				}
 				public class CleanOldPublicationsParameters 
 		{
-				public TheBall.CORE.IContainerOwner Owner ;
+				public TheBall.Core.IContainerOwner Owner ;
 				}
 		
 		public class CleanOldPublications 
@@ -170,7 +170,7 @@ using System.Threading.Tasks;
 				}
 				public class ProcessConnectionReceivedDataParameters 
 		{
-				public TheBall.CORE.Process Process ;
+				public TheBall.Core.Process Process ;
 				}
 		
 		public class ProcessConnectionReceivedData 
@@ -190,7 +190,7 @@ using System.Threading.Tasks;
 				}
 				public class UpdateConnectionThisSideCategoriesParameters 
 		{
-				public TheBall.CORE.Process Process ;
+				public TheBall.Core.Process Process ;
 				}
 		
 		public class UpdateConnectionThisSideCategories 

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-		namespace TheBall.CORE { 
+		namespace TheBall.Core { 
 				public class ImportAccountFromOIPLegacyParameters 
 		{
 				public AaltoGlobalImpact.OIP.TBRLoginRoot LegacyLogin ;
@@ -516,7 +516,7 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(ExecuteProcessParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.Process Process =  await ExecuteProcessImplementation.GetTarget_ProcessAsync(parameters.ProcessID);	
+					TheBall.Core.Process Process =  await ExecuteProcessImplementation.GetTarget_ProcessAsync(parameters.ProcessID);	
 				string ProcessLockLocation = ExecuteProcessImplementation.GetTarget_ProcessLockLocation(Process);	
 				 await ExecuteProcessImplementation.ExecuteMethod_ExecuteAndStoreProcessWithLockAsync(ProcessLockLocation, Process);		
 				}
@@ -1102,7 +1102,7 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(InitiateImportedGroupWithUnchangedIDParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner GroupAsOwner = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupAsOwner(parameters.GroupID);	
+					TheBall.Core.IContainerOwner GroupAsOwner = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupAsOwner(parameters.GroupID);	
 				AaltoGlobalImpact.OIP.GroupContainer GroupContainer =  await InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupContainerAsync(GroupAsOwner);	
 				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_ValidateGroupContainerID(parameters.GroupID, GroupContainer);		
 				AaltoGlobalImpact.OIP.TBRGroupRoot GroupRoot = InitiateImportedGroupWithUnchangedIDImplementation.GetTarget_GroupRoot(parameters.GroupID);	

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.INT;
-using TheBall.CORE.Storage;
+using TheBall.Core.INT;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class SyncCopyContentToDeviceTargetImplementation
     {
@@ -24,7 +24,7 @@ namespace TheBall.CORE
 
         public static async Task<ContentItemLocationWithMD5[]> GetTarget_ThisSideContentMD5ListAsync(string contentRootLocation)
         {
-            var blobList = await BlobStorage.GetOwnerBlobsA(contentRootLocation);
+            var blobList = await BlobStorage.GetOwnerBlobsA(InformationContext.CurrentOwner, contentRootLocation);
             int contentRootLength = contentRootLocation.Length;
             List<ContentItemLocationWithMD5> list = new List<ContentItemLocationWithMD5>();
             foreach (var blob in blobList)
@@ -47,7 +47,7 @@ namespace TheBall.CORE
                     OperationParameters = new string[] { SyncSupport.RelativeRootFolderValue}
                 };
             deviceOperationData = await DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.ID,
-                                                                                            "TheBall.CORE.RemoteDeviceCoreOperation", deviceOperationData);
+                                                                                            "TheBall.Core.RemoteDeviceCoreOperation", deviceOperationData);
             var returnValue = new SyncCopyContentToDeviceTarget.CallPrepareTargetAndListItemsToCopyReturnValue
                 {
                     ItemsToCopy = deviceOperationData.OperationSpecificContentData.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray(),

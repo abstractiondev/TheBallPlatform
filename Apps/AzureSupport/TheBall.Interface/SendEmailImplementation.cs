@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
+using TheBall.Core.Storage;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface

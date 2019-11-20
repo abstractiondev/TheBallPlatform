@@ -3,7 +3,7 @@ using System.Security;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace PersonalWeb.Diosphere
 {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AzureSupport;
 using Microsoft.AspNetCore.Http;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall
 {

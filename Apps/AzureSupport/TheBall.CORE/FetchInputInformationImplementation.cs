@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SecuritySupport;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class FetchInputInformationImplementation
     {
@@ -84,7 +84,7 @@ namespace TheBall.CORE
             var authenticationID = informationInput.AuthenticatedDeviceID;
             if (string.IsNullOrEmpty(authenticationID))
                 return null;
-            var owner = VirtualOwner.FigureOwner(informationInput);
+            var owner = VirtualOwner.FigureOwner(informationInput.RelativeLocation);
             return await ObjectStorage.RetrieveFromOwnerContentA<AuthenticatedAsActiveDevice>(owner, authenticationID);
         }
     }

@@ -6,7 +6,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLiteSupport;
 //using PAY=SQLite.TheBall.Payments;
-//using TBC=SQLite.TheBall.CORE;
+//using TBC=SQLite.TheBall.Core;
 //using AGI=SQLite.AaltoGlobalImpact.OIP;
 
 namespace PlatformCoreTests
@@ -155,7 +155,7 @@ namespace PlatformCoreTests
         [TestMethod]
         public void ReflectionInvokeCoreDatabase()
         {
-            Type contextType = typeof(SQLite.TheBall.CORE.TheBallDataContext);
+            Type contextType = typeof(SQLite.TheBall.Core.TheBallDataContext);
             string sqLiteDbLocationFileName = ":memory:";
             using (
                 IStorageSyncableDataContext dbContext =
@@ -170,7 +170,7 @@ namespace PlatformCoreTests
         [TestMethod]
         public void ReflectionInvokePaymentDatabase()
         {
-            Type contextType = typeof(SQLite.TheBall.CORE.TheBallDataContext);
+            Type contextType = typeof(SQLite.TheBall.Core.TheBallDataContext);
             string sqLiteDbLocationFileName = ":memory:";
             using (
                 IStorageSyncableDataContext dbContext =

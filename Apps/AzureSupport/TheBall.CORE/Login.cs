@@ -5,7 +5,7 @@ using AaltoGlobalImpact.OIP;
 using AzureSupport;
 //using RestSharp.Extensions.MonoHttp;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     partial class Login : IAdditionalFormatProvider
     {

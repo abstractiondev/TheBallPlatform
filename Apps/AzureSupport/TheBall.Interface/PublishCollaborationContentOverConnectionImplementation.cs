@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using TheBall.CORE;
+using TheBall.Core;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface

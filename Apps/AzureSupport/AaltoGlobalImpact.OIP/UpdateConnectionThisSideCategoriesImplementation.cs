@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 using TheBall.Interface;
 using System.Linq;
 using System.Threading.Tasks;
-using Process = TheBall.CORE.Process;
+using Process = TheBall.Core.Process;
 
 namespace AaltoGlobalImpact.OIP
 {

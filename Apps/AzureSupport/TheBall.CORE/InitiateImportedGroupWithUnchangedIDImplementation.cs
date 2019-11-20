@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class InitiateImportedGroupWithUnchangedIDImplementation
     {

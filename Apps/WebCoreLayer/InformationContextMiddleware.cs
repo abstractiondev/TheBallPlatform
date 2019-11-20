@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using TheBall;
 using TheBall.Admin.INT;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace WebCoreLayer
 {

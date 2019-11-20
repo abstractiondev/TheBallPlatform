@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using AaltoGlobalImpact.OIP;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
 #if never
     public class InitiateAccountMergeFromEmailImplementation

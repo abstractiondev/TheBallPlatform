@@ -4,7 +4,7 @@ using System.Web;
 using AaltoGlobalImpact.OIP;
 using static System.Net.WebUtility;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     partial class Email : IAdditionalFormatProvider, IBeforeStoreHandler
     {

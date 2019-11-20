@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class DeleteCustomUIImplementation
     {

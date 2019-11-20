@@ -6,20 +6,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation
     {
-        private const string LockLocation = SystemSupport.SystemOwnerRoot + "/TheBall.CORE/RequestResourceUsage/0.lock";
+        private const string LockLocation = SystemSupport.SystemOwnerRoot + "/TheBall.Core/RequestResourceUsage/0.lock";
         public static async Task<CloudBlockBlob[]> GetTarget_BatchToProcessAsync(int processBatchSize, bool processIfLess)
         {
             //options.
             //options.AccessCondition 
             //StorageSupport.CurrActiveContainer.ListBlobsSegmented()
-            //    ListBlobsWithPrefix("sys/AAA/TheBall.CORE/RequestResourceUsage")
-            string prefix = "sys/AAA/TheBall.CORE/RequestResourceUsage/";
+            //    ListBlobsWithPrefix("sys/AAA/TheBall.Core/RequestResourceUsage")
+            string prefix = "sys/AAA/TheBall.Core/RequestResourceUsage/";
 
             var blobResultSegment = await StorageSupport.ListBlobsWithPrefixAsync(null, prefix);
             var blobList = blobResultSegment.Results.Take(processBatchSize).Cast<CloudBlockBlob>().ToArray();

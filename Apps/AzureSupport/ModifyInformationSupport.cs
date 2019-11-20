@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 using System.Web;
 using PersonalWeb.Diosphere;
 using TheBall.Admin;
-using TheBall.CORE;
+using TheBall.Core;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using Microsoft.AspNetCore.Http;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core.InstanceSupport;
 using TheBall.Interface;
-using Group = TheBall.CORE.Group;
+using Group = TheBall.Core.Group;
 
 namespace TheBall
 {

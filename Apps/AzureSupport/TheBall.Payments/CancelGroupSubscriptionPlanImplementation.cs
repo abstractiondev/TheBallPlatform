@@ -5,7 +5,8 @@ using System.Web;
 using AzureSupport;
 using Microsoft.AspNetCore.Http;
 using Stripe;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 using TheBall.Payments.INT;
 
 namespace TheBall.Payments

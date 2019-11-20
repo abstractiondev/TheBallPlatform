@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace AaltoGlobalImpact.OIP
 {

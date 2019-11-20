@@ -4,7 +4,7 @@ using OIP = AaltoGlobalImpact.OIP;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
 #if obsolete    
     public class CreateGroupWithTemplatesImplementation

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface
@@ -55,7 +55,7 @@ namespace TheBall.Interface
 
             var partnerShareRootFolder = BlobStorage.CombinePath(ShareInfoDirectory, partner.ContainerName,
                 partner.LocationPrefix);
-            var partnerSharedBlobs = await BlobStorage.GetOwnerBlobsA(partnerShareRootFolder);
+            var partnerSharedBlobs = await BlobStorage.GetOwnerBlobsA(InformationContext.CurrentOwner, partnerShareRootFolder);
             var sharedWithMeBlobs = partnerSharedBlobs.Where(blob => isMetadata(blob.FileName) == false).ToArray();
 
             var shareInfoStripLength =
@@ -74,7 +74,7 @@ namespace TheBall.Interface
             summaryObject.SharedByMe = new ShareInfo[0];
 
             var summaryFileName = BlobStorage.CombinePath(summariesFolder, getSummaryFileName(partner.ContainerName, partner.LocationPrefix));
-            var blobInfo = await BlobStorage.StoreBlobJsonContentA(summaryFileName, summaryObject);
+            var blobInfo = await BlobStorage.StoreBlobJsonContentA(InformationContext.CurrentOwner, summaryFileName, summaryObject);
             return new Tuple<IContainerOwner, string>(partner, blobInfo.ContentMD5);
         }
 
@@ -88,7 +88,7 @@ namespace TheBall.Interface
 
             if (isCompleteUpdate)
             {
-                var existingSummaryBlobs = await BlobStorage.GetOwnerBlobsA(summariesFolder);
+                var existingSummaryBlobs = await BlobStorage.GetOwnerBlobsA(InformationContext.CurrentOwner, summariesFolder);
                 var existingDataSummaryNames =
                     result.Where(item => item.Item2 != null)
                         .Select(
@@ -141,7 +141,7 @@ namespace TheBall.Interface
                     })).OrderBy(item => getDictKey(item.Partner)).ToArray();
                 summaryObject.PartnerData = existingPartners;
             }
-            await BlobStorage.StoreBlobJsonContentA(summaryDataPath, summaryObject);
+            await BlobStorage.StoreBlobJsonContentA(InformationContext.CurrentOwner, summaryDataPath, summaryObject);
         }
 
         private static string getDictKey(CollaborationPartner partner)

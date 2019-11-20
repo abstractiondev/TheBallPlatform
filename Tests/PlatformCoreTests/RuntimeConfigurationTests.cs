@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using SER.TheBall.Payments;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core.InstanceSupport;
 
 namespace PlatformCoreTests
 {

@@ -107,7 +107,7 @@
         </OperationSpec>
         <Parameters>
           <Parameter name="IndexingRequestID" dataType="string" designDesc="Indexing request ID" state="implemented"/>
-          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Owner of the index and process" state="implemented"/>
+          <Parameter name="Owner" dataType="TheBall.Core.IContainerOwner" designDesc="Owner of the index and process" state="implemented"/>
           <Parameter name="IndexName" dataType="string" designDesc="Index name" state="implemented"/>
           <Parameter name="IndexStorageRootPath" dataType="string" designDesc="Index storage root path" state="implemented"/>
         </Parameters>
@@ -139,7 +139,7 @@
         </OperationSpec>
         <Parameters>
           <Parameter name="QueryRequestID" dataType="string" designDesc="Query request ID" state="implemented"/>
-          <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Owner of the index and process" state="implemented"/>
+          <Parameter name="Owner" dataType="TheBall.Core.IContainerOwner" designDesc="Owner of the index and process" state="implemented"/>
           <Parameter name="IndexName" dataType="string" designDesc="Index name" state="implemented"/>
           <Parameter name="IndexStorageRootPath" dataType="string" designDesc="Index storage root path" state="implemented"/>
         </Parameters>

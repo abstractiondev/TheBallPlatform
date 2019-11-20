@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace WebCoreLayer.Controllers
 {

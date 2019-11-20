@@ -7,11 +7,11 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
-using AzureSupport.TheBall.CORE;
+using AzureSupport.TheBall.Core;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 using TheBall.Index;
 
 namespace TheBall

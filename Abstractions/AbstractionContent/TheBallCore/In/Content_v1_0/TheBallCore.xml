@@ -3,7 +3,7 @@
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../TheBallCoreABS/TheBallCore/Content_v1_0/TheBallCore_v1_0.xsd">
 -->
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
-  <InstanceOfTheBall semanticDomainName="TheBall.CORE">
+  <InstanceOfTheBall semanticDomainName="TheBall.Core">
     <DigitalInterface>
       <InterfaceModel>
         <InterfaceObject name="LoginInfo" designDesc="Login data for login operations">
@@ -1083,7 +1083,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="Process" dataType="TheBall.CORE.Process" designDesc="Process object of execution" state="implemented" asyncSupportMode="AsyncOnly">
+            <TargetDefinition name="Process" dataType="TheBall.Core.Process" designDesc="Process object of execution" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="ProcessID"/>
             </TargetDefinition>
             <TargetDefinition name="ProcessLockLocation" dataType="string" designDesc="Process lock file location" state="implemented">
@@ -1913,7 +1913,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="GroupAsOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Container owner" state="implemented">
+            <TargetDefinition name="GroupAsOwner" dataType="TheBall.Core.IContainerOwner" designDesc="Container owner" state="implemented">
               <Parameter name="GroupID"/>
             </TargetDefinition>
             <TargetDefinition name="GroupContainer" dataType="AaltoGlobalImpact.OIP.GroupContainer" designDesc="Group container" state="implemented" asyncSupportMode="AsyncOnly">

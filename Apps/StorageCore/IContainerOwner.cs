@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public interface IContainerOwner
     {
@@ -25,10 +25,11 @@ namespace TheBall.CORE
             return thisOwner.ContainerName == containerOwner.ContainerName && thisOwner.LocationPrefix == containerOwner.LocationPrefix;
         }
 
-        public static string GetOwnerContentLocation(this IContainerOwner owner, string location)
+        public static bool IsSystemOwner(this IContainerOwner owner)
         {
-            return StorageSupport.GetOwnerContentLocation(owner, location);
+            return owner.IsSameOwner(SystemSupport.SystemOwner);
         }
-    }
 
+
+    }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class ReleaseSystemProcessLockImplementation
     {

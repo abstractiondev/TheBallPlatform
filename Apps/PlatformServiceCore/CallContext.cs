@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading;
 
-namespace TheBall
+namespace TheBall.Core
 {
     /// <summary>
     /// Provides a way to set contextual data that flows with the call and 
@@ -30,5 +30,13 @@ namespace TheBall
         /// <returns>The object in the call context associated with the specified name, or <see langword="null"/> if not found.</returns>
         public static object GetData(string name) =>
             state.TryGetValue(name, out AsyncLocal<object> data) ? data.Value : null;
+
+
+        /// <summary>
+        /// Remove stored contextual data
+        /// </summary>
+        /// <param name="name"></param>
+        public static void FreeNamedDataSlot(string name) =>
+            state.TryRemove(name, out System.Threading.AsyncLocal<object> data);
     }
 }

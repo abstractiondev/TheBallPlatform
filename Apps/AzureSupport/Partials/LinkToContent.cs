@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using TheBall;
+using TheBall.Core;
 
 namespace AaltoGlobalImpact.OIP
 {

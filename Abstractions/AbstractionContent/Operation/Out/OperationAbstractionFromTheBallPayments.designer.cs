@@ -289,7 +289,7 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(FetchCustomersFromStripeParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner Owner = FetchCustomersFromStripeImplementation.GetTarget_Owner(parameters.GroupID);	
+					TheBall.Core.IContainerOwner Owner = FetchCustomersFromStripeImplementation.GetTarget_Owner(parameters.GroupID);	
 				Stripe.StripeCustomer[] StripeCustomers = FetchCustomersFromStripeImplementation.GetTarget_StripeCustomers();	
 				CustomerAccountCollection CurrentCustomers =  await FetchCustomersFromStripeImplementation.GetTarget_CurrentCustomersAsync(Owner);	
 				CustomerAccount[] NewCustomersToCreate = FetchCustomersFromStripeImplementation.GetTarget_NewCustomersToCreate(Owner, StripeCustomers, CurrentCustomers);	
@@ -310,7 +310,7 @@ using System.Threading.Tasks;
 				public static void Execute(AssociatePaymentToGroupParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner GroupAsOwner = AssociatePaymentToGroupImplementation.GetTarget_GroupAsOwner(parameters.GroupID);	
+					TheBall.Core.IContainerOwner GroupAsOwner = AssociatePaymentToGroupImplementation.GetTarget_GroupAsOwner(parameters.GroupID);	
 				}
 				}
 		 } 

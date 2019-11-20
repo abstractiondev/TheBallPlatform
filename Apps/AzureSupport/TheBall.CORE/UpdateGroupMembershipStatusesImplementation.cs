@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TheBall.Interface.INT;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class UpdateGroupMembershipStatusesImplementation
     {

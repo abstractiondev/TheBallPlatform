@@ -1,5 +1,5 @@
 ﻿using System;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall
 {

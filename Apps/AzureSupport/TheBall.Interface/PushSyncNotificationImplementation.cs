@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using AzureSupport;
-using TheBall.CORE;
+using TheBall.Core;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface

@@ -4,7 +4,7 @@ using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class PublishGroupToWwwImplementation
     {

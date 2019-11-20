@@ -5,18 +5,18 @@ import {Injectable} from "@angular/core";
 import {TheBallService} from "./theball.service";
 
 @Injectable()
-export class TheBallCOREService {
+export class TheBallCoreService {
 
 	constructor(private tbService:TheBallService) {
 	}
 
 	async SetAccountClientMetadata(param:AccountMetadata) : Promise<any> {
-		let result = await this.tbService.ExecuteOperation("TheBall.CORE.SetAccountClientMetadata", param);
+		let result = await this.tbService.ExecuteOperation("TheBall.Core.SetAccountClientMetadata", param);
 		return result;
 	}
 
 	async SetAccountServerMetadata(param:AccountMetadata) : Promise<any> {
-		let result = await this.tbService.ExecuteOperation("TheBall.CORE.SetAccountServerMetadata", param);
+		let result = await this.tbService.ExecuteOperation("TheBall.Core.SetAccountServerMetadata", param);
 		return result;
 	}
 }

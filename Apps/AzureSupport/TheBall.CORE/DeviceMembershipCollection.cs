@@ -1,6 +1,6 @@
 using AaltoGlobalImpact.OIP;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     partial class DeviceMembershipCollection : IAdditionalFormatProvider
     {

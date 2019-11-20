@@ -9,7 +9,7 @@ using System.Web;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class CreateSpecifiedInformationObjectWithValuesImplementation
     {

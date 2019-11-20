@@ -14,8 +14,8 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MimeKit;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
 
 namespace TheBall
 {

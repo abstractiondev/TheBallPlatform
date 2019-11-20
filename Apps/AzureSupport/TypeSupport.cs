@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public static class TypeSupport
     {

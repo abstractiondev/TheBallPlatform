@@ -9,18 +9,17 @@ using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
-using AzureSupport.TheBall.CORE;
+using AzureSupport.TheBall.Core;
 using DiagnosticsUtils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core.InstanceSupport;
 using TheBall.Index;
 using TheBall.Interface;
 
-namespace TheBall
+namespace TheBall.Core
 {
     public class InformationContext
     {
@@ -198,6 +197,7 @@ namespace TheBall
             if (CallContext.LogicalGetData(KEYNAME) != null)
             {
                 CallContext.LogicalSetData(KEYNAME, null);
+                CallContext.FreeNamedDataSlot(KEYNAME);
                 return;
             }
 
@@ -367,7 +367,7 @@ namespace TheBall
             IIndexedDocument iDoc = informationObject as IIndexedDocument;
             if (iDoc != null)
             {
-                var owner = VirtualOwner.FigureOwner(informationObject);
+                var owner = VirtualOwner.FigureOwner(informationObject.RelativeLocation);
                 if (owner.IsEqualOwner(Owner))
                 {
                     IndexedIDInfos.Add(informationObject.RelativeLocation);

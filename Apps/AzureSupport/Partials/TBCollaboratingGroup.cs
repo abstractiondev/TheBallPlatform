@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace AaltoGlobalImpact.OIP
 {

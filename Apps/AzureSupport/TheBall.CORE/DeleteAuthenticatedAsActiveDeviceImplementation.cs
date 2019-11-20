@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using TheBall.CORE.INT;
+using TheBall.Core.INT;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class DeleteAuthenticatedAsActiveDeviceImplementation
     {
@@ -20,7 +20,7 @@ namespace TheBall.CORE
             try
             {
                 var result = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(authenticatedAsActiveDevice.ID,
-                                                                                       "TheBall.CORE.RemoteDeviceCoreOperation", new DeviceOperationData {OperationRequestString = "DELETEREMOTEDEVICE"});
+                                                                                       "TheBall.Core.RemoteDeviceCoreOperation", new DeviceOperationData {OperationRequestString = "DELETEREMOTEDEVICE"});
             }
             catch
             {

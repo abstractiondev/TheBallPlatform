@@ -4,7 +4,7 @@
 using DOM=TheBall.Admin;
 using System.Threading.Tasks;
 
-namespace TheBall.CORE {
+namespace TheBall.Core {
 	public static partial class OwnerInitializer
 	{
 		private static async Task DOMAININIT_TheBall_Admin(IContainerOwner owner)
@@ -27,8 +27,8 @@ using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace INT { 
 					[DataContract]

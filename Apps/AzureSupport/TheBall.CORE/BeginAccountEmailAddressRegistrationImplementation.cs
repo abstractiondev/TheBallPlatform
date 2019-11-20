@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class BeginAccountEmailAddressRegistrationImplementation
     {

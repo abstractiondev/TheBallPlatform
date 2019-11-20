@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 using TheBall.Interface;
 
 namespace AaltoGlobalImpact.OIP
@@ -18,7 +18,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static string GetTarget_SourceContentRoot(Connection connection)
         {
-            return string.Format("TheBall.CORE/DeviceMembership/{0}_Input/", connection.DeviceID);
+            return string.Format("TheBall.Core/DeviceMembership/{0}_Input/", connection.DeviceID);
         }
 
         public static string GetTarget_TargetContentRoot()

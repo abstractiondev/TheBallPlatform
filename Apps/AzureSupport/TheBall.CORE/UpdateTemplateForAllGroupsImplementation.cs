@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ProtoBuf;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class UpdateTemplateForAllGroupsImplementation
     {

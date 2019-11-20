@@ -4,9 +4,9 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AzureSupport;
 using SecuritySupport;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public static class DeviceSupport
     {

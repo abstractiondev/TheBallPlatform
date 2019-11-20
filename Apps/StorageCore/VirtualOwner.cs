@@ -1,37 +1,22 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
-using System.Threading.Tasks;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
-    public interface IInformationCollection
-    {
-        string GetItemDirectory();
-        Task RefreshContentAsync();
-        bool IsMasterCollection { get; }
-        string GetMasterLocation();
-        Task<IInformationCollection> GetMasterInstanceAsync();
-    }
-
     public class VirtualOwner : IContainerOwner
     {
         private string containerName;
         private string locationPrefix;
 
-        public static IContainerOwner FigureOwner(IInformationObject ownedObject)
-        {
-            string relativeLocation = ownedObject.RelativeLocation;
-            return FigureOwner(relativeLocation);
-        }
-
         public static IContainerOwner FigureOwner(string relativeLocation)
         {
             if (relativeLocation.StartsWith("acc/") || relativeLocation.StartsWith("grp/"))
                 return new VirtualOwner(relativeLocation.Substring(0, 3),
-                    relativeLocation.Substring(4, StorageSupport.GuidLength));
+                    relativeLocation.Substring(4, BlobStorage.StorageSupport.GuidLength));
             if (relativeLocation.StartsWith("sys/AAA"))
                 return SystemSupport.SystemOwner;
             throw new InvalidDataException("Cannot figure owner of: " + relativeLocation);

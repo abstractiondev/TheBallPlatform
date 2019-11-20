@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
 namespace TheBall.Infra.TheBallWorkerConsole
 {

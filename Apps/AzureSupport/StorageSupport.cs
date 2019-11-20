@@ -20,9 +20,9 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.File;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Shared.Protocol;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
+using TheBall.Core.Storage;
 using TheBall.Index;
 
 namespace TheBall
@@ -799,7 +799,7 @@ namespace TheBall
 
         public static async Task ReconnectMastersAndCollectionsAsync(this IInformationObject informationObject, bool updateContents)
         {
-            var owner = VirtualOwner.FigureOwner(informationObject);
+            var owner = VirtualOwner.FigureOwner(informationObject.RelativeLocation);
             if (updateContents)
             {
                 IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
@@ -1431,7 +1431,7 @@ namespace TheBall
             return contentLocation;
         }
 
-        private const string LockPath = "TheBall.CORE/Locks/";
+        private const string LockPath = "TheBall.Core/Locks/";
 
         public static async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
         {

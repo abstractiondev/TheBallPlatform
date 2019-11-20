@@ -4,7 +4,7 @@
     {
         public static void testi()
         {
-            var invoiceSummary = new TheBall.CORE.InvoiceDetails();
+            var invoiceSummary = new TheBall.Core.InvoiceDetails();
             
         }
     }

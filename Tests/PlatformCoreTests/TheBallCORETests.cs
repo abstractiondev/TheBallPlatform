@@ -1,7 +1,7 @@
 ﻿using System;
-using AzureSupport.TheBall.CORE;
+using AzureSupport.TheBall.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace PlatformCoreTests
 {

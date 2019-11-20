@@ -1,5 +1,5 @@
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace AaltoGlobalImpact.OIP
 {

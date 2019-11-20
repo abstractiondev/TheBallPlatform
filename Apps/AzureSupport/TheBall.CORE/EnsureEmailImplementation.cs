@@ -3,7 +3,7 @@ using System.Security;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class EnsureEmailImplementation
     {

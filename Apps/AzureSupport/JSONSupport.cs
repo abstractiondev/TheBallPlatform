@@ -15,7 +15,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using TheBall.Index;
 
-namespace TheBall.CORE.Storage
+namespace TheBall.Core.Storage
 {
     public static class JSONSupport
     {

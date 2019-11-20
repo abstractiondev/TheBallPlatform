@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace TheBall.CORE.Storage
+namespace TheBall.Core.Storage
 {
     public class BlobStorageFolder
     {

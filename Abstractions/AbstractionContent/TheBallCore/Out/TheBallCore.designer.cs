@@ -1,13 +1,13 @@
  
 
 
-using DOM=TheBall.CORE;
+using DOM=TheBall.Core;
 using System.Threading.Tasks;
 
-namespace TheBall.CORE {
+namespace TheBall.Core {
 	public static partial class OwnerInitializer
 	{
-		private static async Task DOMAININIT_TheBall_CORE(IContainerOwner owner)
+		private static async Task DOMAININIT_TheBall_Core(IContainerOwner owner)
 		{
 			await DOM.DomainInformationSupport.EnsureMasterCollections(owner);
 			await DOM.DomainInformationSupport.RefreshMasterCollections(owner);
@@ -16,7 +16,7 @@ namespace TheBall.CORE {
 }
 
 
-namespace TheBall.CORE { 
+namespace TheBall.Core { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -27,8 +27,8 @@ using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace INT { 
 					[DataContract]
@@ -232,7 +232,7 @@ namespace INT {
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Login";
 					UpdateRelativeLocationFromID();
 				}
@@ -240,9 +240,10 @@ namespace INT {
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/Login/";
+					string contentTypeName = "TheBall.Core/Login/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -266,7 +267,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Login");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Login), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -287,8 +288,8 @@ namespace INT {
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Login/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Login/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/Login/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/Login/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -427,7 +428,7 @@ namespace INT {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "Login", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "Login", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -441,7 +442,7 @@ namespace INT {
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Login", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "Login", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -613,7 +614,7 @@ namespace INT {
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Email";
 					UpdateRelativeLocationFromID();
 				}
@@ -621,9 +622,10 @@ namespace INT {
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/Email/";
+					string contentTypeName = "TheBall.Core/Email/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -647,7 +649,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Email");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Email), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -668,8 +670,8 @@ namespace INT {
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Email/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Email/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/Email/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/Email/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -808,7 +810,7 @@ namespace INT {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "Email", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "Email", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -822,7 +824,7 @@ namespace INT {
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Email", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "Email", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -1002,7 +1004,7 @@ namespace INT {
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Account";
 					UpdateRelativeLocationFromID();
 				}
@@ -1010,9 +1012,10 @@ namespace INT {
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/Account/";
+					string contentTypeName = "TheBall.Core/Account/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1036,7 +1039,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Account");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Account), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1057,8 +1060,8 @@ namespace INT {
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Account/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Account/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/Account/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/Account/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -1162,7 +1165,7 @@ namespace INT {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "Account", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "Account", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1176,7 +1179,7 @@ namespace INT {
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Account", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "Account", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -1316,7 +1319,7 @@ Account.ClientMetadataJSON
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Group";
 					UpdateRelativeLocationFromID();
 				}
@@ -1324,9 +1327,10 @@ Account.ClientMetadataJSON
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/Group/";
+					string contentTypeName = "TheBall.Core/Group/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1350,7 +1354,7 @@ Account.ClientMetadataJSON
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Group");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Group), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1371,8 +1375,8 @@ Account.ClientMetadataJSON
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Group/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Group/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/Group/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/Group/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -1476,7 +1480,7 @@ Account.ClientMetadataJSON
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "Group", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "Group", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1490,7 +1494,7 @@ Account.ClientMetadataJSON
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Group", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "Group", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -1594,7 +1598,7 @@ Account.ClientMetadataJSON
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "GroupMembership";
 					UpdateRelativeLocationFromID();
 				}
@@ -1602,9 +1606,10 @@ Account.ClientMetadataJSON
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/GroupMembership/";
+					string contentTypeName = "TheBall.Core/GroupMembership/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1628,7 +1633,7 @@ Account.ClientMetadataJSON
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupMembership");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GroupMembership), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1649,8 +1654,8 @@ Account.ClientMetadataJSON
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/GroupMembership/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/GroupMembership/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/GroupMembership/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/GroupMembership/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -1789,7 +1794,7 @@ Account.ClientMetadataJSON
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "GroupMembership", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "GroupMembership", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1803,7 +1808,7 @@ Account.ClientMetadataJSON
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "GroupMembership", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "GroupMembership", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -1961,7 +1966,7 @@ Account.ClientMetadataJSON
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ContentPackageCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -1969,9 +1974,10 @@ Account.ClientMetadataJSON
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/ContentPackageCollection/";
+					string contentTypeName = "TheBall.Core/ContentPackageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1995,7 +2001,7 @@ Account.ClientMetadataJSON
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ContentPackageCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ContentPackageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2016,8 +2022,8 @@ Account.ClientMetadataJSON
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ContentPackageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ContentPackageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/ContentPackageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/ContentPackageCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -2156,7 +2162,7 @@ Account.ClientMetadataJSON
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "ContentPackageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "ContentPackageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2170,7 +2176,7 @@ Account.ClientMetadataJSON
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ContentPackageCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "ContentPackageCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -2197,14 +2203,14 @@ Account.ClientMetadataJSON
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -2214,7 +2220,7 @@ Account.ClientMetadataJSON
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ContentPackage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -2237,7 +2243,7 @@ Account.ClientMetadataJSON
 				}
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/ContentPackageCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Core/ContentPackageCollection/" + "MasterCollection");
 				}
 
 
@@ -2452,7 +2458,7 @@ Account.ClientMetadataJSON
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ContentPackage";
 					UpdateRelativeLocationFromID();
 				}
@@ -2460,9 +2466,10 @@ Account.ClientMetadataJSON
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/ContentPackage/";
+					string contentTypeName = "TheBall.Core/ContentPackage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -2486,7 +2493,7 @@ Account.ClientMetadataJSON
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ContentPackage");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ContentPackage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2507,8 +2514,8 @@ Account.ClientMetadataJSON
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ContentPackage/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ContentPackage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/ContentPackage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/ContentPackage/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -2647,7 +2654,7 @@ Account.ClientMetadataJSON
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "ContentPackage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "ContentPackage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -2661,7 +2668,7 @@ Account.ClientMetadataJSON
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ContentPackage", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "ContentPackage", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -2850,7 +2857,7 @@ ContentPackage.Description
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationInputCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -2858,9 +2865,10 @@ ContentPackage.Description
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InformationInputCollection/";
+					string contentTypeName = "TheBall.Core/InformationInputCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -2884,7 +2892,7 @@ ContentPackage.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationInputCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InformationInputCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2905,8 +2913,8 @@ ContentPackage.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationInputCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationInputCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InformationInputCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InformationInputCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -3045,7 +3053,7 @@ ContentPackage.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InformationInputCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InformationInputCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3059,7 +3067,7 @@ ContentPackage.Description
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InformationInputCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InformationInputCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -3086,14 +3094,14 @@ ContentPackage.Description
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -3103,7 +3111,7 @@ ContentPackage.Description
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InformationInput>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -3126,7 +3134,7 @@ ContentPackage.Description
 				}
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/InformationInputCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Core/InformationInputCollection/" + "MasterCollection");
 				}
 
 
@@ -3341,7 +3349,7 @@ ContentPackage.Description
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationInput";
 					UpdateRelativeLocationFromID();
 				}
@@ -3349,9 +3357,10 @@ ContentPackage.Description
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InformationInput/";
+					string contentTypeName = "TheBall.Core/InformationInput/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -3375,7 +3384,7 @@ ContentPackage.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationInput");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InformationInput), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3396,8 +3405,8 @@ ContentPackage.Description
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationInput/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationInput/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InformationInput/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InformationInput/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -3536,7 +3545,7 @@ ContentPackage.Description
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InformationInput", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InformationInput", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3550,7 +3559,7 @@ ContentPackage.Description
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InformationInput", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InformationInput", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -3739,7 +3748,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationOutputCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -3747,9 +3756,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InformationOutputCollection/";
+					string contentTypeName = "TheBall.Core/InformationOutputCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -3773,7 +3783,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationOutputCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InformationOutputCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3794,8 +3804,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationOutputCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOutputCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InformationOutputCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InformationOutputCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -3934,7 +3944,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InformationOutputCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InformationOutputCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -3948,7 +3958,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InformationOutputCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InformationOutputCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -3975,14 +3985,14 @@ InformationInput.AuthenticatedDeviceID
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -3992,7 +4002,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InformationOutput>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -4015,7 +4025,7 @@ InformationInput.AuthenticatedDeviceID
 				}
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/InformationOutputCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Core/InformationOutputCollection/" + "MasterCollection");
 				}
 
 
@@ -4230,7 +4240,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationOutput";
 					UpdateRelativeLocationFromID();
 				}
@@ -4238,9 +4248,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InformationOutput/";
+					string contentTypeName = "TheBall.Core/InformationOutput/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -4264,7 +4275,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationOutput");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InformationOutput), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -4285,8 +4296,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationOutput/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOutput/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InformationOutput/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InformationOutput/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -4425,7 +4436,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InformationOutput", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InformationOutput", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4439,7 +4450,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InformationOutput", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InformationOutput", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -4635,7 +4646,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "AuthenticatedAsActiveDeviceCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -4643,9 +4654,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/";
+					string contentTypeName = "TheBall.Core/AuthenticatedAsActiveDeviceCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -4669,7 +4681,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AuthenticatedAsActiveDeviceCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AuthenticatedAsActiveDeviceCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -4690,8 +4702,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/AuthenticatedAsActiveDeviceCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/AuthenticatedAsActiveDeviceCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -4830,7 +4842,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "AuthenticatedAsActiveDeviceCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "AuthenticatedAsActiveDeviceCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -4844,7 +4856,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "AuthenticatedAsActiveDeviceCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "AuthenticatedAsActiveDeviceCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -4871,14 +4883,14 @@ InformationInput.AuthenticatedDeviceID
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -4888,7 +4900,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDevice>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -4911,7 +4923,7 @@ InformationInput.AuthenticatedDeviceID
 				}
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Core/AuthenticatedAsActiveDeviceCollection/" + "MasterCollection");
 				}
 
 
@@ -5126,7 +5138,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "AuthenticatedAsActiveDevice";
 					UpdateRelativeLocationFromID();
 				}
@@ -5134,9 +5146,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/AuthenticatedAsActiveDevice/";
+					string contentTypeName = "TheBall.Core/AuthenticatedAsActiveDevice/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -5160,7 +5173,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AuthenticatedAsActiveDevice");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AuthenticatedAsActiveDevice), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -5181,8 +5194,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/AuthenticatedAsActiveDevice/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/AuthenticatedAsActiveDevice/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -5321,7 +5334,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "AuthenticatedAsActiveDevice", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "AuthenticatedAsActiveDevice", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5335,7 +5348,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "AuthenticatedAsActiveDevice", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "AuthenticatedAsActiveDevice", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -5538,7 +5551,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "DeviceMembershipCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -5546,9 +5559,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/DeviceMembershipCollection/";
+					string contentTypeName = "TheBall.Core/DeviceMembershipCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -5572,7 +5586,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DeviceMembershipCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(DeviceMembershipCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -5593,8 +5607,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/DeviceMembershipCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/DeviceMembershipCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/DeviceMembershipCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/DeviceMembershipCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -5733,7 +5747,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "DeviceMembershipCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "DeviceMembershipCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -5747,7 +5761,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "DeviceMembershipCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "DeviceMembershipCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -5774,14 +5788,14 @@ InformationInput.AuthenticatedDeviceID
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -5791,7 +5805,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DeviceMembership>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -5814,7 +5828,7 @@ InformationInput.AuthenticatedDeviceID
 				}
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/DeviceMembershipCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Core/DeviceMembershipCollection/" + "MasterCollection");
 				}
 
 
@@ -6029,7 +6043,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "DeviceMembership";
 					UpdateRelativeLocationFromID();
 				}
@@ -6037,9 +6051,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/DeviceMembership/";
+					string contentTypeName = "TheBall.Core/DeviceMembership/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -6063,7 +6078,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DeviceMembership");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(DeviceMembership), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -6084,8 +6099,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/DeviceMembership/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/DeviceMembership/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/DeviceMembership/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/DeviceMembership/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -6224,7 +6239,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "DeviceMembership", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "DeviceMembership", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6238,7 +6253,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "DeviceMembership", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "DeviceMembership", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -6405,7 +6420,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceFiscalExportSummary";
 					UpdateRelativeLocationFromID();
 				}
@@ -6413,9 +6428,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceFiscalExportSummary/";
+					string contentTypeName = "TheBall.Core/InvoiceFiscalExportSummary/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -6439,7 +6455,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceFiscalExportSummary");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceFiscalExportSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -6460,8 +6476,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceFiscalExportSummary/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceFiscalExportSummary/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -6600,7 +6616,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceFiscalExportSummary", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceFiscalExportSummary", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -6614,7 +6630,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceFiscalExportSummary", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceFiscalExportSummary", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -6647,7 +6663,7 @@ InformationInput.AuthenticatedDeviceID
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
 					if(masterInstance is InvoiceCollection) {
-						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceFiscalExportSummary_ExportedInvoices(this, localCollection:ExportedInvoices, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.Core.CollectionUpdateImplementation.Update_InvoiceFiscalExportSummary_ExportedInvoices(this, localCollection:ExportedInvoices, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(ExportedInvoices != null) {
 						((IInformationObject) ExportedInvoices).UpdateCollections(masterInstance);
 					}
@@ -6816,7 +6832,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceSummaryContainer";
 					UpdateRelativeLocationFromID();
 				}
@@ -6824,9 +6840,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceSummaryContainer/";
+					string contentTypeName = "TheBall.Core/InvoiceSummaryContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -6850,7 +6867,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceSummaryContainer");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceSummaryContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -6871,8 +6888,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceSummaryContainer/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceSummaryContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceSummaryContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceSummaryContainer/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -7011,7 +7028,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceSummaryContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceSummaryContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7025,7 +7042,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceSummaryContainer", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceSummaryContainer", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -7064,22 +7081,22 @@ InformationInput.AuthenticatedDeviceID
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
 					if(masterInstance is InvoiceCollection) {
-						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_OpenInvoices(this, localCollection:OpenInvoices, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.Core.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_OpenInvoices(this, localCollection:OpenInvoices, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(OpenInvoices != null) {
 						((IInformationObject) OpenInvoices).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is InvoiceCollection) {
-						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PredictedInvoices(this, localCollection:PredictedInvoices, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.Core.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PredictedInvoices(this, localCollection:PredictedInvoices, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(PredictedInvoices != null) {
 						((IInformationObject) PredictedInvoices).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is InvoiceCollection) {
-						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesActiveYear(this, localCollection:PaidInvoicesActiveYear, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.Core.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesActiveYear(this, localCollection:PaidInvoicesActiveYear, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(PaidInvoicesActiveYear != null) {
 						((IInformationObject) PaidInvoicesActiveYear).UpdateCollections(masterInstance);
 					}
 					if(masterInstance is InvoiceCollection) {
-						TheBall.CORE.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesLast12Months(this, localCollection:PaidInvoicesLast12Months, masterCollection:(InvoiceCollection) masterInstance);
+						TheBall.Core.CollectionUpdateImplementation.Update_InvoiceSummaryContainer_PaidInvoicesLast12Months(this, localCollection:PaidInvoicesLast12Months, masterCollection:(InvoiceCollection) masterInstance);
 					} else if(PaidInvoicesLast12Months != null) {
 						((IInformationObject) PaidInvoicesLast12Months).UpdateCollections(masterInstance);
 					}
@@ -7375,7 +7392,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -7383,9 +7400,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceCollection/";
+					string contentTypeName = "TheBall.Core/InvoiceCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -7409,7 +7427,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -7430,8 +7448,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -7570,7 +7588,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -7584,7 +7602,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -7611,14 +7629,14 @@ InformationInput.AuthenticatedDeviceID
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -7628,7 +7646,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Invoice>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -7651,7 +7669,7 @@ InformationInput.AuthenticatedDeviceID
 				}
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.CORE/InvoiceCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Core/InvoiceCollection/" + "MasterCollection");
 				}
 
 
@@ -7866,7 +7884,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Invoice";
 					UpdateRelativeLocationFromID();
 				}
@@ -7874,9 +7892,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/Invoice/";
+					string contentTypeName = "TheBall.Core/Invoice/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -7900,7 +7919,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Invoice");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Invoice), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -7921,8 +7940,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Invoice/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Invoice/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/Invoice/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/Invoice/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -8061,7 +8080,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "Invoice", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "Invoice", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8075,7 +8094,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Invoice", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "Invoice", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -8403,7 +8422,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceDetails";
 					UpdateRelativeLocationFromID();
 				}
@@ -8411,9 +8430,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceDetails/";
+					string contentTypeName = "TheBall.Core/InvoiceDetails/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -8437,7 +8457,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceDetails");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceDetails), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -8458,8 +8478,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceDetails/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceDetails/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceDetails/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceDetails/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -8598,7 +8618,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceDetails", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceDetails", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -8612,7 +8632,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceDetails", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceDetails", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -8810,7 +8830,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceUserCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -8818,9 +8838,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceUserCollection/";
+					string contentTypeName = "TheBall.Core/InvoiceUserCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -8844,7 +8865,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceUserCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceUserCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -8865,8 +8886,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceUserCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceUserCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceUserCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceUserCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -9005,7 +9026,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceUserCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceUserCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9019,7 +9040,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceUserCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceUserCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -9061,7 +9082,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceUser>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -9283,7 +9304,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceUser";
 					UpdateRelativeLocationFromID();
 				}
@@ -9291,9 +9312,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceUser/";
+					string contentTypeName = "TheBall.Core/InvoiceUser/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -9317,7 +9339,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceUser");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceUser), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -9338,8 +9360,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceUser/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceUser/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceUser/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceUser/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -9478,7 +9500,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceUser", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceUser", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9492,7 +9514,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceUser", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceUser", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -9788,7 +9810,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceRowGroupCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -9796,9 +9818,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceRowGroupCollection/";
+					string contentTypeName = "TheBall.Core/InvoiceRowGroupCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -9822,7 +9845,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceRowGroupCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceRowGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -9843,8 +9866,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowGroupCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowGroupCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceRowGroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceRowGroupCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -9983,7 +10006,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceRowGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceRowGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -9997,7 +10020,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceRowGroupCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceRowGroupCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -10039,7 +10062,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroup>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -10261,7 +10284,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceEventDetailGroupCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -10269,9 +10292,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceEventDetailGroupCollection/";
+					string contentTypeName = "TheBall.Core/InvoiceEventDetailGroupCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -10295,7 +10319,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceEventDetailGroupCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceEventDetailGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -10316,8 +10340,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceEventDetailGroupCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceEventDetailGroupCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -10456,7 +10480,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceEventDetailGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceEventDetailGroupCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10470,7 +10494,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceEventDetailGroupCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceEventDetailGroupCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -10512,7 +10536,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroup>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -10734,7 +10758,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceRowGroup";
 					UpdateRelativeLocationFromID();
 				}
@@ -10742,9 +10766,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceRowGroup/";
+					string contentTypeName = "TheBall.Core/InvoiceRowGroup/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -10768,7 +10793,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceRowGroup");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceRowGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -10789,8 +10814,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowGroup/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceRowGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceRowGroup/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -10929,7 +10954,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceRowGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceRowGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -10943,7 +10968,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceRowGroup", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceRowGroup", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -11172,7 +11197,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceEventDetailGroup";
 					UpdateRelativeLocationFromID();
 				}
@@ -11180,9 +11205,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceEventDetailGroup/";
+					string contentTypeName = "TheBall.Core/InvoiceEventDetailGroup/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -11206,7 +11232,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceEventDetailGroup");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceEventDetailGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -11227,8 +11253,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailGroup/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailGroup/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceEventDetailGroup/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceEventDetailGroup/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -11367,7 +11393,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceEventDetailGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceEventDetailGroup", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11381,7 +11407,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceEventDetailGroup", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceEventDetailGroup", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -11574,7 +11600,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceEventDetailCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -11582,9 +11608,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceEventDetailCollection/";
+					string contentTypeName = "TheBall.Core/InvoiceEventDetailCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -11608,7 +11635,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceEventDetailCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceEventDetailCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -11629,8 +11656,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceEventDetailCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceEventDetailCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -11769,7 +11796,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceEventDetailCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceEventDetailCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -11783,7 +11810,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceEventDetailCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceEventDetailCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -11825,7 +11852,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetail>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -12047,7 +12074,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceRowCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -12055,9 +12082,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceRowCollection/";
+					string contentTypeName = "TheBall.Core/InvoiceRowCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -12081,7 +12109,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceRowCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceRowCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -12102,8 +12130,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceRowCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceRowCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -12242,7 +12270,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceRowCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceRowCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12256,7 +12284,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceRowCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceRowCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -12298,7 +12326,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRow>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -12520,7 +12548,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceEventDetail";
 					UpdateRelativeLocationFromID();
 				}
@@ -12528,9 +12556,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceEventDetail/";
+					string contentTypeName = "TheBall.Core/InvoiceEventDetail/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -12554,7 +12583,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceEventDetail");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceEventDetail), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -12575,8 +12604,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetail/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetail/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceEventDetail/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceEventDetail/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -12715,7 +12744,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceEventDetail", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceEventDetail", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -12729,7 +12758,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceEventDetail", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceEventDetail", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -12971,7 +13000,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceRow";
 					UpdateRelativeLocationFromID();
 				}
@@ -12979,9 +13008,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InvoiceRow/";
+					string contentTypeName = "TheBall.Core/InvoiceRow/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -13005,7 +13035,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceRow");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InvoiceRow), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13026,8 +13056,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRow/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRow/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InvoiceRow/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InvoiceRow/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -13166,7 +13196,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InvoiceRow", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InvoiceRow", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13180,7 +13210,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InvoiceRow", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InvoiceRow", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -13390,7 +13420,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "CategoryCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -13398,9 +13428,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/CategoryCollection/";
+					string contentTypeName = "TheBall.Core/CategoryCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -13424,7 +13455,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CategoryCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13445,8 +13476,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/CategoryCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/CategoryCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/CategoryCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/CategoryCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -13585,7 +13616,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "CategoryCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "CategoryCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -13599,7 +13630,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "CategoryCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "CategoryCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -13641,7 +13672,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Category>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -13863,7 +13894,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Category";
 					UpdateRelativeLocationFromID();
 				}
@@ -13871,9 +13902,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/Category/";
+					string contentTypeName = "TheBall.Core/Category/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -13897,7 +13929,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Category");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Category), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13918,8 +13950,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Category/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Category/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/Category/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/Category/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -14058,7 +14090,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "Category", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "Category", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14072,7 +14104,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Category", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "Category", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -14210,7 +14242,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ProcessContainer";
 					UpdateRelativeLocationFromID();
 				}
@@ -14218,9 +14250,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/ProcessContainer/";
+					string contentTypeName = "TheBall.Core/ProcessContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -14244,7 +14277,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessContainer");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ProcessContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -14265,8 +14298,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessContainer/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessContainer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/ProcessContainer/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/ProcessContainer/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -14370,7 +14403,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "ProcessContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "ProcessContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14384,7 +14417,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ProcessContainer", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "ProcessContainer", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -14470,7 +14503,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Process";
 					UpdateRelativeLocationFromID();
 				}
@@ -14478,9 +14511,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/Process/";
+					string contentTypeName = "TheBall.Core/Process/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -14504,7 +14538,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Process");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Process), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -14525,8 +14559,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Process/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Process/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/Process/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/Process/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -14630,7 +14664,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "Process", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "Process", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14644,7 +14678,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Process", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "Process", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -14738,7 +14772,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ProcessItem";
 					UpdateRelativeLocationFromID();
 				}
@@ -14746,9 +14780,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/ProcessItem/";
+					string contentTypeName = "TheBall.Core/ProcessItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -14772,7 +14807,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessItem");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ProcessItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -14793,8 +14828,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessItem/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessItem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/ProcessItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/ProcessItem/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -14898,7 +14933,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "ProcessItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "ProcessItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -14912,7 +14947,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ProcessItem", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "ProcessItem", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -14997,7 +15032,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "SemanticInformationItem";
 					UpdateRelativeLocationFromID();
 				}
@@ -15005,9 +15040,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/SemanticInformationItem/";
+					string contentTypeName = "TheBall.Core/SemanticInformationItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -15031,7 +15067,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SemanticInformationItem");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(SemanticInformationItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15052,8 +15088,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/SemanticInformationItem/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/SemanticInformationItem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/SemanticInformationItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/SemanticInformationItem/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -15192,7 +15228,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "SemanticInformationItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "SemanticInformationItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15206,7 +15242,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "SemanticInformationItem", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "SemanticInformationItem", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -15356,7 +15392,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationOwnerInfo";
 					UpdateRelativeLocationFromID();
 				}
@@ -15364,9 +15400,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/InformationOwnerInfo/";
+					string contentTypeName = "TheBall.Core/InformationOwnerInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -15390,7 +15427,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationOwnerInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InformationOwnerInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15411,8 +15448,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationOwnerInfo/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOwnerInfo/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/InformationOwnerInfo/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/InformationOwnerInfo/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -15551,7 +15588,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "InformationOwnerInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "InformationOwnerInfo", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15565,7 +15602,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "InformationOwnerInfo", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "InformationOwnerInfo", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -15715,7 +15752,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "UsageSummary";
 					UpdateRelativeLocationFromID();
 				}
@@ -15723,9 +15760,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/UsageSummary/";
+					string contentTypeName = "TheBall.Core/UsageSummary/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -15749,7 +15787,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UsageSummary");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(UsageSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15770,8 +15808,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/UsageSummary/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/UsageSummary/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/UsageSummary/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/UsageSummary/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -15910,7 +15948,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "UsageSummary", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "UsageSummary", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -15924,7 +15962,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "UsageSummary", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "UsageSummary", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -16117,7 +16155,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "UsageMonitorItem";
 					UpdateRelativeLocationFromID();
 				}
@@ -16125,9 +16163,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/UsageMonitorItem/";
+					string contentTypeName = "TheBall.Core/UsageMonitorItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -16151,7 +16190,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UsageMonitorItem");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(UsageMonitorItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -16172,8 +16211,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/UsageMonitorItem/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/UsageMonitorItem/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/UsageMonitorItem/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/UsageMonitorItem/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -16312,7 +16351,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "UsageMonitorItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "UsageMonitorItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -16326,7 +16365,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "UsageMonitorItem", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "UsageMonitorItem", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -16792,7 +16831,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "RequestResourceUsageCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -16800,9 +16839,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/RequestResourceUsageCollection/";
+					string contentTypeName = "TheBall.Core/RequestResourceUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -16826,7 +16866,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: RequestResourceUsageCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(RequestResourceUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -16847,8 +16887,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/RequestResourceUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/RequestResourceUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/RequestResourceUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/RequestResourceUsageCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -16987,7 +17027,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "RequestResourceUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "RequestResourceUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17001,7 +17041,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "RequestResourceUsageCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "RequestResourceUsageCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -17043,7 +17083,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<RequestResourceUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -17265,7 +17305,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "RequestResourceUsage";
 					UpdateRelativeLocationFromID();
 				}
@@ -17273,9 +17313,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/RequestResourceUsage/";
+					string contentTypeName = "TheBall.Core/RequestResourceUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -17299,7 +17340,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: RequestResourceUsage");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(RequestResourceUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -17320,8 +17361,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/RequestResourceUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/RequestResourceUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/RequestResourceUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/RequestResourceUsage/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -17460,7 +17501,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "RequestResourceUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "RequestResourceUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -17474,7 +17515,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "RequestResourceUsage", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "RequestResourceUsage", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -17875,7 +17916,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ProcessorUsageCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -17883,9 +17924,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/ProcessorUsageCollection/";
+					string contentTypeName = "TheBall.Core/ProcessorUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -17909,7 +17951,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessorUsageCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ProcessorUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -17930,8 +17972,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessorUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessorUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/ProcessorUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/ProcessorUsageCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -18070,7 +18112,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "ProcessorUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "ProcessorUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18084,7 +18126,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ProcessorUsageCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "ProcessorUsageCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -18126,7 +18168,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ProcessorUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -18348,7 +18390,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ProcessorUsage";
 					UpdateRelativeLocationFromID();
 				}
@@ -18356,9 +18398,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/ProcessorUsage/";
+					string contentTypeName = "TheBall.Core/ProcessorUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -18382,7 +18425,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessorUsage");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ProcessorUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -18403,8 +18446,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessorUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessorUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/ProcessorUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/ProcessorUsage/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -18543,7 +18586,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "ProcessorUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "ProcessorUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18557,7 +18600,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "ProcessorUsage", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "ProcessorUsage", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -18780,7 +18823,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "StorageTransactionUsageCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -18788,9 +18831,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/StorageTransactionUsageCollection/";
+					string contentTypeName = "TheBall.Core/StorageTransactionUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -18814,7 +18858,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StorageTransactionUsageCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(StorageTransactionUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -18835,8 +18879,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageTransactionUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageTransactionUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/StorageTransactionUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/StorageTransactionUsageCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -18975,7 +19019,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "StorageTransactionUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "StorageTransactionUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -18989,7 +19033,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "StorageTransactionUsageCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "StorageTransactionUsageCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -19031,7 +19075,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -19253,7 +19297,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "StorageTransactionUsage";
 					UpdateRelativeLocationFromID();
 				}
@@ -19261,9 +19305,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/StorageTransactionUsage/";
+					string contentTypeName = "TheBall.Core/StorageTransactionUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -19287,7 +19332,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StorageTransactionUsage");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(StorageTransactionUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -19308,8 +19353,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageTransactionUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageTransactionUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/StorageTransactionUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/StorageTransactionUsage/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -19448,7 +19493,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "StorageTransactionUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "StorageTransactionUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -19462,7 +19507,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "StorageTransactionUsage", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "StorageTransactionUsage", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -19665,7 +19710,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "StorageUsageCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -19673,9 +19718,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/StorageUsageCollection/";
+					string contentTypeName = "TheBall.Core/StorageUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -19699,7 +19745,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StorageUsageCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(StorageUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -19720,8 +19766,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/StorageUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/StorageUsageCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -19860,7 +19906,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "StorageUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "StorageUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -19874,7 +19920,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "StorageUsageCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "StorageUsageCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -19916,7 +19962,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<StorageUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -20138,7 +20184,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "StorageUsage";
 					UpdateRelativeLocationFromID();
 				}
@@ -20146,9 +20192,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/StorageUsage/";
+					string contentTypeName = "TheBall.Core/StorageUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -20172,7 +20219,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StorageUsage");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(StorageUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -20193,8 +20240,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/StorageUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/StorageUsage/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -20333,7 +20380,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "StorageUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "StorageUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20347,7 +20394,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "StorageUsage", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "StorageUsage", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -20517,7 +20564,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "NetworkUsageCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -20525,9 +20572,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/NetworkUsageCollection/";
+					string contentTypeName = "TheBall.Core/NetworkUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -20551,7 +20599,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: NetworkUsageCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(NetworkUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -20572,8 +20620,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/NetworkUsageCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/NetworkUsageCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/NetworkUsageCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/NetworkUsageCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -20712,7 +20760,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "NetworkUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "NetworkUsageCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -20726,7 +20774,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "NetworkUsageCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "NetworkUsageCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -20768,7 +20816,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<NetworkUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -20990,7 +21038,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "NetworkUsage";
 					UpdateRelativeLocationFromID();
 				}
@@ -20998,9 +21046,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/NetworkUsage/";
+					string contentTypeName = "TheBall.Core/NetworkUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -21024,7 +21073,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: NetworkUsage");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(NetworkUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21045,8 +21094,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/NetworkUsage/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/NetworkUsage/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/NetworkUsage/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/NetworkUsage/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -21185,7 +21234,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "NetworkUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "NetworkUsage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21199,7 +21248,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "NetworkUsage", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "NetworkUsage", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -21402,7 +21451,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "TimeRange";
 					UpdateRelativeLocationFromID();
 				}
@@ -21410,9 +21459,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/TimeRange/";
+					string contentTypeName = "TheBall.Core/TimeRange/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -21436,7 +21486,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TimeRange");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TimeRange), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21457,8 +21507,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/TimeRange/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/TimeRange/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/TimeRange/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/TimeRange/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -21597,7 +21647,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "TimeRange", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "TimeRange", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21611,7 +21661,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "TimeRange", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "TimeRange", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -21757,7 +21807,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "HTTPActivityDetailsCollection";
 					UpdateRelativeLocationFromID();
 				}
@@ -21765,9 +21815,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/HTTPActivityDetailsCollection/";
+					string contentTypeName = "TheBall.Core/HTTPActivityDetailsCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -21791,7 +21842,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: HTTPActivityDetailsCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(HTTPActivityDetailsCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21812,8 +21863,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/HTTPActivityDetailsCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/HTTPActivityDetailsCollection/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -21952,7 +22003,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "HTTPActivityDetailsCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "HTTPActivityDetailsCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -21966,7 +22017,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "HTTPActivityDetailsCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "HTTPActivityDetailsCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
@@ -22008,7 +22059,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetails>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -22230,7 +22281,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "HTTPActivityDetails";
 					UpdateRelativeLocationFromID();
 				}
@@ -22238,9 +22289,10 @@ InformationInput.AuthenticatedDeviceID
 				public static async Task<IInformationObject[]> RetrieveCollectionFromOwnerContentAsync(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.CORE/HTTPActivityDetails/";
+					string contentTypeName = "TheBall.Core/HTTPActivityDetails/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -22264,7 +22316,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: HTTPActivityDetails");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(HTTPActivityDetails), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -22285,8 +22337,8 @@ InformationInput.AuthenticatedDeviceID
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/HTTPActivityDetails/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/HTTPActivityDetails/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Core/HTTPActivityDetails/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Core/HTTPActivityDetails/" + contentName);
                 }
 
 				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
@@ -22425,7 +22477,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.CORE", "HTTPActivityDetails", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Core", "HTTPActivityDetails", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -22439,7 +22491,7 @@ InformationInput.AuthenticatedDeviceID
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "HTTPActivityDetails", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Core", "HTTPActivityDetails", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 

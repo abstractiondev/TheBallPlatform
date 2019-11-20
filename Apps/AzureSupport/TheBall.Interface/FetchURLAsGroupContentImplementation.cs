@@ -5,7 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Interface
 {
@@ -27,7 +27,7 @@ namespace TheBall.Interface
 
         public static async Task ExecuteMethod_FetchDataAndAttachToFileAsync(string dataUrl, BinaryFile binaryFile)
         {
-            var owner = VirtualOwner.FigureOwner(binaryFile);
+            var owner = VirtualOwner.FigureOwner(binaryFile.RelativeLocation);
             var mediaContent = new MediaContent();
             string fileExt = Path.GetExtension(binaryFile.OriginalFileName);
             mediaContent.SetLocationAsOwnerContent(owner, mediaContent.ID + fileExt);

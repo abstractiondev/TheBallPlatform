@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 //using Microsoft.VisualBasic.Devices;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
 using TheBall.Interface;
 
 namespace TheBall.Infra.TheBallWorkerConsole

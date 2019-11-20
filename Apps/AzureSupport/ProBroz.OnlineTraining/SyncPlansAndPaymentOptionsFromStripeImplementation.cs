@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Stripe;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
 
 namespace ProBroz.OnlineTraining
 {

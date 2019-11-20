@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace TheBall.CORE.InstanceSupport
+namespace TheBall.Core.InstanceSupport
 {
     public class RuntimeConfiguration
     {

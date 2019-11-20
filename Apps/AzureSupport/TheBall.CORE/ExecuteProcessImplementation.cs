@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AzureSupport;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class ExecuteProcessImplementation
     {

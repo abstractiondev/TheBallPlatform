@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DiagnosticsUtils;
 //using LuceneSupport;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Index
 {

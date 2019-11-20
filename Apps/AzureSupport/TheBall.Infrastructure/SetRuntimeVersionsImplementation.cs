@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.File;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 using TheBall.Infrastructure.INT;
 
 namespace TheBall.Infrastructure

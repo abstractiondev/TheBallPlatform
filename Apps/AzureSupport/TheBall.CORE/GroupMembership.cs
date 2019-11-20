@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using AaltoGlobalImpact.OIP;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     partial class GroupMembership : IAdditionalFormatProvider
     {

@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class PackageOwnerContentImplementation
     {
@@ -30,7 +30,7 @@ namespace TheBall.CORE
 
         public static string[] ExecuteMethod_CreateZipPackageContent(string[] includedFolders, ContentPackage contentPackageObject, CloudBlockBlob[] archiveSourceBlobs, CloudBlockBlob archiveBlob)
         {
-            IContainerOwner owner = VirtualOwner.FigureOwner(contentPackageObject);
+            IContainerOwner owner = VirtualOwner.FigureOwner(contentPackageObject.RelativeLocation);
             MemoryStream bufferStream = new MemoryStream();
 
             string packageRootFolder = owner.PrefixWithOwnerLocation(contentPackageObject.PackageRootFolder) + "/";
@@ -51,7 +51,7 @@ namespace TheBall.CORE
         public static CloudBlockBlob GetTarget_ArchiveBlob(ContentPackage contentPackageObject)
         {
             string blobName = contentPackageObject.RelativeLocation + ".zip";
-            IContainerOwner owner = VirtualOwner.FigureOwner(contentPackageObject);
+            IContainerOwner owner = VirtualOwner.FigureOwner(contentPackageObject.RelativeLocation);
             var blob = (CloudBlockBlob) StorageSupport.CurrActiveContainer.GetBlob(blobName, owner);
             blob.Properties.ContentType = StorageSupport.GetMimeType(".zip");
             return blob;

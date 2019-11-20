@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using SecuritySupport;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation
     {

@@ -1,7 +1,7 @@
 using System;
 using AaltoGlobalImpact.OIP;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class RemoveAccountFromGroupImplementation
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 using TheBall.Interface;
 using INT = TheBall.Interface.INT;
 

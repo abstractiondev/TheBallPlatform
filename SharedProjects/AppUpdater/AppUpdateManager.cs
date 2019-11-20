@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO.Compression;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.File;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
 namespace TheBall.Infra.AppUpdater
 {

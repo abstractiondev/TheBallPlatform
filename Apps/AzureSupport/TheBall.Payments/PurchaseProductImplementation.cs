@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using Stripe;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
 using TheBall.Payments.INT;
 
 namespace TheBall.Payments

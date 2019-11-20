@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Web;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;

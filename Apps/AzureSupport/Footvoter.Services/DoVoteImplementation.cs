@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Footvoter.Services.INT;
 using TheBall;
+using TheBall.Core;
 
 namespace Footvoter.Services
 {

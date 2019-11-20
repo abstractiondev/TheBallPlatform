@@ -4,7 +4,7 @@
 using DOM=AaltoGlobalImpact.OIP;
 using System.Threading.Tasks;
 
-namespace TheBall.CORE {
+namespace TheBall.Core {
 	public static partial class OwnerInitializer
 	{
 		private static async Task DOMAININIT_AaltoGlobalImpact_OIP(IContainerOwner owner)
@@ -27,8 +27,8 @@ using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace INT { 
 					[DataContract]
@@ -330,7 +330,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBSystem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -354,7 +355,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBSystem");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBSystem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -689,7 +690,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/WebPublishInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -713,7 +715,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: WebPublishInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(WebPublishInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1158,7 +1160,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/PublicationPackageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1182,7 +1185,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: PublicationPackageCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(PublicationPackageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1399,7 +1402,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<PublicationPackage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -1631,7 +1634,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/PublicationPackage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1655,7 +1659,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: PublicationPackage");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(PublicationPackage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1988,7 +1992,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBRLoginRoot/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -2012,7 +2017,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRLoginRoot");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBRLoginRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2390,7 +2395,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBRAccountRoot/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -2414,7 +2420,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRAccountRoot");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBRAccountRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2780,7 +2786,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBRGroupRoot/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -2804,7 +2811,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRGroupRoot");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBRGroupRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3170,7 +3177,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBRLoginGroupRoot/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -3194,7 +3202,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBRLoginGroupRoot");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBRLoginGroupRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3529,7 +3537,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBREmailRoot/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -3553,7 +3562,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBREmailRoot");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBREmailRoot), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3919,7 +3928,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBAccount/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -3943,7 +3953,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccount");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBAccount), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -4419,7 +4429,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -4443,7 +4454,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccountCollaborationGroup");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBAccountCollaborationGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -4790,7 +4801,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -4814,7 +4826,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBAccountCollaborationGroupCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBAccountCollaborationGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -5031,7 +5043,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroup>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -5263,7 +5275,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBLoginInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -5287,7 +5300,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBLoginInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBLoginInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -5610,7 +5623,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBLoginInfoCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -5634,7 +5648,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBLoginInfoCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBLoginInfoCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -5851,7 +5865,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBLoginInfo>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -6083,7 +6097,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBEmail/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -6107,7 +6122,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmail");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBEmail), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -6440,7 +6455,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBEmailCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -6464,7 +6480,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmailCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBEmailCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -6681,7 +6697,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBEmail>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -6913,7 +6929,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBCollaboratorRole/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -6937,7 +6954,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratorRole");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBCollaboratorRole), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -7327,7 +7344,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -7351,7 +7369,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratorRoleCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBCollaboratorRoleCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -7568,7 +7586,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRole>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -7800,7 +7818,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBCollaboratingGroup/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -7824,7 +7843,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBCollaboratingGroup");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBCollaboratingGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -8202,7 +8221,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBEmailValidation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -8226,7 +8246,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBEmailValidation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBEmailValidation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -8824,7 +8844,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -8848,7 +8869,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBMergeAccountConfirmation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBMergeAccountConfirmation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -9183,7 +9204,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -9207,7 +9229,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBGroupJoinConfirmation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBGroupJoinConfirmation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -9542,7 +9564,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBDeviceJoinConfirmation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -9566,7 +9589,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBDeviceJoinConfirmation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBDeviceJoinConfirmation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -9913,7 +9936,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBInformationInputConfirmation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -9937,7 +9961,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBInformationInputConfirmation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBInformationInputConfirmation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -10284,7 +10308,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -10308,7 +10333,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBInformationOutputConfirmation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBInformationOutputConfirmation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -10655,7 +10680,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/LoginProvider/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -10679,7 +10705,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LoginProvider");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(LoginProvider), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -11050,7 +11076,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/LoginProviderCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -11074,7 +11101,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LoginProviderCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(LoginProviderCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -11291,7 +11318,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LoginProvider>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -11523,7 +11550,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TBPRegisterEmail/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -11547,7 +11575,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TBPRegisterEmail");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TBPRegisterEmail), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -11870,7 +11898,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AccountSummary/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -11894,7 +11923,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountSummary");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AccountSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -12260,7 +12289,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AccountContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -12284,7 +12314,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountContainer");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AccountContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -12705,7 +12735,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AccountModule/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -12729,7 +12760,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountModule");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AccountModule), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13261,7 +13292,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/LocationContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -13285,7 +13317,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LocationContainer");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(LocationContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13652,7 +13684,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddressAndLocationCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -13676,7 +13709,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddressAndLocationCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddressAndLocationCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13873,14 +13906,14 @@ namespace INT {
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -13890,7 +13923,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AddressAndLocation>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -14132,7 +14165,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddressAndLocation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -14156,7 +14190,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddressAndLocation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddressAndLocation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -14618,7 +14652,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/StreetAddress/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -14642,7 +14677,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StreetAddress");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(StreetAddress), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15001,7 +15036,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AccountProfile/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -15025,7 +15061,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountProfile");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AccountProfile), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15490,7 +15526,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AccountSecurity/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -15514,7 +15551,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountSecurity");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AccountSecurity), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15935,7 +15972,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AccountRoles/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -15959,7 +15997,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AccountRoles");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AccountRoles), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -16397,7 +16435,8 @@ AccountRoles.OrganizationsImPartOf
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/PersonalInfoVisibility/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -16421,7 +16460,7 @@ AccountRoles.OrganizationsImPartOf
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: PersonalInfoVisibility");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(PersonalInfoVisibility), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -16744,7 +16783,8 @@ AccountRoles.OrganizationsImPartOf
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/ReferenceToInformation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -16768,7 +16808,7 @@ AccountRoles.OrganizationsImPartOf
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ReferenceToInformation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ReferenceToInformation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -17103,7 +17143,8 @@ AccountRoles.OrganizationsImPartOf
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/ReferenceCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -17127,7 +17168,7 @@ AccountRoles.OrganizationsImPartOf
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ReferenceCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ReferenceCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -17339,7 +17380,7 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ReferenceToInformation>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -17565,7 +17606,8 @@ AccountRoles.OrganizationsImPartOf
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/NodeSummaryContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -17589,7 +17631,7 @@ AccountRoles.OrganizationsImPartOf
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: NodeSummaryContainer");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(NodeSummaryContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -18291,7 +18333,8 @@ AccountRoles.OrganizationsImPartOf
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/RenderedNodeCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -18315,7 +18358,7 @@ AccountRoles.OrganizationsImPartOf
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: RenderedNodeCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(RenderedNodeCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -18532,7 +18575,7 @@ AccountRoles.OrganizationsImPartOf
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<RenderedNode>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -18764,7 +18807,8 @@ AccountRoles.OrganizationsImPartOf
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/RenderedNode/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -18788,7 +18832,7 @@ AccountRoles.OrganizationsImPartOf
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: RenderedNode");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(RenderedNode), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -19521,7 +19565,8 @@ RenderedNode.Excerpt
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/ShortTextCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -19545,7 +19590,7 @@ RenderedNode.Excerpt
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ShortTextCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ShortTextCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -19762,7 +19807,7 @@ RenderedNode.Excerpt
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ShortTextObject>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -19994,7 +20039,8 @@ RenderedNode.Excerpt
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/ShortTextObject/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -20018,7 +20064,7 @@ RenderedNode.Excerpt
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ShortTextObject");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ShortTextObject), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -20341,7 +20387,8 @@ RenderedNode.Excerpt
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/LongTextCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -20365,7 +20412,7 @@ RenderedNode.Excerpt
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LongTextCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(LongTextCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -20582,7 +20629,7 @@ RenderedNode.Excerpt
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LongTextObject>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -20814,7 +20861,8 @@ RenderedNode.Excerpt
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/LongTextObject/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -20838,7 +20886,7 @@ RenderedNode.Excerpt
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LongTextObject");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(LongTextObject), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21166,7 +21214,8 @@ LongTextObject.Content
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/MapMarker/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -21190,7 +21239,7 @@ LongTextObject.Content
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapMarker");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(MapMarker), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21633,7 +21682,8 @@ MapMarker.PopupContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/MapMarkerCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -21657,7 +21707,7 @@ MapMarker.PopupContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapMarkerCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(MapMarkerCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21874,7 +21924,7 @@ MapMarker.PopupContent
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<MapMarker>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -22106,7 +22156,8 @@ MapMarker.PopupContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/ModeratorCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -22130,7 +22181,7 @@ MapMarker.PopupContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ModeratorCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ModeratorCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -22347,7 +22398,7 @@ MapMarker.PopupContent
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Moderator>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -22579,7 +22630,8 @@ MapMarker.PopupContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Moderator/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -22603,7 +22655,7 @@ MapMarker.PopupContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Moderator");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Moderator), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -22938,7 +22990,8 @@ MapMarker.PopupContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/CollaboratorCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -22962,7 +23015,7 @@ MapMarker.PopupContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CollaboratorCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CollaboratorCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -23179,7 +23232,7 @@ MapMarker.PopupContent
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Collaborator>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -23411,7 +23464,8 @@ MapMarker.PopupContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Collaborator/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -23435,7 +23489,7 @@ MapMarker.PopupContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Collaborator");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Collaborator), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -23806,7 +23860,8 @@ MapMarker.PopupContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/GroupSummaryContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -23830,7 +23885,7 @@ MapMarker.PopupContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupSummaryContainer");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GroupSummaryContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -24323,7 +24378,8 @@ GroupSummaryContainer.SummaryBody
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/GroupContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -24347,7 +24403,7 @@ GroupSummaryContainer.SummaryBody
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupContainer");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GroupContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -24934,7 +24990,8 @@ GroupSummaryContainer.SummaryBody
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/GroupIndex/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -24958,7 +25015,7 @@ GroupSummaryContainer.SummaryBody
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupIndex");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GroupIndex), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -25356,7 +25413,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -25380,7 +25438,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddAddressAndLocationInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddAddressAndLocationInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -25703,7 +25761,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddImageInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -25727,7 +25786,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddImageInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddImageInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -26050,7 +26109,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddImageGroupInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -26074,7 +26134,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddImageGroupInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddImageGroupInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -26397,7 +26457,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddEmailAddressInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -26421,7 +26482,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddEmailAddressInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddEmailAddressInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -26744,7 +26805,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/CreateGroupInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -26768,7 +26830,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CreateGroupInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CreateGroupInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -27091,7 +27153,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddActivityInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -27115,7 +27178,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddActivityInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddActivityInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -27438,7 +27501,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddBlogPostInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -27462,7 +27526,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddBlogPostInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddBlogPostInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -27785,7 +27849,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AddCategoryInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -27809,7 +27874,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AddCategoryInfo");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AddCategoryInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -28132,7 +28197,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/GroupCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -28156,7 +28222,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -28373,7 +28439,7 @@ GroupIndex.Summary
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Group>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -28605,7 +28671,8 @@ GroupIndex.Summary
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Group/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -28629,7 +28696,7 @@ GroupIndex.Summary
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Group");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Group), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -29287,7 +29354,8 @@ Group.OrganizationsAndGroupsLinkedToUs
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Introduction/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -29311,7 +29379,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Introduction");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Introduction), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -29651,7 +29719,8 @@ Introduction.Body
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/ContentCategoryRankCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -29675,7 +29744,7 @@ Introduction.Body
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ContentCategoryRankCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ContentCategoryRankCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -29877,14 +29946,14 @@ Introduction.Body
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -29894,7 +29963,7 @@ Introduction.Body
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ContentCategoryRank>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -30142,7 +30211,8 @@ Introduction.Body
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/ContentCategoryRank/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -30166,7 +30236,7 @@ Introduction.Body
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ContentCategoryRank");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ContentCategoryRank), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -30537,7 +30607,8 @@ Introduction.Body
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/LinkToContentCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -30561,7 +30632,7 @@ Introduction.Body
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LinkToContentCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(LinkToContentCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -30758,14 +30829,14 @@ Introduction.Body
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -30775,7 +30846,7 @@ Introduction.Body
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LinkToContent>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -31017,7 +31088,8 @@ Introduction.Body
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/LinkToContent/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -31041,7 +31113,7 @@ Introduction.Body
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LinkToContent");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(LinkToContent), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -31582,7 +31654,8 @@ LinkToContent.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/EmbeddedContentCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -31606,7 +31679,7 @@ LinkToContent.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: EmbeddedContentCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(EmbeddedContentCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -31803,14 +31876,14 @@ LinkToContent.Description
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -31820,7 +31893,7 @@ LinkToContent.Description
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<EmbeddedContent>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -32062,7 +32135,8 @@ LinkToContent.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/EmbeddedContent/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -32086,7 +32160,7 @@ LinkToContent.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: EmbeddedContent");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(EmbeddedContent), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -32572,7 +32646,8 @@ EmbeddedContent.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/DynamicContentGroupCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -32596,7 +32671,7 @@ EmbeddedContent.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DynamicContentGroupCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(DynamicContentGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -32798,14 +32873,14 @@ EmbeddedContent.Description
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -32815,7 +32890,7 @@ EmbeddedContent.Description
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContentGroup>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -33063,7 +33138,8 @@ EmbeddedContent.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/DynamicContentGroup/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -33087,7 +33163,7 @@ EmbeddedContent.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DynamicContentGroup");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(DynamicContentGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -33430,7 +33506,8 @@ EmbeddedContent.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/DynamicContentCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -33454,7 +33531,7 @@ EmbeddedContent.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DynamicContentCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(DynamicContentCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -33656,14 +33733,14 @@ EmbeddedContent.Description
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -33673,7 +33750,7 @@ EmbeddedContent.Description
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContent>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -33921,7 +33998,8 @@ EmbeddedContent.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/DynamicContent/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -33945,7 +34023,7 @@ EmbeddedContent.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DynamicContent");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(DynamicContent), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -34454,7 +34532,8 @@ DynamicContent.RawContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AttachedToObjectCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -34478,7 +34557,7 @@ DynamicContent.RawContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AttachedToObjectCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AttachedToObjectCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -34680,14 +34759,14 @@ DynamicContent.RawContent
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -34697,7 +34776,7 @@ DynamicContent.RawContent
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AttachedToObject>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -34945,7 +35024,8 @@ DynamicContent.RawContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/AttachedToObject/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -34969,7 +35049,7 @@ DynamicContent.RawContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AttachedToObject");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(AttachedToObject), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -35352,7 +35432,8 @@ DynamicContent.RawContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/CommentCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -35376,7 +35457,7 @@ DynamicContent.RawContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CommentCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CommentCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -35578,14 +35659,14 @@ DynamicContent.RawContent
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -35595,7 +35676,7 @@ DynamicContent.RawContent
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Comment>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -35843,7 +35924,8 @@ DynamicContent.RawContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Comment/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -35867,7 +35949,7 @@ DynamicContent.RawContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Comment");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Comment), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -36323,7 +36405,8 @@ Comment.CommentText
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/SelectionCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -36347,7 +36430,7 @@ Comment.CommentText
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SelectionCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(SelectionCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -36549,14 +36632,14 @@ Comment.CommentText
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -36566,7 +36649,7 @@ Comment.CommentText
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Selection>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -36814,7 +36897,8 @@ Comment.CommentText
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Selection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -36838,7 +36922,7 @@ Comment.CommentText
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Selection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Selection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -37229,7 +37313,8 @@ Comment.CommentText
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TextContentCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -37253,7 +37338,7 @@ Comment.CommentText
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TextContentCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TextContentCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -37450,14 +37535,14 @@ Comment.CommentText
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -37467,7 +37552,7 @@ Comment.CommentText
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TextContent>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -37709,7 +37794,8 @@ Comment.CommentText
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/TextContent/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -37733,7 +37819,7 @@ Comment.CommentText
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TextContent");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TextContent), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -38402,7 +38488,8 @@ TextContent.RawHtmlContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Map/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -38426,7 +38513,7 @@ TextContent.RawHtmlContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Map");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Map), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -38749,7 +38836,8 @@ TextContent.RawHtmlContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/MapCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -38773,7 +38861,7 @@ TextContent.RawHtmlContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(MapCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -38990,7 +39078,7 @@ TextContent.RawHtmlContent
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Map>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -39222,7 +39310,8 @@ TextContent.RawHtmlContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/MapResult/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -39246,7 +39335,7 @@ TextContent.RawHtmlContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResult");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(MapResult), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -39612,7 +39701,8 @@ TextContent.RawHtmlContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/MapResultCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -39636,7 +39726,7 @@ TextContent.RawHtmlContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResultCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(MapResultCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -39853,7 +39943,7 @@ TextContent.RawHtmlContent
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<MapResult>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -40085,7 +40175,8 @@ TextContent.RawHtmlContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/MapResultsCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -40109,7 +40200,7 @@ TextContent.RawHtmlContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MapResultsCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(MapResultsCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -40585,7 +40676,8 @@ TextContent.RawHtmlContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Video/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -40609,7 +40701,7 @@ TextContent.RawHtmlContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Video");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Video), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -40999,7 +41091,8 @@ TextContent.RawHtmlContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/ImageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -41023,7 +41116,7 @@ TextContent.RawHtmlContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ImageCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ImageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -41220,14 +41313,14 @@ TextContent.RawHtmlContent
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -41237,7 +41330,7 @@ TextContent.RawHtmlContent
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Image>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -41479,7 +41572,8 @@ TextContent.RawHtmlContent
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Image/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -41503,7 +41597,7 @@ TextContent.RawHtmlContent
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Image");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Image), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -42063,7 +42157,8 @@ Image.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/BinaryFileCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -42087,7 +42182,7 @@ Image.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: BinaryFileCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(BinaryFileCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -42289,14 +42384,14 @@ Image.Description
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -42306,7 +42401,7 @@ Image.Description
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<BinaryFile>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -42554,7 +42649,8 @@ Image.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/BinaryFile/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -42578,7 +42674,7 @@ Image.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: BinaryFile");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(BinaryFile), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -43041,7 +43137,8 @@ BinaryFile.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/MediaContent/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -43065,7 +43162,7 @@ BinaryFile.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: MediaContent");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(MediaContent), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -43349,7 +43446,8 @@ BinaryFile.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Longitude/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -43373,7 +43471,7 @@ BinaryFile.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Longitude");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Longitude), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -43696,7 +43794,8 @@ BinaryFile.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Latitude/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -43720,7 +43819,7 @@ BinaryFile.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Latitude");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Latitude), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -44043,7 +44142,8 @@ BinaryFile.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Location/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -44067,7 +44167,7 @@ BinaryFile.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Location");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Location), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -44500,7 +44600,8 @@ BinaryFile.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/LocationCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -44524,7 +44625,7 @@ BinaryFile.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: LocationCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(LocationCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -44741,7 +44842,7 @@ BinaryFile.Description
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Location>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -44973,7 +45074,8 @@ BinaryFile.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Date/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -44997,7 +45099,7 @@ BinaryFile.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Date");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Date), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -45348,7 +45450,8 @@ BinaryFile.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/CategoryContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -45372,7 +45475,7 @@ BinaryFile.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryContainer");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CategoryContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -45739,7 +45842,8 @@ BinaryFile.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/Category/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -45763,7 +45867,7 @@ BinaryFile.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Category");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Category), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -46264,7 +46368,8 @@ Category.Excerpt
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/CategoryCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -46288,7 +46393,7 @@ Category.Excerpt
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CategoryCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -46485,14 +46590,14 @@ Category.Excerpt
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -46502,7 +46607,7 @@ Category.Excerpt
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Category>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -46744,7 +46849,8 @@ Category.Excerpt
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/UpdateWebContentOperation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -46768,7 +46874,7 @@ Category.Excerpt
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentOperation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(UpdateWebContentOperation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -47192,7 +47298,8 @@ Category.Excerpt
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -47216,7 +47323,7 @@ Category.Excerpt
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentHandlerItem");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(UpdateWebContentHandlerItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -47551,7 +47658,8 @@ Category.Excerpt
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -47575,7 +47683,7 @@ Category.Excerpt
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UpdateWebContentHandlerCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(UpdateWebContentHandlerCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -47792,7 +47900,7 @@ Category.Excerpt
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerItem>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}

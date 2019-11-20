@@ -4,7 +4,7 @@
 using DOM=TheBall.Interface;
 using System.Threading.Tasks;
 
-namespace TheBall.CORE {
+namespace TheBall.Core {
 	public static partial class OwnerInitializer
 	{
 		private static async Task DOMAININIT_TheBall_Interface(IContainerOwner owner)
@@ -27,8 +27,8 @@ using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace INT { 
 					[DataContract]
@@ -304,7 +304,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/InterfaceOperation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -328,7 +329,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InterfaceOperation");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InterfaceOperation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -744,7 +745,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/ConnectionCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -768,7 +770,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ConnectionCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(ConnectionCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -970,14 +972,14 @@ InterfaceOperation.ErrorMessage
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -987,7 +989,7 @@ InterfaceOperation.ErrorMessage
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Connection>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -1235,7 +1237,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/Connection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1259,7 +1262,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Connection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Connection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1566,7 +1569,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/TransferPackage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1590,7 +1594,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TransferPackage");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(TransferPackage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1850,7 +1854,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/CategoryLink/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1874,7 +1879,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryLink");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CategoryLink), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2221,7 +2226,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/Category/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -2245,7 +2251,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Category");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(Category), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2628,7 +2634,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/StatusSummary/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -2652,7 +2659,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StatusSummary");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(StatusSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2894,7 +2901,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/InformationChangeItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -2918,7 +2926,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationChangeItem");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(InformationChangeItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3166,7 +3174,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/OperationExecutionItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -3190,7 +3199,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: OperationExecutionItem");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(OperationExecutionItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3591,7 +3600,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/GenericObjectCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -3615,7 +3625,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GenericObjectCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GenericObjectCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3817,14 +3827,14 @@ InterfaceOperation.ErrorMessage
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -3834,7 +3844,7 @@ InterfaceOperation.ErrorMessage
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<GenericCollectionableObject>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -4082,7 +4092,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/GenericCollectionableObject/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -4106,7 +4117,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GenericCollectionableObject");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GenericCollectionableObject), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -4452,7 +4463,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/GenericObject/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -4476,7 +4488,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GenericObject");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GenericObject), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -4721,7 +4733,8 @@ InterfaceOperation.ErrorMessage
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Interface/GenericValue/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -4745,7 +4758,7 @@ InterfaceOperation.ErrorMessage
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GenericValue");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GenericValue), null, owner);
 					if(master == null && initiateIfMissing)
 					{

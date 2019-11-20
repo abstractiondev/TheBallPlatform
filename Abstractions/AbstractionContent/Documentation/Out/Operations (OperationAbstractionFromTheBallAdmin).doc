@@ -265,7 +265,7 @@ div.WordSection1
 		</div>
 		</p><h2>Target Definition: UsersData</h2>
 		<p>		<div class="MsoNormal" >
-		Users data retrieved from TheBall.CORE structures
+		Users data retrieved from TheBall.Core structures
 		</div>
 		</p><h2>Method Call: StoreInterfaceObject ( UsersData )</h2>
 		<p>		<div class="MsoNormal" >

@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall
 {

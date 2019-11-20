@@ -1,4 +1,4 @@
-﻿using TheBall.CORE;
+﻿using TheBall.Core;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall

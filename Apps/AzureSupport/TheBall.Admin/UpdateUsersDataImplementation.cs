@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using TheBall.Admin.INT;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 
 namespace TheBall.Admin
 {

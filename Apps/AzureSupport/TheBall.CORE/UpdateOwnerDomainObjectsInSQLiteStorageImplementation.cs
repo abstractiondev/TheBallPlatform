@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using AzureSupport;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SQLiteSupport;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core.InstanceSupport;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class UpdateOwnerDomainObjectsInSQLiteStorageImplementation
     {

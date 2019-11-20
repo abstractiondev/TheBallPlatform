@@ -4,7 +4,7 @@
 using DOM=TheBall.Payments;
 using System.Threading.Tasks;
 
-namespace TheBall.CORE {
+namespace TheBall.Core {
 	public static partial class OwnerInitializer
 	{
 		private static async Task DOMAININIT_TheBall_Payments(IContainerOwner owner)
@@ -27,8 +27,8 @@ using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace INT { 
 					[DataContract]
@@ -198,7 +198,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Payments/GroupSubscriptionPlanCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -222,7 +223,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupSubscriptionPlanCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GroupSubscriptionPlanCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -424,14 +425,14 @@ namespace INT {
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -441,7 +442,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlan>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -689,7 +690,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Payments/GroupSubscriptionPlan/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -713,7 +715,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupSubscriptionPlan");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(GroupSubscriptionPlan), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -961,7 +963,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Payments/SubscriptionPlanStatus/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -985,7 +988,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionPlanStatus");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(SubscriptionPlanStatus), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1298,7 +1301,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Payments/CustomerAccountCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1322,7 +1326,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CustomerAccountCollection");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CustomerAccountCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1524,14 +1528,14 @@ namespace INT {
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				async Task<IInformationCollection> IInformationCollection.GetMasterInstanceAsync()
 				{
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					return await GetMasterCollectionInstanceAsync(owner);
 					
 				}
@@ -1541,7 +1545,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<CustomerAccount>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -1789,7 +1793,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.Payments/CustomerAccount/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+					var blobListing = await storageService.GetBlobItemsA(owner, contentTypeName);
 					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
@@ -1813,7 +1818,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CustomerAccount");
 					initiated = false;
-					var owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(RelativeLocation);
 					var master = await StorageSupport.RetrieveInformationA(RelativeLocation, typeof(CustomerAccount), null, owner);
 					if(master == null && initiateIfMissing)
 					{

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public static class CollectionUpdateImplementation
     {

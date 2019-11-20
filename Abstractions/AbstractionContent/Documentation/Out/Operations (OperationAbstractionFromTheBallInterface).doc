@@ -1151,7 +1151,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		TheBall.CORE.IContainerOwner
+		TheBall.Core.IContainerOwner
 		</div>
 				</td>
 				<td>
@@ -2047,7 +2047,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Tuple<TheBall.CORE.IContainerOwner, string>[]
+		Tuple<TheBall.Core.IContainerOwner, string>[]
 		</div>
 				</td>
 				<td>
@@ -2083,7 +2083,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		TheBall.CORE.IContainerOwner
+		TheBall.Core.IContainerOwner
 		</div>
 				</td>
 				<td>

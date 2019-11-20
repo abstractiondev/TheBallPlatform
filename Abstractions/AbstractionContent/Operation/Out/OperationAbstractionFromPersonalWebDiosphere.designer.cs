@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					string OwnerRootRoomBlobName = SaveRoomDataImplementation.GetTarget_OwnerRootRoomBlobName();	
-				TheBall.CORE.IContainerOwner Owner = SaveRoomDataImplementation.GetTarget_Owner(parameters.RoomID);	
+				TheBall.Core.IContainerOwner Owner = SaveRoomDataImplementation.GetTarget_Owner(parameters.RoomID);	
 				 await SaveRoomDataImplementation.ExecuteMethod_SaveJSONContentToBlobAsync(parameters.JSONData, Owner, OwnerRootRoomBlobName);		
 				}
 				}

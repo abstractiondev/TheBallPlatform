@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheBall;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace PlatformCoreTests
 {

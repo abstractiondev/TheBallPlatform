@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 //using LuceneSupport;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Index
 {

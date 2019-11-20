@@ -2,7 +2,7 @@
   "profiles": {
     "OperationRunnerTool": {
       "commandName": "Project",
-      "commandLineArgs": "-cr:X:\\Configs -i:home.theball.me -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:false -p:\"{AccountID: \\\"4cae6185-8dc5-4a50-8756-28c5a5103b8a\\\",  Data: { isTestAccount: true }}\""
+      "commandLineArgs": "-cr:X:\\Configs -i:home.theball.me -op:TheBall.Core.SetAccountClientMetadata -remoteExecute:false -p:\"{AccountID: \\\"4cae6185-8dc5-4a50-8756-28c5a5103b8a\\\",  Data: { isTestAccount: true }}\""
     }
   }
 }

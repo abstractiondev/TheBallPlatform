@@ -3,7 +3,7 @@ using System.Security.Principal;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using TheBall;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core.InstanceSupport;
 
 namespace AzureSupport
 {

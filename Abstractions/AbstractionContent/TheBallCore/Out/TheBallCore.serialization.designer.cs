@@ -1,6 +1,6 @@
  
 
-namespace SER.TheBall.CORE { 
+namespace SER.TheBall.Core { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 
 namespace INT { 
-		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core.INT")]
 			public partial class LoginInfo
 			{
 				[DataMember]
@@ -22,7 +22,7 @@ namespace INT {
 				public string Password { get; set; }
 			}
 
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core.INT")]
 			public partial class ConfirmedLoginInfo
 			{
 				[DataMember]
@@ -31,14 +31,14 @@ namespace INT {
 				public LoginInfo LoginInfo { get; set; }
 			}
 
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core.INT")]
 			public partial class LoginRegistrationResult
 			{
 				[DataMember]
 				public bool Success { get; set; }
 			}
 
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core.INT")]
 			public partial class AccountMetadata
 			{
 				[DataMember]
@@ -47,7 +47,7 @@ namespace INT {
 				public System.Dynamic.ExpandoObject Data { get; set; }
 			}
 
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core.INT")]
 			public partial class DeviceOperationData
 			{
 				[DataMember]
@@ -62,7 +62,7 @@ namespace INT {
 				public ContentItemLocationWithMD5[] OperationSpecificContentData { get; set; }
 			}
 
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core.INT")]
 			public partial class ContentItemLocationWithMD5
 			{
 				[DataMember]
@@ -73,7 +73,7 @@ namespace INT {
 				public ItemData[] ItemDatas { get; set; }
 			}
 
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core.INT")]
 			public partial class ItemData
 			{
 				[DataMember]
@@ -82,7 +82,7 @@ namespace INT {
 				public string ItemTextData { get; set; }
 			}
 
- }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] [ProtoContract]
 			[Serializable]
 			public partial class Login 
 			{
@@ -90,7 +90,7 @@ namespace INT {
 				public Login()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Login";
 				}
 
@@ -172,7 +172,7 @@ namespace INT {
 			private string _unmodified_Account;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] [ProtoContract]
 			[Serializable]
 			public partial class Email 
 			{
@@ -180,7 +180,7 @@ namespace INT {
 				public Email()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Email";
 				}
 
@@ -266,7 +266,7 @@ namespace INT {
 			private DateTime _unmodified_ValidationProcessExpiration;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] [ProtoContract]
 			[Serializable]
 			public partial class Account 
 			{
@@ -274,7 +274,7 @@ namespace INT {
 				public Account()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Account";
 				}
 
@@ -347,7 +347,7 @@ namespace INT {
 			private string _unmodified_ClientMetadataJSON;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] [ProtoContract]
 			[Serializable]
 			public partial class Group 
 			{
@@ -355,7 +355,7 @@ namespace INT {
 				public Group()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Group";
 				}
 
@@ -418,7 +418,7 @@ namespace INT {
 			public List< string > GroupMemberships = new List< string >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] [ProtoContract]
 			[Serializable]
 			public partial class GroupMembership 
 			{
@@ -426,7 +426,7 @@ namespace INT {
 				public GroupMembership()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "GroupMembership";
 				}
 
@@ -504,7 +504,7 @@ namespace INT {
 			private string _unmodified_Role;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class ContentPackageCollection 
 			{
@@ -512,7 +512,7 @@ namespace INT {
 				public ContentPackageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ContentPackageCollection";
 				}
 
@@ -623,7 +623,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class ContentPackage 
 			{
@@ -631,7 +631,7 @@ namespace INT {
 				public ContentPackage()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ContentPackage";
 				}
 
@@ -717,7 +717,7 @@ namespace INT {
 			private DateTime _unmodified_CreationTime;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InformationInputCollection 
 			{
@@ -725,7 +725,7 @@ namespace INT {
 				public InformationInputCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationInputCollection";
 				}
 
@@ -836,7 +836,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InformationInput 
 			{
@@ -844,7 +844,7 @@ namespace INT {
 				public InformationInput()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationInput";
 				}
 
@@ -930,7 +930,7 @@ namespace INT {
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InformationOutputCollection 
 			{
@@ -938,7 +938,7 @@ namespace INT {
 				public InformationOutputCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationOutputCollection";
 				}
 
@@ -1049,7 +1049,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InformationOutput 
 			{
@@ -1057,7 +1057,7 @@ namespace INT {
 				public InformationOutput()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationOutput";
 				}
 
@@ -1147,7 +1147,7 @@ namespace INT {
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class AuthenticatedAsActiveDeviceCollection 
 			{
@@ -1155,7 +1155,7 @@ namespace INT {
 				public AuthenticatedAsActiveDeviceCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "AuthenticatedAsActiveDeviceCollection";
 				}
 
@@ -1266,7 +1266,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class AuthenticatedAsActiveDevice 
 			{
@@ -1274,7 +1274,7 @@ namespace INT {
 				public AuthenticatedAsActiveDevice()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "AuthenticatedAsActiveDevice";
 				}
 
@@ -1368,7 +1368,7 @@ namespace INT {
 			private string _unmodified_ConnectionURL;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class DeviceMembershipCollection 
 			{
@@ -1376,7 +1376,7 @@ namespace INT {
 				public DeviceMembershipCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "DeviceMembershipCollection";
 				}
 
@@ -1487,7 +1487,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class DeviceMembership 
 			{
@@ -1495,7 +1495,7 @@ namespace INT {
 				public DeviceMembership()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "DeviceMembership";
 				}
 
@@ -1577,7 +1577,7 @@ namespace INT {
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceFiscalExportSummary 
 			{
@@ -1585,7 +1585,7 @@ namespace INT {
 				public InvoiceFiscalExportSummary()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceFiscalExportSummary";
 				}
 
@@ -1663,7 +1663,7 @@ namespace INT {
 			private InvoiceCollection _unmodified_ExportedInvoices;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceSummaryContainer 
 			{
@@ -1671,7 +1671,7 @@ namespace INT {
 				public InvoiceSummaryContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceSummaryContainer";
 				}
 
@@ -1753,7 +1753,7 @@ namespace INT {
 			private InvoiceCollection _unmodified_PaidInvoicesLast12Months;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceCollection 
 			{
@@ -1761,7 +1761,7 @@ namespace INT {
 				public InvoiceCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceCollection";
 				}
 
@@ -1872,7 +1872,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class Invoice 
 			{
@@ -1880,7 +1880,7 @@ namespace INT {
 				public Invoice()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Invoice";
 				}
 
@@ -1986,7 +1986,7 @@ namespace INT {
 			private InvoiceUserCollection _unmodified_InvoiceUsers;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceDetails 
 			{
@@ -1994,7 +1994,7 @@ namespace INT {
 				public InvoiceDetails()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceDetails";
 				}
 
@@ -2084,7 +2084,7 @@ namespace INT {
 			private string _unmodified_TotalFeesTotal;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceUserCollection 
 			{
@@ -2092,7 +2092,7 @@ namespace INT {
 				public InvoiceUserCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceUserCollection";
 				}
 
@@ -2203,7 +2203,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceUser 
 			{
@@ -2211,7 +2211,7 @@ namespace INT {
 				public InvoiceUser()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceUser";
 				}
 
@@ -2305,7 +2305,7 @@ namespace INT {
 			private InvoiceEventDetailGroupCollection _unmodified_InvoiceEventDetailGroupCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceRowGroupCollection 
 			{
@@ -2313,7 +2313,7 @@ namespace INT {
 				public InvoiceRowGroupCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceRowGroupCollection";
 				}
 
@@ -2424,7 +2424,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceEventDetailGroupCollection 
 			{
@@ -2432,7 +2432,7 @@ namespace INT {
 				public InvoiceEventDetailGroupCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceEventDetailGroupCollection";
 				}
 
@@ -2543,7 +2543,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceRowGroup 
 			{
@@ -2551,7 +2551,7 @@ namespace INT {
 				public InvoiceRowGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceRowGroup";
 				}
 
@@ -2637,7 +2637,7 @@ namespace INT {
 			private InvoiceRowCollection _unmodified_InvoiceRowCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceEventDetailGroup 
 			{
@@ -2645,7 +2645,7 @@ namespace INT {
 				public InvoiceEventDetailGroup()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceEventDetailGroup";
 				}
 
@@ -2719,7 +2719,7 @@ namespace INT {
 			private InvoiceEventDetailCollection _unmodified_InvoiceEventDetailCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceEventDetailCollection 
 			{
@@ -2727,7 +2727,7 @@ namespace INT {
 				public InvoiceEventDetailCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceEventDetailCollection";
 				}
 
@@ -2838,7 +2838,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceRowCollection 
 			{
@@ -2846,7 +2846,7 @@ namespace INT {
 				public InvoiceRowCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceRowCollection";
 				}
 
@@ -2957,7 +2957,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceEventDetail 
 			{
@@ -2965,7 +2965,7 @@ namespace INT {
 				public InvoiceEventDetail()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceEventDetail";
 				}
 
@@ -3071,7 +3071,7 @@ namespace INT {
 			private string _unmodified_PriceWithTaxes;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InvoiceRow 
 			{
@@ -3079,7 +3079,7 @@ namespace INT {
 				public InvoiceRow()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InvoiceRow";
 				}
 
@@ -3173,7 +3173,7 @@ namespace INT {
 			private string _unmodified_PriceWithTaxes;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class CategoryCollection 
 			{
@@ -3181,7 +3181,7 @@ namespace INT {
 				public CategoryCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "CategoryCollection";
 				}
 
@@ -3292,7 +3292,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class Category 
 			{
@@ -3300,7 +3300,7 @@ namespace INT {
 				public Category()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Category";
 				}
 
@@ -3370,7 +3370,7 @@ namespace INT {
 			private string _unmodified_CategoryName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class ProcessContainer 
 			{
@@ -3378,7 +3378,7 @@ namespace INT {
 				public ProcessContainer()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ProcessContainer";
 				}
 
@@ -3441,7 +3441,7 @@ namespace INT {
 			public List< string > ProcessIDs = new List< string >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class Process 
 			{
@@ -3449,7 +3449,7 @@ namespace INT {
 				public Process()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "Process";
 				}
 
@@ -3520,7 +3520,7 @@ namespace INT {
 			public List< ProcessItem > ProcessItems = new List< ProcessItem >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class ProcessItem 
 			{
@@ -3528,7 +3528,7 @@ namespace INT {
 				public ProcessItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ProcessItem";
 				}
 
@@ -3593,7 +3593,7 @@ namespace INT {
 			public List< SemanticInformationItem > Inputs = new List< SemanticInformationItem >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class SemanticInformationItem 
 			{
@@ -3601,7 +3601,7 @@ namespace INT {
 				public SemanticInformationItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "SemanticInformationItem";
 				}
 
@@ -3675,7 +3675,7 @@ namespace INT {
 			private string _unmodified_ItemValue;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class InformationOwnerInfo 
 			{
@@ -3683,7 +3683,7 @@ namespace INT {
 				public InformationOwnerInfo()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "InformationOwnerInfo";
 				}
 
@@ -3757,7 +3757,7 @@ namespace INT {
 			private string _unmodified_OwnerIdentifier;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class UsageSummary 
 			{
@@ -3765,7 +3765,7 @@ namespace INT {
 				public UsageSummary()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "UsageSummary";
 				}
 
@@ -3839,7 +3839,7 @@ namespace INT {
 			private UsageMonitorItem _unmodified_SummaryMonitoringItem;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class UsageMonitorItem 
 			{
@@ -3847,7 +3847,7 @@ namespace INT {
 				public UsageMonitorItem()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "UsageMonitorItem";
 				}
 
@@ -3941,7 +3941,7 @@ namespace INT {
 			private NetworkUsageCollection _unmodified_NetworkUsages;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class RequestResourceUsageCollection 
 			{
@@ -3949,7 +3949,7 @@ namespace INT {
 				public RequestResourceUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "RequestResourceUsageCollection";
 				}
 
@@ -4060,7 +4060,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class RequestResourceUsage 
 			{
@@ -4068,7 +4068,7 @@ namespace INT {
 				public RequestResourceUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "RequestResourceUsage";
 				}
 
@@ -4154,7 +4154,7 @@ namespace INT {
 			private HTTPActivityDetails _unmodified_RequestDetails;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class ProcessorUsageCollection 
 			{
@@ -4162,7 +4162,7 @@ namespace INT {
 				public ProcessorUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ProcessorUsageCollection";
 				}
 
@@ -4273,7 +4273,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class ProcessorUsage 
 			{
@@ -4281,7 +4281,7 @@ namespace INT {
 				public ProcessorUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "ProcessorUsage";
 				}
 
@@ -4367,7 +4367,7 @@ namespace INT {
 			private long _unmodified_Milliseconds;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class StorageTransactionUsageCollection 
 			{
@@ -4375,7 +4375,7 @@ namespace INT {
 				public StorageTransactionUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "StorageTransactionUsageCollection";
 				}
 
@@ -4486,7 +4486,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class StorageTransactionUsage 
 			{
@@ -4494,7 +4494,7 @@ namespace INT {
 				public StorageTransactionUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "StorageTransactionUsage";
 				}
 
@@ -4572,7 +4572,7 @@ namespace INT {
 			private long _unmodified_AmountOfTransactions;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class StorageUsageCollection 
 			{
@@ -4580,7 +4580,7 @@ namespace INT {
 				public StorageUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "StorageUsageCollection";
 				}
 
@@ -4691,7 +4691,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class StorageUsage 
 			{
@@ -4699,7 +4699,7 @@ namespace INT {
 				public StorageUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "StorageUsage";
 				}
 
@@ -4781,7 +4781,7 @@ namespace INT {
 			private double _unmodified_AmountOfUnits;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class NetworkUsageCollection 
 			{
@@ -4789,7 +4789,7 @@ namespace INT {
 				public NetworkUsageCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "NetworkUsageCollection";
 				}
 
@@ -4900,7 +4900,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class NetworkUsage 
 			{
@@ -4908,7 +4908,7 @@ namespace INT {
 				public NetworkUsage()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "NetworkUsage";
 				}
 
@@ -4986,7 +4986,7 @@ namespace INT {
 			private long _unmodified_AmountOfBytes;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class TimeRange 
 			{
@@ -4994,7 +4994,7 @@ namespace INT {
 				public TimeRange()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "TimeRange";
 				}
 
@@ -5068,7 +5068,7 @@ namespace INT {
 			private DateTime _unmodified_EndTime;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class HTTPActivityDetailsCollection 
 			{
@@ -5076,7 +5076,7 @@ namespace INT {
 				public HTTPActivityDetailsCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "HTTPActivityDetailsCollection";
 				}
 
@@ -5187,7 +5187,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Core")] 
 			[Serializable]
 			public partial class HTTPActivityDetails 
 			{
@@ -5195,7 +5195,7 @@ namespace INT {
 				public HTTPActivityDetails()
 				{
 					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.CORE";
+				    this.SemanticDomainName = "TheBall.Core";
 				    this.Name = "HTTPActivityDetails";
 				}
 
@@ -5320,12 +5320,12 @@ namespace INT {
 
 		public static async Task SetAccountClientMetadata(INT.AccountMetadata param) 
 		{
-			await ExecuteOperation("TheBall.CORE.SetAccountClientMetadata", param);
+			await ExecuteOperation("TheBall.Core.SetAccountClientMetadata", param);
 		}
 
 		public static async Task SetAccountServerMetadata(INT.AccountMetadata param) 
 		{
-			await ExecuteOperation("TheBall.CORE.SetAccountServerMetadata", param);
+			await ExecuteOperation("TheBall.Core.SetAccountServerMetadata", param);
 		}
 		public static async Task<Login> GetLogin(string id = null)
 		{

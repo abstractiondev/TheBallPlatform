@@ -1107,7 +1107,7 @@
                         <TextContent>DedicatedToOwner</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                        <TextContent>TheBall.Core.IContainerOwner</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Dedicated to owner - null if not dedicated</TextContent>
@@ -2283,7 +2283,7 @@
                         <TextContent>DataStatuses</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Tuple&lt;TheBall.CORE.IContainerOwner, string&gt;[]</TextContent>
+                        <TextContent>Tuple&lt;TheBall.Core.IContainerOwner, string&gt;[]</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Data status item for each owner</TextContent>
@@ -2329,7 +2329,7 @@
                         <TextContent>Owner</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                        <TextContent>TheBall.Core.IContainerOwner</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Owner of the operation context</TextContent>

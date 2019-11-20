@@ -1,7 +1,7 @@
 using System.Linq;
 using AaltoGlobalImpact.OIP;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
 #if never
     public class UnregisterEmailAddressImplementation

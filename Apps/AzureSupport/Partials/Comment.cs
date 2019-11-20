@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web;
 //using LuceneSupport;
 using TheBall;
+using TheBall.Core;
 using TheBall.Index;
 
 namespace AaltoGlobalImpact.OIP

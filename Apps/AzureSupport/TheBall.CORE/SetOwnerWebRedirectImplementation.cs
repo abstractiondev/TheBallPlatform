@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core.InstanceSupport;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class SetOwnerWebRedirectImplementation
     {

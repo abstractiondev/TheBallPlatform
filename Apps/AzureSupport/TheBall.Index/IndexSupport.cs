@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Index
 {

@@ -11,8 +11,8 @@ using AzureSupport;
 using Nito.AsyncEx;
 using SecuritySupport;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.InstanceSupport;
+using TheBall.Core;
+using TheBall.Core.InstanceSupport;
 
 namespace WebTemplateManager
 {
@@ -104,7 +104,7 @@ namespace WebTemplateManager
                 await FileSystemSupport.UploadTemplateContentA(allFiles, owner, templateLocation, true);
                 if (isSystem)
                 {
-                    var operationName = "TheBall.CORE." + (isAccount
+                    var operationName = "TheBall.Core." + (isAccount
                         ? nameof(UpdateTemplateForAllAccounts)
                         : nameof(UpdateTemplateForAllGroups));
 

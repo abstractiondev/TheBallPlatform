@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Interface
 {

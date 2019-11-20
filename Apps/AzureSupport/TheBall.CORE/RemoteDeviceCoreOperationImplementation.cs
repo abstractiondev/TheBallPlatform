@@ -7,10 +7,10 @@ using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.INT;
-using TheBall.CORE.Storage;
+using TheBall.Core.INT;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class RemoteDeviceCoreOperationImplementation
     {
@@ -160,7 +160,7 @@ namespace TheBall.CORE
 
         static string getDeviceInputRoot(string deviceID)
         {
-            return String.Format("TheBall.CORE/DeviceMembership/{0}_Input/", deviceID);
+            return String.Format("TheBall.Core/DeviceMembership/{0}_Input/", deviceID);
         }
         /*
                     ItemsToCopy = deviceOperationData.OperationSpecificContentData.Where(item => item.ItemDatas.Any(iData => iData.DataName == "OPTODO" && iData.ItemTextData == "COPY")).ToArray(),

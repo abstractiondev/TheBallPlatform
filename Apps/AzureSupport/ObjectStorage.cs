@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using AzureSupport.TheBall.CORE;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using AzureSupport.TheBall.Core;
+using TheBall.Core;
+using TheBall.Core.Storage;
 
 namespace TheBall
 {
@@ -90,7 +90,7 @@ namespace TheBall
             if (owner == null)
                 owner = InformationContext.CurrentOwner;
             var ownerPrefixedWithExtension = getOwnerPrefixedNameWithExtension(owner, objectName, isInterfaceData, objectType);
-            await BlobStorage.StoreBlobJsonContentA(ownerPrefixedWithExtension, dataObject);
+            await BlobStorage.StoreBlobJsonContentA(InformationContext.CurrentOwner, ownerPrefixedWithExtension, dataObject);
         }
 
 

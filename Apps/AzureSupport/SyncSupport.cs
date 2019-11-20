@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE;
-using TheBall.CORE.INT;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.INT;
+using TheBall.Core.Storage;
 
 namespace TheBall
 {
@@ -28,7 +28,7 @@ namespace TheBall
                 syncSourceRootFolder += "/";
             }
 
-            var blobListing = await BlobStorage.GetOwnerBlobsA(syncTargetRootFolder);
+            var blobListing = await BlobStorage.GetOwnerBlobsA(InformationContext.CurrentOwner, syncTargetRootFolder);
             string fullTargetRootPath = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, syncTargetRootFolder);
             int fullTargetRootPathLength = fullTargetRootPath.Length;
             ContentItemLocationWithMD5[] targetContents = (from blob in blobListing

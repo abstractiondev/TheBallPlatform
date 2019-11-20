@@ -10,7 +10,7 @@ using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
 namespace TheBall
 {

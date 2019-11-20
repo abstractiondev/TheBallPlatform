@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 //using Ionic.Zip;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE;
+using TheBall.Core;
 
 namespace TheBall.Interface
 {
@@ -77,7 +77,7 @@ namespace TheBall.Interface
             var fileNames = packageTransferPackageContentOutput;
             foreach (string fileName in fileNames)
             {
-                await CORE.PushToInformationOutput.ExecuteAsync(
+                await Core.PushToInformationOutput.ExecuteAsync(
                     new PushToInformationOutputParameters
                         {
                             InformationOutputID = informationOutputID,

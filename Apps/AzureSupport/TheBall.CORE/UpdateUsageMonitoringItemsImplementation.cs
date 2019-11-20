@@ -6,7 +6,7 @@ using System.Linq;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class UpdateUsageMonitoringItemsImplementation
     {
@@ -21,7 +21,7 @@ namespace TheBall.CORE
         {
             throw new NotImplementedException();
             CloudBlockBlob[] cloudBlockBlobs = null;
-                //owner.ListBlobsWithPrefix("TheBall.CORE/UsageMonitorItem/").Cast<CloudBlockBlob>().ToArray();
+                //owner.ListBlobsWithPrefix("TheBall.Core/UsageMonitorItem/").Cast<CloudBlockBlob>().ToArray();
             return cloudBlockBlobs;
         }
 
@@ -176,7 +176,7 @@ namespace TheBall.CORE
         {
             throw new NotImplementedException();
             /*
-            var newBlobs = owner.ListBlobsWithPrefix("TheBall.CORE/RequestResourceUsageCollection/").Cast<CloudBlockBlob>()
+            var newBlobs = owner.ListBlobsWithPrefix("TheBall.Core/RequestResourceUsageCollection/").Cast<CloudBlockBlob>()
                                 .Where(blob =>
                                     {
                                         DateTime startTime;

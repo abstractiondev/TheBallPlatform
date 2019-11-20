@@ -54,7 +54,7 @@ using System.Threading.Tasks;
 				public class IndexInformationParameters 
 		{
 				public string IndexingRequestID ;
-				public TheBall.CORE.IContainerOwner Owner ;
+				public TheBall.Core.IContainerOwner Owner ;
 				public string IndexName ;
 				public string IndexStorageRootPath ;
 				}
@@ -76,7 +76,7 @@ using System.Threading.Tasks;
 				public class QueryIndexedInformationParameters 
 		{
 				public string QueryRequestID ;
-				public TheBall.CORE.IContainerOwner Owner ;
+				public TheBall.Core.IContainerOwner Owner ;
 				public string IndexName ;
 				public string IndexStorageRootPath ;
 				}

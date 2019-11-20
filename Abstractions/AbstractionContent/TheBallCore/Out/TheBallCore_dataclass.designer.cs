@@ -1,10 +1,10 @@
  
 
 
-using DOM=TheBall.CORE;
+using DOM=TheBall.Core;
 
 
-namespace TheBall.CORE { 
+namespace TheBall.Core { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -90,7 +90,7 @@ namespace INT {
 				public Login() 
 				{
 					Name = "Login";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] [ProtoMember(2000)]
@@ -135,7 +135,7 @@ namespace INT {
 				public Email() 
 				{
 					Name = "Email";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] [ProtoMember(2000)]
@@ -182,7 +182,7 @@ namespace INT {
 				public Account() 
 				{
 					Name = "Account";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] [ProtoMember(2000)]
@@ -229,7 +229,7 @@ namespace INT {
 				public Group() 
 				{
 					Name = "Group";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] [ProtoMember(2000)]
@@ -268,7 +268,7 @@ namespace INT {
 				public GroupMembership() 
 				{
 					Name = "GroupMembership";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] [ProtoMember(2000)]
@@ -311,7 +311,7 @@ namespace INT {
 				public ContentPackageCollection() 
 				{
 					Name = "ContentPackageCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -356,7 +356,7 @@ namespace INT {
 				public ContentPackage() 
 				{
 					Name = "ContentPackage";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -403,7 +403,7 @@ namespace INT {
 				public InformationInputCollection() 
 				{
 					Name = "InformationInputCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -448,7 +448,7 @@ namespace INT {
 				public InformationInput() 
 				{
 					Name = "InformationInput";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -495,7 +495,7 @@ namespace INT {
 				public InformationOutputCollection() 
 				{
 					Name = "InformationOutputCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -540,7 +540,7 @@ namespace INT {
 				public InformationOutput() 
 				{
 					Name = "InformationOutput";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -589,7 +589,7 @@ namespace INT {
 				public AuthenticatedAsActiveDeviceCollection() 
 				{
 					Name = "AuthenticatedAsActiveDeviceCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -634,7 +634,7 @@ namespace INT {
 				public AuthenticatedAsActiveDevice() 
 				{
 					Name = "AuthenticatedAsActiveDevice";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -685,7 +685,7 @@ namespace INT {
 				public DeviceMembershipCollection() 
 				{
 					Name = "DeviceMembershipCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -730,7 +730,7 @@ namespace INT {
 				public DeviceMembership() 
 				{
 					Name = "DeviceMembership";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -775,7 +775,7 @@ namespace INT {
 				public InvoiceFiscalExportSummary() 
 				{
 					Name = "InvoiceFiscalExportSummary";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -818,7 +818,7 @@ namespace INT {
 				public InvoiceSummaryContainer() 
 				{
 					Name = "InvoiceSummaryContainer";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -863,7 +863,7 @@ namespace INT {
 				public InvoiceCollection() 
 				{
 					Name = "InvoiceCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -908,7 +908,7 @@ namespace INT {
 				public Invoice() 
 				{
 					Name = "Invoice";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -965,7 +965,7 @@ namespace INT {
 				public InvoiceDetails() 
 				{
 					Name = "InvoiceDetails";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1014,7 +1014,7 @@ namespace INT {
 				public InvoiceUserCollection() 
 				{
 					Name = "InvoiceUserCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1059,7 +1059,7 @@ namespace INT {
 				public InvoiceUser() 
 				{
 					Name = "InvoiceUser";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1110,7 +1110,7 @@ namespace INT {
 				public InvoiceRowGroupCollection() 
 				{
 					Name = "InvoiceRowGroupCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1155,7 +1155,7 @@ namespace INT {
 				public InvoiceEventDetailGroupCollection() 
 				{
 					Name = "InvoiceEventDetailGroupCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1200,7 +1200,7 @@ namespace INT {
 				public InvoiceRowGroup() 
 				{
 					Name = "InvoiceRowGroup";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1247,7 +1247,7 @@ namespace INT {
 				public InvoiceEventDetailGroup() 
 				{
 					Name = "InvoiceEventDetailGroup";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1288,7 +1288,7 @@ namespace INT {
 				public InvoiceEventDetailCollection() 
 				{
 					Name = "InvoiceEventDetailCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1333,7 +1333,7 @@ namespace INT {
 				public InvoiceRowCollection() 
 				{
 					Name = "InvoiceRowCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1378,7 +1378,7 @@ namespace INT {
 				public InvoiceEventDetail() 
 				{
 					Name = "InvoiceEventDetail";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1435,7 +1435,7 @@ namespace INT {
 				public InvoiceRow() 
 				{
 					Name = "InvoiceRow";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1486,7 +1486,7 @@ namespace INT {
 				public CategoryCollection() 
 				{
 					Name = "CategoryCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1531,7 +1531,7 @@ namespace INT {
 				public Category() 
 				{
 					Name = "Category";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1570,7 +1570,7 @@ namespace INT {
 				public ProcessContainer() 
 				{
 					Name = "ProcessContainer";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1609,7 +1609,7 @@ namespace INT {
 				public Process() 
 				{
 					Name = "Process";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1654,7 +1654,7 @@ namespace INT {
 				public ProcessItem() 
 				{
 					Name = "ProcessItem";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1695,7 +1695,7 @@ namespace INT {
 				public SemanticInformationItem() 
 				{
 					Name = "SemanticInformationItem";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1736,7 +1736,7 @@ namespace INT {
 				public InformationOwnerInfo() 
 				{
 					Name = "InformationOwnerInfo";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1777,7 +1777,7 @@ namespace INT {
 				public UsageSummary() 
 				{
 					Name = "UsageSummary";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1818,7 +1818,7 @@ namespace INT {
 				public UsageMonitorItem() 
 				{
 					Name = "UsageMonitorItem";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1869,7 +1869,7 @@ namespace INT {
 				public RequestResourceUsageCollection() 
 				{
 					Name = "RequestResourceUsageCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1914,7 +1914,7 @@ namespace INT {
 				public RequestResourceUsage() 
 				{
 					Name = "RequestResourceUsage";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -1961,7 +1961,7 @@ namespace INT {
 				public ProcessorUsageCollection() 
 				{
 					Name = "ProcessorUsageCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2006,7 +2006,7 @@ namespace INT {
 				public ProcessorUsage() 
 				{
 					Name = "ProcessorUsage";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2053,7 +2053,7 @@ namespace INT {
 				public StorageTransactionUsageCollection() 
 				{
 					Name = "StorageTransactionUsageCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2098,7 +2098,7 @@ namespace INT {
 				public StorageTransactionUsage() 
 				{
 					Name = "StorageTransactionUsage";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2141,7 +2141,7 @@ namespace INT {
 				public StorageUsageCollection() 
 				{
 					Name = "StorageUsageCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2186,7 +2186,7 @@ namespace INT {
 				public StorageUsage() 
 				{
 					Name = "StorageUsage";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2231,7 +2231,7 @@ namespace INT {
 				public NetworkUsageCollection() 
 				{
 					Name = "NetworkUsageCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2276,7 +2276,7 @@ namespace INT {
 				public NetworkUsage() 
 				{
 					Name = "NetworkUsage";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2319,7 +2319,7 @@ namespace INT {
 				public TimeRange() 
 				{
 					Name = "TimeRange";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2360,7 +2360,7 @@ namespace INT {
 				public HTTPActivityDetailsCollection() 
 				{
 					Name = "HTTPActivityDetailsCollection";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 
@@ -2405,7 +2405,7 @@ namespace INT {
 				public HTTPActivityDetails() 
 				{
 					Name = "HTTPActivityDetails";
-					SemanticDomainName = "TheBall.CORE";
+					SemanticDomainName = "TheBall.Core";
 				}
 
 				[DataMember] 

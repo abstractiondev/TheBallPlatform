@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using TheBall;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 
 namespace AaltoGlobalImpact.OIP
 {

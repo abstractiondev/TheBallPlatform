@@ -6,8 +6,8 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using AzureSupport;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface

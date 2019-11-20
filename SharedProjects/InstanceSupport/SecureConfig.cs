@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.WindowsAzure;
 
-namespace TheBall.CORE.InstanceSupport
+namespace TheBall.Core.InstanceSupport
 {
     public class SecureConfig
     {

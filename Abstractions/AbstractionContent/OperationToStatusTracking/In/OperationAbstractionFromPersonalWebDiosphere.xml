@@ -12,7 +12,7 @@
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="OwnerRootRoomBlobName" dataType="string" designDesc="Get owner based root-room blob name" state="implemented" />
-          <TargetDefinition name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Container owner; default group owner if RoomID given as parameter is null" state="implemented">
+          <TargetDefinition name="Owner" dataType="TheBall.Core.IContainerOwner" designDesc="Container owner; default group owner if RoomID given as parameter is null" state="implemented">
             <Parameter name="RoomID" />
           </TargetDefinition>
           <MethodExecute name="SaveJSONContentToBlob" asyncSupportMode="AsyncOnly" designDesc="Save JSON content to blob" state="implemented">

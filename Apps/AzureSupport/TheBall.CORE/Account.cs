@@ -2,9 +2,9 @@ using System;
 using System.Dynamic;
 using System.Text;
 using AaltoGlobalImpact.OIP;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     partial class Account : IContainerOwner, IAdditionalFormatProvider
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 
 namespace AaltoGlobalImpact.OIP
 {

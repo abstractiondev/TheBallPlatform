@@ -1,7 +1,7 @@
  
 
 
-namespace TheBall.CORE { 
+namespace TheBall.Core { 
 		
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace TheBall.CORE
+﻿namespace TheBall.Core
 {
     public interface IAccountInfo
     {

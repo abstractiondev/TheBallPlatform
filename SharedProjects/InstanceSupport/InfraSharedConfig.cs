@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using Microsoft.WindowsAzure;
 
-namespace TheBall.CORE.InstanceSupport
+namespace TheBall.Core.InstanceSupport
 {
     public delegate string SettingRetriever(string settingName);
     public class InfraSharedConfig

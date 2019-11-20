@@ -1,9 +1,10 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
+using TheBall.Core.StorageCore;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class UpdateContainerOwnerTemplatesImplementation
     {
@@ -33,7 +34,8 @@ namespace TheBall.CORE
 
         public static string GetTarget_TemplateTargetLocation(string templateName, IContainerOwner targetOwner)
         {
-            var targetLocation = targetOwner.GetOwnerContentLocation(templateName);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            var targetLocation = storageService.GetOwnerContentLocation(targetOwner, templateName);
             return targetLocation;
         }
 

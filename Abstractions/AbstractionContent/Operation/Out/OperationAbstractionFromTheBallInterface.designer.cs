@@ -96,8 +96,8 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					string PackageContentListingProcessID = SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcessID(parameters.Connection);	
 				 await SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_ExecuteContentListingProcessAsync(PackageContentListingProcessID);		
-				TheBall.CORE.Process PackageContentListingProcess =  await SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcessAsync(PackageContentListingProcessID);	
-				TheBall.CORE.INT.ContentItemLocationWithMD5[] ContentListingResult = SyncConnectionContentToDeviceToSendImplementation.GetTarget_ContentListingResult(PackageContentListingProcess);	
+				TheBall.Core.Process PackageContentListingProcess =  await SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcessAsync(PackageContentListingProcessID);	
+				TheBall.Core.INT.ContentItemLocationWithMD5[] ContentListingResult = SyncConnectionContentToDeviceToSendImplementation.GetTarget_ContentListingResult(PackageContentListingProcess);	
 				string SyncTargetRootFolder = SyncConnectionContentToDeviceToSendImplementation.GetTarget_SyncTargetRootFolder(parameters.Connection);	
 				SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_CopyContentsToSyncRoot(ContentListingResult, SyncTargetRootFolder);		
 				}
@@ -214,10 +214,10 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(PutInterfaceOperationToQueueParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner QueueOwner = PutInterfaceOperationToQueueImplementation.GetTarget_QueueOwner();	
+					TheBall.Core.IContainerOwner QueueOwner = PutInterfaceOperationToQueueImplementation.GetTarget_QueueOwner();	
 				string QueueLocation = PutInterfaceOperationToQueueImplementation.GetTarget_QueueLocation();	
-				TheBall.CORE.IContainerOwner OperationOwner = PutInterfaceOperationToQueueImplementation.GetTarget_OperationOwner();	
-				TheBall.CORE.IAccountInfo InvokerAccount = PutInterfaceOperationToQueueImplementation.GetTarget_InvokerAccount();	
+				TheBall.Core.IContainerOwner OperationOwner = PutInterfaceOperationToQueueImplementation.GetTarget_OperationOwner();	
+				TheBall.Core.IAccountInfo InvokerAccount = PutInterfaceOperationToQueueImplementation.GetTarget_InvokerAccount();	
 				string QueueItemFileNameFormat = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFileNameFormat();	
 				string QueueItemFullPath = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFullPath(parameters.OperationID, QueueItemFileNameFormat, QueueOwner, QueueLocation, OperationOwner);	
 				 await PutInterfaceOperationToQueueImplementation.ExecuteMethod_CreateQueueEntryAsync(parameters.OperationID, QueueItemFullPath, InvokerAccount);		
@@ -225,7 +225,7 @@ using System.Threading.Tasks;
 				}
 				public class LockInterfaceOperationsByOwnerParameters 
 		{
-				public TheBall.CORE.IContainerOwner DedicatedToOwner ;
+				public TheBall.Core.IContainerOwner DedicatedToOwner ;
 				}
 		
 		public class LockInterfaceOperationsByOwner 
@@ -244,7 +244,7 @@ using System.Threading.Tasks;
 				public static async Task<LockInterfaceOperationsByOwnerReturnValue> ExecuteAsync(LockInterfaceOperationsByOwnerParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner QueueOwner = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
+					TheBall.Core.IContainerOwner QueueOwner = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
 				string QueueLocation = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
 				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems =  await LockInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItemsAsync(QueueOwner, QueueLocation);	
 				string LockFileNameFormat = LockInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
@@ -284,7 +284,7 @@ using System.Threading.Tasks;
 				}
 				public class UpdateStatusSummaryParameters 
 		{
-				public TheBall.CORE.IContainerOwner Owner ;
+				public TheBall.Core.IContainerOwner Owner ;
 				public DateTime UpdateTime ;
 				public string[] ChangedIDList ;
 				public int RemoveExpiredEntriesSeconds ;
@@ -338,7 +338,7 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					Connection Connection = InitiateIntegrationConnectionImplementation.GetTarget_Connection(parameters.Description);	
-				TheBall.CORE.AuthenticatedAsActiveDevice DeviceForConnection =  await InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnectionAsync(parameters.Description, parameters.TargetBallHostName, parameters.TargetGroupID, Connection);	
+				TheBall.Core.AuthenticatedAsActiveDevice DeviceForConnection =  await InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnectionAsync(parameters.Description, parameters.TargetBallHostName, parameters.TargetGroupID, Connection);	
 				 await InitiateIntegrationConnectionImplementation.ExecuteMethod_StoreConnectionAsync(Connection);		
 				 await InitiateIntegrationConnectionImplementation.ExecuteMethod_NegotiateDeviceConnectionAsync(DeviceForConnection);		
 				}
@@ -401,9 +401,9 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					Connection Connection =  await CreateConnectionStructuresImplementation.GetTarget_ConnectionAsync(parameters.ConnectionID);	
-				TheBall.CORE.Process ProcessToListPackageContents =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToListPackageContentsAsync(Connection);	
-				TheBall.CORE.Process ProcessToProcessReceivedData =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToProcessReceivedDataAsync(Connection);	
-				TheBall.CORE.Process ProcessToUpdateThisSideCategories =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToUpdateThisSideCategoriesAsync(Connection);	
+				TheBall.Core.Process ProcessToListPackageContents =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToListPackageContentsAsync(Connection);	
+				TheBall.Core.Process ProcessToProcessReceivedData =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToProcessReceivedDataAsync(Connection);	
+				TheBall.Core.Process ProcessToUpdateThisSideCategories =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToUpdateThisSideCategoriesAsync(Connection);	
 				CreateConnectionStructuresImplementation.ExecuteMethod_SetConnectionProcesses(Connection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories);		
 				 await CreateConnectionStructuresImplementation.ExecuteMethod_StoreObjectAsync(Connection);		
 				CreateConnectionStructuresReturnValue returnValue = CreateConnectionStructuresImplementation.Get_ReturnValue(Connection);
@@ -496,7 +496,7 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					string FileName = ShareCollabInterfaceObjectImplementation.GetTarget_FileName(parameters.CollabParams);	
 				ShareCollabInterfaceObjectImplementation.ExecuteMethod_ValidateFileName(FileName);		
-				TheBall.CORE.IContainerOwner CollaborationTarget = ShareCollabInterfaceObjectImplementation.GetTarget_CollaborationTarget(parameters.CollabParams);	
+				TheBall.Core.IContainerOwner CollaborationTarget = ShareCollabInterfaceObjectImplementation.GetTarget_CollaborationTarget(parameters.CollabParams);	
 				string SourceFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_SourceFullPath(FileName);	
 				string MetadataFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_MetadataFullPath(FileName, CollaborationTarget);	
 				INT.ShareInfo MetadataObject =  await ShareCollabInterfaceObjectImplementation.GetTarget_MetadataObjectAsync(FileName, SourceFullPath);	
@@ -522,7 +522,7 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(PushSyncNotificationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner CollaborationTarget = PushSyncNotificationImplementation.GetTarget_CollaborationTarget(parameters.Partner);	
+					TheBall.Core.IContainerOwner CollaborationTarget = PushSyncNotificationImplementation.GetTarget_CollaborationTarget(parameters.Partner);	
 				AzureSupport.HttpOperationData SyncOperationData = PushSyncNotificationImplementation.GetTarget_SyncOperationData(CollaborationTarget);	
 				 await PushSyncNotificationImplementation.ExecuteMethod_QueueSyncOperationToTargetAsync(CollaborationTarget, SyncOperationData);		
 				}
@@ -540,12 +540,12 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(PullSyncDataParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner CollaborationSource = PullSyncDataImplementation.GetTarget_CollaborationSource(parameters.Partner);	
-				TheBall.CORE.IContainerOwner CollaborationTarget = PullSyncDataImplementation.GetTarget_CollaborationTarget();	
+					TheBall.Core.IContainerOwner CollaborationSource = PullSyncDataImplementation.GetTarget_CollaborationSource(parameters.Partner);	
+				TheBall.Core.IContainerOwner CollaborationTarget = PullSyncDataImplementation.GetTarget_CollaborationTarget();	
 				string SyncSourceRoot = PullSyncDataImplementation.GetTarget_SyncSourceRoot(CollaborationTarget);	
 				string SyncTargetRoot = PullSyncDataImplementation.GetTarget_SyncTargetRoot(CollaborationSource);	
-				TheBall.CORE.Storage.BlobStorageItem[] ExistingSourceItems =  await PullSyncDataImplementation.GetTarget_ExistingSourceItemsAsync(CollaborationSource, SyncSourceRoot);	
-				TheBall.CORE.Storage.BlobStorageItem[] ExistingTargetItems =  await PullSyncDataImplementation.GetTarget_ExistingTargetItemsAsync(CollaborationTarget, SyncTargetRoot);	
+				TheBall.Core.Storage.BlobStorageItem[] ExistingSourceItems =  await PullSyncDataImplementation.GetTarget_ExistingSourceItemsAsync(CollaborationSource, SyncSourceRoot);	
+				TheBall.Core.Storage.BlobStorageItem[] ExistingTargetItems =  await PullSyncDataImplementation.GetTarget_ExistingTargetItemsAsync(CollaborationTarget, SyncTargetRoot);	
 				 await PullSyncDataImplementation.ExecuteMethod_SyncItemsAsync(CollaborationSource, SyncSourceRoot, ExistingSourceItems, CollaborationTarget, SyncTargetRoot, ExistingTargetItems);		
 				
 		{ // Local block to allow local naming
@@ -569,8 +569,8 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					bool IsCompleteUpdate = UpdateSharedDataSummaryDataImplementation.GetTarget_IsCompleteUpdate(parameters.Partner);	
-				TheBall.CORE.IContainerOwner[] CollaborationPartners =  await UpdateSharedDataSummaryDataImplementation.GetTarget_CollaborationPartnersAsync(parameters.Partner, IsCompleteUpdate);	
-				Tuple<TheBall.CORE.IContainerOwner, string>[] UpdatePartnerSummariesOutput =  await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdatePartnerSummariesAsync(CollaborationPartners, IsCompleteUpdate);		
+				TheBall.Core.IContainerOwner[] CollaborationPartners =  await UpdateSharedDataSummaryDataImplementation.GetTarget_CollaborationPartnersAsync(parameters.Partner, IsCompleteUpdate);	
+				Tuple<TheBall.Core.IContainerOwner, string>[] UpdatePartnerSummariesOutput =  await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdatePartnerSummariesAsync(CollaborationPartners, IsCompleteUpdate);		
 				 await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdateCompleteShareSummaryAsync(UpdatePartnerSummariesOutput, IsCompleteUpdate);		
 				}
 				}
@@ -624,9 +624,9 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(SaveGroupDetailsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.Group Group =  await SaveGroupDetailsImplementation.GetTarget_GroupAsync();	
+					TheBall.Core.Group Group =  await SaveGroupDetailsImplementation.GetTarget_GroupAsync();	
 				 await SaveGroupDetailsImplementation.ExecuteMethod_SaveGroupDetailsAsync(parameters.GroupDetails, Group);		
-				TheBall.CORE.GroupMembership[] CurrentMemberships =  await SaveGroupDetailsImplementation.GetTarget_CurrentMembershipsAsync(Group);	
+				TheBall.Core.GroupMembership[] CurrentMemberships =  await SaveGroupDetailsImplementation.GetTarget_CurrentMembershipsAsync(Group);	
 				 await SaveGroupDetailsImplementation.ExecuteMethod_UpdateDetailsChangeToMembersAsync(Group, CurrentMemberships);		
 				}
 				}
@@ -645,7 +645,7 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(FetchURLAsGroupContentParameters parameters)
 		{
 						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner Owner = FetchURLAsGroupContentImplementation.GetTarget_Owner(parameters.GroupID);	
+					TheBall.Core.IContainerOwner Owner = FetchURLAsGroupContentImplementation.GetTarget_Owner(parameters.GroupID);	
 				AaltoGlobalImpact.OIP.BinaryFile BinaryFile =  await FetchURLAsGroupContentImplementation.GetTarget_BinaryFileAsync(parameters.FileName, Owner);	
 				 await FetchURLAsGroupContentImplementation.ExecuteMethod_FetchDataAndAttachToFileAsync(parameters.DataURL, BinaryFile);		
 				}

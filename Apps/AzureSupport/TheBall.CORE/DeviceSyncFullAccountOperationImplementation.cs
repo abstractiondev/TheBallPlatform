@@ -11,10 +11,10 @@ using System.Web;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TheBall.CORE.Storage;
+using TheBall.Core.Storage;
 using TheBall.Support.VirtualStorage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class DeviceSyncFullAccountOperationImplementation
     {

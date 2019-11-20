@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public class ObtainSystemProcessLockImplementation
     {

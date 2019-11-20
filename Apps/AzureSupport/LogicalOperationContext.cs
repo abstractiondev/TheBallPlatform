@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureSupport;
-using AzureSupport.TheBall.CORE;
-using TheBall.CORE;
+using AzureSupport.TheBall.Core;
+using TheBall.Core;
 
 namespace TheBall
 {

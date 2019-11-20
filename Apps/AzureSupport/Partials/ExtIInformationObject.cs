@@ -5,10 +5,10 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall;
-using TheBall.CORE;
-using TheBall.CORE.Storage;
+using TheBall.Core;
+using TheBall.Core.Storage;
 
-namespace TheBall.CORE
+namespace TheBall.Core
 {
     public static partial class OwnerInitializer
     {
@@ -62,11 +62,6 @@ namespace TheBall.CORE
             return (owner.ContainerName == "grp" || owner.ContainerName == "dev") && owner.LocationPrefix.Length == StorageSupport.GuidLength;
         }
 
-        public static bool IsSystemOwner(this IContainerOwner owner)
-        {
-            return owner.IsSameOwner(SystemSupport.SystemOwner);
-        }
-
         public static async Task ReconnectMastersAndCollectionsForOwner(this IContainerOwner owner)
         {
             //string myLocalAccountID = "0c560c69-c3a7-4363-b125-ba1660d21cf4";
@@ -76,7 +71,7 @@ namespace TheBall.CORE
 
             /*
             var informationObjects = BlobStorage.
-                StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, name => name.Contains("TheBall.CORE/RequestResourceUsage") == false, 
+                StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, name => name.Contains("TheBall.Core/RequestResourceUsage") == false, 
                                                                                               nonMaster =>
                                                                                               nonMaster.
                                                                                                   IsIndependentMaster ==
