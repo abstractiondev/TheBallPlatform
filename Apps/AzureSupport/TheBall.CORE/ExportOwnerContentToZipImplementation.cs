@@ -10,7 +10,7 @@ namespace TheBall.Core
     {
         public static async Task<string[]> GetTarget_IncludedFoldersAsync(IContainerOwner owner, string packageRootFolder)
         {
-            var folders = await BlobStorage.GetOwnerFoldersA(packageRootFolder);
+            var folders = await BlobStorage.GetOwnerFoldersA(owner, packageRootFolder);
             var directories = folders.Select(item => item.FolderName).ToArray();
             directories = SystemSupport.FilterAwayReservedFolders(directories);
             return directories;

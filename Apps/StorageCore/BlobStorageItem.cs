@@ -15,6 +15,12 @@ namespace TheBall.Core.Storage
         public readonly string FileName;
         public readonly string DirectoryName;
 
+        public BlobStorageItem(string name, string contentMd5, long length, DateTimeOffset? lastModified) 
+            : this(name, contentMd5, length, lastModified?.UtcDateTime ?? DateTime.MinValue.ToUniversalTime())
+        {
+
+        }
+
         public BlobStorageItem(string name, string contentMd5, long length, DateTime lastModified)
         {
             Name = name;

@@ -14,21 +14,24 @@ namespace TheBall.Core.Storage
     {
         internal class StorageSupport
         {
+            private static IStorageService Service => CoreServices.GetCurrent<IStorageService>();
             public const int GuidLength = 36;
 
             public static async Task<BlobStorageItem> GetBlobStorageItem(string sourceFullPath, IContainerOwner owner)
             {
-                throw new NotImplementedException();
+                var blobStorageItem = await Service.GetBlobItemA(owner, sourceFullPath);
+                return blobStorageItem;
             }
 
             public static async Task UploadOwnerBlobTextAsync(IContainerOwner owner, string name, string textData)
             {
-                throw new NotImplementedException();
+                await Service.UploadBlobTextA(owner, name, textData);
             }
 
             public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
             {
-                throw new NotImplementedException();
+                var blobStorageItems = await Service.GetBlobItemsA(owner, directoryLocation);
+                return blobStorageItems;
             }
 
             public static async Task CopyBlobBetweenOwnersA(IContainerOwner sourceOwner, string sourceItemName, IContainerOwner targetOwner, string targetItemName)
@@ -38,22 +41,25 @@ namespace TheBall.Core.Storage
 
             public static async Task DeleteBlobAsync(string name)
             {
-                throw new NotImplementedException();
+                await Service.DeleteBlobA(blobPath: name);
             }
 
             public static async Task<byte[]> DownloadBlobByteArrayAsync(string name, bool returnNullIfMissing, IContainerOwner owner)
             {
-                throw new NotImplementedException();
+                var blobData = await Service.DownloadBlobDataA(owner, blobPath: name, returnNullIfMissing);
+                return blobData;
             }
 
-            public static async Task<string[]> ListOwnerFoldersA(string rootFolder)
+            public static async Task<string[]> ListOwnerFoldersA(IContainerOwner owner, string rootFolder)
             {
-                throw new NotImplementedException();
+                var locationFolders = await Service.GetLocationFoldersA(owner, locationPath: rootFolder);
+                return locationFolders;
             }
 
-            public static async Task<BlobStorageItem> UploadOwnerBlobBinaryA(IContainerOwner owner, string name, object data)
+            public static async Task<BlobStorageItem> UploadOwnerBlobBinaryA(IContainerOwner owner, string name, byte[] data)
             {
-                throw new NotImplementedException();
+                var blobStorageItem = await Service.UploadBlobDataA(owner, blobPath: name, data);
+                return blobStorageItem;
             }
         }
 
@@ -138,9 +144,9 @@ namespace TheBall.Core.Storage
                 StorageSupport.CopyBlobBetweenOwnersA(sourceOwner, sourceItemName, targetOwner, targetItemName);
         }
 
-        public static async Task DeleteBlobA(string name)
+        public static async Task DeleteBlobA(string blobLocation)
         {
-            await StorageSupport.DeleteBlobAsync(name);
+            await StorageSupport.DeleteBlobAsync(blobLocation);
         }
 
         public static async Task<byte[]> GetBlobContentA(string name, bool returnNullIfMissing)
@@ -160,9 +166,9 @@ namespace TheBall.Core.Storage
 
         }
 
-        public static async Task<BlobStorageFolder[]> GetOwnerFoldersA(string rootFolder)
+        public static async Task<BlobStorageFolder[]> GetOwnerFoldersA(IContainerOwner owner, string rootFolder)
         {
-            var folders = await StorageSupport.ListOwnerFoldersA(rootFolder);
+            var folders = await StorageSupport.ListOwnerFoldersA(owner, rootFolder);
             var blobFolders = folders.Select(folder => new BlobStorageFolder(folder)).ToArray();
             return blobFolders;
         }
@@ -193,7 +199,7 @@ namespace TheBall.Core.Storage
                 throw new NotImplementedException();
             }
 
-            public static object SerializeToJSONData(object dataObject)
+            public static byte[] SerializeToJSONData(object dataObject)
             {
                 throw new NotImplementedException();
             }

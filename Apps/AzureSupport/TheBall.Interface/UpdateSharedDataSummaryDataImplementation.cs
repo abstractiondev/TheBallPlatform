@@ -25,10 +25,10 @@ namespace TheBall.Interface
                 return new IContainerOwner[] { new VirtualOwner(partner.PartnerType, partner.PartnerID, true) };
 
             var accountShareDir = BlobStorage.CombinePath(ShareInfoDirectory, "acc");
-            var accountFolders = await BlobStorage.GetOwnerFoldersA(accountShareDir);
+            var accountFolders = await BlobStorage.GetOwnerFoldersA(InformationContext.CurrentOwner, accountShareDir);
 
             var groupShareDir = BlobStorage.CombinePath(ShareInfoDirectory, "grp");
-            var groupFolders = await BlobStorage.GetOwnerFoldersA(groupShareDir);
+            var groupFolders = await BlobStorage.GetOwnerFoldersA(InformationContext.CurrentOwner, groupShareDir);
 
             var accountOwners = accountFolders.Select(folder => new VirtualOwner("acc", folder.FolderName, true)).ToArray();
             var groupOwners = groupFolders.Select(folder => new VirtualOwner("grp", folder.FolderName, true)).ToArray();
