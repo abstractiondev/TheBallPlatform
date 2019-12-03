@@ -32,8 +32,8 @@ namespace TheBall.Core.StorageCore
         public string GetOwnerContentLocation(IContainerOwner owner, string location)
         {
             var contentLocation = Path.Combine(owner.ContainerName, owner.LocationPrefix, location);
-            var azureContentLocation = contentLocation.Replace("\\", "/");
-            return azureContentLocation;
+            contentLocation = contentLocation.Replace("\\", "/");
+            return contentLocation;
         }
 
         public string CombinePathForOwner(IContainerOwner owner, params string[] pathComponents)
@@ -92,10 +92,10 @@ namespace TheBall.Core.StorageCore
             return blobStorageItem;
         }
 
-        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string data)
+        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text)
         {
             var blob = getOwnerBlobReference(owner, blobPath);
-            await blob.UploadTextAsync(data);
+            await blob.UploadTextAsync(text);
             return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified);
         }
 

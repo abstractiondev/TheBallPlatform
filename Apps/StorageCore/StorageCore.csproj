@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.3.108.4" />
     <PackageReference Include="Dropbox.Api" Version="4.9.4" />
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="2.3.0" />
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.1" />
     <PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.1.1" />
   </ItemGroup>

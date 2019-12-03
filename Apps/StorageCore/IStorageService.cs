@@ -14,6 +14,6 @@ namespace TheBall.Core.StorageCore
         Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing);
         Task<string[]> GetLocationFoldersA(IContainerOwner owner, string locationPath);
         Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data);
-        Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string data);
+        Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text);
     }
 }

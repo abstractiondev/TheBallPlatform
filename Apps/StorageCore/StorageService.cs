@@ -41,7 +41,7 @@ namespace TheBall.Core.StorageCore
             return await ServiceProvider.GetBlobItemA(owner, blobPath);
         }
 
-        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string data)
+        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text)
         {
             throw new System.NotImplementedException();
         }
