@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Dropbox.Api.Common;
 using TheBall.Core.Storage;
@@ -96,17 +97,40 @@ namespace TheBall.Core.StorageCore
 
         public async Task<string[]> GetLocationFoldersA(IContainerOwner owner, string locationPath)
         {
-            throw new System.NotImplementedException();
+            var folderLocation = GetOwnerContentLocation(owner, locationPath);
+            var directoryInfo = new DirectoryInfo(folderLocation);
+            var fsInfos = directoryInfo.EnumerateFileSystemInfos("*", SearchOption.TopDirectoryOnly);
+            var folderNames = fsInfos.AsParallel()
+                .Where(fsItem => fsItem is DirectoryInfo)
+                .Cast<DirectoryInfo>()
+                .Select(item => item.FullName)
+                .OrderBy(item => item)
+                .ToArray();
+            return folderNames;
         }
 
         public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data)
         {
-            throw new System.NotImplementedException();
+            var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            using (var fileStream = File.Create(fileLocation))
+            {
+                await fileStream.WriteAsync(data, 0, data.Length);
+            }
+
+            var result = await GetBlobItemA(owner, blobPath);
+            return result;
         }
 
         public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text)
         {
-            throw new System.NotImplementedException();
+            var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            var blobAddress = GetOwnerContentLocation(owner, blobPath);
+            using (var textStream = File.CreateText(fileLocation))
+            {
+                await textStream.WriteAsync(text);
+            }
+            var result = await GetBlobItemA(owner, blobPath);
+            return result;
         }
     }
 }
