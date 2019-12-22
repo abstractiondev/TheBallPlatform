@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Dropbox.Api.Common;
@@ -67,7 +68,7 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
-        public async Task DeleteBlobA(string blobPath)
+        public async Task DeleteBlobA(string blobPath, string eTag = null)
         {
             verifyRootPathRemaining(blobPath);
             var fullPath = Path.Combine(RootPath, blobPath);
@@ -75,7 +76,8 @@ namespace TheBall.Core.StorageCore
             fileInfo.Delete();
         }
 
-        public async Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing)
+        public async Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing,
+            string eTag = null)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             var fsInfo = new FileInfo(fileLocation);
@@ -95,6 +97,23 @@ namespace TheBall.Core.StorageCore
             }
         }
 
+        public async Task DownloadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, bool returnNullIfMissing, string eTag = null)
+        {
+            var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            var fsInfo = new FileInfo(fileLocation);
+            if (!fsInfo.Exists)
+            {
+                if (returnNullIfMissing)
+                    return;
+                throw new TBStorageException( HttpStatusCode.NotFound, null, $"Blob not exists: {fsInfo.FullName}");
+            }
+
+            using (var fileStream = fsInfo.OpenRead())
+            {
+                await fileStream.CopyToAsync(stream);
+            }
+        }
+
         public async Task<string[]> GetLocationFoldersA(IContainerOwner owner, string locationPath)
         {
             var folderLocation = GetOwnerContentLocation(owner, locationPath);
@@ -109,7 +128,7 @@ namespace TheBall.Core.StorageCore
             return folderNames;
         }
 
-        public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data)
+        public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data, string eTag = null)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             using (var fileStream = File.Create(fileLocation))
@@ -121,13 +140,25 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
-        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text)
+        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text, string eTag = null)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             var blobAddress = GetOwnerContentLocation(owner, blobPath);
             using (var textStream = File.CreateText(fileLocation))
             {
                 await textStream.WriteAsync(text);
+            }
+            var result = await GetBlobItemA(owner, blobPath);
+            return result;
+        }
+
+        public async Task<BlobStorageItem> UploadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, string eTag = null)
+        {
+            var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            using (var fileStream = File.Create(fileLocation))
+            {
+                await stream.CopyToAsync(fileStream);
+                await fileStream.FlushAsync();
             }
             var result = await GetBlobItemA(owner, blobPath);
             return result;

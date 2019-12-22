@@ -8,9 +8,10 @@ namespace TheBall
     {
         public static void ReportError(string error)
         {
-            QueueSupport.PutToErrorQueue(error);
+            //QueueSupport.PutToErrorQueue(error);
         }
 
+        [Obsolete("not implemented", false)]
         public static void ReportException(Exception exception)
         {
             // Under NO circumstances the exception reporting shall cause another exception to be thrown unhandled

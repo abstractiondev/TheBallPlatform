@@ -14,6 +14,7 @@ using TheBall.Core.Storage;
 
 namespace TheBall
 {
+    [Obsolete("obsolete", true)]
     public static class QueueSupport
     {
         public const string DefaultQueueName = "defaultqueue";

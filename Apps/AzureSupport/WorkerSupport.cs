@@ -258,6 +258,7 @@ namespace TheBall
         private static int counter = 0;
 
         
+        [Obsolete("obsolete", true)]
         public static async Task DeleteEntireOwner(IContainerOwner containerOwner)
         {
             await StorageSupport.DeleteEntireOwnerAsync(containerOwner);
@@ -278,6 +279,7 @@ namespace TheBall
         }
 
 
+        [Obsolete("obsolete", true)]
         public static async Task ProcessIndexingAsync(QueueSupport.MessageObject<string>[] indexingMessages, string indexStorageRootFolder)
         {
             foreach (var indexingMessage in indexingMessages)
@@ -311,6 +313,7 @@ namespace TheBall
             }
         }
 
+        [Obsolete("obsolete", true)]
         public static async Task ProcessQueriesAsync(QueueSupport.MessageObject<string>[] queryMessages, string indexStorageRootFolder)
         {
             foreach (var queryMessage in queryMessages)
@@ -343,6 +346,7 @@ namespace TheBall
             }
         }
 
+        [Obsolete("error", true)]
         public static async Task ProcessPublishWebContent(string sourceContainerName, string sourceOwner, string sourceRoot, string targetContainerName)
         {
             // Hardcoded double-verify for valid container

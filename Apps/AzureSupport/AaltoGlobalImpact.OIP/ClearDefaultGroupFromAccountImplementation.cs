@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using TheBall;
 using TheBall.Core;
 using TheBall.Core.Storage;
+using TheBall.Core.StorageCore;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -30,8 +31,10 @@ namespace AaltoGlobalImpact.OIP
 
         public static async Task ExecuteMethod_RemoveAccountRedirectFileAsync(string redirectFromFolderBlobName)
         {
-            var redirectBlob = StorageSupport.GetOwnerBlobReference(redirectFromFolderBlobName);
-            await BlobStorage.DeleteBlobA(redirectBlob.Name);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            var owner = InformationContext.CurrentOwner;
+            var ownerPath = storageService.GetOwnerContentLocation(owner, redirectFromFolderBlobName);
+            await storageService.DeleteBlobA(ownerPath);
         }
     }
 }

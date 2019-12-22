@@ -16,6 +16,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using MimeKit;
 using TheBall.Core;
 using TheBall.Core.InstanceSupport;
+using TheBall.Core.Storage;
 
 namespace TheBall
 {
@@ -39,7 +40,7 @@ namespace TheBall
                 {
                     var fileName = attachment.FileName;
                     var data = attachment.Data;
-                    var mimeType = StorageSupport.GetMimeType(fileName);
+                    var mimeType = BlobStorage.GetMimeType(fileName);
                     var contentType = ContentType.Parse(mimeType);
                     body.Attachments.Add(fileName, data, contentType);
                 }
@@ -86,7 +87,7 @@ namespace TheBall
                 {
                     String queueMessage = String.Format("From: {1}{0}To: {2}{0}Subject: {3}{0}Message:{0}{4}",
                                                         Environment.NewLine, From, To, Subject, Text ?? HTML);
-                    await QueueSupport.CurrStatisticsQueue?.AddMessageAsync(new CloudQueueMessage(queueMessage));
+                    //await QueueSupport.CurrStatisticsQueue?.AddMessageAsync(new CloudQueueMessage(queueMessage));
                 }
             }
 
@@ -118,7 +119,7 @@ namespace TheBall
                 {
                     String queueMessage = String.Format("From: {1}{0}To: {2}{0}Subject: {3}{0}Message:{0}{4}",
                                                         Environment.NewLine, From, To, Subject, Text ?? HTML);
-                    await QueueSupport.CurrStatisticsQueue?.AddMessageAsync(new CloudQueueMessage(queueMessage));
+                    //await QueueSupport.CurrStatisticsQueue?.AddMessageAsync(new CloudQueueMessage(queueMessage));
                 }
             }
 

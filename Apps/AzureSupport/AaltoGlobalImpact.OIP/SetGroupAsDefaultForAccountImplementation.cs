@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using TheBall;
 using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -30,8 +31,10 @@ namespace AaltoGlobalImpact.OIP
 
         public static async Task ExecuteMethod_SetAccountRedirectFileToGroupAsync(string groupId, string redirectFromFolderBlobName)
         {
-            var blob = StorageSupport.GetOwnerBlobReference(redirectFromFolderBlobName);
-            await blob.UploadBlobTextAsync(String.Format("/auth/grp/{0}/", groupId));
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            var redirectContents = $"/auth/grp/{groupId}/";
+            await storageService.UploadBlobTextA(InformationContext.CurrentOwner, redirectFromFolderBlobName,
+                redirectContents);
         }
     }
 }

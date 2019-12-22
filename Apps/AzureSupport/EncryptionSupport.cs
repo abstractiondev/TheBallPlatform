@@ -110,6 +110,7 @@ namespace TheBall
             return plainText;
         }
 
+        [Obsolete("obsolete", true)]
         private static async Task RetrieveOrCreateEncDataToDefaultBlob()
         {
             CloudBlockBlob keyBlob = StorageSupport.CurrActiveContainer.GetBlob(KeyBlobName);

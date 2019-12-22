@@ -156,7 +156,7 @@ namespace TheBall.Payments
                 activePlanIDs.Where(planID => currentStatuses.All(status => status.SubscriptionPlan != planID))
                     .ToArray();
             foreach (var status in statusesToRemove)
-                await status.DeleteInformationObjectA(InformationContext.CurrentOwner);
+                await status.DeleteInformationObjectAsync(InformationContext.CurrentOwner);
             List<string> addedStatusIDs = new List<string>();
             foreach (var planToAddStatus in plansToAddStatusesFor)
             {

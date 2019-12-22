@@ -37,6 +37,7 @@ namespace TheBall.Index
 
         public const int IndexDriveStorageSizeInMB = 1024*100; // 100 GB
 
+        [Obsolete("obsolete", true)]
         public static void PutQueryRequestToQueue(string storageContainerName, string indexName, IContainerOwner owner, string requestID)
         {
             var queueName = GetQueryRequestQueueName(indexName);
@@ -45,6 +46,7 @@ namespace TheBall.Index
             QueueSupport.PutMessageToQueue(queueName, messageText);
         }
 
+        [Obsolete("obsolete", true)]
         public static void PutIndexingRequestToQueue(string storageContainerName, string indexName, IContainerOwner owner, string requestID)
         {
             var queueName = GetIndexRequestQueueName(indexName);
@@ -53,6 +55,7 @@ namespace TheBall.Index
             QueueSupport.PutMessageToQueue(queueName, messageText);
         }
 
+        [Obsolete("obsolete", true)]
         public static async Task<QueueSupport.MessageObject<string>[]> GetQueryRequestsFromQueue(string indexName)
         {
             string queueName = GetQueryRequestQueueName(indexName);
@@ -61,6 +64,7 @@ namespace TheBall.Index
             return results;
         }
 
+        [Obsolete("obsolete", true)]
         public static async Task<QueueSupport.MessageObject<string>[]> GetIndexingRequestsFromQueue(string indexName)
         {
             string queueName = GetIndexRequestQueueName(indexName);

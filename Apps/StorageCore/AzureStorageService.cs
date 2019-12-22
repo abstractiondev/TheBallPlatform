@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
@@ -15,6 +16,10 @@ namespace TheBall.Core.StorageCore
         public CloudStorageAccount StorageAccount { get; set; }
         private CloudBlobClient BlobClient;
         private CloudBlobContainer BlobContainer;
+
+        public BlobRequestOptions DefaultBlobRequestOptions { get; } =
+            new BlobRequestOptions() {StoreBlobContentMD5 = true};
+
 
         public AzureStorageService()
         {
@@ -92,20 +97,40 @@ namespace TheBall.Core.StorageCore
             return blobStorageItem;
         }
 
-        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text)
+        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text, string eTag = null)
         {
             var blob = getOwnerBlobReference(owner, blobPath);
-            await blob.UploadTextAsync(text);
+            try
+            {
+                await blob.UploadTextAsync(text, Encoding.UTF8,
+                    eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, DefaultBlobRequestOptions,
+                    new OperationContext());
+            }
+            catch (StorageException scEx)
+            {
+                throw new TBStorageException((HttpStatusCode) scEx.RequestInformation.HttpStatusCode, scEx);
+            }
+
             return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified);
         }
 
-        public async Task DeleteBlobA(string blobPath)
+        public async Task DeleteBlobA(string blobPath, string eTag = null)
         {
             var blob = BlobContainer.GetBlockBlobReference(blobPath);
-            await blob.DeleteIfExistsAsync();
+            try
+            {
+                await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.None,
+                    eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, DefaultBlobRequestOptions,
+                    new OperationContext());
+            }
+            catch (StorageException scEx)
+            {
+                throw new TBStorageException((HttpStatusCode) scEx.RequestInformation.HttpStatusCode, scEx);
+            }
         }
 
-        public async Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing)
+        public async Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing,
+            string eTag = null)
         {
             var blob = getOwnerBlobReference(owner, blobPath);
             byte[] data = null;
@@ -113,7 +138,7 @@ namespace TheBall.Core.StorageCore
             {
                 try
                 {
-                    await blob.DownloadToStreamAsync(memoryStream);
+                    await blob.DownloadToStreamAsync(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, DefaultBlobRequestOptions, new OperationContext());
                     data = memoryStream.ToArray();
                 }
                 catch (StorageException scEx)
@@ -124,18 +149,67 @@ namespace TheBall.Core.StorageCore
                             scEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.BadRequest)
                             return null;
                     }
-                    throw;
+
+                    var statusCode = scEx.RequestInformation.HttpStatusCode;
+                    throw new TBStorageException((HttpStatusCode) statusCode, scEx);
                 }
 
             }
             return data;
         }
 
-        public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data)
+        public async Task DownloadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, bool returnNullIfMissing, string eTag = null)
         {
             var blob = getOwnerBlobReference(owner, blobPath);
-            await blob.UploadFromByteArrayAsync(data, 0, data.Length);
+            byte[] data = null;
+            try
+            {
+                await blob.DownloadToStreamAsync(stream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, DefaultBlobRequestOptions, new OperationContext());
+            }
+            catch (StorageException scEx)
+            {
+                if (returnNullIfMissing)
+                {
+                    if (scEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.NotFound ||
+                        scEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.BadRequest)
+                        return;
+                }
+                var statusCode = scEx.RequestInformation.HttpStatusCode;
+                throw new TBStorageException((HttpStatusCode)statusCode, scEx);
+            }
+        }
+
+
+        public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data, string eTag = null)
+        {
+            var blob = getOwnerBlobReference(owner, blobPath);
+            try
+            {
+                await blob.UploadFromByteArrayAsync(data, 0, data.Length,
+                    eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, DefaultBlobRequestOptions, new OperationContext());
+            }
+            catch (StorageException scEx)
+            {
+                throw new TBStorageException((HttpStatusCode)scEx.RequestInformation.HttpStatusCode, scEx);
+            }
             return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified);
         }
+
+        public async Task<BlobStorageItem> UploadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, string eTag = null)
+        {
+            var blob = getOwnerBlobReference(owner, blobPath);
+            try
+            {
+                await blob.UploadFromStreamAsync(stream, 
+                    eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, DefaultBlobRequestOptions, new OperationContext());
+            }
+            catch (StorageException scEx)
+            {
+                throw new TBStorageException((HttpStatusCode)scEx.RequestInformation.HttpStatusCode, scEx);
+            }
+            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified);
+        }
+
+
     }
 }

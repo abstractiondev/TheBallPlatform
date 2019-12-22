@@ -33,7 +33,7 @@ namespace TheBall.Index
         public static void ExecuteMethod_PutIndexingRequestToQueue(IndexingRequest indexingRequest)
         {
             string activeContainerName = StorageSupport.CurrActiveContainer.Name;
-            IndexSupport.PutIndexingRequestToQueue(activeContainerName, indexingRequest.IndexName, InformationContext.CurrentOwner, indexingRequest.ID);
+            //IndexSupport.PutIndexingRequestToQueue(activeContainerName, indexingRequest.IndexName, InformationContext.CurrentOwner, indexingRequest.ID);
         }
     }
 }

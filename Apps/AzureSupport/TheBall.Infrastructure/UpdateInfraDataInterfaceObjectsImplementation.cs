@@ -14,9 +14,10 @@ namespace TheBall.Infrastructure
     {
         public static CloudFileShare GetTarget_MainConfigShare()
         {
-            var fileClient = StorageSupport.CurrStorageAccount.CreateCloudFileClient();
-            var share = fileClient.GetShareReference("tbcore");
-            return share;
+            //var fileClient = StorageSupport.CurrStorageAccount.CreateCloudFileClient();
+            //var share = fileClient.GetShareReference("tbcore");
+            //return share;
+            throw new NotImplementedException();
         }
 
         public static async Task<UpdateConfig> GetTarget_UpdateConfigAsync(CloudFileShare mainConfigShare)

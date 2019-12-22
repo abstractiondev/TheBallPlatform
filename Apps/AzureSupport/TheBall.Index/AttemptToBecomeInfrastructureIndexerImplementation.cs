@@ -18,8 +18,8 @@ namespace TheBall.Index
 
         public static void ExecuteMethod_EnsureAndRegisterQueues(string queryQueueName, string indexRequestQueueName)
         {
-            QueueSupport.RegisterQueue(queryQueueName);
-            QueueSupport.RegisterQueue(indexRequestQueueName);
+            //QueueSupport.RegisterQueue(queryQueueName);
+            //QueueSupport.RegisterQueue(indexRequestQueueName);
         }
 
         public static AttemptToBecomeInfrastructureIndexerReturnValue Get_ReturnValue(AttemptToBecomeInfrastructureIndexerReturnValue executionResult)

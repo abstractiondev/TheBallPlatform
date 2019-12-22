@@ -11,7 +11,7 @@ namespace TheBall.Core
 
         public static async Task ExecuteMethod_DeleteInformationInputAsync(InformationInput informationInput)
         {
-            await informationInput.DeleteInformationObjectA();
+            await informationInput.DeleteInformationObjectAsync();
         }
     }
 }

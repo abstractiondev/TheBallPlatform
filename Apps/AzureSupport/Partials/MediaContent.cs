@@ -8,6 +8,7 @@ using TheBall.Core;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
+using TheBall.Core.StorageCore;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -66,6 +67,7 @@ namespace AaltoGlobalImpact.OIP
             MediaFileData mediaFileData = mediaContent as MediaFileData;
             if(mediaFileData == null)
                 throw new NotSupportedException("Not supported mediaContent object in SetMediaContent");
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             if (mediaFileData.HttpFile != null)
             {
                 var postedContent = mediaFileData.HttpFile;
@@ -73,7 +75,8 @@ namespace AaltoGlobalImpact.OIP
                 ContentLength = postedContent.Length;
                 string locationFileName = ID + FileExt;
                 SetLocationAsOwnerContent(containerOwner, locationFileName);
-                await StorageSupport.CurrActiveContainer.UploadBlobStreamAsync(RelativeLocation, postedContent.OpenReadStream());
+                await storageService.UploadBlobStreamA(containerOwner, locationFileName,
+                    postedContent.OpenReadStream());
             }
             else
             {
@@ -81,7 +84,7 @@ namespace AaltoGlobalImpact.OIP
                 ContentLength = mediaFileData.FileContent.Length;
                 string locationFileName = ID + FileExt;
                 SetLocationAsOwnerContent(containerOwner, locationFileName);
-                await StorageSupport.CurrActiveContainer.UploadBlobBinaryAsync(RelativeLocation, mediaFileData.FileContent);
+                await storageService.UploadBlobDataA(containerOwner, locationFileName, mediaFileData.FileContent);
             }
             UpdateAdditionalMediaFormats();
         }
@@ -93,8 +96,9 @@ namespace AaltoGlobalImpact.OIP
             FileExt = Path.GetExtension(contentFileName);
             ContentLength = contentData.Length;
             string locationFileName = ID + FileExt;
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             SetLocationAsOwnerContent(owner, locationFileName);
-            await StorageSupport.CurrActiveContainer.UploadBlobBinaryAsync(RelativeLocation, contentData);
+            await storageService.UploadBlobDataA(owner, locationFileName, contentData);
             await UpdateAdditionalMediaFormats();
         }
 

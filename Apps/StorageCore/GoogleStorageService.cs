@@ -61,21 +61,47 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
-        public async Task DeleteBlobA(string blobPath)
+        public async Task DeleteBlobA(string blobPath, string eTag)
         {
-            await BlobClient.DeleteObjectAsync(BlobContainer.Name, blobPath);
+            var blobObject = new Object()
+            {
+                Bucket = BlobContainer.Name,
+                Name = blobPath,
+                ETag = eTag
+            };
+            await BlobClient.DeleteObjectAsync(blobObject);
         }
 
-        public async Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing)
+        public async Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing,
+            string eTag = null)
         {
             var blobAddress = GetOwnerContentLocation(owner, blobPath);
             byte[] data;
+            var blobObject = new Object()
+            {
+                Bucket = BlobContainer.Name,
+                Name = blobAddress,
+                ETag = eTag
+            };
             using (var memoryStream = new MemoryStream())
             {
-                await BlobClient.DownloadObjectAsync(BlobContainer.Name, blobAddress, memoryStream);
+                await BlobClient.DownloadObjectAsync(blobObject, memoryStream, new DownloadObjectOptions() {});
                 data = memoryStream.ToArray();
             }
             return data;
+        }
+
+        public async Task DownloadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, bool returnNullIfMissing,
+            string eTag = null)
+        {
+            var blobAddress = GetOwnerContentLocation(owner, blobPath);
+            var blobObject = new Object()
+            {
+                Bucket = BlobContainer.Name,
+                Name = blobAddress,
+                ETag = eTag
+            };
+            await BlobClient.DownloadObjectAsync(blobObject, stream, new DownloadObjectOptions() { });
         }
 
         public async Task<string[]> GetLocationFoldersA(IContainerOwner owner, string locationPath)
@@ -83,29 +109,62 @@ namespace TheBall.Core.StorageCore
             throw new System.NotImplementedException();
         }
 
-        public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data)
+        public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data, string eTag = null)
         {
             var blobAddress = GetOwnerContentLocation(owner, blobPath);
+            var contentType = BlobStorage.GetMimeType(blobPath);
+            var blobObject = new Object()
+            {
+                Bucket = BlobContainer.Name,
+                Name = blobAddress,
+                ETag = eTag,
+                ContentType = contentType,
+            };
             using (var memoryStream = new MemoryStream(data))
             {
-                await BlobClient.UploadObjectAsync(BlobContainer.Name, blobAddress, null, memoryStream);
+                await BlobClient.UploadObjectAsync(blobObject, memoryStream);
             }
 
             var result = await GetBlobItemA(owner, blobPath);
             return result;
         }
 
-        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text)
+        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text, string eTag = null)
         {
             var blobAddress = GetOwnerContentLocation(owner, blobPath);
+            var contentType = BlobStorage.GetMimeType(blobPath);
+            var blobObject = new Object()
+            {
+                Bucket = BlobContainer.Name,
+                Name = blobAddress,
+                ETag = eTag,
+                ContentType = contentType,
+            };
             using (var memoryStream = new MemoryStream())
             using(var stream = new StreamWriter(memoryStream, Encoding.UTF8))
             {
                 stream.Write(text);
                 stream.Flush();
                 memoryStream.Position = 0;
-                await BlobClient.UploadObjectAsync(BlobContainer.Name, blobAddress, null, memoryStream);
+                await BlobClient.UploadObjectAsync(blobObject, memoryStream);
             }
+
+            var result = await GetBlobItemA(owner, blobPath);
+            return result;
+        }
+
+        public async Task<BlobStorageItem> UploadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, string eTag = null)
+        {
+            var blobAddress = GetOwnerContentLocation(owner, blobPath);
+            var contentType = BlobStorage.GetMimeType(blobPath);
+            var blobObject = new Object()
+            {
+                Bucket = BlobContainer.Name,
+                Name = blobAddress,
+                ETag = eTag,
+                ContentType = contentType,
+            };
+            await BlobClient.UploadObjectAsync(blobObject, stream);
 
             var result = await GetBlobItemA(owner, blobPath);
             return result;
