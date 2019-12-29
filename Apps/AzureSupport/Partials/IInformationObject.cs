@@ -58,19 +58,21 @@ namespace TheBall.Core
     {
         public static async Task<string> ObtainLockOnObject(this IInformationObject informationObject)
         {
-            string lockLocation = informationObject.RelativeLocation + ".lock";
-            string lockEtag = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(lockLocation);
-            return lockEtag;
+            throw new NotImplementedException();
+            //string lockLocation = informationObject.RelativeLocation + ".lock";
+            //string lockEtag = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(lockLocation);
+            //return lockEtag;
         }
 
         public static async Task ReleaseLockOnObjectAsync(this IInformationObject informationObject, string lockEtag, bool ignoreLockReleaseError = false)
         {
             string lockLocation = informationObject.RelativeLocation + ".lock";
-            bool releaseLockSucceeded = await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(lockLocation, lockEtag);
-            if(releaseLockSucceeded == false && ignoreLockReleaseError == false)
-                throw new InvalidDataException("Lock release failed: " + lockLocation);
+            throw new NotImplementedException();
+            //bool releaseLockSucceeded = await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(lockLocation, lockEtag);
+            //if(releaseLockSucceeded == false && ignoreLockReleaseError == false)
+            //    throw new InvalidDataException("Lock release failed: " + lockLocation);
         }
-        
+
         public static async Task SetObjectContent(this IInformationObject rootObject, string containerID,
                                             string containedField, string[] objectIDList)
         {

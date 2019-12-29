@@ -62,8 +62,8 @@ namespace AaltoGlobalImpact.OIP
                 }
                 else
                 {
-                    var blob = StorageSupport.GetOwnerBlobReference(contentLocation);
-                    await blob.FetchAttributesAsync();
+
+                    var blob = await BlobStorage.GetBlobStorageItemA(contentLocation, InformationContext.CurrentOwner);
                     SemanticInformationItem semanticItemForLocation = new SemanticInformationItem
                         {
                             ItemFullType = "ContentLocation",
@@ -72,7 +72,7 @@ namespace AaltoGlobalImpact.OIP
                     SemanticInformationItem semanticItemForMD5 = new SemanticInformationItem
                         {
                             ItemFullType = "ContentMD5",
-                            ItemValue = blob.Properties.ContentMD5
+                            ItemValue = blob.ContentMD5
                         };
                     ProcessItem processItem = new ProcessItem();
                     processItem.Outputs.Add(semanticItemForLocation);

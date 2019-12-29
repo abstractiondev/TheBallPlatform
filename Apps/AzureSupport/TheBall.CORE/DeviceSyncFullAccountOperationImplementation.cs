@@ -12,6 +12,7 @@ using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.Core.Storage;
+using TheBall.Core.StorageCore;
 using TheBall.Support.VirtualStorage;
 
 namespace TheBall.Core
@@ -213,22 +214,26 @@ namespace TheBall.Core
                 return;
             var random = new Random();
             long outputTotal = 0;
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             foreach (
                 var transferItem in
-                    syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer)
-                )
+                syncResponse.Contents.Where(content =>
+                    content.ResponseContentType == ResponseContentType.IncludedInTransfer)
+            )
             {
                 if (transferItem.ContentLength > 0)
                 {
                     var variantCount = transferItem.FullNames.Length;
                     var pick = random.Next(0, variantCount - 1);
                     var blobName = transferItem.FullNames[pick];
-                    var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobName);
                     outputTotal += transferItem.ContentLength;
-                    await blob.DownloadToStreamAsync(stream);
+
+                    await storageService.DownloadBlobStreamA(InformationContext.CurrentOwner, blobName, stream, false);
                 }
+
                 Debug.WriteLine("Wrote {0} bytes of {1}", transferItem.ContentLength, transferItem.ContentMD5);
             }
+
             Debug.WriteLine("Wrote total bytes: {0}", outputTotal);
         }
     }

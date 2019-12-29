@@ -85,7 +85,7 @@ namespace TheBall.Interface
                 var targetItemName = sourceItem.Name.Replace(sourcePrefixToReplace, targetPrefixToReplaceTo);
                 if(!targetItemName.StartsWith(targetPrefixToReplaceTo))
                     throw new SecurityException("Target item not starting with proper prefix: " + targetItemName);
-                var targetItem = new BlobStorageItem(targetItemName, sourceItem.ContentMD5, sourceItem.Length, sourceItem.LastModified);
+                var targetItem = new BlobStorageItem(targetItemName, sourceItem.ContentMD5, sourceItem.ETag, sourceItem.Length, sourceItem.LastModified);
                 return new { SourceItem = sourceItem, TargetItem = targetItem};
             }).OrderBy(item => item.TargetItem.Name).ToArray();
 

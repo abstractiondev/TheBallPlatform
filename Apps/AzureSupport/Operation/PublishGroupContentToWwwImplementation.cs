@@ -8,7 +8,8 @@ namespace AaltoGlobalImpact.OIP
     {
         public static string GetTarget_CurrentContainerName(string groupID)
         {
-            return StorageSupport.CurrActiveContainer.Name;
+            throw new NotSupportedException();
+            //return StorageSupport.CurrActiveContainer.Name;
         }
 
         public static string GetTarget_WwwContainerName(string groupID)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using AzureSupport;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Core
 {
@@ -22,7 +23,8 @@ namespace TheBall.Core
 
         public static async Task ExecuteMethod_ExecuteAndStoreProcessWithLockAsync(string processLockLocation, Process process)
         {
-            string lockEtag = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(processLockLocation);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            string lockEtag = await storageService.AcquireLogicalLockByCreatingBlobAsync(processLockLocation);
             if (lockEtag == null)
                 return;
             try
@@ -33,7 +35,7 @@ namespace TheBall.Core
             }
             finally
             {
-                await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(processLockLocation, lockEtag);
+                await storageService.ReleaseLogicalLockByDeletingBlobAsync(processLockLocation, lockEtag);
             }
         }
     }

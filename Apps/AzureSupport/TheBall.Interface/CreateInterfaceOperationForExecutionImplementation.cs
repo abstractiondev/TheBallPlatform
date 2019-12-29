@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Interface
 {
@@ -32,7 +33,8 @@ namespace TheBall.Interface
             if (operation.OperationDataType != OperationSupport.HttpOperationDataType)
                 throw new NotSupportedException("OperationDataType not supported: " + operation.OperationDataType);
             await operation.StoreInformationAsync();
-            await StorageSupport.CurrActiveContainer.UploadBlobBinaryAsync(operationDataLocation, operationData);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            await storageService.UploadBlobDataA(InformationContext.CurrentOwner, operationDataLocation, operationData);
         }
     }
 }

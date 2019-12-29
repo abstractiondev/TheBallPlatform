@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Core
 {
@@ -27,7 +28,8 @@ namespace TheBall.Core
 
         public static async Task<string> ExecuteMethod_ObtainOwnerLevelLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
         {
-            string claimedLockID = await StorageSupport.TryClaimLockForOwnerAsync(owner, ownerLockFileName, lockFileContent);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            string claimedLockID = await storageService.TryClaimLockForOwnerAsync(owner, ownerLockFileName, lockFileContent);
             return claimedLockID;
         }
 
@@ -35,8 +37,9 @@ namespace TheBall.Core
         {
             if (obtainOwnerLevelLockOutput == null)
                 return;
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             var systemOwner = SystemSupport.SystemOwner;
-            await StorageSupport.ReplicateClaimedLockAsync(systemOwner, systemOwnerLockFileName, lockFileContent);
+            await storageService.ReplicateClaimedLockAsync(systemOwner, systemOwnerLockFileName, lockFileContent);
         }
 
         public static ObtainSystemProcessLockReturnValue Get_ReturnValue(string obtainOwnerLevelLockOutput)

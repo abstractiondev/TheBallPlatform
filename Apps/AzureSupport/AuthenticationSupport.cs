@@ -32,6 +32,7 @@ namespace TheBall
         private const int TimeoutSeconds = 1800;
         //private const int TimeoutSeconds = 10;
 
+        [Obsolete("error", true)]
         public static async Task SetAuthenticationCookieFromUserName(HttpResponse response, string validUserName,
             string emailAddress)
         {
@@ -47,6 +48,7 @@ namespace TheBall
             SetAuthenticationCookie(response, validUserName, emailAddress, accountID, base64ClientMetadata);
         }
 
+        [Obsolete("error", true)]
         public static void SetAuthenticationCookie(HttpResponse response, string validUserName, string emailAddress, string accountID,
             string base64ClientMetadata)
         {
@@ -81,6 +83,7 @@ namespace TheBall
             response.Cookies.Append(cookieName, cookieValue, new CookieOptions { HttpOnly = httpOnly, Secure = true, Expires = expires });
         }
 
+        [Obsolete("error", true)]
         public static void SetUserAuthentication(HttpContext context, string userName, string emailAddress,
             string accountID, string base64ClientMetadata)
         {
@@ -88,6 +91,7 @@ namespace TheBall
             SetAuthenticationCookie(context.Response, userName, emailAddress, accountID, base64ClientMetadata);
         }
 
+        [Obsolete("error", true)]
         public static void SetUserFromCookieIfExists(HttpContext context)
         {
             var request = context.Request;

@@ -949,6 +949,7 @@ namespace TheBall
         }
 
 
+        [Obsolete("error", true)]
         public static async Task RefreshGroupTemplateA(string groupID, string templateName)
         {
             string syscontentRoot = SystemSupport.SystemOwnerRoot + "/group/";
@@ -957,6 +958,7 @@ namespace TheBall
             await SyncTemplatesToSiteA(sysLocationSource, acctTemplateLocationTarget, false);
         }
 
+        [Obsolete("error", true)]
         public static async Task RefreshAccountTemplateA(string acctID, string templateName)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
@@ -974,6 +976,7 @@ namespace TheBall
             //WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
         }
 
+        [Obsolete("error", true)]
         public static async Task SyncTemplatesToSiteA(string sourcePathRoot, string targetPathRoot, bool renderWhileSync)
         {
             await WorkerSupport.WebContentSyncA(sourcePathRoot, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : null);
@@ -989,6 +992,7 @@ namespace TheBall
             return null;
         }
 
+        [Obsolete("error", true)]
         public static async Task RefreshAllGroupTemplatesA(string templateName)
         {
             string[] groupIDs = Group.GetAllGroupIDs();
@@ -996,6 +1000,7 @@ namespace TheBall
             await Task.WhenAll(refreshTasks);
         }
 
+        [Obsolete("error", true)]
         public static async Task RefreshAllAccountTemplatesA(string templateName)
         {
             string[] accountIDs = Account.GetAllAccountIDs();

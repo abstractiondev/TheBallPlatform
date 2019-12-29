@@ -11,6 +11,7 @@ using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 
 namespace TheBall
 {
+    [Obsolete("error", true)]
     public static class EncryptionSupport
     {
         private const string KeyBlobName = "SysInternal/AESKey";

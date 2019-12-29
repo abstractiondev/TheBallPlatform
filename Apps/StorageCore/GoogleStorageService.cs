@@ -43,7 +43,7 @@ namespace TheBall.Core.StorageCore
             {
                 var blobs = await listRequest.ReadPageAsync(batchSize);
                 var blobItems = blobs.Select(blob =>
-                        new BlobStorageItem(blob.Name, blob.Md5Hash, (long) blob.Size.GetValueOrDefault(0),
+                        new BlobStorageItem(blob.Name, blob.Md5Hash, blob.ETag, (long) blob.Size.GetValueOrDefault(0),
                             blob.Updated))
                     .ToArray();
                 result.AddRange(blobItems);
@@ -57,7 +57,7 @@ namespace TheBall.Core.StorageCore
         {
             var blobAddress = GetOwnerContentLocation(owner, blobPath);
             var blob = await BlobClient.GetObjectAsync(BlobContainer.Name, blobAddress);
-            var result = new BlobStorageItem(blob.Name, blob.Md5Hash, (long) blob.Size.GetValueOrDefault(), blob.Updated);
+            var result = new BlobStorageItem(blob.Name, blob.Md5Hash, blob.ETag, (long) blob.Size.GetValueOrDefault(), blob.Updated);
             return result;
         }
 
@@ -165,9 +165,28 @@ namespace TheBall.Core.StorageCore
                 ContentType = contentType,
             };
             await BlobClient.UploadObjectAsync(blobObject, stream);
-
             var result = await GetBlobItemA(owner, blobPath);
             return result;
+        }
+
+        public async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task ReleaseLogicalLockByDeletingBlobAsync(string lockLocation, string lockEtag)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

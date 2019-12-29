@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
+using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -17,12 +19,13 @@ namespace AaltoGlobalImpact.OIP
         {
             try
             {
-                CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(masterRelativeLocation);
-                await blob.FetchAttributesAsync();
+                var storageService = CoreServices.GetCurrent<IStorageService>();
+                var blob = await storageService.GetBlobItemA(InformationContext.CurrentOwner, masterRelativeLocation);
                 Bitmap bitmap;
-                using(Stream bitmapStream = new MemoryStream((int) blob.Properties.Length))
+                using(Stream bitmapStream = new MemoryStream((int) blob.Length))
                 {
-                    await blob.DownloadToStreamAsync(bitmapStream);
+                    await storageService.DownloadBlobStreamA(InformationContext.CurrentOwner, masterRelativeLocation,
+                        bitmapStream, false);
                     bitmapStream.Seek(0, SeekOrigin.Begin);
                     bitmap = new Bitmap(bitmapStream);
                 }
@@ -117,12 +120,12 @@ namespace AaltoGlobalImpact.OIP
 
         private static async Task StoreToBlob(string blobLocation, Bitmap bitmap, ImageFormat format)
         {
-            var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobLocation);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             using(MemoryStream stream = new MemoryStream())
             {
                 bitmap.Save(stream, format);
                 stream.Seek(0, SeekOrigin.Begin);
-                await blob.UploadFromStreamAsync(stream);
+                await storageService.UploadBlobStreamA(InformationContext.CurrentOwner, blobLocation, stream);
                 Debug.WriteLine("Uploaded media blob: " + blobLocation);
             }
         }

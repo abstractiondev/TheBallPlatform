@@ -54,7 +54,7 @@ namespace TheBall.Core.StorageCore
             var blobItems = fileInfos.AsParallel()
                 .Where(fsItem => fsItem is FileInfo)
                 .Cast<FileInfo>()
-                .Select(fs => new BlobStorageItem(fs.FullName, null, fs.Length, fs.LastWriteTimeUtc))
+                .Select(fs => new BlobStorageItem(fs.FullName, null, null, fs.Length, fs.LastWriteTimeUtc))
                 .OrderBy(item => item.Name)
                 .ToArray();
             return blobItems;
@@ -64,7 +64,7 @@ namespace TheBall.Core.StorageCore
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             var fileInfo = new FileInfo(fileLocation);
-            var result = new BlobStorageItem(fileInfo.FullName, null, fileInfo.Length, fileInfo.LastWriteTimeUtc);
+            var result = new BlobStorageItem(fileInfo.FullName, null, null, fileInfo.Length, fileInfo.LastWriteTimeUtc);
             return result;
         }
 
@@ -162,6 +162,26 @@ namespace TheBall.Core.StorageCore
             }
             var result = await GetBlobItemA(owner, blobPath);
             return result;
+        }
+
+        public async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ReleaseLogicalLockByDeletingBlobAsync(string lockLocation, string lockEtag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            throw new NotImplementedException();
         }
     }
 }

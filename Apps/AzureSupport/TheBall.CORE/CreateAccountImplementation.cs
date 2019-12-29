@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using TheBall.Core.InstanceSupport;
 
@@ -77,9 +78,9 @@ namespace TheBall.Core
             var accountID = accountToBeCreated.ID;
             foreach (var templateName in InstanceConfig.Current.DefaultAccountTemplateList)
             {
-                await RenderWebSupport.RefreshAccountTemplateA(accountID, templateName);
+                //await RenderWebSupport.RefreshAccountTemplateA(accountID, templateName);
+                throw new NotImplementedException();
             }
-
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Interface
 {
@@ -23,6 +24,12 @@ namespace TheBall.Interface
 
         public static async Task<IEnumerable<IGrouping<string, string>>> GetTarget_OwnerGroupedItemsAsync(IContainerOwner queueOwner, string queueLocation)
         {
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+
+            //var blobItems = await storageService.GetBlobItemsA(null, queueLocation);
+
+            throw new NotImplementedException();
+            /*
             var blobSegment = await queueOwner.ListBlobsWithPrefixAsync(queueLocation);
             var blobList = blobSegment.Results.Cast<CloudBlockBlob>();
             var grouped = blobList.GroupBy(blob =>
@@ -43,6 +50,7 @@ namespace TheBall.Interface
                 return ownerPrefix + "_" + ownerID;
             }, blob => blob.Name);
             return grouped;
+            */
         }
 
         public static string GetTarget_LockFileNameFormat()
@@ -63,6 +71,8 @@ namespace TheBall.Interface
 
             Func<string, bool> lockPredicate = item => item.EndsWith(OperationSupport.LockExtension);
             Func<string, bool> dedicatedLockPredicate = item => item.EndsWith(OperationSupport.DedicatedLockExtension);
+
+            var storageService = CoreServices.GetCurrent<IStorageService>();
 
             foreach (var grp in groupsOfInterest)
             {
@@ -86,14 +96,14 @@ namespace TheBall.Interface
                     var dedicatedLockFile = String.Format(fullLockPathFormat, ownerprefix_id,
                         OperationSupport.DedicatedLockExtension);
                     var dedicatedAcquired =
-                        await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(dedicatedLockFile);
+                        await storageService.AcquireLogicalLockByCreatingBlobAsync(dedicatedLockFile);
                     return null;
                 }
                 // If there are no other than dedicated lock file, do nothing
                 if (operationItems.Length == 0)
                     continue;
                 currLockFile = String.Format(fullLockPathFormat, ownerprefix_id, OperationSupport.LockExtension);
-                var lockEtag = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(currLockFile);
+                var lockEtag = await storageService.AcquireLogicalLockByCreatingBlobAsync(currLockFile);
                 if (lockEtag == null)
                     continue;
                 var ownerOperationBlobNames = operationItems;
@@ -117,8 +127,9 @@ namespace TheBall.Interface
                     LockBlobFullPath = currLockFile
                 };
                 var blobContents = String.Join(Environment.NewLine, result.OperationIDs);
-                var lockBlob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(currLockFile);
-                await lockBlob.UploadBlobTextAsync(blobContents, false);
+                throw new NotImplementedException();
+                //var lockBlob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(currLockFile);
+                //await lockBlob.UploadBlobTextAsync(blobContents, false);
                 return result;
             }
             // If there was no locks

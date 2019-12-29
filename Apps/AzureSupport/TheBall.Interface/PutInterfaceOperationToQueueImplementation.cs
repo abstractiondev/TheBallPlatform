@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Interface
 {
@@ -43,10 +44,11 @@ namespace TheBall.Interface
 
         public static async Task ExecuteMethod_CreateQueueEntryAsync(string operationID, string queueItemFullPath, IAccountInfo invokerAccount)
         {
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             string content = String.Join(Environment.NewLine,
                 new string[]
                 {operationID, invokerAccount?.AccountID, invokerAccount?.AccountEmail, invokerAccount?.AccountName});
-            await StorageSupport.CurrActiveContainer.UploadBlobTextAsync(queueItemFullPath, content);
+            await storageService.UploadBlobTextA(InformationContext.CurrentOwner, queueItemFullPath, content);
         }
     }
 }

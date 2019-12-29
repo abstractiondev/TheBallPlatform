@@ -58,6 +58,7 @@ namespace TheBall
         }
 
 
+        [Obsolete("error", true)]
         public static async Task<int> WebContentSyncA(string sourcePathRoot, string targetPathRoot, PerformCustomOperation customHandler = null)
         {
             //requestOptions.BlobListingDetails = BlobListingDetails.Metadata;
@@ -123,6 +124,7 @@ namespace TheBall
         }
 
 
+        [Obsolete("error", true)]
         public static async Task<int> WebContentSyncBetweenContainersA(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, PerformCustomOperation customHandler = null)
         {
             //requestOptions.BlobListingDetails = BlobListingDetails.Metadata;

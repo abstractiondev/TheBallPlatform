@@ -62,7 +62,7 @@ namespace TheBall.Core.StorageCore
                             continuationToken, null, null);
                 continuationToken = listingResult.ContinuationToken;
                 var blobStorageItemLQ = listingResult.Results.Where(item => item is CloudBlob).Cast<CloudBlockBlob>().Select(item => 
-                    new BlobStorageItem(item.Name, item.Properties.ContentMD5, item.Properties.Length, item.Properties.LastModified));
+                    new BlobStorageItem(item.Name, item.Properties.ContentMD5, item.Properties.ETag, item.Properties.Length, item.Properties.LastModified));
                 result.AddRange(blobStorageItemLQ);
             } while (continuationToken != null);
             return result.ToArray();
@@ -93,7 +93,7 @@ namespace TheBall.Core.StorageCore
         {
             var blob = getOwnerBlobReference(owner, blobPath);
             await blob.FetchAttributesAsync();
-            var blobStorageItem = new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified);
+            var blobStorageItem = new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.ETag, blob.Properties.Length, blob.Properties.LastModified);
             return blobStorageItem;
         }
 
@@ -111,7 +111,7 @@ namespace TheBall.Core.StorageCore
                 throw new TBStorageException((HttpStatusCode) scEx.RequestInformation.HttpStatusCode, scEx);
             }
 
-            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified);
+            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.ETag, blob.Properties.Length, blob.Properties.LastModified);
         }
 
         public async Task DeleteBlobA(string blobPath, string eTag = null)
@@ -192,7 +192,7 @@ namespace TheBall.Core.StorageCore
             {
                 throw new TBStorageException((HttpStatusCode)scEx.RequestInformation.HttpStatusCode, scEx);
             }
-            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified);
+            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.ETag, blob.Properties.Length, blob.Properties.LastModified);
         }
 
         public async Task<BlobStorageItem> UploadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, string eTag = null)
@@ -207,9 +207,27 @@ namespace TheBall.Core.StorageCore
             {
                 throw new TBStorageException((HttpStatusCode)scEx.RequestInformation.HttpStatusCode, scEx);
             }
-            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified);
+            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.ETag, blob.Properties.Length, blob.Properties.LastModified);
         }
 
+        public async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
+        {
+            throw new NotImplementedException();
+        }
 
+        public async Task ReleaseLogicalLockByDeletingBlobAsync(string lockLocation, string lockEtag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

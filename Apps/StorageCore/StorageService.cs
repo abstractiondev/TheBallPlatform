@@ -78,5 +78,24 @@ namespace TheBall.Core.StorageCore
             return await ServiceProvider.UploadBlobStreamA(owner, blobPath, stream, eTag);
         }
 
+        public async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
+        {
+            return await ServiceProvider.AcquireLogicalLockByCreatingBlobAsync(lockLocation);
+        }
+
+        public async Task ReleaseLogicalLockByDeletingBlobAsync(string lockLocation, string lockEtag)
+        {
+            await ServiceProvider.ReleaseLogicalLockByDeletingBlobAsync(lockLocation, lockEtag);
+        }
+
+        public async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            return await ServiceProvider.TryClaimLockForOwnerAsync(owner, ownerLockFileName, lockFileContent);
+        }
+
+        public async Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            await ServiceProvider.ReplicateClaimedLockAsync(owner, ownerLockFileName, lockFileContent);
+        }
     }
 }

@@ -41,7 +41,9 @@ namespace TheBall.Interface
             {
                 responseStream = response.GetResponseStream();
                 string blobName = mediaContent.RelativeLocation;
-                var storageBlob = StorageSupport.CurrActiveContainer.GetBlob(blobName, owner);
+                //var storageBlob = StorageSupport.CurrActiveContainer.GetBlob(blobName, owner);
+                throw new NotImplementedException();
+                CloudBlockBlob storageBlob = null;
                 int totalLength = 0;
                 using (var writeStream = await storageBlob.OpenWriteAsync())
                 {

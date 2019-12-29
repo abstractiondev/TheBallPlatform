@@ -24,6 +24,8 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.Core;
 using TheBall.Core.InstanceSupport;
+using TheBall.Core.Storage;
+using TheBall.Core.StorageCore;
 
 namespace WebCoreLayer.Controllers
 {
@@ -165,18 +167,21 @@ namespace WebCoreLayer.Controllers
 
             var blobPath = Path.Combine("TheBall.Interface", "InterfaceData", "Upload", resumableFilename)
                 .Replace(@"\", "/");
-            var blob = StorageSupport.GetOwnerBlobReference(blobPath);
-            bool isExisting = await blob.ExistsAsync();
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            var blobItem = await storageService.GetBlobItemA(containerOwner, blobPath);
+            bool isExisting = blobItem != null;
             const string ResumableTotalLength = "ResumableTotalLength";
 
             long currLength = 0;
             bool isSameData = false;
 
+            CloudBlockBlob blob = null;
+            throw new NotImplementedException("Blob partial uploads not implemented");
+
             if (isExisting)
             {
-                await blob.FetchAttributesAsync();
-                currLength = blob.Properties.Length;
-                var completedTotalLength = blob.Metadata.ContainsKey(ResumableTotalLength)
+                currLength = blobItem.Length;
+                var completedTotalLength = blobItem.Metadata.ContainsKey(ResumableTotalLength)
                     ? long.Parse(blob.Metadata[ResumableTotalLength])
                     : currLength;
                 isSameData = completedTotalLength == resumableTotalSize;
@@ -249,7 +254,8 @@ namespace WebCoreLayer.Controllers
                     var completePrefix = "Uploaded_"; //DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss") + "_";
                     var prefixedFileName = completePrefix + originalFilename;
                     var finalBlobPath = blobPath.Replace(originalFilename, prefixedFileName);
-                    var finalBlob = StorageSupport.GetOwnerBlobReference(finalBlobPath);
+                    //OBsoleted var finalBlob = StorageSupport.GetOwnerBlobReference(finalBlobPath);
+                    CloudBlockBlob finalBlob = null;
                     using (var copyingStream = await blob.OpenReadAsync())
                         await finalBlob.UploadFromStreamAsync(copyingStream);
                     await blob.DeleteAsync();
@@ -496,7 +502,7 @@ namespace WebCoreLayer.Controllers
             var fileName = blob.Name.Contains("/MediaContent/") ?
                 request.Path.ToString() : blob.Name;
             response.StatusCode = (int) HttpStatusCode.OK;
-            response.ContentType = StorageSupport.GetMimeType(fileName);
+            response.ContentType = BlobStorage.GetMimeType(fileName);
             headers.ETag = EntityTagHeaderValue.Parse(blob.Properties.ETag);
             headers.LastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
             await blob.DownloadToStreamAsync(response.Body);
@@ -624,7 +630,7 @@ namespace WebCoreLayer.Controllers
                 cacheControl.Private = true;
                 headers.CacheControl = cacheControl;
                 headers.LastModified = lastModified;
-                response.ContentType = StorageSupport.GetMimeType(fileName);
+                response.ContentType = BlobStorage.GetMimeType(fileName);
                 using (var fileStream = System.IO.File.OpenRead(fileName))
                     await fileStream.CopyToAsync(response.Body);
             }

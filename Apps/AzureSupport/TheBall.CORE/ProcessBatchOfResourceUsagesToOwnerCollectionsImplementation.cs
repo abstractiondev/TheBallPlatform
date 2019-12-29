@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.Core.Storage;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Core
 {
@@ -19,6 +20,9 @@ namespace TheBall.Core
             //options.AccessCondition 
             //StorageSupport.CurrActiveContainer.ListBlobsSegmented()
             //    ListBlobsWithPrefix("sys/AAA/TheBall.Core/RequestResourceUsage")
+
+            throw new NotSupportedException();
+            /*
             string prefix = "sys/AAA/TheBall.Core/RequestResourceUsage/";
 
             var blobResultSegment = await StorageSupport.ListBlobsWithPrefixAsync(null, prefix);
@@ -37,6 +41,7 @@ namespace TheBall.Core
             if (lockETag == null)
                 return null;
             return result.ToArray();
+            */
         }
 
         public static async Task ExecuteMethod_ProcessBatchAsync(CloudBlockBlob[] batchToProcess)
@@ -119,7 +124,8 @@ namespace TheBall.Core
             if (batchToProcess == null)
                 return;
             // Release lock
-            await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(LockLocation, null);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            await storageService.ReleaseLogicalLockByDeletingBlobAsync(LockLocation, null);
         }
 
         public static ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue Get_ReturnValue(int processBatchSize, CloudBlockBlob[] batchToProcess)

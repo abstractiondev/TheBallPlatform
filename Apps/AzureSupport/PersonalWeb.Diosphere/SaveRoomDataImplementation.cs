@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.Core;
+using TheBall.Core.StorageCore;
 
 namespace PersonalWeb.Diosphere
 {
@@ -16,8 +17,8 @@ namespace PersonalWeb.Diosphere
 
         public static async Task ExecuteMethod_SaveJSONContentToBlobAsync(string jsonData, IContainerOwner owner, string ownerRootRoomBlobName)
         {
-            var ownerRootedBlob = StorageSupport.GetOwnerBlobReference(owner, ownerRootRoomBlobName);
-            await ownerRootedBlob.UploadBlobTextAsync(jsonData);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            await storageService.UploadBlobTextA(owner, ownerRootRoomBlobName, jsonData);
         }
 
         public static IContainerOwner GetTarget_Owner(string roomId)

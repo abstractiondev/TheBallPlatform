@@ -41,8 +41,8 @@ namespace TheBall.Core
 
         public static async Task ExecuteMethod_SyncTemplateContentAsync(string templateSourceLocation, string templateTargetLocation)
         {
-            await
-                WorkerSupport.WebContentSyncA(templateSourceLocation, templateTargetLocation);
+
+            //await WorkerSupport.WebContentSyncA(templateSourceLocation, templateTargetLocation);
         }
 
         public static string GetTarget_SystemTemplateSource(IContainerOwner targetOwner)

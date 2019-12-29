@@ -274,8 +274,9 @@ namespace TheBall
             informationObject.RelativeLocation = ownerLocation;
         }
 
-        public static async Task<CloudBlockBlob> StoreInformationAsync(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
+        public static async Task<BlobStorageItem> StoreInformationAsync(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
         {
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             string location = owner != null
                                   ? GetOwnerContentLocation(owner, informationObject.RelativeLocation)
                                   : informationObject.RelativeLocation;
@@ -285,7 +286,7 @@ namespace TheBall
             beforeStoreHandler?.PerformBeforeStoreUpdate();
             var dataContent = SerializeInformationObjectToBuffer(informationObject);
             //memoryStream.Seek(0, SeekOrigin.Begin);
-            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(location);
+            //CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(location);
             string etag = informationObject.ETag;
             bool isNewBlob = etag == null;
             AccessCondition accessCondition = null;
@@ -294,17 +295,19 @@ namespace TheBall
                 accessCondition = etag != null ? AccessCondition.GenerateIfMatchCondition(etag) : AccessCondition.GenerateIfNoneMatchCondition("*");
             }
             //blob.SetBlobInformationObjectType(informationObjectType.FullName);
-            await blob.UploadFromByteArrayAsync(dataContent, 0, dataContent.Length, accessCondition, null, null);
+            var blobLocation = informationObject.RelativeLocation;
+            var blobItem = await storageService.UploadBlobDataA(owner, blobLocation, dataContent, etag);
             InformationContext.AddStorageTransactionToCurrent();
-            informationObject.ETag = blob.Properties.ETag;
+            informationObject.ETag = blobItem.ETag;
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
             if (additionalFormatProvider != null)
             {
                 var additionalContentToStore = additionalFormatProvider.GetAdditionalContentToStore(informationObject.ETag);
                 foreach (var additionalContent in additionalContentToStore)
                 {
-                    string contentLocation = blob.Name + "." + additionalContent.Extension;
-                    await CurrActiveContainer.UploadBlobBinaryAsync(contentLocation, additionalContent.Content);
+                    string contentLocation = blobItem.Name + "." + additionalContent.Extension;
+                    //await CurrActiveContainer.UploadBlobBinaryAsync(contentLocation, additionalContent.Content);
+                    await storageService.UploadBlobDataA(null, contentLocation, additionalContent.Content);
                     InformationContext.AddStorageTransactionToCurrent();
                 }
             }
@@ -313,7 +316,7 @@ namespace TheBall
                 informationObject.ID));
             InformationContext.Current.ObjectStoredNotification(informationObject,
                 isNewBlob ? InformationContext.ObjectChangeType.N_New : InformationContext.ObjectChangeType.M_Modified);
-            return blob;
+            return blobItem;
         }
 
 
@@ -330,36 +333,42 @@ namespace TheBall
             return result?.Item1;
         }
 
-        public static async Task<Tuple<IInformationObject, CloudBlockBlob>> RetrieveInformationWithBlobA(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
+        public static async Task<Tuple<IInformationObject, BlobStorageItem>> RetrieveInformationWithBlobA(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
         {
-            if (owner != null)
-                relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
-            var blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
-            MemoryStream memoryStream = new MemoryStream();
-            string blobEtag = null;
-            try
+            //if (owner != null)
+            //    relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
+            //var blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                await blob.DownloadToStreamAsync(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, null, null);
-                InformationContext.AddStorageTransactionToCurrent();
-                blobEtag = blob.Properties.ETag;
+                string blobEtag = null;
+                BlobStorageItem blobItem;
+                try
+                {
+                    blobItem = await storageService.GetBlobItemA(owner, relativeLocation);
+                    await storageService.DownloadBlobStreamA(owner, relativeLocation, memoryStream, true, eTag);
+                    InformationContext.AddStorageTransactionToCurrent();
+                    blobEtag = blobItem.ETag;
+                }
+                catch (StorageException stEx)
+                {
+                    if (stEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
+                        return null;
+                    throw;
+                }
+
+                //if (memoryStream.Length == 0)
+                //    return null;
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                var informationObject = DeserializeInformationObjectFromStream(typeToRetrieve, memoryStream);
+                informationObject.ETag = blobEtag;
+                //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
+                informationObject.RelativeLocation = relativeLocation;
+                informationObject.SetInstanceTreeValuesAsUnmodified();
+                Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
+                    informationObject.ID));
+                return new Tuple<IInformationObject, BlobStorageItem>(informationObject, blobItem);
             }
-            catch (StorageException stEx)
-            {
-                if (stEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
-                    return null;
-                throw;
-            }
-            //if (memoryStream.Length == 0)
-            //    return null;
-            memoryStream.Seek(0, SeekOrigin.Begin);
-            var informationObject = DeserializeInformationObjectFromStream(typeToRetrieve, memoryStream);
-            informationObject.ETag = blobEtag;
-            //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
-            informationObject.RelativeLocation = relativeLocation;
-            informationObject.SetInstanceTreeValuesAsUnmodified();
-            Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
-                informationObject.ID));
-            return new Tuple<IInformationObject, CloudBlockBlob>(informationObject, blob);
         }
 
 
@@ -562,6 +571,7 @@ namespace TheBall
             return deleteTasks.Length;
         }
 
+        [Obsolete("error", true)]
         public static async Task<BlobResultSegment> ListBlobsWithPrefixAsync(this IContainerOwner owner, string prefix, 
             bool useFlatBlobListing = true, BlobContinuationToken continuationToken = null, bool withMetadata = false, bool allowNoOwner = false)
         {
@@ -580,6 +590,7 @@ namespace TheBall
             return ownerRootAddress;
         }
 
+        [Obsolete("obsolete", true)]
         public static async Task<int> DeleteEntireOwnerAsync(IContainerOwner owner)
         {
             if(owner == null)
@@ -662,19 +673,18 @@ namespace TheBall
 
         private static BlobStorageItem getBlobStorageItem(CloudBlockBlob blob)
         {
-            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length,
+            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.ETag, blob.Properties.Length,
                 blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
         }
 
         public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
         {
-            List<BlobStorageItem> storageItems = new List<BlobStorageItem>();
-            var cloudBlockBlobs = await GetBlobsWithMetadataA(owner, directoryLocation, allowNoOwner);
-            var storageItemsToAdd = cloudBlockBlobs.Select(getBlobStorageItem);
-            storageItems.AddRange(storageItemsToAdd);
-            return storageItems.ToArray();
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            var result = await storageService.GetBlobItemsA(owner, directoryLocation);
+            return result;
         }
 
+        [Obsolete("error", true)]
         public static async Task<CloudBlockBlob[]> GetBlobsWithMetadataA(IContainerOwner owner, string prefix, bool allowNoOwner = false)
         {
             BlobContinuationToken continuationToken = null;
@@ -697,6 +707,7 @@ namespace TheBall
             informationObject.RelativeLocation = fixedLocation;
         }
 
+        [Obsolete("error", true)]
         public static async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
         {
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
@@ -720,6 +731,7 @@ namespace TheBall
             return lockETag;
         }
 
+        [Obsolete("error", true)]
         public static async Task<bool> ReleaseLogicalLockByDeletingBlobAsync(string lockBlobFullPath, string eTag)
         {
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockBlobFullPath);
@@ -772,6 +784,7 @@ namespace TheBall
 
         private const string LockPath = "TheBall.Core/Locks/";
 
+        [Obsolete("error", true)]
         public static async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
         {
             string lockFileName = LockPath + ownerLockFileName;
@@ -786,6 +799,7 @@ namespace TheBall
             InformationContext.AddStorageTransactionToCurrent();
         }
 
+        [Obsolete("error", true)]
         private static async Task<string> createLockFileWithContentAsync(IContainerOwner owner, string lockFileName, string lockFileContent, bool requireUnclaimedLock)
         {
             var blob = GetOwnerBlobReference(owner, lockFileName);
@@ -803,6 +817,7 @@ namespace TheBall
             return lockETag;
         }
 
+        [Obsolete("error", true)]
         public static async Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
         {
             await createLockFileWithContentAsync(owner, ownerLockFileName, lockFileContent, false);
@@ -811,26 +826,6 @@ namespace TheBall
         public static async Task ReleaseLockForOwner(IContainerOwner owner, string ownerLockFileName, string lockID = null)
         {
             await deleteLockFileAsync(owner, ownerLockFileName, lockID);
-        }
-
-        public static async Task<BlobStorageItem> GetBlobStorageItem(string sourceFullPath, IContainerOwner owner = null)
-        {
-            if (owner == null)
-                owner = InformationContext.CurrentOwner;
-            var blob = GetOwnerBlobReference(owner, sourceFullPath);
-            try
-            {
-                await blob.FetchAttributesAsync();
-            }
-            catch (StorageException stEx)
-            {
-                if (stEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.NotFound)
-                    return null;
-                throw;
-            }
-            var storageItem = new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length,
-                blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
-            return storageItem;
         }
 
         internal static Task<IInformationObject[]> RetrieveInformationObjectsAsync(string itemDirectory, Type type)

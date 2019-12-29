@@ -4,6 +4,7 @@ using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
+    [Obsolete("error", true)]
     public static class PublishGroupContentToPublicAreaImplementation
     {
         public static string GetTarget_CurrentContainerName(string groupID)

@@ -8,6 +8,7 @@ namespace TheBall.Core.StorageCore
     public interface IStorageService : ICoreService
     {
         string GetOwnerContentLocation(IContainerOwner owner, string location);
+        //string CombinePath(params string[] pathComponents);
         string CombinePathForOwner(IContainerOwner owner, params string[] pathComponents);
         Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string locationPath);
         Task<BlobStorageItem> GetBlobItemA(IContainerOwner owner, string blobPath);
@@ -19,5 +20,9 @@ namespace TheBall.Core.StorageCore
         Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data, string eTag = null);
         Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text, string eTag = null);
         Task<BlobStorageItem> UploadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, string eTag = null);
+        Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation);
+        Task ReleaseLogicalLockByDeletingBlobAsync(string lockLocation, string lockEtag);
+        Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent);
+        Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent);
     }
 }

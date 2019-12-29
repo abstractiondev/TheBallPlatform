@@ -10,6 +10,7 @@ using AzureSupport;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SQLiteSupport;
 using TheBall.Core.InstanceSupport;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Core
 {
@@ -29,6 +30,8 @@ namespace TheBall.Core
 
         public static async Task<CloudBlockBlob[]> GetTarget_BlobsToSyncAsync(IContainerOwner owner, string semanticDomain)
         {
+            throw new NotImplementedException();
+            /*
             List<CloudBlockBlob> results = new List<CloudBlockBlob>();
             BlobContinuationToken continuationToken = null;
             do
@@ -39,6 +42,7 @@ namespace TheBall.Core
                 continuationToken = blobSegment.ContinuationToken;
             } while (continuationToken != null);
             return results.ToArray();
+            */
         }
 
         public static async Task ExecuteMethod_PerformSyncingAsync(Type dataContextType, string databaseAttachOrCreateMethodName, string sqLiteDbLocationFileName, string ownerRootPath, CloudBlockBlob[] blobsToSync)
@@ -53,11 +57,15 @@ namespace TheBall.Core
                 throw new ArgumentNullException("ownerRootPath");
             if (blobsToSync == null)
                 throw new ArgumentNullException("blobsToSync");
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             ContentStorage.GetContentAsStringAsyncFunc = async
                 blobPath =>
                 {
-                    var blob = StorageSupport.GetOwnerBlobReference(blobPath);
-                    var xmlResponse = await blob.DownloadTextAsync(Encoding.UTF8, null, null, null, CancellationToken.None);
+                    //var blob = StorageSupport.GetOwnerBlobReference(blobPath);
+                    //var xmlResponse = await blob.DownloadTextAsync(Encoding.UTF8, null, null, null, CancellationToken.None);
+                    var blobData =
+                        await storageService.DownloadBlobDataA(InformationContext.CurrentOwner, blobPath, false);
+                    var xmlResponse = Encoding.UTF8.GetString(blobData);
                     int index = xmlResponse.IndexOf('<');
                     if (index > 0)
                     {

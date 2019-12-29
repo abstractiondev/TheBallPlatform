@@ -121,8 +121,9 @@ namespace AaltoGlobalImpact.OIP
 
         public async Task ClearCurrentContent(IContainerOwner containerOwner)
         {
-            CloudBlockBlob blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, containerOwner);
-            await blob.DeleteAsync();
+            var storageService = CoreServices.GetCurrent<IStorageService>();
+            var blobfullPath = storageService.GetOwnerContentLocation(containerOwner, RelativeLocation);
+            await storageService.DeleteBlobA(blobfullPath);
             await RemoveAdditionalMediaFormats();
         }
 
@@ -131,9 +132,9 @@ namespace AaltoGlobalImpact.OIP
             try
             {
                 var owner = InformationContext.CurrentOwner;
-                CloudBlob mainBlob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, owner);
-                await mainBlob.FetchAttributesAsync();
-                return mainBlob.Properties.ContentMD5;
+                var storageService = CoreServices.GetCurrent<IStorageService>();
+                var blobItem = await storageService.GetBlobItemA(owner, RelativeLocation);
+                return blobItem.ContentMD5;
             }
             catch
             {
@@ -153,11 +154,11 @@ namespace AaltoGlobalImpact.OIP
 
         public async Task<byte[]> GetContentData()
         {
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             var owner = InformationContext.CurrentOwner;
-            var blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, owner);
             try
             {
-                byte[] result = await blob.DownloadByteArrayAsync();
+                byte[] result = await storageService.DownloadBlobDataA(owner, RelativeLocation, true);
                 return result;
             }
             catch

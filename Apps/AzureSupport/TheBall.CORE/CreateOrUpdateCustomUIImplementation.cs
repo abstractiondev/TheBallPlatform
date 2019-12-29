@@ -52,7 +52,8 @@ namespace TheBall.Core
             {
                 string blobFullName = customUiFolder + zipEntry.FullName;
                 var entryStream = zipEntry.Open();
-                await StorageSupport.CurrActiveContainer.UploadBlobStreamAsync(blobFullName, entryStream);
+                throw new NotImplementedException();
+                //await StorageSupport.CurrActiveContainer.UploadBlobStreamAsync(blobFullName, entryStream);
             }
         }
 

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SecuritySupport;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Core
 {
@@ -38,6 +39,7 @@ namespace TheBall.Core
 
         public static async Task ExecuteMethod_FetchInputToStorageAsync(IContainerOwner owner, string queryParameters, InformationInput informationInput, string inputFetchLocation, string inputFetchName, AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
         {
+            var storageService = CoreServices.GetCurrent<IStorageService>();
                 string url = string.IsNullOrEmpty(queryParameters)
                                  ? informationInput.LocationURL
                                  : informationInput.LocationURL + queryParameters;
@@ -46,9 +48,8 @@ namespace TheBall.Core
                 WebRequest getRequest = WebRequest.Create(url);
                 var response = getRequest.GetResponse();
                 var stream = response.GetResponseStream();
-                var targetBlob = StorageSupport.CurrActiveContainer.GetBlob(inputFetchLocation + "/" + inputFetchName,
-                                                                            owner);
-                await targetBlob.UploadFromStreamAsync(stream);
+                var inputFullName = storageService.CombinePathForOwner(owner, inputFetchLocation, inputFetchName);
+                await storageService.UploadBlobStreamA(owner, inputFullName, stream);
             }
             else
             {

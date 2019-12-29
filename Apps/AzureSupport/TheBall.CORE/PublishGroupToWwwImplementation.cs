@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
@@ -21,12 +22,15 @@ namespace TheBall.Core
 
         public static async Task<string> GetTarget_TargetContainerOwnerStringAsync(string targetContainerName)
         {
+            throw new NotImplementedException();
+            /*
             CloudBlockBlob blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
             string contents = await blob.DownloadTextAsync();
             string[] contentArr = contents.Split(':');
             if (contentArr.Length < 2)
                 return null;
             return contentArr[1];
+            */
         }
 
         public static void ExecuteMethod_ValidatePublishParameters(IContainerOwner owner, string targetContainerOwnerString)
@@ -39,10 +43,11 @@ namespace TheBall.Core
 
         public static void ExecuteMethod_PublishWithWorker(IContainerOwner owner, string targetContainerName, string targetContainerOwnerString)
         {
-            string sourceContainerName = StorageSupport.CurrActiveContainer.Name;
+            throw new NotImplementedException();
+            //string sourceContainerName = StorageSupport.CurrActiveContainer.Name;
             string sourceOwner = owner.ContainerName + "/" + owner.LocationPrefix;
             string sourceRoot = "wwwsite";
-            WorkerSupport.ProcessPublishWebContent(sourceContainerName, sourceOwner, sourceRoot, targetContainerName);
+            //WorkerSupport.ProcessPublishWebContent(sourceContainerName, sourceOwner, sourceRoot, targetContainerName);
         }
     }
 }

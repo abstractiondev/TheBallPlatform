@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using TheBall.Core;
 using TheBall.Core.InstanceSupport;
+using TheBall.Core.StorageCore;
 
 namespace TheBall.Interface
 {
@@ -40,7 +41,8 @@ namespace TheBall.Interface
                 {
                     await StorageSupport.DeleteBlobsAsync(operationQueueItems);
                     var lockFullName = lockBlobFullPath;
-                    await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(lockFullName, null);
+                    var storageService = CoreServices.GetCurrent<IStorageService>();
+                    await storageService.ReleaseLogicalLockByDeletingBlobAsync(lockFullName, null);
                 });
             }
             finally

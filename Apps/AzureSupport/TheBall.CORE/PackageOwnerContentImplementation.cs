@@ -50,11 +50,14 @@ namespace TheBall.Core
 
         public static CloudBlockBlob GetTarget_ArchiveBlob(ContentPackage contentPackageObject)
         {
+            throw new NotImplementedException();
+            /*
             string blobName = contentPackageObject.RelativeLocation + ".zip";
             IContainerOwner owner = VirtualOwner.FigureOwner(contentPackageObject.RelativeLocation);
             var blob = (CloudBlockBlob) StorageSupport.CurrActiveContainer.GetBlob(blobName, owner);
             blob.Properties.ContentType = StorageSupport.GetMimeType(".zip");
             return blob;
+            */
         }
 
         public static void ExecuteMethod_CommitArchiveBlob(CloudBlockBlob archiveBlob, string[] createZipPackageContentOutput)

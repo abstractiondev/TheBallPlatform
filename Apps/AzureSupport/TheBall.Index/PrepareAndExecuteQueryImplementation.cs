@@ -38,7 +38,8 @@ namespace TheBall.Index
         public static void ExecuteMethod_PutQueryRequestToQueryQueue(string indexName, QueryRequest requestObject)
         {
             var owner = InformationContext.CurrentOwner;
-            string activeContainerName = StorageSupport.CurrActiveContainer.Name;
+            throw new NotImplementedException();
+            //string activeContainerName = StorageSupport.CurrActiveContainer.Name;
             //IndexSupport.PutQueryRequestToQueue(activeContainerName, indexName, owner, requestObject.ID);
         }
 

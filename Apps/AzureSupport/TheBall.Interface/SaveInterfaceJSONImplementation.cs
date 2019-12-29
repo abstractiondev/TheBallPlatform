@@ -2,7 +2,9 @@ using System.Dynamic;
 using System.IO;
 using System.Threading.Tasks;
 using AzureSupport;
+using TheBall.Core;
 using TheBall.Core.Storage;
+using TheBall.Core.StorageCore;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface
@@ -27,9 +29,12 @@ namespace TheBall.Interface
 
         public static async Task ExecuteMethod_StoreJSONDataAsync(string jsonDataFileLocation, ExpandoObject dataObject)
         {
+            var storageService = CoreServices.GetCurrent<IStorageService>();
             var content = JSONSupport.SerializeToJSONString(dataObject);
-            var blob = StorageSupport.GetOwnerBlobReference(jsonDataFileLocation);
-            await blob.UploadBlobTextAsync(content, false);
+            await storageService.UploadBlobTextA(InformationContext.CurrentOwner, jsonDataFileLocation, content);
+            //var blob = StorageSupport.GetOwnerBlobReference(jsonDataFileLocation);
+
+            //await blob.UploadBlobTextAsync(content, false);
         }
     }
 }
