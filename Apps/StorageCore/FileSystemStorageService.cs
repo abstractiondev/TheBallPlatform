@@ -11,21 +11,51 @@ namespace TheBall.Core.StorageCore
 {
     public class FileSystemStorageService : IStorageService
     {
+        private const char PlatformStoragePathChar = '/';
+        private char PhysicalStoragePathChar = Path.PathSeparator;
+
         private const string RequiredSubString = "TheBallData";
-        public readonly string RootPath;
-        public FileSystemStorageService(string rootPath)
+        public readonly string LogicalRootPath;
+        public FileSystemStorageService(string logicalRootPath)
         {
-            if(!rootPath.Contains(RequiredSubString))
+            if(!logicalRootPath.Contains(RequiredSubString))
                 throw new ArgumentException($"FileSystemStorage requires {RequiredSubString} to be present in the path");
-            RootPath = rootPath;
+            if(!logicalRootPath.EndsWith("/"))
+                throw new ArgumentException("FileSystemStorage logical root path needs to end with /");
+            LogicalRootPath = logicalRootPath;
+        }
+
+        private string convertLogicalToStoragePath(string logicalPath)
+        {
+            if (logicalPath.StartsWith(LogicalRootPath))
+                throw new ArgumentException("Blob path already contains root path");
+            return Path.Combine(LogicalRootPath, logicalPath);
+        }
+
+        private string convertStorageToLogicalPath(string storagePath)
+        {
+            if(!storagePath.StartsWith(LogicalRootPath))
+                throw new ArgumentException("Blob path does not start with root path");
+            var logicalPath = storagePath.Substring(LogicalRootPath.Length);
+            return logicalPath;
+        }
+
+        private string convertToPhysicalStoragePath(string platformPath)
+        {
+            return platformPath?.Replace(PlatformStoragePathChar, PhysicalStoragePathChar);
+        }
+
+        private string convertFromPhysicalStoragePath(string physicalPath)
+        {
+            return physicalPath?.Replace(PhysicalStoragePathChar, PlatformStoragePathChar);
         }
 
         private void verifyRootPathRemaining(string path)
         {
-            var combinedPath = Path.Combine(RootPath, path);
+            var combinedPath = Path.Combine(LogicalRootPath, path);
             DirectoryInfo fullDir = new DirectoryInfo(combinedPath);
             var fullDirPath = fullDir.FullName;
-            bool startsWith = fullDirPath.StartsWith(RootPath, StringComparison.OrdinalIgnoreCase);
+            bool startsWith = fullDirPath.StartsWith(LogicalRootPath, StringComparison.OrdinalIgnoreCase);
             if(!startsWith)
                 throw new ArgumentException($"Path is invalid: {path}");
         }
@@ -71,7 +101,7 @@ namespace TheBall.Core.StorageCore
         public async Task DeleteBlobA(string blobPath, string eTag = null)
         {
             verifyRootPathRemaining(blobPath);
-            var fullPath = Path.Combine(RootPath, blobPath);
+            var fullPath = Path.Combine(LogicalRootPath, blobPath);
             var fileInfo = new FileInfo(fullPath);
             fileInfo.Delete();
         }
