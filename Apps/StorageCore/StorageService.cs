@@ -21,81 +21,34 @@ namespace TheBall.Core.StorageCore
             ServiceProvider = serviceProvider;
         }
 
+        public GetOwnerContentLocation GetOwnerContentLocation => ServiceProvider.GetOwnerContentLocation;
 
-        public string GetOwnerContentLocation(IContainerOwner owner, string location)
-        {
-            return ServiceProvider.GetOwnerContentLocation(owner, location);
-        }
+        public CombinePathForOwner CombinePathForOwner => ServiceProvider.CombinePathForOwner;
 
-        public string CombinePathForOwner(IContainerOwner owner, string[] pathComponents)
-        {
-            return ServiceProvider.CombinePathForOwner(owner, pathComponents);
-        }
+        public GetBlobItemsA GetBlobItemsA => ServiceProvider.GetBlobItemsA;
 
-        public async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string locationPath)
-        {
-            return await ServiceProvider.GetBlobItemsA(owner, locationPath);
-        }
+        public GetBlobItemA GetBlobItemA => ServiceProvider.GetBlobItemA;
 
-        public async Task<BlobStorageItem> GetBlobItemA(IContainerOwner owner, string blobPath)
-        {
-            return await ServiceProvider.GetBlobItemA(owner, blobPath);
-        }
+        public DeleteBlobA DeleteBlobA => ServiceProvider.DeleteBlobA;
 
-        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text, string eTag = null)
-        {
-            return await ServiceProvider.UploadBlobTextA(owner, blobPath, text, eTag);
-        }
+        public DownloadBlobDataA DownloadBlobDataA => ServiceProvider.DownloadBlobDataA;
 
-        public async Task DeleteBlobA(string blobPath, string eTag = null)
-        {
-            await ServiceProvider.DeleteBlobA(blobPath, eTag);
-        }
+        public DownloadBlobStreamA DownloadBlobStreamA => ServiceProvider.DownloadBlobStreamA;
 
-        public async Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing,
-            string eTag = null)
-        {
-            return await ServiceProvider.DownloadBlobDataA(owner, blobPath, returnNullIfMissing, eTag);
-        }
+        public GetLocationFoldersA GetLocationFoldersA => ServiceProvider.GetLocationFoldersA;
 
-        public async Task DownloadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, bool returnNullIfMissing,
-            string eTag = null)
-        {
-            await ServiceProvider.DownloadBlobStreamA(owner, blobPath, stream, returnNullIfMissing, eTag);
-        }
+        public UploadBlobDataA UploadBlobDataA => ServiceProvider.UploadBlobDataA;
 
-        public async Task<string[]> GetLocationFoldersA(IContainerOwner owner, string locationPath)
-        {
-            return await ServiceProvider.GetLocationFoldersA(owner, locationPath);
-        }
+        public UploadBlobTextA UploadBlobTextA => ServiceProvider.UploadBlobTextA;
 
-        public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data, string eTag = null)
-        {
-            return await ServiceProvider.UploadBlobDataA(owner, blobPath, data, eTag);
-        }
-        public async Task<BlobStorageItem> UploadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, string eTag = null)
-        {
-            return await ServiceProvider.UploadBlobStreamA(owner, blobPath, stream, eTag);
-        }
+        public UploadBlobStreamA UploadBlobStreamA => ServiceProvider.UploadBlobStreamA;
 
-        public async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
-        {
-            return await ServiceProvider.AcquireLogicalLockByCreatingBlobAsync(lockLocation);
-        }
+        public AcquireLogicalLockByCreatingBlobAsync AcquireLogicalLockByCreatingBlobAsync => ServiceProvider.AcquireLogicalLockByCreatingBlobAsync;
 
-        public async Task ReleaseLogicalLockByDeletingBlobAsync(string lockLocation, string lockEtag)
-        {
-            await ServiceProvider.ReleaseLogicalLockByDeletingBlobAsync(lockLocation, lockEtag);
-        }
+        public ReleaseLogicalLockByDeletingBlobAsync ReleaseLogicalLockByDeletingBlobAsync => ServiceProvider.ReleaseLogicalLockByDeletingBlobAsync;
 
-        public async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
-        {
-            return await ServiceProvider.TryClaimLockForOwnerAsync(owner, ownerLockFileName, lockFileContent);
-        }
+        public TryClaimLockForOwnerAsync TryClaimLockForOwnerAsync => ServiceProvider.TryClaimLockForOwnerAsync;
 
-        public async Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
-        {
-            await ServiceProvider.ReplicateClaimedLockAsync(owner, ownerLockFileName, lockFileContent);
-        }
+        public ReplicateClaimedLockAsync ReplicateClaimedLockAsync => ServiceProvider.ReplicateClaimedLockAsync;
     }
 }

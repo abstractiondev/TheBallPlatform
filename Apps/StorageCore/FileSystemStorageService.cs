@@ -16,7 +16,7 @@ namespace TheBall.Core.StorageCore
 
         private const string RequiredSubString = "TheBallData";
         public readonly string LogicalRootPath;
-        public FileSystemStorageService(string logicalRootPath)
+        public FileSystemStorageService(string logicalRootPath) : base()
         {
             if(!logicalRootPath.Contains(RequiredSubString))
                 throw new ArgumentException($"FileSystemStorage requires {RequiredSubString} to be present in the path");
@@ -60,7 +60,39 @@ namespace TheBall.Core.StorageCore
                 throw new ArgumentException($"Path is invalid: {path}");
         }
 
-        public string GetOwnerContentLocation(IContainerOwner owner, string location)
+        private FileSystemStorageService()
+        {
+            GetOwnerContentLocation = GetOwnerContentLocationFunc;
+            CombinePathForOwner = CombinePathForOwnerFunc;
+            GetBlobItemsA = GetBlobItemsAFunc;
+            GetBlobItemA = GetBlobItemAFunc;
+            DeleteBlobA = DeleteBlobAFunc;
+            DownloadBlobDataA = DownloadBlobDataAFunc;
+            DownloadBlobStreamA = DownloadBlobStreamAFunc;
+            GetLocationFoldersA = GetLocationFoldersAFunc;
+            UploadBlobDataA = UploadBlobDataAFunc;
+            UploadBlobTextA = UploadBlobTextAFunc;
+            UploadBlobStreamA = UploadBlobStreamAFunc;
+
+        }
+
+        public GetOwnerContentLocation GetOwnerContentLocation { get;  }
+        public CombinePathForOwner CombinePathForOwner { get; }
+        public GetBlobItemsA GetBlobItemsA { get; }
+        public GetBlobItemA GetBlobItemA { get; }
+        public DeleteBlobA DeleteBlobA { get; }
+        public DownloadBlobDataA DownloadBlobDataA { get; }
+        public DownloadBlobStreamA DownloadBlobStreamA { get; }
+        public GetLocationFoldersA GetLocationFoldersA { get; }
+        public UploadBlobDataA UploadBlobDataA { get; }
+        public UploadBlobTextA UploadBlobTextA { get; }
+        public UploadBlobStreamA UploadBlobStreamA { get; }
+        public AcquireLogicalLockByCreatingBlobAsync AcquireLogicalLockByCreatingBlobAsync { get; }
+        public ReleaseLogicalLockByDeletingBlobAsync ReleaseLogicalLockByDeletingBlobAsync { get; }
+        public TryClaimLockForOwnerAsync TryClaimLockForOwnerAsync { get; }
+        public ReplicateClaimedLockAsync ReplicateClaimedLockAsync { get; }
+
+        public string GetOwnerContentLocationFunc(IContainerOwner owner, string location)
         {
             verifyRootPathRemaining(location);
             var result = Path.Combine(owner.ContainerName, owner.LocationPrefix, location);
@@ -68,15 +100,14 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
-
-        public string CombinePathForOwner(IContainerOwner owner, params string[] pathComponents)
+        public string CombinePathForOwnerFunc(IContainerOwner owner, string[] pathComponents)
         {
             var location = Path.Combine(pathComponents);
             var contentLocation = GetOwnerContentLocation(owner, location);
             return contentLocation;
         }
 
-        public async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string locationPath)
+        public async Task<BlobStorageItem[]> GetBlobItemsAFunc(IContainerOwner owner, string locationPath)
         {
             var folderLocation = GetOwnerContentLocation(owner, locationPath);
             var directoryInfo = new DirectoryInfo(folderLocation);
@@ -90,7 +121,7 @@ namespace TheBall.Core.StorageCore
             return blobItems;
         }
 
-        public async Task<BlobStorageItem> GetBlobItemA(IContainerOwner owner, string blobPath)
+        public async Task<BlobStorageItem> GetBlobItemAFunc(IContainerOwner owner, string blobPath)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             var fileInfo = new FileInfo(fileLocation);
@@ -98,7 +129,7 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
-        public async Task DeleteBlobA(string blobPath, string eTag = null)
+        public async Task DeleteBlobAFunc(string blobPath, string eTag = null)
         {
             verifyRootPathRemaining(blobPath);
             var fullPath = Path.Combine(LogicalRootPath, blobPath);
@@ -106,7 +137,7 @@ namespace TheBall.Core.StorageCore
             fileInfo.Delete();
         }
 
-        public async Task<byte[]> DownloadBlobDataA(IContainerOwner owner, string blobPath, bool returnNullIfMissing,
+        public async Task<byte[]> DownloadBlobDataAFunc(IContainerOwner owner, string blobPath, bool returnNullIfMissing,
             string eTag = null)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
@@ -127,7 +158,7 @@ namespace TheBall.Core.StorageCore
             }
         }
 
-        public async Task DownloadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, bool returnNullIfMissing, string eTag = null)
+        public async Task DownloadBlobStreamAFunc(IContainerOwner owner, string blobPath, Stream stream, bool returnNullIfMissing, string eTag = null)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             var fsInfo = new FileInfo(fileLocation);
@@ -144,7 +175,7 @@ namespace TheBall.Core.StorageCore
             }
         }
 
-        public async Task<string[]> GetLocationFoldersA(IContainerOwner owner, string locationPath)
+        public async Task<string[]> GetLocationFoldersAFunc(IContainerOwner owner, string locationPath)
         {
             var folderLocation = GetOwnerContentLocation(owner, locationPath);
             var directoryInfo = new DirectoryInfo(folderLocation);
@@ -158,7 +189,7 @@ namespace TheBall.Core.StorageCore
             return folderNames;
         }
 
-        public async Task<BlobStorageItem> UploadBlobDataA(IContainerOwner owner, string blobPath, byte[] data, string eTag = null)
+        public async Task<BlobStorageItem> UploadBlobDataAFunc(IContainerOwner owner, string blobPath, byte[] data, string eTag = null)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             using (var fileStream = File.Create(fileLocation))
@@ -170,7 +201,7 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
-        public async Task<BlobStorageItem> UploadBlobTextA(IContainerOwner owner, string blobPath, string text, string eTag = null)
+        public async Task<BlobStorageItem> UploadBlobTextAFunc(IContainerOwner owner, string blobPath, string text, string eTag = null)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             var blobAddress = GetOwnerContentLocation(owner, blobPath);
@@ -182,7 +213,7 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
-        public async Task<BlobStorageItem> UploadBlobStreamA(IContainerOwner owner, string blobPath, Stream stream, string eTag = null)
+        public async Task<BlobStorageItem> UploadBlobStreamAFunc(IContainerOwner owner, string blobPath, Stream stream, string eTag = null)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
             using (var fileStream = File.Create(fileLocation))
@@ -194,24 +225,5 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
-        public async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task ReleaseLogicalLockByDeletingBlobAsync(string lockLocation, string lockEtag)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<string> TryClaimLockForOwnerAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task ReplicateClaimedLockAsync(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
