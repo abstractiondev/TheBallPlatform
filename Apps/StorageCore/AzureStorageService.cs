@@ -23,8 +23,8 @@ namespace TheBall.Core.StorageCore
 
         public AzureStorageService()
         {
-            GetOwnerContentLocation = GetOwnerContentLocationFunc;
-            CombinePathForOwner = CombinePathForOwnerFunc;
+            GetOwnerContentLocation = BlobStorage.GetOwnerContentLocationFunc;
+            CombinePathForOwner = BlobStorage.CombinePathForOwnerFunc;
             GetBlobItemsA = GetBlobItemsAFunc;
             GetBlobItemA = GetBlobItemAFunc;
             DeleteBlobA = DeleteBlobAFunc;
@@ -58,20 +58,6 @@ namespace TheBall.Core.StorageCore
             string blobAddress = GetOwnerContentLocation(owner, blobPath);
             CloudBlockBlob blob = BlobContainer.GetBlockBlobReference(blobAddress);
             return blob;
-        }
-
-        public string GetOwnerContentLocationFunc(IContainerOwner owner, string location)
-        {
-            var contentLocation = Path.Combine(owner.ContainerName, owner.LocationPrefix, location);
-            contentLocation = contentLocation.Replace("\\", "/");
-            return contentLocation;
-        }
-
-        public string CombinePathForOwnerFunc(IContainerOwner owner, params string[] pathComponents)
-        {
-            var location = Path.Combine(pathComponents);
-            var contentLocation = GetOwnerContentLocation(owner, location);
-            return contentLocation;
         }
 
         public async Task<BlobStorageItem[]> GetBlobItemsAFunc(IContainerOwner owner, string locationPath)

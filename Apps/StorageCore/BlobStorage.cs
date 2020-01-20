@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using Flurl;
 using TheBall.Core.Storage;
 using TheBall.Core.StorageCore;
 
@@ -604,7 +605,18 @@ namespace TheBall.Core.Storage
             }
         }
 
+        public static string GetOwnerContentLocationFunc(IContainerOwner owner, string location)
+        {
+            var contentLocation = Url.Combine(owner.ContainerName, owner.LocationPrefix, location);
+            return contentLocation;
+        }
 
+        public static string CombinePathForOwnerFunc(IContainerOwner owner, params string[] pathComponents)
+        {
+            var location = Url.Combine(pathComponents);
+            var contentLocation = GetOwnerContentLocation(owner, location);
+            return contentLocation;
+        }
 
         internal class StorageSupport
         {

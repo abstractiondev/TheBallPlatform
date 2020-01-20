@@ -62,8 +62,8 @@ namespace TheBall.Core.StorageCore
 
         private FileSystemStorageService()
         {
-            GetOwnerContentLocation = GetOwnerContentLocationFunc;
-            CombinePathForOwner = CombinePathForOwnerFunc;
+            GetOwnerContentLocation = BlobStorage.GetOwnerContentLocationFunc;
+            CombinePathForOwner = BlobStorage.CombinePathForOwnerFunc;
             GetBlobItemsA = GetBlobItemsAFunc;
             GetBlobItemA = GetBlobItemAFunc;
             DeleteBlobA = DeleteBlobAFunc;
@@ -91,21 +91,6 @@ namespace TheBall.Core.StorageCore
         public ReleaseLogicalLockByDeletingBlobAsync ReleaseLogicalLockByDeletingBlobAsync { get; }
         public TryClaimLockForOwnerAsync TryClaimLockForOwnerAsync { get; }
         public ReplicateClaimedLockAsync ReplicateClaimedLockAsync { get; }
-
-        public string GetOwnerContentLocationFunc(IContainerOwner owner, string location)
-        {
-            verifyRootPathRemaining(location);
-            var result = Path.Combine(owner.ContainerName, owner.LocationPrefix, location);
-            verifyRootPathRemaining(result);
-            return result;
-        }
-
-        public string CombinePathForOwnerFunc(IContainerOwner owner, string[] pathComponents)
-        {
-            var location = Path.Combine(pathComponents);
-            var contentLocation = GetOwnerContentLocation(owner, location);
-            return contentLocation;
-        }
 
         public async Task<BlobStorageItem[]> GetBlobItemsAFunc(IContainerOwner owner, string locationPath)
         {
