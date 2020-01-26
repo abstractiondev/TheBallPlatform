@@ -25,14 +25,15 @@ namespace TheBall.Core.StorageCore
             LogicalRootPath = logicalRootPath;
         }
 
-        private string convertLogicalToStoragePath(string logicalPath)
+        private string addLogicalStoragePathRoot(string logicalPath)
         {
             if (logicalPath.StartsWith(LogicalRootPath))
                 throw new ArgumentException("Blob path already contains root path");
-            return Path.Combine(LogicalRootPath, logicalPath);
+            var logicalStoragePath = BlobStorage.CombinePath(LogicalRootPath, logicalPath);
+            return logicalStoragePath;
         }
 
-        private string convertStorageToLogicalPath(string storagePath)
+        private string removeLogicalStoragelPathRoot(string storagePath)
         {
             if(!storagePath.StartsWith(LogicalRootPath))
                 throw new ArgumentException("Blob path does not start with root path");
@@ -40,14 +41,28 @@ namespace TheBall.Core.StorageCore
             return logicalPath;
         }
 
-        private string convertToPhysicalStoragePath(string platformPath)
+        private string convertToFileSystemStoragePath(string platformPath)
         {
             return platformPath?.Replace(PlatformStoragePathChar, PhysicalStoragePathChar);
         }
 
-        private string convertFromPhysicalStoragePath(string physicalPath)
+        private string convertFromFileSystemStoragePath(string physicalPath)
         {
             return physicalPath?.Replace(PhysicalStoragePathChar, PlatformStoragePathChar);
+        }
+
+        private string convertFileSystemToLogicalPath(string fileSystemPath)
+        {
+            var storagePath = convertFromFileSystemStoragePath(fileSystemPath);
+            var logicalPath = removeLogicalStoragelPathRoot(storagePath);
+            return logicalPath;
+        }
+
+        private string convertLogicalToFileSystemPath(string logicalPath)
+        {
+            var storagePath = addLogicalStoragePathRoot(logicalPath);
+            var fileSystemPath = convertToFileSystemStoragePath(storagePath);
+            return fileSystemPath;
         }
 
         private void verifyRootPathRemaining(string path)
@@ -95,12 +110,13 @@ namespace TheBall.Core.StorageCore
         public async Task<BlobStorageItem[]> GetBlobItemsAFunc(IContainerOwner owner, string locationPath)
         {
             var folderLocation = GetOwnerContentLocation(owner, locationPath);
-            var directoryInfo = new DirectoryInfo(folderLocation);
+            var fileSystemLocation = convertLogicalToFileSystemPath(folderLocation);
+            var directoryInfo = new DirectoryInfo(fileSystemLocation);
             var fileInfos = directoryInfo.EnumerateFileSystemInfos("*", SearchOption.AllDirectories);
             var blobItems = fileInfos.AsParallel()
                 .Where(fsItem => fsItem is FileInfo)
                 .Cast<FileInfo>()
-                .Select(fs => new BlobStorageItem(fs.FullName, null, null, fs.Length, fs.LastWriteTimeUtc))
+                .Select(fs => new BlobStorageItem(convertFileSystemToLogicalPath(fs.FullName), null, null, fs.Length, fs.LastWriteTimeUtc))
                 .OrderBy(item => item.Name)
                 .ToArray();
             return blobItems;
@@ -109,15 +125,16 @@ namespace TheBall.Core.StorageCore
         public async Task<BlobStorageItem> GetBlobItemAFunc(IContainerOwner owner, string blobPath)
         {
             var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            var fileSystemLocation = convertLogicalToFileSystemPath(fileLocation);
             var fileInfo = new FileInfo(fileLocation);
-            var result = new BlobStorageItem(fileInfo.FullName, null, null, fileInfo.Length, fileInfo.LastWriteTimeUtc);
+            var result = new BlobStorageItem(convertFileSystemToLogicalPath(fileInfo.FullName), null, null, fileInfo.Length, fileInfo.LastWriteTimeUtc);
             return result;
         }
 
         public async Task DeleteBlobAFunc(string blobPath, string eTag = null)
         {
             verifyRootPathRemaining(blobPath);
-            var fullPath = Path.Combine(LogicalRootPath, blobPath);
+            var fullPath = convertLogicalToFileSystemPath(blobPath);
             var fileInfo = new FileInfo(fullPath);
             fileInfo.Delete();
         }
@@ -125,7 +142,8 @@ namespace TheBall.Core.StorageCore
         public async Task<byte[]> DownloadBlobDataAFunc(IContainerOwner owner, string blobPath, bool returnNullIfMissing,
             string eTag = null)
         {
-            var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            var logicalPath = GetOwnerContentLocation(owner, blobPath);
+            var fileLocation = convertLogicalToFileSystemPath(logicalPath);
             var fsInfo = new FileInfo(fileLocation);
             if (!fsInfo.Exists)
             {
@@ -145,7 +163,8 @@ namespace TheBall.Core.StorageCore
 
         public async Task DownloadBlobStreamAFunc(IContainerOwner owner, string blobPath, Stream stream, bool returnNullIfMissing, string eTag = null)
         {
-            var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            var logicalPath = GetOwnerContentLocation(owner, blobPath);
+            var fileLocation = convertLogicalToFileSystemPath(logicalPath);
             var fsInfo = new FileInfo(fileLocation);
             if (!fsInfo.Exists)
             {
@@ -162,7 +181,8 @@ namespace TheBall.Core.StorageCore
 
         public async Task<string[]> GetLocationFoldersAFunc(IContainerOwner owner, string locationPath)
         {
-            var folderLocation = GetOwnerContentLocation(owner, locationPath);
+            var logicalPath = GetOwnerContentLocation(owner, locationPath);
+            var folderLocation = convertLogicalToFileSystemPath(logicalPath);
             var directoryInfo = new DirectoryInfo(folderLocation);
             var fsInfos = directoryInfo.EnumerateFileSystemInfos("*", SearchOption.TopDirectoryOnly);
             var folderNames = fsInfos.AsParallel()
@@ -176,7 +196,8 @@ namespace TheBall.Core.StorageCore
 
         public async Task<BlobStorageItem> UploadBlobDataAFunc(IContainerOwner owner, string blobPath, byte[] data, string eTag = null)
         {
-            var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            var logicalPath = GetOwnerContentLocation(owner, blobPath);
+            var fileLocation = convertLogicalToFileSystemPath(logicalPath);
             using (var fileStream = File.Create(fileLocation))
             {
                 await fileStream.WriteAsync(data, 0, data.Length);
@@ -188,8 +209,8 @@ namespace TheBall.Core.StorageCore
 
         public async Task<BlobStorageItem> UploadBlobTextAFunc(IContainerOwner owner, string blobPath, string text, string eTag = null)
         {
-            var fileLocation = GetOwnerContentLocation(owner, blobPath);
-            var blobAddress = GetOwnerContentLocation(owner, blobPath);
+            var logicalPath = GetOwnerContentLocation(owner, blobPath);
+            var fileLocation = convertLogicalToFileSystemPath(logicalPath);
             using (var textStream = File.CreateText(fileLocation))
             {
                 await textStream.WriteAsync(text);
@@ -200,7 +221,8 @@ namespace TheBall.Core.StorageCore
 
         public async Task<BlobStorageItem> UploadBlobStreamAFunc(IContainerOwner owner, string blobPath, Stream stream, string eTag = null)
         {
-            var fileLocation = GetOwnerContentLocation(owner, blobPath);
+            var logicalPath = GetOwnerContentLocation(owner, blobPath);
+            var fileLocation = convertLogicalToFileSystemPath(logicalPath);
             using (var fileStream = File.Create(fileLocation))
             {
                 await stream.CopyToAsync(fileStream);
