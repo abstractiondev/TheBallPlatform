@@ -28,7 +28,7 @@ namespace TheBall.Core.Storage
         {
             Name = name;
             FileName = Path.GetFileName(Name);
-            DirectoryName = Path.GetDirectoryName(Name).Replace(@"\", "/");
+            DirectoryName = Path.GetDirectoryName(Name.Replace('/', Path.DirectorySeparatorChar)).Replace(Path.DirectorySeparatorChar, '/');
             ContentMD5 = contentMd5;
             ETag = eTag;
             Length = length;
