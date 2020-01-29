@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Dropbox.Api.Common;
 using TheBall.Core.Storage;
 
 namespace TheBall.Core.StorageCore
@@ -16,6 +15,10 @@ namespace TheBall.Core.StorageCore
 
         private const string RequiredSubString = "TheBallData";
         public readonly string LogicalRootPath;
+        private const string MetadataDBName = "TBStoragemetadata.sqlite";
+        private readonly string MetadataDBPath;
+        public SQLiteMetaDataContext MetadataDB { get; }
+
         public FileSystemStorageService(string logicalRootPath) : this()
         {
             if(!logicalRootPath.Contains(RequiredSubString))
@@ -24,6 +27,8 @@ namespace TheBall.Core.StorageCore
             if(!logicalRootPath.EndsWith("/"))
                 throw new ArgumentException("FileSystemStorage logical root path needs to end with /");
             LogicalRootPath = logicalRootPath;
+            var physicalRootPath = convertToFileSystemStoragePath(LogicalRootPath);
+            MetadataDBPath = Path.Combine(physicalRootPath, MetadataDBName);
         }
 
         private string addLogicalStoragePathRoot(string logicalPath)
@@ -96,6 +101,7 @@ namespace TheBall.Core.StorageCore
             UploadBlobTextA = UploadBlobTextAFunc;
             UploadBlobStreamA = UploadBlobStreamAFunc;
 
+            MetadataDB = new SQLiteMetaDataContext(MetadataDBPath);
         }
 
         public GetOwnerContentLocation GetOwnerContentLocation { get;  }
