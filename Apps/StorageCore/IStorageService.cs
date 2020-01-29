@@ -5,6 +5,7 @@ using TheBall.Core.Storage;
 
 namespace TheBall.Core.StorageCore
 {
+    public delegate Task InitializeService();
     public delegate string GetOwnerContentLocation(IContainerOwner owner, string location);
     public delegate string CombinePathForOwner(IContainerOwner owner, params string[] pathComponents);
     public delegate Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string locationPath);
@@ -23,6 +24,7 @@ namespace TheBall.Core.StorageCore
 
     public interface IStorageService : ICoreService
     {
+        InitializeService InitializeService { get; }
         GetOwnerContentLocation GetOwnerContentLocation { get; }
         CombinePathForOwner CombinePathForOwner { get; }
         GetBlobItemsA GetBlobItemsA { get; }

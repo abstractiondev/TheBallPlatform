@@ -20,6 +20,7 @@ namespace TheBall.Core.StorageCore
 
         private AmazonStorageServices()
         {
+            InitializeService = async () => { };
             GetOwnerContentLocation = BlobStorage.GetOwnerContentLocationFunc;
             CombinePathForOwner = BlobStorage.CombinePathForOwnerFunc;
             GetBlobItemsA = GetBlobItemsAFunc;
@@ -179,6 +180,7 @@ namespace TheBall.Core.StorageCore
             return result;
         }
 
+        public InitializeService InitializeService { get; }
         public GetOwnerContentLocation GetOwnerContentLocation { get; }
         public CombinePathForOwner CombinePathForOwner { get; }
         public GetBlobItemsA GetBlobItemsA { get; }

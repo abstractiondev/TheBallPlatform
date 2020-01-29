@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
@@ -13,37 +14,51 @@ namespace TheBall.Core.StorageCore
             public void Configure(EntityTypeBuilder<BlobStorageItem> builder)
             {
                 builder.HasKey(e => e.Name);
+                builder.Property(e => e.ETag);
+                builder.Property(e => e.Length);
+                builder.Property(e => e.LastModified);
                 builder.Property(e => e.Metadata)
                     .HasConversion(obj =>
                             obj.Count == 0 ? null : JsonConvert.SerializeObject(obj),
                         serObj =>
                             serObj == null
                                 ? new Dictionary<string, string>()
-                                : JsonConvert.DeserializeObject<Dictionary<string, string>>(serObj));
+                                : JsonConvert.DeserializeObject<Dictionary<string, string>>(serObj))
+                    .HasColumnType("TEXT");
                 builder.HasIndex(e => e.ContentMD5);
             }
         }
 
-        public readonly string SQLiteDBPath;
+        public readonly string SQLiteDBPath = ":memory:";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
+            optionsBuilder.UseSqlite($"Filename={SQLiteDBPath}");
         }
 
-        public static SQLiteMetaDataContext CreateOrAttachToExistingDB(string pathToDBFile)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new BlobStorageItemEFConf());
+        }
+
+        public static async Task<SQLiteMetaDataContext> CreateOrAttachToExistingDB(string pathToDBFile)
         {
             var sqliteConnectionString = $"{pathToDBFile}";
             var dataContext = new SQLiteMetaDataContext(sqliteConnectionString);
             var db = dataContext.Database;
-            //db.OpenConnection();
-            using (var transaction = db.BeginTransaction())
+            await db.OpenConnectionAsync();
+            await dataContext.Database.MigrateAsync();
+            //using (var transaction = db.BeginTransaction())
             {
-                //dataContext.CreateDomainDatabaseTablesIfNotExists();
-                transaction.Commit();
+                //await transaction.CommitAsync();
             }
             return dataContext;
         }
 
+        public SQLiteMetaDataContext()
+        {
+
+        }
         public SQLiteMetaDataContext(string sqLiteDBPath) : base()
         {
             SQLiteDBPath = sqLiteDBPath;

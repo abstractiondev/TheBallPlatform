@@ -14,9 +14,11 @@ namespace PlatformServiceTests.StorageService
     {
         private const string DefaultTestPath = @"T:/tmp/tbtest/TheBallData/";
         IContainerOwner testOwner = new VirtualOwner("tst", Guid.Empty.ToString());
-        public FileSystemStorageService GetFSS()
+        public async Task<FileSystemStorageService> GetFSS()
         {
-            return new FileSystemStorageService(DefaultTestPath);
+            var fss = new FileSystemStorageService(DefaultTestPath);
+            await fss.InitializeService();
+            return fss;
         }
 
         [Fact]
@@ -34,7 +36,7 @@ namespace PlatformServiceTests.StorageService
         [Fact]
         public async Task PutBlobItem()
         {
-            var fss = GetFSS();
+            var fss = await GetFSS();
             var testData = "test";
             var result = await fss.UploadBlobTextA(testOwner, "testblob.txt", testData);
             Assert.Equal(4, result.Length);

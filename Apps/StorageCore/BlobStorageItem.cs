@@ -24,6 +24,11 @@ namespace TheBall.Core.Storage
 
         }
 
+        public BlobStorageItem()
+        {
+
+        }
+
         public BlobStorageItem(string name, string contentMd5, string eTag, long length, DateTime lastModified)
         {
             Name = name;

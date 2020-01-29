@@ -21,6 +21,7 @@ namespace TheBall.Core.StorageCore
             ServiceProvider = serviceProvider;
         }
 
+        public InitializeService InitializeService => ServiceProvider.InitializeService;
         public GetOwnerContentLocation GetOwnerContentLocation => ServiceProvider.GetOwnerContentLocation;
 
         public CombinePathForOwner CombinePathForOwner => ServiceProvider.CombinePathForOwner;

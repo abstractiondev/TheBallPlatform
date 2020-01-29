@@ -15,6 +15,7 @@ namespace TheBall.Core.StorageCore
         private StorageClient BlobClient;
         public GoogleStorageService()
         {
+            InitializeService = async () => { };
             GetOwnerContentLocation = BlobStorage.GetOwnerContentLocationFunc;
             CombinePathForOwner = BlobStorage.CombinePathForOwnerFunc;
             GetBlobItemsA = GetBlobItemsAFunc;
@@ -28,6 +29,7 @@ namespace TheBall.Core.StorageCore
             UploadBlobStreamA = UploadBlobStreamAFunc;
         }
 
+        public InitializeService InitializeService { get; }
         public GetOwnerContentLocation GetOwnerContentLocation { get; }
         public CombinePathForOwner CombinePathForOwner { get; }
         public GetBlobItemsA GetBlobItemsA { get; }

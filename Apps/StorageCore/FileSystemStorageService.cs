@@ -17,7 +17,7 @@ namespace TheBall.Core.StorageCore
         public readonly string LogicalRootPath;
         private const string MetadataDBName = "TBStoragemetadata.sqlite";
         private readonly string MetadataDBPath;
-        public SQLiteMetaDataContext MetadataDB { get; }
+        public SQLiteMetaDataContext MetadataDB { get; private set; }
 
         public FileSystemStorageService(string logicalRootPath) : this()
         {
@@ -89,6 +89,7 @@ namespace TheBall.Core.StorageCore
 
         private FileSystemStorageService()
         {
+            InitializeService = InitializeServiceFunc;
             GetOwnerContentLocation = BlobStorage.GetOwnerContentLocationFunc;
             CombinePathForOwner = BlobStorage.CombinePathForOwnerFunc;
             GetBlobItemsA = GetBlobItemsAFunc;
@@ -100,10 +101,9 @@ namespace TheBall.Core.StorageCore
             UploadBlobDataA = UploadBlobDataAFunc;
             UploadBlobTextA = UploadBlobTextAFunc;
             UploadBlobStreamA = UploadBlobStreamAFunc;
-
-            MetadataDB = new SQLiteMetaDataContext(MetadataDBPath);
         }
 
+        public InitializeService InitializeService { get; }
         public GetOwnerContentLocation GetOwnerContentLocation { get;  }
         public CombinePathForOwner CombinePathForOwner { get; }
         public GetBlobItemsA GetBlobItemsA { get; }
@@ -119,6 +119,11 @@ namespace TheBall.Core.StorageCore
         public ReleaseLogicalLockByDeletingBlobAsync ReleaseLogicalLockByDeletingBlobAsync { get; }
         public TryClaimLockForOwnerAsync TryClaimLockForOwnerAsync { get; }
         public ReplicateClaimedLockAsync ReplicateClaimedLockAsync { get; }
+
+        public async Task InitializeServiceFunc()
+        {
+            MetadataDB = await SQLiteMetaDataContext.CreateOrAttachToExistingDB(MetadataDBPath);
+        }
 
         public async Task<BlobStorageItem[]> GetBlobItemsAFunc(IContainerOwner owner, string locationPath)
         {
