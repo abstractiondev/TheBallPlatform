@@ -8,7 +8,7 @@ using TheBall.Core.StorageCore;
 
 namespace TheBall.Core.StorageCore.Migrations
 {
-    [DbContext(typeof(SQLiteMetaDataContext))]
+    [DbContext(typeof(MetaDataContext))]
     [Migration("20200129170834_InitialCreate")]
     partial class InitialCreate
     {

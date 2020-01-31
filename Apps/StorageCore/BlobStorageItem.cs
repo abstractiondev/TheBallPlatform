@@ -7,13 +7,13 @@ namespace TheBall.Core.Storage
 {
     public class BlobStorageItem
     {
-        public string ContentMD5 { get; private set; }
+        public string ContentMD5 { get; set; }
         public string ETag { get; set; }
-        public long Length { get; private set; }
-        public string Name { get; private set; }
-        public DateTime LastModified { get; private set; }
+        public long Length { get; set; }
+        public string Name { get; set; }
+        public DateTime LastModified { get; set; }
 
-        public Dictionary<string, string> Metadata { get; private set; }
+        public Dictionary<string, string> Metadata { get; set; }
 
         public readonly string FileName;
         public readonly string DirectoryName;

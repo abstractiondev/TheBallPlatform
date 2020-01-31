@@ -7,7 +7,7 @@ using TheBall.Core.StorageCore;
 
 namespace TheBall.Core.StorageCore.Migrations
 {
-    [DbContext(typeof(SQLiteMetaDataContext))]
+    [DbContext(typeof(MetaDataContext))]
     partial class SQLiteMetaDataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

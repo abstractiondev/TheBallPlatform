@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -7,7 +9,7 @@ using TheBall.Core.Storage;
 
 namespace TheBall.Core.StorageCore
 {
-    public class SQLiteMetaDataContext : DbContext
+    public class MetaDataContext : DbContext
     {
         public class BlobStorageItemEFConf : IEntityTypeConfiguration<BlobStorageItem>
         {
@@ -41,28 +43,56 @@ namespace TheBall.Core.StorageCore
             modelBuilder.ApplyConfiguration(new BlobStorageItemEFConf());
         }
 
-        public static async Task<SQLiteMetaDataContext> CreateOrAttachToExistingDB(string pathToDBFile)
+        public static async Task<MetaDataContext> CreateOrAttachToExistingDB(string pathToDBFile)
         {
-            var sqliteConnectionString = $"{pathToDBFile}";
-            var dataContext = new SQLiteMetaDataContext(sqliteConnectionString);
+            var sqliteConnectionString = pathToDBFile;
+            var dataContext = new MetaDataContext(sqliteConnectionString);
             var db = dataContext.Database;
             await db.OpenConnectionAsync();
             await dataContext.Database.MigrateAsync();
-            //using (var transaction = db.BeginTransaction())
-            {
-                //await transaction.CommitAsync();
-            }
             return dataContext;
         }
 
-        public SQLiteMetaDataContext()
+        public MetaDataContext()
         {
 
         }
-        public SQLiteMetaDataContext(string sqLiteDBPath) : base()
+        public MetaDataContext(string sqLiteDBPath, bool isReadOnly = false) : base()
         {
             SQLiteDBPath = sqLiteDBPath;
+            IsReadOnly = isReadOnly;
         }
+        public bool IsReadOnly { get; }
+        private void validateNotReadOnly()
+        {
+            if (IsReadOnly)
+                throw new InvalidOperationException("IsReadOnly context may not save changes");
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            validateNotReadOnly();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+        {
+            validateNotReadOnly();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            validateNotReadOnly();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override int SaveChanges()
+        {
+            validateNotReadOnly();
+            return base.SaveChanges();
+        }
+
 
 
         public DbSet<BlobStorageItem> BlobStorageItems { get; set; }
